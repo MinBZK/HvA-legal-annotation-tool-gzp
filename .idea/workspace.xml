@@ -1,7 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="" />
+    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/app-build-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.next/app-build-manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/build-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.next/build-manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/cache/webpack/client-development/0.pack.gz" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.next/cache/webpack/client-development/0.pack.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/cache/webpack/client-development/1.pack.gz" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.next/cache/webpack/client-development/1.pack.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/cache/webpack/client-development/index.pack.gz" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.next/cache/webpack/client-development/index.pack.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/cache/webpack/client-development/index.pack.gz.old" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.next/cache/webpack/client-development/index.pack.gz.old" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/cache/webpack/server-development/0.pack.gz" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.next/cache/webpack/server-development/0.pack.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/cache/webpack/server-development/index.pack.gz" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.next/cache/webpack/server-development/index.pack.gz" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/cache/webpack/server-development/index.pack.gz.old" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.next/cache/webpack/server-development/index.pack.gz.old" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/server/app-paths-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.next/server/app-paths-manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/server/app/page.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/server/app/page_client-reference-manifest.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/server/middleware-build-manifest.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.next/server/middleware-build-manifest.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/server/middleware-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.next/server/middleware-manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/server/server-reference-manifest.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.next/server/server-reference-manifest.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/server/server-reference-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.next/server/server-reference-manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/server/vendor-chunks/@swc.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/server/vendor-chunks/next.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/server/webpack-runtime.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/static/chunks/app-pages-internals.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/static/chunks/app/layout.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/static/chunks/app/page.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/static/chunks/main-app.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/static/chunks/polyfills.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.next/static/chunks/polyfills.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/static/chunks/webpack.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/static/css/app/layout.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/static/css/app/page.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/static/media/05a31a2ca4975f99-s.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/static/media/513657b02c5c193f-s.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/static/media/51ed15f9841b9f9d-s.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/static/media/c9a5bc6a7c948fb0-s.p.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/static/media/d6b16ce4a6175f26-s.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/static/media/ec159349637c90ad-s.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/static/media/fd4db3eb5472fc27-s.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/static/webpack/633457081244afec._.hot-update.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/trace" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.next/trace" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/types/app/layout.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.next/types/app/page.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -39,6 +81,10 @@
       <option name="presentableId" value="Default" />
       <updated>1701160041856</updated>
       <workItem from="1701160043887" duration="780000" />
+      <workItem from="1701162053830" duration="16000" />
+      <workItem from="1701162094278" duration="37000" />
+      <workItem from="1701162140258" duration="101000" />
+      <workItem from="1701162785771" duration="14000" />
     </task>
     <servers />
   </component>
