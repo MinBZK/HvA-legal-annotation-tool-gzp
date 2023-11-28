@@ -36,5 +36,5 @@
 /frontend/*.tsbuildinfo
 /frontend/next-env.d.ts
 
-/frontend/package.json
-/frontend/package-lock.json
+# /frontend/package.json
+# /frontend/package-lock.json
