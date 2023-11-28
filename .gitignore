@@ -35,6 +35,6 @@
 # typescript
 /frontend/*.tsbuildinfo
 /frontend/next-env.d.ts
-
+/.idea/
 # /frontend/package.json
 # /frontend/package-lock.json

@@ -11,12 +11,8 @@
   "dependencies": {
     "next": "14.0.3",
     "react": "^18",
-<<<<<<< HEAD
     "react-dom": "^18",
     "react-icons": "^4.12.0"
-=======
-    "react-dom": "^18"
->>>>>>> test-git-ignore
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -24,10 +20,7 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.0.3",
-<<<<<<< HEAD
-=======
     "next": "^14.0.3",
->>>>>>> test-git-ignore
     "typescript": "^5"
   }
 }
