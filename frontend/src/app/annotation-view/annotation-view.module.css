@@ -5,3 +5,7 @@
 .image {
     max-width: 400px;
 }
+
+.annotatedRow {
+    margin: 1rem;
+}
