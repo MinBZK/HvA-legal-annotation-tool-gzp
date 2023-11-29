@@ -25,7 +25,7 @@ const AnnotationView = () => {
             name: "Rechtsbetrekking",
             label: "SSSS",
             note: "No notes",
-            legalRelationship: "Lorem ipsum dolor sit amet. Aut quae voluptatem ut voluptas",
+            legalRelationship: "Lorem ipsum dolor sit amet. Aut quae voluptatem ut voluptas dhdhyahjashja  aadhadhjdahjad ",
             color: "#8ba2cf"
         },
     ]

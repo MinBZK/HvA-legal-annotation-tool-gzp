@@ -1,0 +1,16 @@
+.row {
+    display: flex;
+    justify-content: start;
+}
+
+.annotationName {
+    border-radius: 8px;
+    padding: 0.5rem 0;
+}
+
+.leftCol {
+    width: 30%;
+}
+.rightCol {
+    width: 70%;
+}
