@@ -33,7 +33,7 @@ const AnnotationView = () => {
     return (
         <div>
             <h2 className={css.title}>Annotaties</h2>
-            <img className={css.image} src="/public/juridischanalyseschema.png"/>
+            <img className={css.image} src="/public/juridischanalyseschema.png" alt={"Juridisch Analyseschema"}/>
 
 
             {list && list.map((value, index) => (
