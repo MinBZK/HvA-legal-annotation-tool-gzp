@@ -1,9 +1,13 @@
-export default function AnnotationPage() {
-    return (
-      <>
-       <main>
-        <h1>test</h1>
-       </main>
-      </>
-    );
-}
+import React from 'react';
+import Popup from '../components/page';
+
+const App: React.FC = () => {
+  return (
+    <div>
+      <h1>Your App</h1>
+      <Popup />
+    </div>
+  );
+};
+
+export default App;
