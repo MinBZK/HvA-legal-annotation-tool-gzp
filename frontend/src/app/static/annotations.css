@@ -1,0 +1,25 @@
+.navbar {
+    background-color: #003366; 
+    height: 50px;
+  }
+  
+  .container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .left-column, .right-column {
+    flex: 1;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+
+  body {
+    color: rgb(var(--foreground-rgb));
+    background: currentColor;
+}
+  
+
+  
+  
