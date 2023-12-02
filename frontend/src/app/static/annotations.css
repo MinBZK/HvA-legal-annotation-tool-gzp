@@ -15,11 +15,13 @@
     padding: 10px;
   }
 
-  body {
-    color: rgb(var(--foreground-rgb));
-    background: currentColor;
-}
   
+.dropdown {
+  width: 100%;
+}
 
+.notebox {
+  height: 50% !important;
+}
   
   
