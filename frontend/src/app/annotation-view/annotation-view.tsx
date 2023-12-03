@@ -1,4 +1,6 @@
-import React from "react";
+"use client"; // This is a client component 👈🏽
+
+import React, {useState} from "react";
 import {Annotation} from "@/app/annotation-view/annotation";
 import AnnotatedRow from "@/app/annotation-view/annotated-row/annotated-row";
 import css from "./annotation-view.module.css"
@@ -29,15 +31,26 @@ const AnnotationView = () => {
             color: "#8ba2cf"
         },
     ]
+    const [isModalOpen, setIsModalOpen] = useState(false)
+
 
     return (
         <div>
             <div className={css.topBar}>
                 <h2 className={css.title}>Annotaties</h2>
 
-                <img className={css.image} src="/juridischanalyseschema.png" alt={"Juridisch Analyseschema"}/>
+                <img className={css.image} src="/juridischanalyseschema.png" alt={"Juridisch Analyseschema"} onClick={() => {
+                    setIsModalOpen(!isModalOpen)
+                }}/>
             </div>
 
+            {isModalOpen &&
+                <div className={css.modalContainer} onClick={() => {
+                    setIsModalOpen(!isModalOpen)
+                }}>
+                    <img className={css.imageModal} src="/juridischanalyseschema.png" alt={"Juridisch Analyseschema"}/>
+                </div>
+            }
 
             {list && list.map((value, index) => (
                 <div className={css.annotatedRow} key={index}>

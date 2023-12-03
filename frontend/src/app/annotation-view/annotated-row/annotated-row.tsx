@@ -4,6 +4,7 @@ import React, {FC, useEffect, useState} from "react";
 import {Annotation} from "@/app/annotation-view/annotation";
 import {FaChevronDown} from "react-icons/fa";
 import {FaChevronUp} from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
 import css from "./annotated-row.module.css";
 
 interface AnnotatedProps {
@@ -20,7 +21,7 @@ const AnnotatedRow: FC<AnnotatedProps> = ({annotation}) => {
 
     return (
         <div>
-            <div className={css.annotationTitle} style={{background: annotation.color}} onClick={event => {
+            <div className={css.annotationTitle} style={{background: annotation.color}} onClick={() => {
                 setOpen(!open)
             }}>
                 <h4>{annotation.name}</h4>
@@ -37,6 +38,7 @@ const AnnotatedRow: FC<AnnotatedProps> = ({annotation}) => {
                     <div className={css.row}>
                         <h4 className={css.leftCol}>Label</h4>
                         <h4 className={css.rightCol}>{annotation.label}</h4>
+                        <FaEdit className={css.iconCol}/>
                     </div>
                     <div className={css.row}>
                         <h4 className={css.leftCol}>Notitie</h4>
