@@ -1,11 +1,18 @@
 .title {
     color: #154270;
+    margin: 3rem;
 }
 
 .image {
-    max-width: 400px;
+    max-width: 200px;
+
+    display: block;
+    margin-left: auto;
 }
 
+.topBar {
+    display: flex;
+}
 .annotatedRow {
     margin: 1rem;
 }

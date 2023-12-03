@@ -1,5 +1,9 @@
-import React, {FC} from "react";
+"use client"; // This is a client component 👈🏽
+
+import React, {FC, useEffect, useState} from "react";
 import {Annotation} from "@/app/annotation-view/annotation";
+import {FaChevronDown} from "react-icons/fa";
+import {FaChevronUp} from "react-icons/fa";
 import css from "./annotated-row.module.css";
 
 interface AnnotatedProps {
@@ -8,25 +12,43 @@ interface AnnotatedProps {
 
 const AnnotatedRow: FC<AnnotatedProps> = ({annotation}) => {
 
+    const [open, setOpen] = useState<boolean>(false);
+
+    useEffect(() => {
+        console.warn(open)
+    }, [open])
+
     return (
-        <>
-            <div className={css.annotationName} style={{background: annotation.color}}>
+        <div>
+            <div className={css.annotationTitle} style={{background: annotation.color}} onClick={event => {
+                setOpen(!open)
+            }}>
                 <h4>{annotation.name}</h4>
+
+                {open ? (
+                    <FaChevronDown className={css.align}/>
+                ) : (
+                    <FaChevronUp/>
+                )}
             </div>
 
-            <div className={css.row}>
-                <h4 className={css.leftCol}>Label</h4>
-                <h4 className={css.rightCol}>{annotation.label}</h4>
-            </div>
-            <div className={css.row}>
-                <h4 className={css.leftCol}>Notitie</h4>
-                <h4 className={css.rightCol}>{annotation.note}</h4>
-            </div>
-            <div className={css.row}>
-                <h4 className={css.leftCol}>Rechtsbetrekking</h4>
-                <h4 className={css.rightCol}>{annotation.legalRelationship}</h4>
-            </div>
-        </>
+            {open &&
+                <div className={css.annotationInfo}>
+                    <div className={css.row}>
+                        <h4 className={css.leftCol}>Label</h4>
+                        <h4 className={css.rightCol}>{annotation.label}</h4>
+                    </div>
+                    <div className={css.row}>
+                        <h4 className={css.leftCol}>Notitie</h4>
+                        <h4 className={css.rightCol}>{annotation.note}</h4>
+                    </div>
+                    <div className={css.row}>
+                        <h4 className={css.leftCol}>Begrip</h4>
+                        <h4 className={css.rightCol}>{annotation.legalRelationship}</h4>
+                    </div>
+                </div>
+            }
+        </div>
     )
 }
 
