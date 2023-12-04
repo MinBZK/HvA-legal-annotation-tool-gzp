@@ -19,6 +19,9 @@ test_frontend:
   image: cypress/browsers:node14.17.0-chrome91-ff89
   tags:
     - hva
+  before_script:
+    - nvm install 18.7
+    - nvm use 18.7
   script:
     - cd frontend
     - npm install
