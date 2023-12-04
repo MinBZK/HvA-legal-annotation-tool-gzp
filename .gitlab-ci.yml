@@ -6,7 +6,7 @@ stages:
 # Frontend jobs
 build_frontend:
   stage: build
-  image: node:latest
+  image: cypress/browsers:latest
   tags:
     - hva
   script:
