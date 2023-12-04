@@ -1,0 +1,40 @@
+stages:
+  - build
+  - test
+  - deploy
+
+# Frontend jobs
+build_frontend:
+  stage: build
+  image: cypress/browsers:latest
+  tags:
+    - hva
+  script:
+    - cd frontend
+    - npm install
+    - npm run build
+
+test_frontend:
+  stage: test
+  image: cypress/browsers:node14.17.0-chrome91-ff89
+  tags:
+    - hva
+  script:
+    - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+    - source ~/.nvm/nvm.sh
+    - nvm install 18.7
+    - nvm use 18.7
+    - cd frontend
+    - npm install
+    - nohup npm run dev &            # Start de server op de achtergrond
+    - sleep 10                       # Wacht even om de server tijd te geven om te starten
+    - npm run test                   # Voer Cypress tests uit
+    
+deploy_frontend:
+  stage: deploy
+  tags:
+    - hva
+  script:
+    - echo "Deploy frontend"
+  only:
+    - main

@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from 'react';
 import { Modal, Button, Dropdown, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
