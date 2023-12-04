@@ -1,3 +1,4 @@
+import AnnotationView from '../annotation-view/annotation-view';
 import '../static/annotations.css';
 
 export default function AnnotationPage() {
@@ -11,7 +12,7 @@ export default function AnnotationPage() {
           {/* Left column content here */}
         </section>
         <section className="right-column">
-          {/* Right column content here */}
+          {<AnnotationView></AnnotationView>}
         </section>
       </main>
     </>
