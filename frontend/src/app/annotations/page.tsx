@@ -1,13 +1,20 @@
-import React from 'react';
-import Popup from '../components/page';
+import AnnotationView from '../annotation-view/annotation-view';
+import '../static/annotations.css';
 
-const App: React.FC = () => {
+export default function AnnotationPage() {
   return (
-    <div>
-      <h1>Your App</h1>
-      <Popup />
-    </div>
+    <>
+      <nav className="navbar">
+        {<div className="navbar-title">Legal Annotation Tool</div>}
+      </nav>
+      <main className="container">
+        <section className="left-column">
+          {/* Left column content here */}
+        </section>
+        <section className="right-column">
+          {<AnnotationView></AnnotationView>}
+        </section>
+      </main>
+    </>
   );
-};
-
-export default App;
+}
