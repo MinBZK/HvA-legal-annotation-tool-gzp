@@ -16,7 +16,6 @@ build_frontend:
 
 test_frontend:
   stage: test
-  image: node:latest
   tags:
     - hva
   script:
