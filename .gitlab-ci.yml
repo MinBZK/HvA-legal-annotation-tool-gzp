@@ -22,7 +22,7 @@ test_frontend:
   script:
     - cd frontend
     - npm install
-    - nohup npm run start &  # Start de server op de achtergrond
+    - npm run dev            # Start de server op de achtergrond
     - sleep 10               # Wacht even om de server tijd te geven om te starten
     - npx cypress run        # Voer Cypress tests uit
     
