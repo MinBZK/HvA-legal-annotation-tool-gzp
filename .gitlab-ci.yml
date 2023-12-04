@@ -1,0 +1,28 @@
+stages:
+  - build
+  - test
+  - deploy
+
+# Frontend jobs
+build_frontend:
+  stage: build
+  image: node:latest
+  script:
+    - cd frontend
+    - npm install
+    - npm run build
+
+test_frontend:
+  stage: test
+  image: node:latest
+  script:
+    - cd frontend
+    - npm install
+    - npm test
+
+deploy_frontend:
+  stage: deploy
+  script:
+    - echo "Deploy frontend"
+  only:
+    - main
