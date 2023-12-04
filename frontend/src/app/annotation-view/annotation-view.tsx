@@ -52,11 +52,13 @@ const AnnotationView = () => {
                 </div>
             }
 
-            {list && list.map((value, index) => (
-                <div className={css.annotatedRow} key={index}>
-                    <AnnotatedRow annotation={value}/>
-                </div>
-            ))}
+            <div className={"annolist"}>
+                {list && list.map((value, index) => (
+                    <div className={css.annotatedRow} key={index}>
+                        <AnnotatedRow annotation={value}/>
+                    </div>
+                ))}
+            </div>
 
         </div>
     )
