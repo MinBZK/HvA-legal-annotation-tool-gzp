@@ -26,9 +26,9 @@ test_frontend:
     - nvm use 18.7
     - cd frontend
     - npm install
-    - npm run dev            # Start de server op de achtergrond
-    - sleep 10               # Wacht even om de server tijd te geven om te starten
-    - npm run test            # Voer Cypress tests uit
+    - nohup npm run dev &            # Start de server op de achtergrond
+    - sleep 10                       # Wacht even om de server tijd te geven om te starten
+    - npm run test                   # Voer Cypress tests uit
     
 deploy_frontend:
   stage: deploy
