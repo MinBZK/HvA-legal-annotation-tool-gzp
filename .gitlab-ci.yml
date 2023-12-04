@@ -7,6 +7,8 @@ stages:
 build_frontend:
   stage: build
   image: node:latest
+  tags:
+    - hva
   script:
     - cd frontend
     - npm install
@@ -15,6 +17,8 @@ build_frontend:
 test_frontend:
   stage: test
   image: node:latest
+  tags:
+    - hva
   script:
     - cd frontend
     - npm install
@@ -22,6 +26,8 @@ test_frontend:
 
 deploy_frontend:
   stage: deploy
+  tags:
+    - hva
   script:
     - echo "Deploy frontend"
   only:
