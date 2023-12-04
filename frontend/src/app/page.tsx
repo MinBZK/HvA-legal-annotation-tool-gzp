@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { FiTrash2 } from 'react-icons/fi';
 import './static/index.css';
 import { Modal, Button } from 'react-bootstrap';
-import React from 'react';
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function Home() {
@@ -17,6 +17,11 @@ export default function Home() {
     { id: 4, title: 'XML annotate example title' },
   ];
 
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   return (
     <div className="container">
       <header className="header">
@@ -24,10 +29,7 @@ export default function Home() {
         <Button
           color="primary"
           type="button"
-          onClick={() => {
-            setModalOpen(!modalOpen)
-            console.log(modalOpen);
-          }}
+          onClick={handleShow}
         >
           Launch demo modal
         </Button>
@@ -47,8 +49,17 @@ export default function Home() {
         </ul>
 
       </main>
-      <Modal className={modalOpen ? 'd-block' : 'd-none'}>
-        <p>HERE</p>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Upload bestand</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleClose}>
+            Upload
+          </Button>
+        </Modal.Footer>
       </Modal>
     </div>
   );
