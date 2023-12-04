@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { FiTrash2 } from 'react-icons/fi';
 import './static/index.css';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, Form } from 'react-bootstrap';
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -31,7 +31,7 @@ export default function Home() {
           type="button"
           onClick={handleShow}
         >
-          Launch demo modal
+          Importeer
         </Button>
       </header>
       <main className="main-content">
@@ -54,12 +54,14 @@ export default function Home() {
         <Modal.Header closeButton>
           <Modal.Title>Upload bestand</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={handleClose}>
+        <Modal.Body>
+          <Form action="">
+            <input type="file" accept="text/xml" className='d-block' />
+            <Button className='success float-end mt-3' onClick={handleClose}>
             Upload
           </Button>
-        </Modal.Footer>
+          </Form>
+        </Modal.Body>
       </Modal>
     </div>
   );
