@@ -28,7 +28,7 @@ test_frontend:
     - npm install
     - npm run dev            # Start de server op de achtergrond
     - sleep 10               # Wacht even om de server tijd te geven om te starten
-    - cypress run            # Voer Cypress tests uit
+    - npm run test            # Voer Cypress tests uit
     
 deploy_frontend:
   stage: deploy
