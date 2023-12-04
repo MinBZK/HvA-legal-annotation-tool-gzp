@@ -16,6 +16,7 @@ build_frontend:
 
 test_frontend:
   stage: test
+  image: cypress/browsers:node14.17.0-chrome91-ff89
   tags:
     - hva
   script:
