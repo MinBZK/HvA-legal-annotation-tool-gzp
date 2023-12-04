@@ -20,8 +20,8 @@ test_frontend:
   tags:
     - hva
   before_script:
-    - nvm install 18.7
-    - nvm use 18.7
+    - nvm install 18.17
+    - nvm use 18.17
   script:
     - cd frontend
     - npm install
