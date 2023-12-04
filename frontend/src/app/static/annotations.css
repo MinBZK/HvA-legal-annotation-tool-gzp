@@ -23,5 +23,9 @@
 .notebox {
   height: 50% !important;
 }
+
+.warning-text-color:hover {
+  color: white !important;
+}
   
   

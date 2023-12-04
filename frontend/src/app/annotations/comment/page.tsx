@@ -78,7 +78,7 @@ const Popup: React.FC = () => {
           <Button variant="primary" onClick={handleClose}>
             <BsFillFloppy2Fill size={20}/> Opslaan
           </Button>
-          <Button variant="warning" onClick={handleClose}>
+          <Button className="warning-text-color" variant="warning" onClick={handleClose}>
             <BsX size={20}/> Annuleer
           </Button>
           <Button variant="danger" onClick={handleClose}>
