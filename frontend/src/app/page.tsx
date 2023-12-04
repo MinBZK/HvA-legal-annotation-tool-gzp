@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FiTrash2 } from 'react-icons/fi'; 
 import './static/index.css';
+import Popup from './components/page';
 
 
 export default function Home() {
@@ -32,6 +33,8 @@ export default function Home() {
             </li>
           ))}
         </ul>
+
+        <Popup></Popup>
       </main>
     </div>
   );
