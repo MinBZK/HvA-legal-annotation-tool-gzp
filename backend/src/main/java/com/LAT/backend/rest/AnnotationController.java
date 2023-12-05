@@ -2,7 +2,10 @@ package com.LAT.backend.rest;
 
 import java.util.List;
 
+import com.LAT.backend.model.Annotation;
+import com.LAT.backend.repository.AnnotationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +23,13 @@ public class AnnotationController {
     private AnnotationRepository annotationRepository;
 
     @GetMapping("/annotations")
-     public List<Annotation> getAllAnnotations() {
+     public Iterable<Annotation> getAllAnnotations() {
         return annotationRepository.findAll();
     }
     
     @PostMapping("/saveAnnotation")
     public ResponseEntity<String> addAnnotation(@RequestBody Annotation annotation) {
-        return annotationRepository.save(annotation);
+        annotationRepository.save(annotation);
+        return new ResponseEntity<>("Annotation saved successfully", HttpStatus.CREATED);
     }
 }

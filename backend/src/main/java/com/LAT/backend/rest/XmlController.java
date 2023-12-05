@@ -1,7 +1,7 @@
 package com.LAT.backend.rest;
 
-import java.util.List;
-
+import com.LAT.backend.model.Project;
+import com.LAT.backend.repository.XmlRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class XmlController {
     private XmlRepository xmlRepository;
 
     @GetMapping("/projects")
-     public List<Project> getAllProjects() {
+     public Iterable<Project> getAllProjects() {
         return xmlRepository.findAll();
     }
     
