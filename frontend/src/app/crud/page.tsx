@@ -34,6 +34,26 @@ export default function AnnotationPage() {
         setAnnotationData(event.target.value);
     };
 
+    const handleDelete = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:8000/api/deleteAnnotation/${id}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                alert('Annotation deleted successfully');
+                fetchAnnotations(); // Refetch annotations to update the list
+            } else {
+                alert('Error deleting annotation');
+            }
+        } catch (error) {
+            console.error('Error deleting annotation:', error);
+            alert('Error deleting annotation');
+        }
+    };
+
+
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -84,9 +104,11 @@ export default function AnnotationPage() {
                     {annotations.map((annotation) => (
                         <Card key={annotation.id} className="mb-2">
                             <Card.Body>
+                                <Card.Title>ID: {annotation.id}</Card.Title>
                                 <Card.Text>
-                                    {annotation.text} {}
+                                    Annotation Text: {annotation.text}
                                 </Card.Text>
+                                <Button variant="danger" onClick={() => handleDelete(annotation.id)}>Delete</Button>
                             </Card.Body>
                         </Card>
                     ))}
