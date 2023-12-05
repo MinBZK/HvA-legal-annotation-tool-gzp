@@ -8,8 +8,8 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String xml_location;
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String xml_content;
 
     private String selectedArticles;
 
@@ -17,11 +17,19 @@ public class Project {
         return id;
     }
 
-    public String getXml_location() {
-        return xml_location;
+    public String getXml_content() {
+        return xml_content;
     }
 
-    public void setXml_location(String xml_location) {
-        this.xml_location = xml_location;
+    public void setXml_content(String xml_content) {
+        this.xml_content = xml_content;
+    }
+
+    public String getSelectedArticles() {
+        return selectedArticles;
+    }
+
+    public void setSelectedArticles(String selectedArticles) {
+        this.selectedArticles = selectedArticles;
     }
 }
