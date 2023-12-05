@@ -43,7 +43,7 @@ export default function AnnotationPage() {
     };
 
 
-    const handleEdit = async (id) => {
+    const handleEdit = async (id: number) => {
         try {
             const response = await fetch(`http://localhost:8000/api/updateAnnotation/${id}`, {
                 method: 'PUT',
@@ -69,7 +69,7 @@ export default function AnnotationPage() {
 
 
 
-    const handleDelete = async (id) => {
+    const handleDelete = async (id: number) => {
         try {
             const response = await fetch(`http://localhost:8000/api/deleteAnnotation/${id}`, {
                 method: 'DELETE',
