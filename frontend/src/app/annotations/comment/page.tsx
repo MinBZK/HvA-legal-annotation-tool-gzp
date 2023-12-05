@@ -10,10 +10,18 @@ import { BsFillTrashFill, BsFillFloppy2Fill, BsX} from "react-icons/bs";
 const Popup: React.FC = () => {
   const [show, setShow] = useState(false);
   const [selectedText, setSelectedText] = useState<string | null>(null);
+  const [selectedLaw, setSelectedLaw] = useState<string | null>(null);
+  const [note, setNote] = useState<string>('');
+  const [term, setTerm] = useState<string>('');
 
   const handleClose = () => {
     setShow(false);
     setSelectedText(null);
+    setNote('');
+    setTerm('');
+
+    saveAnnotationToBackend();
+    callXmlController();
   };
 
   const handleShow = () => {
@@ -23,6 +31,55 @@ const Popup: React.FC = () => {
     if (text) {
       setSelectedText(text);
       setShow(true);
+    }
+  };
+
+  const saveAnnotationToBackend = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/saveAnnotation', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          selectedText,
+          selectedLaw,
+          note,
+          term,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save annotation');
+      }
+
+      console.log('Annotation saved successfully');
+    } catch (error) {
+      console.error('Error saving annotation:', error);
+    }
+  };
+
+  const callXmlController = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/saveXml', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          // Include relevant data for saving XML in the request body
+          // For example, you might pass the selectedText or other relevant information
+          selectedText,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to call XML controller');
+      }
+
+      console.log('XML controller called successfully');
+    } catch (error) {
+      console.error('Error calling XML controller:', error);
     }
   };
 

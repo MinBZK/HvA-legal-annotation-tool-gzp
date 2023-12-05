@@ -1,9 +1,7 @@
 package com.LAT.backend.rest;
 
-import java.util.List;
-
-import com.LAT.backend.model.Annotation;
-import com.LAT.backend.repository.AnnotationRepository;
+import com.LAT.backend.model.Project;
+import com.LAT.backend.repository.XmlRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,19 +15,19 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
-public class AnnotationController {
+public class XmlController {
     
     @Autowired
-    private AnnotationRepository annotationRepository;
+    private XmlRepository xmlRepository;
 
-    @GetMapping("/annotations")
-     public Iterable<Annotation> getAllAnnotations() {
-        return annotationRepository.findAll();
+    @GetMapping("/projects")
+     public Iterable<Project> getAllProjects() {
+        return xmlRepository.findAll();
     }
     
-    @PostMapping("/saveAnnotation")
-    public ResponseEntity<String> addAnnotation(@RequestBody Annotation annotation) {
-        annotationRepository.save(annotation);
-        return new ResponseEntity<>("Annotation saved successfully", HttpStatus.CREATED);
+    @PostMapping("/saveXml")
+    public ResponseEntity<String> addProject(@RequestBody Project project) {
+        xmlRepository.save(project);
+        return new ResponseEntity<>("Project saved successfully", HttpStatus.CREATED);
     }
 }
