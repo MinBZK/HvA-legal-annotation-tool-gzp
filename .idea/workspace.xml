@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="">
+    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="merged dev into branch and modified code to new changes">
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/repository/ClassRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/rest/ClassController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/rest/AnnotationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/rest/AnnotationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/rest/XmlController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/rest/XmlController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/annotations/comment/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/annotations/comment/page.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,6 +20,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -34,8 +37,8 @@
     </option>
     <option name="myId2Visible">
       <map>
-        <entry key="com.haulmont.jpb.jpaInspector" value="true" />
-        <entry key="com.haulmont.jpb.jpaPalette" value="true" />
+        <entry key="com.haulmont.jpb.jpaInspector" value="false" />
+        <entry key="com.haulmont.jpb.jpaPalette" value="false" />
         <entry key="com.haulmont.jpb.jpaStructure" value="true" />
       </map>
     </option>
@@ -51,6 +54,10 @@
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="mysql" />
     <property name="ExpandSpringBootJavaOptionsPanel" value="true" />
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -62,6 +69,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/frontend/node_modules/typescript/lib" />
   </component>
   <component name="RunManager">
     <configuration name="LatBackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
@@ -93,8 +101,16 @@
       <workItem from="1701162140258" duration="101000" />
       <workItem from="1701162785771" duration="14000" />
       <workItem from="1701525762291" duration="3000" />
-      <workItem from="1701767621270" duration="2085000" />
+      <workItem from="1701767621270" duration="6611000" />
     </task>
+    <task id="LOCAL-00001" summary="merged dev into branch and modified code to new changes">
+      <created>1701773471795</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1701773471796</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -110,6 +126,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="merged dev into branch and modified code to new changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="merged dev into branch and modified code to new changes" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

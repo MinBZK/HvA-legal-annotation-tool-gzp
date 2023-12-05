@@ -1,7 +1,5 @@
 package com.LAT.backend.rest;
 
-import java.util.List;
-
 import com.LAT.backend.model.Annotation;
 import com.LAT.backend.repository.AnnotationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +21,7 @@ public class AnnotationController {
     private AnnotationRepository annotationRepository;
 
     @GetMapping("/annotations")
-     public Iterable<Annotation> getAllAnnotations() {
+    public Iterable<Annotation> getAllAnnotations() {
         return annotationRepository.findAll();
     }
     

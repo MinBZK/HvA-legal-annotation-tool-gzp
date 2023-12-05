@@ -1,11 +1,10 @@
 'use client';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Modal, Button, Dropdown, Form } from 'react-bootstrap';
 import '../../static/annotations.css'
 import { BsFillTrashFill, BsFillFloppy2Fill, BsX} from "react-icons/bs";
-
 
 const Popup: React.FC = () => {
   const [show, setShow] = useState(false);
@@ -13,6 +12,30 @@ const Popup: React.FC = () => {
   const [selectedLaw, setSelectedLaw] = useState<string | null>(null);
   const [note, setNote] = useState<string>('');
   const [term, setTerm] = useState<string>('');
+  const [classes, setClasses] = useState<string[]>([]); // New state to store the laws
+
+  useEffect(() => {
+    // Fetch laws from the backend when the component mounts
+    fetchClasses();
+  }, []); // Empty dependency array ensures that this effect runs only once
+
+  const fetchClasses = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/api/classes');
+      if (!response.ok) {
+        throw new Error('Failed to fetch laws');
+      }
+      const data = await response.json();
+      setClasses(data); // Set the laws in the state]
+
+      // If selectedLaw is not set, default to the first law in the list
+      if (!selectedLaw && data.length > 0) {
+        setSelectedLaw(data[0].name);
+      }
+    } catch (error) {
+      console.error('Error fetching laws:', error);
+    }
+  };
 
   const handleClose = () => {
     setShow(false);
@@ -109,13 +132,16 @@ const Popup: React.FC = () => {
               <Form.Label><b>Wet vorm</b></Form.Label>
               <Dropdown>
                 <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic">
-                  Selecteer
+                  {selectedLaw || 'Selecteer'}
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu className="dropdown">
-                  <Dropdown.Item href="#/action-1">Wet 1</Dropdown.Item>
-                  <Dropdown.Item href="#/action-2">Wet 2</Dropdown.Item>
-                  <Dropdown.Item href="#/action-3">Wet 3</Dropdown.Item>
+                  {classes.map((law, index) => (
+                      <Dropdown.Item key={index} onSelect={() => setSelectedLaw(law.name)}
+                                     active={selectedLaw === law.name}>
+                        {law.name}
+                      </Dropdown.Item>
+                  ))}
                 </Dropdown.Menu>
               </Dropdown>
             </Form.Group>
