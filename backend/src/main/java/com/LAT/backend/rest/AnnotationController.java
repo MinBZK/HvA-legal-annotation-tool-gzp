@@ -43,4 +43,18 @@ public class AnnotationController {
             return new ResponseEntity<>("Error deleting annotation", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PutMapping("/updateAnnotation/{id}")
+    public ResponseEntity<String> updateAnnotation(@PathVariable Integer id, @RequestBody Annotation updatedAnnotation) {
+        return annotationRepository.findById(id)
+                .map(annotation -> {
+                    annotation.setText(updatedAnnotation.getText());
+                    annotationRepository.save(annotation);
+                    return new ResponseEntity<>("Annotation updated successfully", HttpStatus.OK);
+                }).orElseGet(() -> new ResponseEntity<>("Annotation not found", HttpStatus.NOT_FOUND));
+    }
+
+
+
+
 }

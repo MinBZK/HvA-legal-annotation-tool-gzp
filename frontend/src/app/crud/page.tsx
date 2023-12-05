@@ -8,6 +8,9 @@ import {Annotation} from "@/app/models/annotation";
 export default function AnnotationPage() {
     const [annotations, setAnnotations] = useState([]);
     const [annotationData, setAnnotationData] = useState('');
+    const [editingId, setEditingId] = useState(null); // ID of the annotation being edited
+    const [editText, setEditText] = useState(''); // Text being edited
+
 
 
     // Define fetchAnnotations outside of useEffect
@@ -33,6 +36,41 @@ export default function AnnotationPage() {
     const handleInputChange = (event) => {
         setAnnotationData(event.target.value);
     };
+    const handleEditChange = (event) => {
+        setEditText(event.target.value);
+    };
+
+    const startEdit = (annotation) => {
+        setEditingId(annotation.id);
+        setEditText(annotation.text);
+    };
+
+
+    const handleEdit = async (id) => {
+        try {
+            const response = await fetch(`http://localhost:8000/api/updateAnnotation/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: editText }),
+            });
+
+            if (response.ok) {
+                alert('Annotation updated successfully');
+                setEditingId(null); // Exit edit mode
+                fetchAnnotations(); // Refetch annotations
+            } else {
+                alert('Error updating annotation');
+            }
+        } catch (error) {
+            console.error('Error updating annotation:', error);
+            alert('Error updating annotation');
+        }
+    };
+
+
+
 
     const handleDelete = async (id) => {
         try {
@@ -105,9 +143,22 @@ export default function AnnotationPage() {
                         <Card key={annotation.id} className="mb-2">
                             <Card.Body>
                                 <Card.Title>ID: {annotation.id}</Card.Title>
-                                <Card.Text>
-                                    Annotation Text: {annotation.text}
-                                </Card.Text>
+                                {editingId === annotation.id ? (
+                                    <Form.Control
+                                        as="textarea"
+                                        value={editText}
+                                        onChange={handleEditChange}
+                                    />
+                                ) : (
+                                    <Card.Text>
+                                        Annotation Text: {annotation.text}
+                                    </Card.Text>
+                                )}
+                                {editingId === annotation.id ? (
+                                    <Button variant="success" onClick={() => handleEdit(annotation.id)}>Save</Button>
+                                ) : (
+                                    <Button variant="secondary" onClick={() => startEdit(annotation)}>Edit</Button>
+                                )}
                                 <Button variant="danger" onClick={() => handleDelete(annotation.id)}>Delete</Button>
                             </Card.Body>
                         </Card>
