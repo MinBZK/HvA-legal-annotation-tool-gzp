@@ -89,9 +89,9 @@ export default function AnnotationPage() {
 
 
 
-    const handleSubmit = async (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const handleSubmit = async (event:React.FormEvent<HTMLFormElement>) =>{
         event.preventDefault();
-
+3
         const newAnnotation = { text: annotationData }; // Create a new annotation object
 
         try {
