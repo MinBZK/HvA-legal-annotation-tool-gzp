@@ -13,7 +13,20 @@ const Popup: React.FC = () => {
   const [note, setNote] = useState<string>('');
   const [term, setTerm] = useState<string>('');
   const [classes, setClasses] = useState<string[]>([]); // New state to store the laws
+  const [annotation, setAnnotation] = useState({
+    selectedText: null,
+    selectedLaw: null,
+    note: '',
+    // term: '',
+  });
 
+  // Update the selected law
+  const handleSelectLaw = (lawName) => {
+    setAnnotation((prevAnnotation) => ({
+      ...prevAnnotation,
+      selectedLaw: lawName,
+    }));
+  };
   useEffect(() => {
     // Fetch laws from the backend when the component mounts
     fetchClasses();
@@ -27,11 +40,6 @@ const Popup: React.FC = () => {
       }
       const data = await response.json();
       setClasses(data); // Set the laws in the state]
-
-      // If selectedLaw is not set, default to the first law in the list
-      if (!selectedLaw && data.length > 0) {
-        setSelectedLaw(data[0].name);
-      }
     } catch (error) {
       console.error('Error fetching laws:', error);
     }
@@ -41,10 +49,10 @@ const Popup: React.FC = () => {
     setShow(false);
     setSelectedText(null);
     setNote('');
-    setTerm('');
+    // setTerm('');
 
     saveAnnotationToBackend();
-    callXmlController();
+    // callXmlController();
   };
 
   const handleShow = () => {
@@ -59,17 +67,12 @@ const Popup: React.FC = () => {
 
   const saveAnnotationToBackend = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/saveAnnotation', {
+      const response = await fetch('http://localhost:8000/api/saveAnnotation', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          selectedText,
-          selectedLaw,
-          note,
-          term,
-        }),
+        body: JSON.stringify(annotation),
       });
 
       if (!response.ok) {
@@ -82,29 +85,29 @@ const Popup: React.FC = () => {
     }
   };
 
-  const callXmlController = async () => {
-    try {
-      const response = await fetch('http://localhost:8080/api/saveXml', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          // Include relevant data for saving XML in the request body
-          // For example, you might pass the selectedText or other relevant information
-          selectedText,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to call XML controller');
-      }
-
-      console.log('XML controller called successfully');
-    } catch (error) {
-      console.error('Error calling XML controller:', error);
-    }
-  };
+  // const callXmlController = async () => {
+  //   try {
+  //     const response = await fetch('http://localhost:8080/api/saveXml', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         // Include relevant data for saving XML in the request body
+  //         // For example, you might pass the selectedText or other relevant information
+  //         selectedText,
+  //       }),
+  //     });
+  //
+  //     if (!response.ok) {
+  //       throw new Error('Failed to call XML controller');
+  //     }
+  //
+  //     console.log('XML controller called successfully');
+  //   } catch (error) {
+  //     console.error('Error calling XML controller:', error);
+  //   }
+  // };
 
   return (
     <>
@@ -131,14 +134,15 @@ const Popup: React.FC = () => {
             <Form.Group controlId="exampleForm.ControlSelect1">
               <Form.Label><b>Wet vorm</b></Form.Label>
               <Dropdown>
-                <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic">
-                  {selectedLaw || 'Selecteer'}
+                <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic"   style={{ color: 'black', backgroundColor: selectedLaw ? classes.find(law => law.name === selectedLaw)?.color : '' }}
+                >
+                  {annotation.selectedLaw || 'Selecteer'}
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu className="dropdown">
                   {classes.map((law, index) => (
-                      <Dropdown.Item key={index} onSelect={() => setSelectedLaw(law.name)}
-                                     active={selectedLaw === law.name}>
+                      <Dropdown.Item key={index} onClick={() => handleSelectLaw(law.name)}
+                                     active={annotation.selectedLaw === law.name} style={{ backgroundColor: law.color, color: 'black' }}>
                         {law.name}
                       </Dropdown.Item>
                   ))}

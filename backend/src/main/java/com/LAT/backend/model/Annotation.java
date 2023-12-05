@@ -8,6 +8,8 @@ public class Annotation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    private String selectedWord;
+
     private String text;
 
     public int getId() {
@@ -20,5 +22,13 @@ public class Annotation {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getSelectedWord() {
+        return selectedWord;
+    }
+
+    public void setSelectedWord(String selectedWord) {
+        this.selectedWord = selectedWord;
     }
 }
