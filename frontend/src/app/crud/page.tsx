@@ -6,14 +6,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Annotation} from "@/app/models/annotation";
 
 export default function AnnotationPage() {
-    const [annotations, setAnnotations] = useState([]);
+    const [annotations, setAnnotations] = useState<Annotation[]>([]);
     const [annotationData, setAnnotationData] = useState('');
-    const [editingId, setEditingId] = useState(null); // ID of the annotation being edited
-    const [editText, setEditText] = useState(''); // Text being edited
+    const [editingId, setEditingId] = useState<number | null>(null);
+    const [editText, setEditText] = useState(''); // text being edited
 
-
-
-    // Define fetchAnnotations outside of useEffect
     const fetchAnnotations = async () => {
         try {
             const response = await fetch('http://localhost:8000/api/annotations');
@@ -40,7 +37,7 @@ export default function AnnotationPage() {
         setEditText(event.target.value);
     };
 
-    const startEdit = (annotation) => {
+    const startEdit = (annotation: Annotation) => {
         setEditingId(annotation.id);
         setEditText(annotation.text);
     };
