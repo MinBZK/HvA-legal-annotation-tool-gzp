@@ -33,10 +33,10 @@ export default function AnnotationPage() {
         fetchAnnotations();
     }, []);
 
-    const handleInputChange = (event) => {
+    const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setAnnotationData(event.target.value);
     };
-    const handleEditChange = (event) => {
+    const handleEditChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setEditText(event.target.value);
     };
 
