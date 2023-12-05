@@ -3,10 +3,12 @@ import React, { useState, useEffect } from 'react';
 import '../static/annotations.css';
 import { Card, Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {Annotation} from "@/app/models/annotation";
 
 export default function AnnotationPage() {
     const [annotations, setAnnotations] = useState([]);
     const [annotationData, setAnnotationData] = useState('');
+
 
     // Define fetchAnnotations outside of useEffect
     const fetchAnnotations = async () => {
@@ -35,18 +37,20 @@ export default function AnnotationPage() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        const newAnnotation = { text: annotationData }; // Create a new annotation object
+
         try {
             const response = await fetch('http://localhost:8000/api/saveAnnotation', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ content: annotationData }),
+                body: JSON.stringify(newAnnotation),
             });
 
             if (response.ok) {
                 alert('Annotation saved successfully');
-                setAnnotationData('');
+                setAnnotationData(''); // Reset the input field
                 fetchAnnotations(); // Refetch annotations to update the list
             } else {
                 alert('Error saving annotation');
@@ -81,7 +85,7 @@ export default function AnnotationPage() {
                         <Card key={annotation.id} className="mb-2">
                             <Card.Body>
                                 <Card.Text>
-                                    {annotation.content} {}
+                                    {annotation.text} {}
                                 </Card.Text>
                             </Card.Body>
                         </Card>
