@@ -2,6 +2,8 @@ package com.LAT.backend.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Class {
     @Id
@@ -12,6 +14,17 @@ public class Class {
     private String name;
 
     private String color;
+
+    @ManyToMany(mappedBy = "classes")
+    private List<Annotation> annotations;
+
+    public List<Annotation> getAnnotations() {
+        return annotations;
+    }
+
+    public void setAnnotations(List<Annotation> annotations) {
+        this.annotations = annotations;
+    }
 
     public int getId() {
         return id;

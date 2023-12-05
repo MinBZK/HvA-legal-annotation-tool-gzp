@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
@@ -28,12 +32,6 @@ public class AnnotationController {
     public Iterable<Annotation> getAllAnnotations() {
         return annotationRepository.findAll();
     }
-    
-//    @PostMapping("/saveAnnotation")
-//    public ResponseEntity<String> addAnnotation(@RequestBody Annotation annotation) {
-//        annotationRepository.save(annotation);
-//        return new ResponseEntity<>("Annotation saved successfully", HttpStatus.CREATED);
-//    }
 
     @Autowired
     private AnnotationHasClassRepository annotationHasClassRepository;
@@ -42,21 +40,18 @@ public class AnnotationController {
     private ClassRepository classRepository;
 
     @PostMapping("/save-annotation")
-    public ResponseEntity<Annotation> saveAnnotationWithClass(@RequestBody AnnotationHasClass annotationHasClass) {
-        // Assuming you have the Class details in the request body
-        Class aClass = annotationHasClass.getaClass();
+    public ResponseEntity<String> saveAnnotationWithClasses(@RequestBody Annotation annotation) {
+        try {
+            List<Class> classes = StreamSupport
+                    .stream(classRepository.findAllById(annotation.getClasses().stream().map(Class::getId).collect(Collectors.toList())).spliterator(), false)
+                    .collect(Collectors.toList());
+            annotation.setClasses(classes);
 
-        // Save the class (assuming class name is unique)
-        Class savedClass = classRepository.findByName(aClass.getName())
-                .orElseGet(() -> classRepository.save(aClass));
+            annotationRepository.save(annotation);
 
-        // Set the saved class
-        annotationHasClass.setaClass(savedClass);
-
-        // Save the association in the join table
-        AnnotationHasClassRepository.save(annotationHasClass);
-
-        // Optionally, return the saved annotation
-        return new ResponseEntity<>(annotationHasClass.getAnnotation(), HttpStatus.CREATED);
+            return new ResponseEntity<>("Annotation saved successfully", HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error saving annotation: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
