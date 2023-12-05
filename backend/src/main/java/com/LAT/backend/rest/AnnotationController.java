@@ -26,10 +26,17 @@ public class AnnotationController {
      public Iterable<Annotation> getAllAnnotations() {
         return annotationRepository.findAll();
     }
-    
+
     @PostMapping("/saveAnnotation")
     public ResponseEntity<String> addAnnotation(@RequestBody Annotation annotation) {
-        annotationRepository.save(annotation);
-        return new ResponseEntity<>("Annotation saved successfully", HttpStatus.CREATED);
+        try {
+            annotationRepository.save(annotation);
+            return new ResponseEntity<>("Annotation saved successfully", HttpStatus.CREATED);
+        } catch (Exception e) {
+            System.out.println("Error saving annotations");
+            return new ResponseEntity<>("Error saving annotation", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
+
 }
