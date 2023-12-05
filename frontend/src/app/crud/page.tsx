@@ -4,9 +4,11 @@ import '../static/annotations.css';
 import { Card, Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Annotation} from "@/app/models/annotation";
+import {AnnotationHasClass} from "@/app/models/annotation-has-class";
 
 export default function AnnotationPage() {
     const [annotations, setAnnotations] = useState<Annotation[]>([]);
+    const [annotationsWithClass, setAnnotationsWithClass] = useState<AnnotationHasClass[]>([]);
     const [annotationData, setAnnotationData] = useState('');
     const [editingId, setEditingId] = useState<number | null>(null);
     const [editText, setEditText] = useState(''); // text being edited
@@ -25,9 +27,32 @@ export default function AnnotationPage() {
         }
     };
 
+    const fetchAnnotationsWithClasses = async () => {
+        try {
+            const response = await fetch('http://localhost:8000/api/annotationswithclasses');
+            if (response.ok) {
+                // const data = await response.json();
+                const array: AnnotationHasClass[] = [];
+                response.json().then((value) => {
+                    for (let i = 0; i < value.length; i++) {
+                        const data = value[i]
+                        array.push(data)
+                    }
+                })
+                setAnnotationsWithClass(array);
+
+            } else {
+                console.error('Error fetching annotations');
+            }
+        } catch (error) {
+            console.error('Error fetching annotations:', error);
+        }
+    };
+
     // Use useEffect to fetch annotations when the component mounts
     useEffect(() => {
-        fetchAnnotations();
+        // fetchAnnotations();
+        fetchAnnotationsWithClasses()
     }, []);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -136,11 +161,13 @@ export default function AnnotationPage() {
                 </Form>
 
                 <div className="annotations-list mt-4">
-                    {annotations.map((annotation) => (
-                        <Card key={annotation.id} className="mb-2">
+                    {annotationsWithClass.map((annotationWithClass) => (
+                        <Card key={annotationWithClass.annotation.id} className="mb-2">
                             <Card.Body>
-                                <Card.Title>ID: {annotation.id}</Card.Title>
-                                {editingId === annotation.id ? (
+
+                                <div style={{background: annotationWithClass.aClass.color}}></div>
+                                <Card.Title>ID: {annotationWithClass.annotation.id}</Card.Title>
+                                {editingId === annotationWithClass.annotation.id ? (
                                     <Form.Control
                                         as="textarea"
                                         value={editText}
@@ -148,15 +175,15 @@ export default function AnnotationPage() {
                                     />
                                 ) : (
                                     <Card.Text>
-                                        Annotation Text: {annotation.text}
+                                        Annotation Text: {annotationWithClass.annotation.text}
                                     </Card.Text>
                                 )}
-                                {editingId === annotation.id ? (
-                                    <Button variant="success" onClick={() => handleEdit(annotation.id)}>Save</Button>
+                                {editingId === annotationWithClass.annotation.id ? (
+                                    <Button variant="success" onClick={() => handleEdit(annotationWithClass.annotation.id)}>Save</Button>
                                 ) : (
-                                    <Button variant="secondary" onClick={() => startEdit(annotation)}>Edit</Button>
+                                    <Button variant="secondary" onClick={() => startEdit(annotationWithClass.annotation)}>Edit</Button>
                                 )}
-                                <Button variant="danger" onClick={() => handleDelete(annotation.id)}>Delete</Button>
+                                <Button variant="danger" onClick={() => handleDelete(annotationWithClass.annotation.id)}>Delete</Button>
                             </Card.Body>
                         </Card>
                     ))}
