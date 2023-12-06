@@ -3,12 +3,12 @@ import Link from 'next/link';
 import { FiTrash2 } from 'react-icons/fi';
 import './static/index.css';
 import { Modal, Button, Form } from 'react-bootstrap';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { uploadXML } from './services/uploadXML'
 
 export default function Home() {
 
-  const [modalOpen, setModalOpen] = React.useState(false);
   // Mock data for the list of documents
   const documents = [
     { id: 1, title: 'XML annotate example title' },
@@ -21,6 +21,19 @@ export default function Home() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const fileInputRef = useRef(null);
+
+  const uploadXML = async () => {
+    const file = fileInputRef.current.files[0];
+    const reader = new FileReader();
+
+    reader.onload = async (event) => {
+      await uploadXML(event.target.result);
+    };
+  };
+
+  const [fileContent, setFileContent] = useState("");
 
   return (
     <div className="container">
@@ -55,11 +68,15 @@ export default function Home() {
           <Modal.Title>Upload bestand</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form action="">
-            <input type="file" accept="text/xml" className='d-block' />
-            <Button className='success float-end mt-3' onClick={handleClose}>
-            Upload
-          </Button>
+          <Form action={uploadXML}>
+            <input
+              type="file"
+              accept="text/xml"
+              ref={fileInputRef}
+            />
+            <Button type='submit' className='success float-end mt-3'>
+              Upload
+            </Button>
           </Form>
         </Modal.Body>
       </Modal>
