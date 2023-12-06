@@ -1,37 +1,43 @@
 "use client"; // This is a client component 👈🏽
 
-import React, {useState} from "react";
-import {Annotation} from "@/app/annotation-view/annotation";
+import React, {useEffect, useState} from "react";
 import AnnotatedRow from "@/app/annotation-view/annotated-row/annotated-row";
+import {Annotation} from "@/app/models/annotation";
 import css from "./annotation-view.module.css"
 
 
 const AnnotationView = () => {
 
-    const list: Annotation[] = [
-        {
-            name: "Voorwaarde",
-            label: "Laag inkomen",
-            note: "No notes",
-            definition: "Lorem ipsum dolor sit amet. Aut quae voluptatem ut voluptas",
-            color: "#b7d7cd"
-        },
-        {
-            name: "Variable",
-            label: "AOW",
-            note: "Notes",
-            definition: "Lorem ipsum dolor sit amet. Aut quae voluptatem ut voluptas",
-            color: "#b7d7cd"
-        },
-        {
-            name: "Rechtsbetrekking",
-            label: "SSSS",
-            note: "No notes",
-            definition: "Lorem ipsum dolor sit amet. Aut quae voluptatem ut voluptas dhdhyahjashja  aadhadhjdahjad ",
-            color: "#8ba2cf"
-        },
-    ]
+    const [annotations, setAnnotations] = useState<Annotation[]>([]);
+    const [annotationData, setAnnotationData] = useState('');
+    const [editingId, setEditingId] = useState<number | null>(null);
+    const [editText, setEditText] = useState(''); // text being edited
     const [isModalOpen, setIsModalOpen] = useState(false)
+
+
+    const fetchAnnotations = async () => {
+        try {
+            const response = await fetch('http://localhost:8000/api/annotations/');
+
+            if (response.ok) {
+                const data = await response.json();
+                setAnnotations(data);
+            } else {
+                console.error('Error fetching annotations');
+            }
+        } catch (error) {
+            console.error('Error fetching annotations:', error);
+        }
+    };
+
+    // Use useEffect to fetch annotations when the component mounts
+    useEffect(() => {
+        fetchAnnotations();
+    }, []);
+
+    useEffect(() => {
+        console.warn(annotations)
+    }, [annotations]);
 
 
     return (
@@ -53,9 +59,9 @@ const AnnotationView = () => {
             }
 
             <div className={"annolist"}>
-                {list && list.map((value, index) => (
+                {annotations && annotations.map((value, index) => (
                     <div className={css.annotatedRow} key={index}>
-                        <AnnotatedRow name={value.name} color={value.color} label={value.label}/>
+                        <AnnotatedRow annotation={value}/>
                     </div>
                 ))}
             </div>
