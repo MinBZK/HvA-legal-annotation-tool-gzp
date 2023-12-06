@@ -10,6 +10,8 @@ import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import javax.persistence.EntityNotFoundException;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/annotations")
@@ -45,16 +47,6 @@ public class AnnotationController {
 
         // Save the annotation to the repository
         return annotationRepository.save(annotation);
-
-    @PostMapping("/saveAnnotation")
-    public ResponseEntity<String> addAnnotation(@RequestBody Annotation annotation) {
-        try {
-            annotationRepository.save(annotation);
-            return new ResponseEntity<>("Annotation saved successfully", HttpStatus.CREATED);
-        } catch (Exception e) {
-            System.out.println("Error saving annotations");
-            return new ResponseEntity<>("Error saving annotation", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 
     @DeleteMapping("/deleteAnnotation/{id}")
@@ -68,14 +60,18 @@ public class AnnotationController {
         }
     }
 
-    @PutMapping("/updateAnnotation/{id}")
-    public ResponseEntity<String> updateAnnotation(@PathVariable Integer id, @RequestBody Annotation updatedAnnotation) {
-        return annotationRepository.findById(id)
-                .map(annotation -> {
-                    annotation.setText(updatedAnnotation.getText());
-                    annotationRepository.save(annotation);
-                    return new ResponseEntity<>("Annotation updated successfully", HttpStatus.OK);
-                }).orElseGet(() -> new ResponseEntity<>("Annotation not found", HttpStatus.NOT_FOUND));
+    @PutMapping("/updateannotation/{id}")
+    public Annotation updateAnnotation(@PathVariable Integer id, @RequestBody Annotation annotationDetails) {
+        Annotation annotation = annotationRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Annotation does not exist with id: " + id));
+
+        annotation.setText(annotationDetails.getText());
+        annotation.setSelectedWord(annotationDetails.getSelectedWord());
+        annotation.setAnnotationClass(annotationDetails.getAnnotationClass());
+        annotation.setProject(annotationDetails.getProject());
+
+
+        return annotationRepository.save(annotation);
     }
 
 
