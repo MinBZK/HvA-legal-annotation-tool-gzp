@@ -13,21 +13,21 @@ const AnnotationView = () => {
             name: "Voorwaarde",
             label: "Laag inkomen",
             note: "No notes",
-            legalRelationship: "Lorem ipsum dolor sit amet. Aut quae voluptatem ut voluptas",
+            definition: "Lorem ipsum dolor sit amet. Aut quae voluptatem ut voluptas",
             color: "#b7d7cd"
         },
         {
             name: "Variable",
             label: "AOW",
             note: "Notes",
-            legalRelationship: "Lorem ipsum dolor sit amet. Aut quae voluptatem ut voluptas",
+            definition: "Lorem ipsum dolor sit amet. Aut quae voluptatem ut voluptas",
             color: "#b7d7cd"
         },
         {
             name: "Rechtsbetrekking",
             label: "SSSS",
             note: "No notes",
-            legalRelationship: "Lorem ipsum dolor sit amet. Aut quae voluptatem ut voluptas dhdhyahjashja  aadhadhjdahjad ",
+            definition: "Lorem ipsum dolor sit amet. Aut quae voluptatem ut voluptas dhdhyahjashja  aadhadhjdahjad ",
             color: "#8ba2cf"
         },
     ]
@@ -55,7 +55,7 @@ const AnnotationView = () => {
             <div className={"annolist"}>
                 {list && list.map((value, index) => (
                     <div className={css.annotatedRow} key={index}>
-                        <AnnotatedRow annotation={value}/>
+                        <AnnotatedRow name={value.name} color={value.color} label={value.label}/>
                     </div>
                 ))}
             </div>

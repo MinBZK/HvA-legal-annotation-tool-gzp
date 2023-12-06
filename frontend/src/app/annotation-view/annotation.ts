@@ -3,6 +3,6 @@ export interface Annotation {
     name: string,
     label: string,
     note: string,
-    legalRelationship: string,
+    definition: string,
     color: string
 }
