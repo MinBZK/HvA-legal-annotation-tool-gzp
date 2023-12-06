@@ -23,11 +23,18 @@ public class AnnotationController {
     @Autowired
     private ProjectRepository projectRepository;
 
-    @GetMapping("/annotations")
-    public Iterable<Annotation> getAllAnnotations() {
-        return annotationRepository.findAll();
+    @GetMapping("/")
+    public ResponseEntity<?> getAllAnnotations() {
+        try {
+            Iterable<Annotation> annotations = annotationRepository.findAll();
+            return ResponseEntity.ok(annotations);
+        } catch (Exception e) {
+            // Log the exception for debugging
+            System.out.println("Error fetching annotations: " + e.getMessage());
+            // Return an error response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching annotations");
+        }
     }
-
     // Endpoint to get all annotations for a specific project
     @GetMapping("/project/{projectId}")
     public Optional<Annotation> getAnnotationsByProjectId(@PathVariable Integer projectId) {

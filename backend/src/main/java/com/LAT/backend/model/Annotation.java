@@ -1,5 +1,6 @@
 package com.LAT.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -14,6 +15,7 @@ public class Annotation {
 
     private String text;
 
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "class_id")
     private Class annotationClass;

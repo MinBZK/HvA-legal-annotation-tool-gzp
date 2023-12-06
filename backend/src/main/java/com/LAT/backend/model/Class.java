@@ -1,5 +1,6 @@
 package com.LAT.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public class Class {
     private String name;
 
     private String color;
-
+    @JsonBackReference
     @OneToMany(mappedBy="annotationClass")
     private List<Annotation> annotations;
 

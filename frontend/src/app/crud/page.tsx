@@ -14,11 +14,11 @@ export default function AnnotationPage() {
 
     const fetchAnnotations = async () => {
         try {
-            const response = await fetch('http://localhost:8000/api/annotations');
+            const response = await fetch('http://localhost:8000/api/annotations/');
 
             if (response.ok) {
-                // const data = await response.json();
-                // setAnnotations(data);
+                const data = await response.json();
+                setAnnotations(data);
             } else {
                 console.error('Error fetching annotations');
             }
@@ -141,35 +141,42 @@ export default function AnnotationPage() {
                     <Button variant="primary" type="submit">Save Annotation</Button>
                 </Form>
 
+
                 <div className="annotations-list mt-4">
                     {annotations.map((annotation) => (
-                        <AnnotatedRow key={annotation.id}  color={annotation.annotationClass.color} name={annotation.annotationClass.name}
-                                      label={annotation.text}
-                        />
-                        // <Card key={annotationWithClass.annotation.id} className="mb-2">
-                        //     <Card.Body>
-                        //
-                        //         <div style={{background: annotationWithClass.aClass.color, padding: 2}}></div>
-                        //         <Card.Title>ID: {annotationWithClass.annotation.id}</Card.Title>
-                        //         {editingId === annotationWithClass.annotation.id ? (
-                        //             <Form.Control
-                        //                 as="textarea"
-                        //                 value={editText}
-                        //                 onChange={handleEditChange}
-                        //             />
-                        //         ) : (
-                        //             <Card.Text>
-                        //                 Annotation Text: {annotationWithClass.annotation.text}
-                        //             </Card.Text>
-                        //         )}
-                        //         {editingId === annotationWithClass.annotation.id ? (
-                        //             <Button variant="success" onClick={() => handleEdit(annotationWithClass.annotation.id)}>Save</Button>
-                        //         ) : (
-                        //             <Button variant="secondary" onClick={() => startEdit(annotationWithClass.annotation)}>Edit</Button>
-                        //         )}
-                        //         <Button variant="danger" onClick={() => handleDelete(annotationWithClass.annotation.id)}>Delete</Button>
-                        //     </Card.Body>
-                        // </Card>
+                        <>
+                            <AnnotatedRow key={annotation.id} color={annotation.annotationClass.color}
+                                          name={annotation.annotationClass.name}
+                                          label={annotation.text}
+                            />
+                            <Card key={annotation.id} className="mb-2">
+                                <Card.Body>
+
+                                    <div style={{background: annotation.annotationClass.color, padding: 2}}></div>
+                                    <Card.Title>ID: {annotation.id}</Card.Title>
+                                    {editingId === annotation.id ? (
+                                        <Form.Control
+                                            as="textarea"
+                                            value={editText}
+                                            onChange={handleEditChange}
+                                        />
+                                    ) : (
+                                        <Card.Text>
+                                            Annotation Text: {annotation.text}
+                                        </Card.Text>
+                                    )}
+                                    {editingId === annotation.id ? (
+                                        <Button variant="success"
+                                                onClick={() => handleEdit(annotation.id)}>Save</Button>
+                                    ) : (
+                                        <Button variant="secondary"
+                                                onClick={() => startEdit(annotation)}>Edit</Button>
+                                    )}
+                                    <Button variant="danger"
+                                            onClick={() => handleDelete(annotation.id)}>Delete</Button>
+                                </Card.Body>
+                            </Card>
+                        </>
                     ))}
                 </div>
             </main>
