@@ -1,11 +1,10 @@
 'use client';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Modal, Button, Dropdown, Form } from 'react-bootstrap';
 import '../../static/annotations.css'
 import { BsFillTrashFill, BsFillFloppy2Fill, BsX} from "react-icons/bs";
-
 
 const Popup: React.FC = () => {
   const [show, setShow] = useState(false);
@@ -13,15 +12,47 @@ const Popup: React.FC = () => {
   const [selectedLaw, setSelectedLaw] = useState<string | null>(null);
   const [note, setNote] = useState<string>('');
   const [term, setTerm] = useState<string>('');
+  const [classes, setClasses] = useState<string[]>([]); // New state to store the laws
+  const [annotation, setAnnotation] = useState({
+    selectedText: null,
+    selectedLaw: null,
+    note: '',
+    // term: '',
+  });
+
+  // Update the selected law
+  const handleSelectLaw = (lawName) => {
+    setAnnotation((prevAnnotation) => ({
+      ...prevAnnotation,
+      selectedLaw: lawName,
+    }));
+  };
+  useEffect(() => {
+    // Fetch laws from the backend when the component mounts
+    fetchClasses();
+  }, []); // Empty dependency array ensures that this effect runs only once
+
+  const fetchClasses = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/api/classes');
+      if (!response.ok) {
+        throw new Error('Failed to fetch laws');
+      }
+      const data = await response.json();
+      setClasses(data); // Set the laws in the state]
+    } catch (error) {
+      console.error('Error fetching laws:', error);
+    }
+  };
 
   const handleClose = () => {
     setShow(false);
     setSelectedText(null);
     setNote('');
-    setTerm('');
+    // setTerm('');
 
     saveAnnotationToBackend();
-    callXmlController();
+    // callXmlController();
   };
 
   const handleShow = () => {
@@ -36,17 +67,12 @@ const Popup: React.FC = () => {
 
   const saveAnnotationToBackend = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/saveAnnotation', {
+      const response = await fetch('http://localhost:8000/api/saveAnnotation', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          selectedText,
-          selectedLaw,
-          note,
-          term,
-        }),
+        body: JSON.stringify(annotation),
       });
 
       if (!response.ok) {
@@ -59,29 +85,29 @@ const Popup: React.FC = () => {
     }
   };
 
-  const callXmlController = async () => {
-    try {
-      const response = await fetch('http://localhost:8080/api/saveXml', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          // Include relevant data for saving XML in the request body
-          // For example, you might pass the selectedText or other relevant information
-          selectedText,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to call XML controller');
-      }
-
-      console.log('XML controller called successfully');
-    } catch (error) {
-      console.error('Error calling XML controller:', error);
-    }
-  };
+  // const callXmlController = async () => {
+  //   try {
+  //     const response = await fetch('http://localhost:8080/api/saveXml', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         // Include relevant data for saving XML in the request body
+  //         // For example, you might pass the selectedText or other relevant information
+  //         selectedText,
+  //       }),
+  //     });
+  //
+  //     if (!response.ok) {
+  //       throw new Error('Failed to call XML controller');
+  //     }
+  //
+  //     console.log('XML controller called successfully');
+  //   } catch (error) {
+  //     console.error('Error calling XML controller:', error);
+  //   }
+  // };
 
   return (
     <>
@@ -108,14 +134,18 @@ const Popup: React.FC = () => {
             <Form.Group controlId="exampleForm.ControlSelect1">
               <Form.Label><b>Wet vorm</b></Form.Label>
               <Dropdown>
-                <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic">
-                  Selecteer
+                <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic"   style={{ color: 'black', backgroundColor: selectedLaw ? classes.find(law => law.name === selectedLaw)?.color : '' }}
+                >
+                  {annotation.selectedLaw || 'Selecteer'}
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu className="dropdown">
-                  <Dropdown.Item href="#/action-1">Wet 1</Dropdown.Item>
-                  <Dropdown.Item href="#/action-2">Wet 2</Dropdown.Item>
-                  <Dropdown.Item href="#/action-3">Wet 3</Dropdown.Item>
+                  {classes.map((law, index) => (
+                      <Dropdown.Item key={index} onClick={() => handleSelectLaw(law.name)}
+                                     active={annotation.selectedLaw === law.name} style={{ backgroundColor: law.color, color: 'black' }}>
+                        {law.name}
+                      </Dropdown.Item>
+                  ))}
                 </Dropdown.Menu>
               </Dropdown>
             </Form.Group>
