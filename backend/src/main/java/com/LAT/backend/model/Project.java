@@ -2,6 +2,8 @@ package com.LAT.backend.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Project {
     @Id
@@ -12,6 +14,17 @@ public class Project {
     private String xml_content;
 
     private String selectedArticles;
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    private List<Annotation> annotations;
+
+    public List<Annotation> getAnnotations() {
+        return annotations;
+    }
+
+    public void setAnnotations(List<Annotation> annotations) {
+        this.annotations = annotations;
+    }
 
     public Long getId() {
         return id;

@@ -4,11 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="beginning of saving annotations">
+    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="further development of saving annotations">
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/repository/ProjectRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/Annotation.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/Annotation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/AnnotationHasClass.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/Class.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/Class.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/Project.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/Project.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/repository/AnnotationHasClassRepository.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/rest/AnnotationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/rest/AnnotationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/LAT/backend/AnnotationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/com/LAT/backend/AnnotationTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +76,7 @@
     <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/frontend/node_modules/typescript/lib" />
   </component>
-  <component name="RunManager" selected="JUnit.LatBackendApplicationTests">
+  <component name="RunManager" selected="Spring Boot.LatBackendApplication">
     <configuration name="LatBackendApplicationTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="backend" />
       <extension name="coverage">
@@ -81,7 +87,13 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.LAT.backend" />
       <option name="MAIN_CLASS_NAME" value="com.LAT.backend.LatBackendApplicationTests" />
+      <option name="METHOD_NAME" value="" />
       <option name="TEST_OBJECT" value="class" />
+      <envs>
+        <env name="DB_PASS" value="jUok7ZbbTFhviK" />
+        <env name="DB_URL" value="jdbc:mysql://oege.ie.hva.nl:3306/zyeungc1" />
+        <env name="DB_USER" value="yeungc1" />
+      </envs>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -92,17 +104,17 @@
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="SHORTEN_COMMAND_LINE" value="NONE" />
       <envs>
-        <env name="DB_PASS" value="hUDR/2NO3TU.6G" />
-        <env name="DB_URL" value="jdbc:mysql://oege.ie.hva.nl:3306/zschied2" />
-        <env name="DB_USER" value="schied2" />
+        <env name="DB_PASS" value="jUok7ZbbTFhviK" />
+        <env name="DB_URL" value="jdbc:mysql://oege.ie.hva.nl:3306/zyeungc1" />
+        <env name="DB_USER" value="yeungc1" />
       </envs>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
-      <item itemvalue="Spring Boot.LatBackendApplication" />
       <item itemvalue="JUnit.LatBackendApplicationTests" />
+      <item itemvalue="Spring Boot.LatBackendApplication" />
     </list>
     <recent_temporary>
       <list>
@@ -124,7 +136,8 @@
       <workItem from="1701162140258" duration="101000" />
       <workItem from="1701162785771" duration="14000" />
       <workItem from="1701525762291" duration="3000" />
-      <workItem from="1701767621270" duration="15119000" />
+      <workItem from="1701767621270" duration="15188000" />
+      <workItem from="1701851685985" duration="5895000" />
     </task>
     <task id="LOCAL-00001" summary="merged dev into branch and modified code to new changes">
       <created>1701773471795</created>
@@ -147,7 +160,14 @@
       <option name="project" value="LOCAL" />
       <updated>1701786772761</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="further development of saving annotations">
+      <created>1701789604383</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1701789604383</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -163,12 +183,14 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="merged dev into branch and modified code to new changes" />
     <MESSAGE value="api calls to retreive data into popup with chi" />
     <MESSAGE value="beginning of saving annotations" />
-    <option name="LAST_COMMIT_MESSAGE" value="beginning of saving annotations" />
+    <MESSAGE value="further development of saving annotations" />
+    <option name="LAST_COMMIT_MESSAGE" value="further development of saving annotations" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

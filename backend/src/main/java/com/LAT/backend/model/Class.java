@@ -15,8 +15,14 @@ public class Class {
 
     private String color;
 
-    @ManyToMany(mappedBy = "classes")
+    @OneToMany(mappedBy="annotationClass")
     private List<Annotation> annotations;
+
+    @OneToMany(mappedBy = "mainClass")
+    private List<Relation> mainClasses;
+
+    @OneToMany(mappedBy = "subClass")
+    private List<Relation> subClasses;
 
     public List<Annotation> getAnnotations() {
         return annotations;

@@ -14,20 +14,28 @@ public class Annotation {
 
     private String text;
 
-    @ManyToMany
-    @JoinTable(
-            name = "AnnotationHasAClass",
-            joinColumns = @JoinColumn(name = "annotation_id"),
-            inverseJoinColumns = @JoinColumn(name = "class_id")
-    )
-    private List<Class> classes;
+    @ManyToOne
+    @JoinColumn(name = "class_id")
+    private Class annotationClass;
 
-    public List<Class> getClasses() {
-        return classes;
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
+
+    public Project getProject() {
+        return project;
     }
 
-    public void setClasses(List<Class> classes) {
-        this.classes = classes;
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public Class getAnnotationClass() {
+        return annotationClass;
+    }
+
+    public void setAnnotationClass(Class annotationClass) {
+        this.annotationClass = annotationClass;
     }
 
     public int getId() {
