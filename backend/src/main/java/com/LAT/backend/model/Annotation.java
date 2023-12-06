@@ -2,8 +2,6 @@ package com.LAT.backend.model;
 
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity
 public class Annotation {
     @Id
@@ -15,8 +13,8 @@ public class Annotation {
     private String text;
 
     @ManyToOne
-    @JoinColumn(name = "class_id")
-    private Class annotationClass;
+    @JoinColumn(name = "lawClass_id")
+    private LawClass lawClass;
 
     @ManyToOne
     @JoinColumn(name = "project_id")
@@ -30,12 +28,12 @@ public class Annotation {
         this.project = project;
     }
 
-    public Class getAnnotationClass() {
-        return annotationClass;
+    public LawClass getLawClass() {
+        return lawClass;
     }
 
-    public void setAnnotationClass(Class annotationClass) {
-        this.annotationClass = annotationClass;
+    public void setLawClass(LawClass lawClass) {
+        this.lawClass = lawClass;
     }
 
     public int getId() {
