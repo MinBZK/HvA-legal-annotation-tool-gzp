@@ -86,7 +86,7 @@ public class AnnotationController {
 
         annotation.setText(annotationDetails.getText());
         annotation.setSelectedWord(annotationDetails.getSelectedWord());
-        annotation.setAnnotationClass(annotationDetails.getAnnotationClass());
+        annotation.setLawClass(annotationDetails.getLawClass());
         annotation.setProject(annotationDetails.getProject());
 
 

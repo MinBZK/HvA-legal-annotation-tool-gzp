@@ -44,10 +44,10 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
 
     return (
         <div>
-            <div className={css.annotationTitle} style={{background: annotation.annotationClass.color}} onClick={() => {
+            <div className={css.annotationTitle} style={{background: annotation.lawClass.color}} onClick={() => {
                 setOpen(!open)
             }}>
-                <h4>{annotation.annotationClass.name}</h4>
+                <h4>{annotation.lawClass.name}</h4>
 
                 {open ? (
                     <FaChevronDown className={css.align}/>
