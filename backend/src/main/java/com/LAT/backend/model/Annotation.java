@@ -1,9 +1,8 @@
 package com.LAT.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-
-import java.util.List;
 
 @Entity
 public class Annotation {
@@ -15,14 +14,16 @@ public class Annotation {
 
     private String text;
 
-    @JsonManagedReference
+    @JsonIgnoreProperties({"annotations"})
     @ManyToOne
-    @JoinColumn(name = "class_id")
-    private Class annotationClass;
+    @JoinColumn(name = "lawClass_id")
+    private LawClass lawClass;
 
+    @JsonIgnoreProperties({"annotations"})
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
+
 
     public Project getProject() {
         return project;
@@ -32,12 +33,12 @@ public class Annotation {
         this.project = project;
     }
 
-    public Class getAnnotationClass() {
-        return annotationClass;
+    public void setLawClass(LawClass lawClass) {
+        this.lawClass = lawClass;
     }
 
-    public void setAnnotationClass(Class annotationClass) {
-        this.annotationClass = annotationClass;
+    public LawClass getLawClass() {
+        return lawClass;
     }
 
     public int getId() {

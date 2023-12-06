@@ -9,12 +9,12 @@ public class Relation {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "main_class_id")
-    private Class mainClass;
+    @JoinColumn(name = "main_lawClass_id")
+    private LawClass mainLawClass;
 
     @ManyToOne
-    @JoinColumn(name = "sub_class_id")
-    private Class subClass;
+    @JoinColumn(name = "sub_lawClass_id")
+    private LawClass subLawClass;
 
     @Column(nullable = false)
     private String type;
@@ -26,20 +26,20 @@ public class Relation {
         return id;
     }
 
-    public Class getMainClass() {
-        return mainClass;
+    public LawClass getMainClass() {
+        return mainLawClass;
     }
 
-    public void setMainClass(Class mainClass) {
-        this.mainClass = mainClass;
+    public void setMainClass(LawClass mainLawClass) {
+        this.mainLawClass = mainLawClass;
     }
 
-    public Class getSubClass() {
-        return subClass;
+    public LawClass getSubClass() {
+        return subLawClass;
     }
 
-    public void setSubClass(Class subClass) {
-        this.subClass = subClass;
+    public void setSubClass(LawClass subLawClass) {
+        this.subLawClass = subLawClass;
     }
 
     public String getType() {

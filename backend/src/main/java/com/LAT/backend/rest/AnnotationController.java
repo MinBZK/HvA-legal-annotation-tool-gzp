@@ -1,8 +1,10 @@
 package com.LAT.backend.rest;
 
 import com.LAT.backend.model.Annotation;
+import com.LAT.backend.model.LawClass;
 import com.LAT.backend.model.Project;
 import com.LAT.backend.repository.AnnotationRepository;
+import com.LAT.backend.repository.LawClassRepository;
 import com.LAT.backend.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,9 @@ public class AnnotationController {
 
     @Autowired
     private ProjectRepository projectRepository;
+
+    @Autowired
+    private LawClassRepository lawClassRepository;
 
     @GetMapping("/")
     public ResponseEntity<?> getAllAnnotations() {
@@ -43,14 +48,21 @@ public class AnnotationController {
     }
 
     // Endpoint to create a new annotation for a specific project
-    @PostMapping("/project/{projectId}")
-    public Annotation createAnnotation(@PathVariable Long projectId, @RequestBody Annotation annotation) {
+    @PostMapping("/project")
+    public Annotation createAnnotation(@RequestBody Annotation annotation) {
         // Validate if the project exists
-        Project project = projectRepository.findByProjectId(projectId)
+        Project project = projectRepository.findById(annotation.getProject().getId())
                 .orElseThrow(() -> new RuntimeException("Project not found"));
+
+        // Validate if the annotation class exists
+        LawClass lawClass = lawClassRepository.findByName(annotation.getLawClass().getName())
+                .orElseThrow(() -> new RuntimeException("Annotation class not found"));
 
         // Set the project for the annotation
         annotation.setProject(project);
+
+        // Set the annotation class for the annotation
+        annotation.setLawClass(lawClass);
 
         // Save the annotation to the repository
         return annotationRepository.save(annotation);

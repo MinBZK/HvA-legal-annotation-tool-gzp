@@ -1,12 +1,13 @@
 package com.LAT.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
-public class Class {
+public class LawClass {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -15,14 +16,14 @@ public class Class {
     private String name;
 
     private String color;
-    @JsonBackReference
-    @OneToMany(mappedBy="annotationClass")
+
+    @OneToMany(mappedBy= "lawClass")
     private List<Annotation> annotations;
 
-    @OneToMany(mappedBy = "mainClass")
+    @OneToMany(mappedBy = "mainLawClass")
     private List<Relation> mainClasses;
 
-    @OneToMany(mappedBy = "subClass")
+    @OneToMany(mappedBy = "subLawClass")
     private List<Relation> subClasses;
 
     public List<Annotation> getAnnotations() {

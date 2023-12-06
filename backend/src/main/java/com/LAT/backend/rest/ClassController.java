@@ -1,7 +1,7 @@
 package com.LAT.backend.rest;
 
-import com.LAT.backend.model.Class;
-import com.LAT.backend.repository.ClassRepository;
+import com.LAT.backend.model.LawClass;
+import com.LAT.backend.repository.LawClassRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class ClassController {
 
     @Autowired
-    private ClassRepository classRepository;
+    private LawClassRepository lawClassRepository;
 
     @GetMapping("/classes")
-    public Iterable<Class> getAllAnnotations() {
-        return classRepository.findAll();
+    public Iterable<LawClass> getAllAnnotations() {
+        return lawClassRepository.findAll();
     }
 
 }
