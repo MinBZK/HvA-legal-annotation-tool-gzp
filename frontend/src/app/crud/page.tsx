@@ -4,7 +4,6 @@ import '../static/annotations.css';
 import { Card, Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Annotation} from "@/app/models/annotation";
-import AnnotatedRow from "@/app/annotation-view/annotated-row/annotated-row";
 
 export default function AnnotationPage() {
     const [annotations, setAnnotations] = useState<Annotation[]>([]);
@@ -145,10 +144,6 @@ export default function AnnotationPage() {
                 <div className="annotations-list mt-4">
                     {annotations.map((annotation) => (
                             <>
-                        <AnnotatedRow key={annotation.id} color={annotation.annotationClass.color}
-                                      name={annotation.annotationClass.name}
-                                      label={annotation.text}
-                        />
                         <Card key={annotation.id} className="mb-2">
                             <Card.Body>
 

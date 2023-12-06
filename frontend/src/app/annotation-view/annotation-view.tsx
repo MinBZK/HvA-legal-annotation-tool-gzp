@@ -30,6 +30,49 @@ const AnnotationView = () => {
         }
     };
 
+    const handleEdit = async (annotationDetails: Annotation, id: number) => {
+        try {
+            const response= await fetch(`http://localhost:8000/api/annotations/updateannotation/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(annotationDetails)
+            });
+
+
+            console.log(response);
+            if (response.ok) {
+                alert('Annotation updated successfully');
+                fetchAnnotations(); // Refetch annotations
+            } else {
+                alert('Error updating annotation');
+            }
+        } catch (error) {
+            console.error('Error updating annotation:', error);
+            alert('Error updating annotation');
+        }
+    };
+
+
+    const handleDelete = async (id: number) => {
+        try {
+            const response = await fetch(`http://localhost:8000/api/annotations/deleteannotation/${id}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                alert('Annotation deleted successfully');
+                fetchAnnotations(); // Refetch annotations to update the list
+            } else {
+                alert('Error deleting annotation');
+            }
+        } catch (error) {
+            console.error('Error deleting annotation:', error);
+            alert('Error deleting annotation');
+        }
+    }
+
     // Use useEffect to fetch annotations when the component mounts
     useEffect(() => {
         fetchAnnotations();
@@ -61,7 +104,7 @@ const AnnotationView = () => {
             <div className={"annolist"}>
                 {annotations && annotations.map((value, index) => (
                     <div className={css.annotatedRow} key={index}>
-                        <AnnotatedRow annotation={value}/>
+                        <AnnotatedRow annotation={value} handleEdit={handleEdit} handleDelete={handleDelete}/>
                     </div>
                 ))}
             </div>

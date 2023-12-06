@@ -10,13 +10,32 @@ import {Annotation} from "@/app/models/annotation";
 
 interface AnnotatationProps {
     annotation: Annotation
+    handleEdit: (annotation: Annotation, id: number) => void
+    handleDelete: (id: number) => void
 }
 
-const AnnotatedRow: FC<AnnotatationProps> = ({annotation}) => {
+const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDelete}) => {
 
     const [open, setOpen] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [editLabelText, setEditLabelText] = useState(''); // text being edited
+    const [updatedAnnotation, setUpdatedAnnotation] = useState<Annotation>(annotation);
+
+
+    const checkValues = () => {
+        // check is input aren't empty
+        if (editLabelText.length != 0) {
+            updatedAnnotation.text = editLabelText
+
+
+            console.log("normal" + annotation + "Updated" + updatedAnnotation);
+
+            handleEdit(updatedAnnotation, annotation.id)
+        } else {
+            alert("Inputs are empty.")
+        }
+
+    }
 
 
     useEffect(() => {
@@ -64,9 +83,17 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation}) => {
                     </div>
 
                     {isEditing &&
+                        <>
+                            <Button variant="success" onClick={() => checkValues()}>Save</Button>
+                            <Button variant="danger" onClick={() => handleDelete(annotation.id)}>Delete</Button>
+                        </>
+                    }
+
+
+                    {isEditing &&
                         <Card key={annotation.id} className="mb-2">
                             <Card.Body>
-                                <Card.Title>ID: {annotation.id}</Card.Title>
+                                {/*<Card.Title>ID: {annotation.id}</Card.Title>*/}
                                 {/*{editingId === annotation.id ? (*/}
                                 {/*    <Form.Control*/}
                                 {/*        as="textarea"*/}
