@@ -49,7 +49,7 @@ public class AnnotationController {
         return annotationRepository.save(annotation);
     }
 
-    @DeleteMapping("/deleteAnnotation/{id}")
+    @DeleteMapping("/deleteannotation/{id}")
     public ResponseEntity<String> deleteAnnotation(@PathVariable Integer id) {
         try {
             annotationRepository.deleteById(id);
