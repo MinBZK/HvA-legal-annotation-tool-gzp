@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="we are now able to save annotations!" />
+    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="we are now able to save annotations!">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/Annotation.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/Annotation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/LawClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/LawClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/annotations/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/annotations/page.tsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,6 +24,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="development" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitSEFilterConfiguration">
@@ -115,6 +125,7 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.LatBackendApplicationTests" />
         <item itemvalue="JUnit.LatBackendApplicationTests" />
       </list>
     </recent_temporary>
