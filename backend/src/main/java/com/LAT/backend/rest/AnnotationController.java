@@ -40,7 +40,7 @@ public class AnnotationController {
     @PostMapping("/project")
     public Annotation createAnnotation(@RequestBody Annotation annotation) {
         // Validate if the project exists
-        Project project = projectRepository.findByProjectId(annotation.getProject().getId())
+        Project project = projectRepository.findById(annotation.getProject().getId())
                 .orElseThrow(() -> new RuntimeException("Project not found"));
 
         // Validate if the annotation class exists

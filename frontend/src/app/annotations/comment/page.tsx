@@ -74,7 +74,7 @@ const Popup: React.FC = () => {
           id: null,
           selectedWord: annotation.selectedText,
           text: annotation.note,
-          annotationClass: { name: annotation.selectedLaw },
+          lawClass: { name: annotation.selectedLaw },
           project: { id: 1 },
       };
 
