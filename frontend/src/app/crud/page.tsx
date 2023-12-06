@@ -144,39 +144,39 @@ export default function AnnotationPage() {
 
                 <div className="annotations-list mt-4">
                     {annotations.map((annotation) => (
-                        <>
-                            <AnnotatedRow key={annotation.id} color={annotation.annotationClass.color}
-                                          name={annotation.annotationClass.name}
-                                          label={annotation.text}
-                            />
-                            <Card key={annotation.id} className="mb-2">
-                                <Card.Body>
+                            <>
+                        <AnnotatedRow key={annotation.id} color={annotation.annotationClass.color}
+                                      name={annotation.annotationClass.name}
+                                      label={annotation.text}
+                        />
+                        <Card key={annotation.id} className="mb-2">
+                            <Card.Body>
 
-                                    <div style={{background: annotation.annotationClass.color, padding: 2}}></div>
-                                    <Card.Title>ID: {annotation.id}</Card.Title>
-                                    {editingId === annotation.id ? (
-                                        <Form.Control
-                                            as="textarea"
-                                            value={editText}
-                                            onChange={handleEditChange}
-                                        />
-                                    ) : (
-                                        <Card.Text>
-                                            Annotation Text: {annotation.text}
-                                        </Card.Text>
-                                    )}
-                                    {editingId === annotation.id ? (
-                                        <Button variant="success"
-                                                onClick={() => handleEdit(annotation.id)}>Save</Button>
-                                    ) : (
-                                        <Button variant="secondary"
-                                                onClick={() => startEdit(annotation)}>Edit</Button>
-                                    )}
-                                    <Button variant="danger"
-                                            onClick={() => handleDelete(annotation.id)}>Delete</Button>
-                                </Card.Body>
-                            </Card>
-                        </>
+                                <div style={{background: annotation.annotationClass.color, padding: 2}}></div>
+                                <Card.Title>ID: {annotation.id}</Card.Title>
+                                {editingId === annotation.id ? (
+                                    <Form.Control
+                                        as="textarea"
+                                        value={editText}
+                                        onChange={handleEditChange}
+                                    />
+                                ) : (
+                                    <Card.Text>
+                                        Annotation Text: {annotation.text}
+                                    </Card.Text>
+                                )}
+                                {editingId === annotation.id ? (
+                                    <Button variant="success"
+                                            onClick={() => handleEdit(annotation.id)}>Save</Button>
+                                ) : (
+                                    <Button variant="secondary"
+                                            onClick={() => startEdit(annotation)}>Edit</Button>
+                                )}
+                                <Button variant="danger"
+                                        onClick={() => handleDelete(annotation.id)}>Delete</Button>
+                            </Card.Body>
+                        </Card>
+                            </>
                     ))}
                 </div>
             </main>
