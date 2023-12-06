@@ -69,13 +69,13 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
                                 }}
                             />
                         ) : (
-                            <h4 className={css.rightCol}>{annotation.text}</h4>
+                            <h4 className={css.rightCol}>{annotation.selectedWord}</h4>
                         )}
                         < FaEdit className={css.iconCol} onClick={() => setIsEditing(true)}/>
                     </div>
                     <div className={css.row}>
                         <h4 className={css.leftCol}>Notitie</h4>
-                        <h4 className={css.rightCol}>{}</h4>
+                        <h4 className={css.rightCol}>{annotation.text}</h4>
                     </div>
                     <div className={css.row}>
                         <h4 className={css.leftCol}>Begrip</h4>
