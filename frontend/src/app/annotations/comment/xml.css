@@ -1,4 +1,4 @@
-bwb-inputbestand, intitule, meta-data, aanhef, toestand div {
+bwb-inputbestand, intitule, meta-data, aanhef, toestand div:not(:has(bwb-wijzigingen)) {
     display: none;
 }
 
