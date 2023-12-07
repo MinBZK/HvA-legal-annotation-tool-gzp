@@ -1,0 +1,25 @@
+bwb-inputbestand, intitule, meta-data, aanhef, li > :first-child {
+    display: none;
+}
+
+citeertitel {
+    font-size: 20px;
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #154273;
+}
+
+kop {
+    display: block;
+    font-weight: bold;
+    color: #154273;
+    background-color: #e5f1f9;
+    padding: .5em 1em .5em .5em;
+    margin: .25em 0;
+}
+
+paragraaf kop {
+    color: #000;
+    background-color: #f3f3f3;
+}

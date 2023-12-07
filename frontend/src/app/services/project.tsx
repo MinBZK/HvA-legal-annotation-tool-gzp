@@ -1,13 +1,4 @@
-export async function getProjectById(id: number) {
-    const response = await fetch(`http://localhost:8000/api/project/${id}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-
-    return await response;
-}
+// POST METHODS
 
 export async function uploadXML(xmlContent: String) {
     const response = await fetch(`http://localhost:8000/api/saveXml`, {
@@ -23,6 +14,8 @@ export async function uploadXML(xmlContent: String) {
     return await response;
 }
 
+// GET METHODS
+
 export async function getProjects() {
     const response = await fetch(`http://localhost:8000/api/projects`, {
         method: 'GET',
@@ -31,5 +24,16 @@ export async function getProjects() {
         },
     });
 
-    return await response;
+    return await response.json();
+}
+
+export async function getProjectById(id: number) {
+    const response = await fetch(`http://localhost:8000/api/project/${id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+
+    return await response.json();
 }
