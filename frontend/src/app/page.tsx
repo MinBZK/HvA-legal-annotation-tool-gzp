@@ -6,6 +6,7 @@ import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import React, { useRef, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { uploadXML } from './services/project'
+import { BsDownload } from "react-icons/bs";
 
 export default function Home() {
 
@@ -34,7 +35,7 @@ export default function Home() {
         if (event.target != null && typeof event.target.result === "string") {
           const response = await uploadXML(event.target.result);
 
-          if (response.status == 201) {            
+          if (response.status == 201) {
             setShow(false)
           } else {
             setShowError(true)
@@ -45,56 +46,65 @@ export default function Home() {
   };
 
   return (
-    <div className="container">
-      <header className="header">
-        <h1>Legal Annotation Tool</h1>
-        <Button
-          color="primary"
-          type="button"
-          onClick={handleShow}
-        >
-          Importeer
-        </Button>
-      </header>
-      <main className="main-content">
-        <h2>Documenten</h2>
-        <ul className="document-list">
-          {documents.map((doc) => (
-            <li key={doc.id} className="document-item">
-              <span className="document-title">{doc.title}</span>
-              <Link href={`/documents/${doc.id}`} passHref>
-                <button className="open-button">Open document</button>
-              </Link>
-              <FiTrash2 className="delete-icon" />
-            </li>
-          ))}
-        </ul>
+      <>
+          <div>
+              <nav className="navbar">
+                  {<div className="navbar-title">Legal Annotation Tool</div>}
+              </nav>
+          </div>
+          <div className="container">
+              <main className="main-content">
+                  <div className="d-flex justify-content-between align-items-center mb-3">
+                      <h2 className="doc-text">Documenten</h2>
+                      <button
+                          className="import-button"
+                          // type="button"
+                          onClick={handleShow}
+                      >
+                          <BsDownload className="download-icon" size={20}/>
+                          Importeer XML
+                      </button>
+                  </div>
+                  <ul className="document-list">
+                      {documents.map((doc) => (
+                          <li key={doc.id} className="document-item">
+                              <div className="document-info">
+                                  <span className="document-title">{doc.title}</span>
+                              </div>
+                              <div className="actions">
+                                  <Link href={`/documents/${doc.id}`} passHref>
+                                      <button className="open-button">Open document</button>
+                                  </Link>
+                                  <FiTrash2 className="delete-icon" />
+                              </div>
+                          </li>
+                      ))}
+                  </ul>
+              </main>
 
-      </main>
-
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Upload bestand</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Alert show={showError} variant="danger" dismissible>
-            <Alert.Heading>Error</Alert.Heading>
-            <p>
-              Something went wrong
-            </p>
-          </Alert>
-          <Form action={handleXmlUpload}>
-            <input
-              type="file"
-              accept="text/xml"
-              ref={fileInputRef}
-            />
-            <Button type='submit' className='success float-end mt-3'>
-              Upload
-            </Button>
-          </Form>
-        </Modal.Body>
-      </Modal>
-    </div>
+              <Modal show={show} onHide={handleClose}>
+                  <Modal.Header closeButton>
+                      <Modal.Title>Upload bestand</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                      <Alert show={showError} variant="danger" dismissible>
+                          <Alert.Heading>Error</Alert.Heading>
+                          <p>
+                              Something went wrong
+                          </p>
+                      </Alert>
+                      <Form action={handleXmlUpload}>
+                          <input
+                              type="file"
+                              accept="text/xml"
+                              ref={fileInputRef}/>
+                          <Button type='submit' className='success float-end mt-3'>
+                              Upload
+                          </Button>
+                      </Form>
+                  </Modal.Body>
+              </Modal>
+          </div>
+      </>
   );
 }
