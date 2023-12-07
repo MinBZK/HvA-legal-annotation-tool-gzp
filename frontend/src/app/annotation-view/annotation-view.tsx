@@ -93,7 +93,7 @@ const AnnotationView = () => {
                 </div>
             }
 
-            <div className={"annolist"}>
+            <div className={"annolist shadow-sm p-3 mb-5 bg-white rounded"}>
                 {annotations && annotations.map((value, index) => (
                     <div className={css.annotatedRow} key={index}>
                         <AnnotatedRow annotation={value} handleEdit={handleEdit} handleDelete={handleDelete}/>
