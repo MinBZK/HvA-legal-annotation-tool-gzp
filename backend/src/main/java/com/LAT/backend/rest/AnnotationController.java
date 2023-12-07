@@ -41,6 +41,7 @@ public class AnnotationController {
         }
     }
     // Endpoint to get all annotations for a specific project
+    // Chi Yu
     @GetMapping("/project/{projectId}")
     public Optional<Annotation> getAnnotationsByProjectId(@PathVariable Integer projectId) {
         // Implement logic to retrieve annotations by project ID from the repository
@@ -48,6 +49,7 @@ public class AnnotationController {
     }
 
     // Endpoint to create a new annotation for a specific project
+    // Hanna
     @PostMapping("/project")
     public Annotation createAnnotation(@RequestBody Annotation annotation) {
         // Validate if the project exists

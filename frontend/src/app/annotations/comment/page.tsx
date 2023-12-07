@@ -3,20 +3,35 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {useEffect, useState} from 'react';
 import { Modal, Button, Dropdown, Form } from 'react-bootstrap';
 import '../../static/annotations.css'
-import { BsFillTrashFill, BsFillFloppy2Fill, BsX} from "react-icons/bs";
 import {Annotation} from "../../models/annotation";
 import {LawClass} from "../../models/lawclass";
+import { BsFillTrashFill, BsFillFloppy2Fill, BsX } from "react-icons/bs";
+import { Project } from "../../models/project";
+import './xml.css'
 
-const Popup: React.FC = () => {
+interface PopupProps {
+  project: Project;
+}
+
+const Popup: React.FC<PopupProps> = (project) => {
+
+  project.project.xml_content = project.project.xml_content.replace("bwb-inputbestand", "div")
+
+  const [renderXML, setRenderXML] = useState(false);
+
+  useEffect(() => {
+    setRenderXML(true);
+  }, []);
+
   const [show, setShow] = useState(false);
   const [classes, setClasses] = useState<LawClass[]>([]); // New state to store the laws
-  const [annotation, setAnnotation] = useState<Annotation | null>(null);
+  const [annotation, setAnnotation] = useState<Annotation>();
 
   useEffect(() => {
     fetchClasses();
   }, []); // Empty dependency array ensures that this effect runs only once
 
-  // Update the selected law
+// Update the selected law
   const handleSelectLaw = (lawName: any) => {
     setAnnotation((prevAnnotation) => ({
       ...(prevAnnotation as Annotation),
@@ -38,17 +53,16 @@ const Popup: React.FC = () => {
     }));
   };
 
-  const fetchClasses = async () => {
-    try {
-      const response = await fetch('http://localhost:8000/api/classes');
-      if (!response.ok) {
-        throw new Error('Failed to fetch laws');
-      }
-      const data = await response.json();
-      setClasses(data); // Set the laws in the state]
-    } catch (error) {
-      console.error('Error fetching laws:', error);
-    }
+  const fetchClasses = () => {
+    fetch('http://localhost:8000/api/classes')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to fetch laws');
+          }
+          return response.json();
+        })
+        .then(data => setClasses(data))
+        .catch(error => console.error('Error fetching laws:', error));
   };
 
   const handleClose = () => {
@@ -64,52 +78,39 @@ const Popup: React.FC = () => {
       setShow(true);
     }
   };
+  const saveAnnotationToBackend = () => {
+    const backendAnnotation = {
+      id: null,
+      selectedWord: annotation?.selectedWord,
+      text: annotation?.text,
+      lawClass: { name: annotation?.lawClass },
+      project: { id: 1 },
+    };
 
-  const saveAnnotationToBackend = async () => {
-    try {
-      const backendAnnotation = {
-          id: null,
-          selectedWord: annotation?.selectedWord,
-          text: annotation?.text,
-          lawClass: { name: annotation?.lawClass },
-          project: { id: 1 },
-      };
-
-      const response = await fetch('http://localhost:8000/api/annotations/project', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(backendAnnotation),
-      });
-
-      console.log(JSON.stringify(backendAnnotation));
-
-      if (!response.ok) {
-        throw new Error('Failed to save annotation');
-      }
-
-      console.log('Annotation saved successfully');
-      handleClose();
-    } catch (error) {
-      console.error('Error saving annotation:', error);
-      console.log("hi")
-    }
+    fetch('http://localhost:8000/api/annotations/project', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(backendAnnotation),
+    })
+        .then(response => {
+          console.log(JSON.stringify(backendAnnotation));
+          if (!response.ok) {
+            throw new Error('Failed to save annotation');
+          }
+          console.log('Annotation saved successfully');
+          handleClose();
+        })
+        .catch(error => {
+          console.error('Error saving annotation:', error);
+          console.log("hi");
+        });
   };
 
   return (
     <>
-      <p onMouseUp={handleShow}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean pretium, leo quis fermentum hendrerit, sapien turpis molestie dolor, sed varius massa purus sit amet quam.
-         Donec elementum, est quis gravida dignissim, ante dui porttitor est, vel ullamcorper massa lacus sit amet orci. 
-         Duis lorem lorem, sodales in leo iaculis, ultricies blandit dui. Suspendisse semper turpis vitae consectetur luctus. Suspendisse ac lorem odio. 
-         Duis eu mauris ut ligula dictum facilisis. Morbi iaculis pretium turpis, ut lobortis purus ullamcorper vulputate. Nullam nec diam nibh.
-        Curabitur elementum imperdiet congue. Suspendisse tincidunt ante sem, eget volutpat tortor ornare a. Suspendisse potenti. Aenean sed sem finibus, feugiat arcu ac, 
-        finibus mauris. Duis elit turpis, dapibus a elementum sed, ultrices in lorem. Etiam pulvinar, mauris ut ultricies aliquet, ipsum nulla fringilla dolor, eu convallis 
-        diam mi sit amet nisi. Nam turpis augue, interdum ut finibus eget, aliquam at ligula.Duis eu congue justo, sit amet elementum sapien. Phasellus tristique ullamcorper 
-        nisi. Nunc eu ornare erat. Nullam viverra a lectus eget pretium. Suspendisse commodo tincidunt sodales. Maecenas sit amet tempus est, condimentum ornare felis. Aenean 
-        mollis tellus vitae orci volutpat efficitur. Nulla erat mauris, rhoncus non sem mollis, venenatis faucibus nisl. Praesent placerat risus vitae velit condimentum, at 
-        maximus ante vestibulum. Aenean mi sapien, viverra vitae fermentum at, posuere ut dolor. Fusce scelerisque ligula risus, sit amet auctor lectus facilisis sit amet.
+      <p onMouseUp={handleShow} dangerouslySetInnerHTML={{ __html: renderXML && project.project.xml_content }}>
       </p>
 
       <Modal show={show} onHide={handleClose}>
@@ -122,15 +123,20 @@ const Popup: React.FC = () => {
             <Form.Group controlId="exampleForm.ControlSelect1">
               <Form.Label><b>Wet vorm</b></Form.Label>
               <Dropdown>
-                <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic" style={{ color: 'black', backgroundColor: annotation?.lawClass ? classes.find(law => law.name === annotation?.lawClass)?.color : '' }}
-                >
-                  {annotation?.lawClass || 'Selecteer'}
+                <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic" style={{ color: 'black', backgroundColor: annotation?.lawClass ? (classes.find(law => law.name === annotation.lawClass.toString()) || {}).color || ''
+                      : '',
+                }}>
+                  {annotation?.lawClass ? <>{annotation.lawClass}</> : <>Selecteer</>}
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu className="dropdown">
                   {classes.map((law, index) => (
-                      <Dropdown.Item key={index} onClick={() => handleSelectLaw(law.name)}
-                                     active={annotation?.lawClass === law.name} style={{ backgroundColor: law.color, color: 'black' }}>
+                      <Dropdown.Item
+                          key={index}
+                          onClick={() => handleSelectLaw(law.name)}
+                          active={annotation?.lawClass && law.name === annotation.lawClass.toString()}
+                          style={{ backgroundColor: law.color, color: 'black' }}
+                      >
                         {law.name}
                       </Dropdown.Item>
                   ))}
