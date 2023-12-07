@@ -75,7 +75,7 @@
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/frontend/node_modules/typescript/lib" />
   </component>
   <component name="RunManager" selected="Spring Boot.LatBackendApplication">
@@ -142,7 +142,7 @@
       <workItem from="1701525762291" duration="3000" />
       <workItem from="1701767621270" duration="15188000" />
       <workItem from="1701851685985" duration="12290000" />
-      <workItem from="1701944156577" duration="5805000" />
+      <workItem from="1701944156577" duration="9324000" />
     </task>
     <task id="LOCAL-00001" summary="merged dev into branch and modified code to new changes">
       <created>1701773471795</created>
@@ -214,7 +214,14 @@
       <option name="project" value="LOCAL" />
       <updated>1701955708061</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="bug: &quot;any&quot; type to variables that were not defined">
+      <created>1701955988578</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1701955988579</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -244,7 +251,8 @@
     <MESSAGE value="bug fix and added component into main page" />
     <MESSAGE value="workspace updated" />
     <MESSAGE value="chi and i changed object naming for pipeline error and code convention" />
-    <option name="LAST_COMMIT_MESSAGE" value="chi and i changed object naming for pipeline error and code convention" />
+    <MESSAGE value="bug: &quot;any&quot; type to variables that were not defined" />
+    <option name="LAST_COMMIT_MESSAGE" value="bug: &quot;any&quot; type to variables that were not defined" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
