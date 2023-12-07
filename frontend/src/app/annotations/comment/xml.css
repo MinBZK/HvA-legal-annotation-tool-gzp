@@ -1,0 +1,72 @@
+bwb-inputbestand, intitule, meta-data, aanhef, toestand div:not(:has(bwb-wijzigingen)) {
+    display: none;
+}
+
+citeertitel {
+    font-size: 20px;
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #154273;
+}
+
+kop {
+    display: block;
+    font-weight: bold;
+    color: #154273;
+    background-color: #e5f1f9;
+    padding: .5em 1em .5em .5em;
+    margin: .25em 0;
+}
+
+paragraaf kop {
+    color: #000;
+    background-color: #f3f3f3;
+}
+
+lijst li al, lid li al {
+    margin: 0 0 1em 3.5em;
+}
+
+li {
+    list-style-type: none;
+}
+
+li> :first-child {
+    font-weight: bold;
+}
+
+lijst li, lid li {
+    display: flex;
+    flex-direction: row;
+}
+
+lidnr {
+    font-weight: bold;
+}
+
+nadruk {
+    font-style: italic;
+}
+
+lid {
+    display: block;
+}
+
+lidnr + al {
+    margin: 0 0 1em 3.5em;
+    width: calc(100% - 3.5em);
+    display: block;
+}
+
+lidnr {
+    position: absolute;
+}
+
+li > :first-child {
+    margin-left: 1em;
+}
+
+artikel lid {
+    margin-top: 16px;
+}
