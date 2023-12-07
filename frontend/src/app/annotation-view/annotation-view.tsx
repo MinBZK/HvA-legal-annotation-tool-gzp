@@ -9,11 +9,7 @@ import css from "./annotation-view.module.css"
 const AnnotationView = () => {
 
     const [annotations, setAnnotations] = useState<Annotation[]>([]);
-    const [annotationData, setAnnotationData] = useState('');
-    const [editingId, setEditingId] = useState<number | null>(null);
-    const [editText, setEditText] = useState(''); // text being edited
     const [isModalOpen, setIsModalOpen] = useState(false)
-
 
     const fetchAnnotations = async () => {
         try {
@@ -23,10 +19,10 @@ const AnnotationView = () => {
                 const data = await response.json();
                 setAnnotations(data);
             } else {
-                console.error('Error fetching annotations');
+                console.error('Fout annotaties ophalen');
             }
         } catch (error) {
-            console.error('Error fetching annotations:', error);
+            console.error('Fout annotaties ophalen:', error);
         }
     };
 
@@ -43,14 +39,14 @@ const AnnotationView = () => {
 
             console.log(response);
             if (response.ok) {
-                alert('Annotation updated successfully');
+                alert('Annotatie succesvol bijgewerkt');
                 fetchAnnotations(); // Refetch annotations
             } else {
-                alert('Error updating annotation');
+                alert('Fout annotatie bijwerken');
             }
         } catch (error) {
-            console.error('Error updating annotation:', error);
-            alert('Error updating annotation');
+            console.error('Fout annotatie bijwerken:', error);
+            alert('Fout annotatie verwijderen');
         }
     };
 
@@ -62,14 +58,14 @@ const AnnotationView = () => {
             });
 
             if (response.ok) {
-                alert('Annotation deleted successfully');
+                alert('Annotatie succesvol verwijderd');
                 fetchAnnotations(); // Refetch annotations to update the list
             } else {
-                alert('Error deleting annotation');
+                alert('Fout annotatie verwijderen');
             }
         } catch (error) {
-            console.error('Error deleting annotation:', error);
-            alert('Error deleting annotation');
+            console.error('Fout annotatie verwijderen:', error);
+            alert('Fout annotatie verwijderen');
         }
     }
 
@@ -77,11 +73,6 @@ const AnnotationView = () => {
     useEffect(() => {
         fetchAnnotations();
     }, []);
-
-    useEffect(() => {
-        console.warn(annotations)
-    }, [annotations]);
-
 
     return (
         <div>

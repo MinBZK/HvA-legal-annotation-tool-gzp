@@ -5,7 +5,7 @@ import {FaChevronDown} from "react-icons/fa";
 import {FaChevronUp} from "react-icons/fa";
 import {FaEdit} from "react-icons/fa";
 import css from "./annotated-row.module.css";
-import {Button, Card, Form} from "react-bootstrap";
+import {Button, Form} from "react-bootstrap";
 import {Annotation} from "@/app/models/annotation";
 
 interface AnnotatationProps {
@@ -19,27 +19,40 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
     const [open, setOpen] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [editLabelText, setEditLabelText] = useState(''); // text being edited
+    const [editNoteText, setEditNoteText] = useState(''); // text being edited
     const [updatedAnnotation, setUpdatedAnnotation] = useState<Annotation>(annotation);
 
 
     const checkValues = () => {
         // check is input aren't empty
-        if (editLabelText.length != 0) {
-            updatedAnnotation.text = editLabelText
+        if (editLabelText.length != 0 && editNoteText.length != 0) {
+            updatedAnnotation.selectedWord = editLabelText
+            updatedAnnotation.text = editNoteText
 
+            const confirmModal = confirm("Wil je deze annotatie bijwerken?")
 
-            console.log("normal" + annotation + "Updated" + updatedAnnotation);
-
-            handleEdit(updatedAnnotation, annotation.id)
+            if (confirmModal) {
+                setIsEditing(false)
+                handleEdit(updatedAnnotation, annotation.id)
+            }
         } else {
-            alert("Inputs are empty.")
+            alert("Velden zijn leeg, vul deze in!")
         }
+    }
 
+    const checkDelete = () => {
+        const deleteModal = confirm("Wil je deze annotatie verwijderen?")
+
+        if (deleteModal) {
+            setIsEditing(false)
+            handleDelete(annotation.id)
+        }
     }
 
 
     useEffect(() => {
-        setEditLabelText(annotation.text)
+        setEditLabelText(annotation.selectedWord)
+        setEditNoteText(annotation.text)
     }, []);
 
     return (
@@ -47,7 +60,7 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
             <div className={css.annotationTitle} style={{background: annotation.lawClass.color}} onClick={() => {
                 setOpen(!open)
             }}>
-                <h4>{annotation.lawClass.name}</h4>
+                <h5>{annotation.lawClass.name}</h5>
 
                 {open ? (
                     <FaChevronDown className={css.align}/>
@@ -71,11 +84,23 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
                         ) : (
                             <h4 className={css.rightCol}>{annotation.selectedWord}</h4>
                         )}
-                        < FaEdit className={css.iconCol} onClick={() => setIsEditing(true)}/>
+                        <FaEdit className={css.iconCol} onClick={() => setIsEditing(true)}/>
                     </div>
+
                     <div className={css.row}>
                         <h4 className={css.leftCol}>Notitie</h4>
-                        <h4 className={css.rightCol}>{annotation.text}</h4>
+
+                        {isEditing ? (
+                            <Form.Control
+                                as="textarea"
+                                value={editNoteText}
+                                onChange={(event) => {
+                                    setEditNoteText(event.target.value)
+                                }}
+                            />
+                        ) : (
+                            <h4 className={css.rightCol}>{annotation.text}</h4>
+                        )}
                     </div>
                     <div className={css.row}>
                         <h4 className={css.leftCol}>Begrip</h4>
@@ -85,39 +110,9 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
                     {isEditing &&
                         <>
                             <Button variant="success" onClick={() => checkValues()}>Save</Button>
-                            <Button variant="danger" onClick={() => handleDelete(annotation.id)}>Delete</Button>
+                            <Button variant="danger" onClick={() => checkDelete()}>Delete</Button>
                         </>
                     }
-
-
-                    {isEditing &&
-                        <Card key={annotation.id} className="mb-2">
-                            <Card.Body>
-                                {/*<Card.Title>ID: {annotation.id}</Card.Title>*/}
-                                {/*{editingId === annotation.id ? (*/}
-                                {/*    <Form.Control*/}
-                                {/*        as="textarea"*/}
-                                {/*        value={editText}*/}
-                                {/*        onChange={handleEditChange}*/}
-                                {/*    />*/}
-                                {/*) : (*/}
-                                {/*    <Card.Text>*/}
-                                {/*        Annotation Text: {annotation.text}*/}
-                                {/*    </Card.Text>*/}
-                                {/*)}*/}
-                                {/*{editingId === annotation.id ? (*/}
-                                {/*    <Button variant="success"*/}
-                                {/*            onClick={() => handleEdit(annotation.id)}>Save</Button>*/}
-                                {/*) : (*/}
-                                {/*    <Button variant="secondary"*/}
-                                {/*            onClick={() => startEdit(annotation)}>Edit</Button>*/}
-                                {/*)}*/}
-                                {/*<Button variant="danger"*/}
-                                {/*        onClick={() => handleDelete(annotation.id)}>Delete</Button>*/}
-                            </Card.Body>
-                        </Card>
-                    }
-
                 </div>
             }
         </div>
