@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Button, Dropdown, Form } from 'react-bootstrap';
 import '../../static/annotations.css'
 import { BsFillTrashFill, BsFillFloppy2Fill, BsX } from "react-icons/bs";
-import { Project } from "../project";
+import { Project } from "../../models/project";
 import './xml.css'
 
 interface PopupProps {

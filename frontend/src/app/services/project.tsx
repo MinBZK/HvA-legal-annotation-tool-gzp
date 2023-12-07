@@ -24,7 +24,7 @@ export async function getProjects() {
         },
     });
 
-    return await response.json();
+    return response.json();
 }
 
 export async function getProjectById(id: number) {

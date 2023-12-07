@@ -1,22 +1,17 @@
+
+
 'use client'
-import Link from 'next/link';
 import { FiTrash2 } from 'react-icons/fi';
 import './static/index.css';
 import { Modal, Button, Form, Alert } from 'react-bootstrap';
-import React, { useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { uploadXML } from './services/project'
+import {getProjects, uploadXML} from './services/project'
+import {Project} from "./models/project";
 
 export default function Home() {
 
-  // Mock data for the list of documents
-  const documents = [
-    { id: 1, title: 'XML annotate example title' },
-    { id: 2, title: 'XML annotate example title' },
-    { id: 3, title: 'XML annotate example title' },
-    { id: 4, title: 'XML annotate example title' },
-  ];
-
+  const [projects, setProjects] = useState<Project[]>([]);
   const [show, setShow] = useState(false);
   const [showError, setShowError] = useState(false);
 
@@ -24,6 +19,24 @@ export default function Home() {
   const handleShow = () => setShow(true);
 
   const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    // Fetch the list of projects when the component mounts
+    fetchProjects();
+  }, []);
+
+  const handleProjectSelection = (projectId) => {
+    window.location.href = `/annotations?id=${projectId}`;
+  };
+
+  const fetchProjects = async () => {
+    try {
+      const projectsData = await getProjects();
+      setProjects(projectsData);
+    } catch (error) {
+      console.error('Error fetching projects:', error);
+    }
+  };
 
   // Handle XML Upload
   const handleXmlUpload = async () => {
@@ -34,67 +47,72 @@ export default function Home() {
         if (event.target != null && typeof event.target.result === "string") {
           const response = await uploadXML(event.target.result);
 
-          if (response.status == 201) {            
+          if (response.status == 201) {
             setShow(false)
           } else {
             setShowError(true)
           }
         }
       }
-    };
+    }
   };
 
   return (
-    <div className="container">
-      <header className="header">
-        <h1>Legal Annotation Tool</h1>
-        <Button
-          color="primary"
-          type="button"
-          onClick={handleShow}
-        >
-          Importeer
-        </Button>
-      </header>
-      <main className="main-content">
-        <h2>Documenten</h2>
-        <ul className="document-list">
-          {documents.map((doc) => (
-            <li key={doc.id} className="document-item">
-              <span className="document-title">{doc.title}</span>
-              <Link href={`/documents/${doc.id}`} passHref>
-                <button className="open-button">Open document</button>
-              </Link>
-              <FiTrash2 className="delete-icon" />
-            </li>
-          ))}
-        </ul>
+      <div className="container">
+        <header className="header">
+          <h1>Legal Annotation Tool</h1>
+          <Button
+              color="primary"
+              type="button"
+              onClick={handleShow}
+          >
+            Importeer
+          </Button>
+        </header>
+        <main className="main-content">
+          <h2>Documenten</h2>
+          <ul className="document-list">
+            {projects.map((project) => (
+                <li key={project.id} className="document-item">
+                  <span className="document-title">{project.id}</span>
+                  <button
+                      className="open-button"
+                      onClick={() => handleProjectSelection(project.id)}
+                  >
+                    Open project
+                  </button>
+                  <FiTrash2 className="delete-icon" />
+                </li>
+            ))}
+          </ul>
 
-      </main>
+        </main>
 
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Upload bestand</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Alert show={showError} variant="danger" dismissible>
-            <Alert.Heading>Error</Alert.Heading>
-            <p>
-              Something went wrong
-            </p>
-          </Alert>
-          <Form action={handleXmlUpload}>
-            <input
-              type="file"
-              accept="text/xml"
-              ref={fileInputRef}
-            />
-            <Button type='submit' className='success float-end mt-3'>
-              Upload
-            </Button>
-          </Form>
-        </Modal.Body>
-      </Modal>
-    </div>
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Upload bestand</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Alert show={showError} variant="danger" dismissible>
+              <Alert.Heading>Error</Alert.Heading>
+              <p>
+                Something went wrong
+              </p>
+            </Alert>
+            <Form action={handleXmlUpload}>
+              <input
+                  type="file"
+                  accept="text/xml"
+                  ref={fileInputRef}
+              />
+              <Button type='submit' className='success float-end mt-3'>
+                Upload
+              </Button>
+            </Form>
+          </Modal.Body>
+        </Modal>
+      </div>
   );
 }
+
+
