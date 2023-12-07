@@ -4,11 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="we are now able to save annotations!">
+    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="bug: commit for workspace">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/Annotation.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/Annotation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/LawClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/LawClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/repository/AnnotationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/repository/AnnotationRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/rest/AnnotationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/rest/AnnotationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/annotation-view/annotation-view.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/annotation-view/annotation-view.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/annotations/comment/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/annotations/comment/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/annotations/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/annotations/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/annotations/project.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/models/project.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/models/project.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/services/project.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/services/project.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,7 +32,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="development" />
+        <entry key="$PROJECT_DIR$" value="46-backend-annotaties-aanmaken" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -51,7 +57,7 @@
       <map>
         <entry key="com.haulmont.jpb.jpaInspector" value="false" />
         <entry key="com.haulmont.jpb.jpaPalette" value="false" />
-        <entry key="com.haulmont.jpb.jpaStructure" value="true" />
+        <entry key="com.haulmont.jpb.jpaStructure" value="false" />
       </map>
     </option>
   </component>
@@ -111,9 +117,9 @@
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="SHORTEN_COMMAND_LINE" value="NONE" />
       <envs>
-        <env name="DB_PASS" value="jUok7ZbbTFhviK" />
-        <env name="DB_URL" value="jdbc:mysql://oege.ie.hva.nl:3306/zyeungc1" />
-        <env name="DB_USER" value="yeungc1" />
+        <env name="DB_PASS" value="hUDR/2NO3TU.6G" />
+        <env name="DB_URL" value="jdbc:mysql://oege.ie.hva.nl:3306/zschied2" />
+        <env name="DB_USER" value="schied2" />
       </envs>
       <method v="2">
         <option name="Make" enabled="true" />
