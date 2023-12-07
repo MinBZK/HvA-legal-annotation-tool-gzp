@@ -5,7 +5,7 @@ import {FaChevronDown} from "react-icons/fa";
 import {FaChevronUp} from "react-icons/fa";
 import {FaEdit} from "react-icons/fa";
 import css from "./annotated-row.module.css";
-import {Button, Form} from "react-bootstrap";
+import {Button, Form, Modal} from "react-bootstrap";
 import {Annotation} from "@/app/models/annotation";
 
 interface AnnotatationProps {
@@ -21,32 +21,29 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
     const [editLabelText, setEditLabelText] = useState(''); // text being edited
     const [editNoteText, setEditNoteText] = useState(''); // text being edited
     const [updatedAnnotation, setUpdatedAnnotation] = useState<Annotation>(annotation);
+    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
 
 
     const checkValues = () => {
         // check is input aren't empty
         if (editLabelText.length != 0 && editNoteText.length != 0) {
+            setIsConfirmModalOpen(!isConfirmModalOpen)
+
             updatedAnnotation.selectedWord = editLabelText
             updatedAnnotation.text = editNoteText
 
-            const confirmModal = confirm("Wil je deze annotatie bijwerken?")
-
-            if (confirmModal) {
-                setIsEditing(false)
-                handleEdit(updatedAnnotation, annotation.id)
-            }
+            setIsEditing(false)
+            handleEdit(updatedAnnotation, annotation.id)
         } else {
             alert("Velden zijn leeg, vul deze in!")
         }
     }
 
     const checkDelete = () => {
-        const deleteModal = confirm("Wil je deze annotatie verwijderen?")
-
-        if (deleteModal) {
-            setIsEditing(false)
-            handleDelete(annotation.id)
-        }
+        setIsDeleteModalOpen(!isDeleteModalOpen)
+        setIsEditing(false)
+        handleDelete(annotation.id)
     }
 
 
@@ -84,7 +81,7 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
                         ) : (
                             <h4 className={css.rightCol}>{annotation.selectedWord}</h4>
                         )}
-                        <FaEdit className={css.iconCol} onClick={() => setIsEditing(true)}/>
+                        <FaEdit className={css.iconCol} onClick={() => setIsEditing(!isEditing)}/>
                     </div>
 
                     <div className={css.row}>
@@ -109,12 +106,33 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
 
                     {isEditing &&
                         <>
-                            <Button variant="success" onClick={() => checkValues()}>Save</Button>
-                            <Button variant="danger" onClick={() => checkDelete()}>Delete</Button>
+                            <Button variant="success" onClick={() => setIsConfirmModalOpen(true)}>Opslaan</Button>
+                            <Button variant="danger" onClick={() => setIsDeleteModalOpen(true)}>Verwijderen</Button>
                         </>
                     }
                 </div>
             }
+
+            <Modal show={isConfirmModalOpen}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Wil je deze annotatie bijwerken?</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Button variant="success" onClick={checkValues}>Ja</Button>
+                    <Button variant="danger" onClick={() => setIsConfirmModalOpen(!isConfirmModalOpen)}>Nee</Button>
+                </Modal.Body>
+            </Modal>
+
+            <Modal show={isDeleteModalOpen}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Wil je deze annotatie verwijderen?</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Button variant="success" onClick={checkDelete}>Ja</Button>
+                    <Button variant="danger" onClick={() => setIsDeleteModalOpen(!isDeleteModalOpen)}>Nee</Button>
+                </Modal.Body>
+            </Modal>
+
         </div>
     )
 }

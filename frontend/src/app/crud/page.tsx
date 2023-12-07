@@ -147,7 +147,7 @@ export default function AnnotationPage() {
                         <Card key={annotation.id} className="mb-2">
                             <Card.Body>
 
-                                <div style={{background: annotation.annotationClass.color, padding: 2}}></div>
+                                <div style={{background: annotation.lawClass.color, padding: 2}}></div>
                                 <Card.Title>ID: {annotation.id}</Card.Title>
                                 {editingId === annotation.id ? (
                                     <Form.Control

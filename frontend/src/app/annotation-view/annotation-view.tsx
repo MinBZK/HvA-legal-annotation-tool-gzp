@@ -28,7 +28,7 @@ const AnnotationView = () => {
 
     const handleEdit = async (annotationDetails: Annotation, id: number) => {
         try {
-            const response= await fetch(`http://localhost:8000/api/annotations/updateannotation/${id}`, {
+            const response = await fetch(`http://localhost:8000/api/annotations/updateannotation/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -79,9 +79,10 @@ const AnnotationView = () => {
             <div className={css.topBar}>
                 <h2 className={css.title}>Annotaties</h2>
 
-                <img className={css.image} src="/juridischanalyseschema.png" alt={"Juridisch Analyseschema"} onClick={() => {
-                    setIsModalOpen(!isModalOpen)
-                }}/>
+                <img className={css.image} src="/juridischanalyseschema.png" alt={"Juridisch Analyseschema"}
+                     onClick={() => {
+                         setIsModalOpen(!isModalOpen)
+                     }}/>
             </div>
 
             {isModalOpen &&
