@@ -5,7 +5,7 @@ import './static/index.css';
 import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import React, { useRef, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { uploadXML } from './services/uploadXML'
+import { uploadXML } from './services/project'
 
 export default function Home() {
 
