@@ -10,12 +10,12 @@ export default async function AnnotationPage() {
 
   //Get id from url
   const searchParams = useSearchParams()
-  let id: number = 1;
+  let id: number = 2;
 
   if (searchParams != null) {
     const param = searchParams.get('id');
-    id = param != null ? parseInt(param) : 1;
-    if (isNaN(id)) id = 1;
+    id = param != null ? parseInt(param) : 2;
+    if (isNaN(id)) id = 2;
   }
 
   const projectData = await getProjectById(id) as Project;
