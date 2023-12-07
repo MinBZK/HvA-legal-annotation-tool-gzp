@@ -24,16 +24,17 @@ export default function Home() {
 
   const fileInputRef = useRef(null);
 
-  const uploadXML = async () => {
-    const file = fileInputRef.current.files[0];
-    const reader = new FileReader();
-
-    reader.onload = async (event) => {
-      await uploadXML(event.target.result);
+  // Handle XML Upload
+  const handleXmlUpload = async () => {
+    if (fileInputRef.current != null) {
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        if (event.target != null && typeof event.target.result == "string") {
+          await uploadXML(event.target.result);
+        }
+      }
     };
   };
-
-  const [fileContent, setFileContent] = useState("");
 
   return (
     <div className="container">
@@ -68,7 +69,7 @@ export default function Home() {
           <Modal.Title>Upload bestand</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form action={uploadXML}>
+          <Form action={handleXmlUpload}>
             <input
               type="file"
               accept="text/xml"
