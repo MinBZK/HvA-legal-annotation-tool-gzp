@@ -1,87 +1,99 @@
 .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-  }
-  
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #eaeaea;
-  }
-  
-  .header h1 {
-    font-size: 24px;
-    color: #333;
-  }
-  
-  .import-button {
-    padding: 10px 20px;
-    background-color: #0070f3;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .import-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .main-content h2 {
-    font-size: 20px;
-    color: #333;
-    margin-top: 20px;
-  }
-  
-  .document-list {
-    list-style: none;
-    padding: 0;
-    margin-top: 20px;
-  }
-  
-  .document-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #eaeaea;
-  }
-  
-  .document-title {
-    font-size: 16px;
-    color: #555;
-  }
-  
-  .open-button {
-    padding: 10px 20px;
-    background-color: #22c55e;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    text-decoration: none;
-    cursor: pointer;
-  }
-  
-  .open-button:hover {
-    background-color: #15803d;
-  }
-  
-  .delete-icon {
-    font-size: 24px;
-    color: #ef4444;
-    cursor: pointer;
-  }
-  
-  .delete-icon:hover {
-    color: #b91c1c;
-  }
-
-  body {
-    color: rgb(var(--foreground-rgb));
-    background: currentColor;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
 }
-  
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.header h1 {
+  font-size: 24px;
+  color: #333;
+}
+
+.import-button {
+  padding: 10px 20px;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.import-button:hover {
+  background-color: #0056b3;
+}
+
+.main-content h2 {
+  font-size: 20px;
+  color: #333;
+  margin-top: 20px;
+}
+
+.document-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.document-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.document-title {
+  font-size: 16px;
+  color: #555;
+}
+
+.open-button {
+  padding: 10px 20px;
+  background-color: #22c55e;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.open-button:hover {
+  background-color: #15803d;
+}
+
+.delete-icon {
+  font-size: 24px;
+  color: #ef4444;
+  cursor: pointer;
+}
+
+.delete-icon:hover {
+  color: #b91c1c;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: currentColor;
+}
+
+button.success {
+  border-radius: 16px;
+  border: 1px solid #3A9B38 !important;
+  background: rgba(76, 167, 74, 0.42);
+  font-size: 12px;
+  color: #000 !important;
+  transition: .2s;
+}
+
+button.success:hover {
+  background-color: rgba(76, 167, 74, 0.62);
+}
