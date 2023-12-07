@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="we are now able to save annotations!">
+    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="bug fix and added component into main page">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/Annotation.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/Annotation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/LawClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/LawClass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/annotations/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/annotations/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/annotations/comment/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/annotations/comment/page.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,6 +125,7 @@
       <list>
         <item itemvalue="JUnit.LatBackendApplicationTests" />
         <item itemvalue="JUnit.LatBackendApplicationTests" />
+        <item itemvalue="JUnit.LatBackendApplicationTests" />
       </list>
     </recent_temporary>
   </component>
@@ -146,6 +145,7 @@
       <workItem from="1701525762291" duration="3000" />
       <workItem from="1701767621270" duration="15188000" />
       <workItem from="1701851685985" duration="12290000" />
+      <workItem from="1701944156577" duration="3235000" />
     </task>
     <task id="LOCAL-00001" summary="merged dev into branch and modified code to new changes">
       <created>1701773471795</created>
@@ -196,7 +196,14 @@
       <option name="project" value="LOCAL" />
       <updated>1701867820334</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="fixed small bug to prevent stack overflow error in json">
+      <created>1701871900722</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1701871900722</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -222,7 +229,9 @@
     <MESSAGE value="recreate database structure to save annotation properly with the correct relationships" />
     <MESSAGE value="together with chi worked on reparing api calls" />
     <MESSAGE value="we are now able to save annotations!" />
-    <option name="LAST_COMMIT_MESSAGE" value="we are now able to save annotations!" />
+    <MESSAGE value="fixed small bug to prevent stack overflow error in json" />
+    <MESSAGE value="bug fix and added component into main page" />
+    <option name="LAST_COMMIT_MESSAGE" value="bug fix and added component into main page" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
