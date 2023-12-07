@@ -97,6 +97,7 @@ const Popup: React.FC = () => {
     }
   };
 
+  // @ts-ignore
   return (
     <>
       <p onMouseUp={handleShow}>
@@ -122,9 +123,8 @@ const Popup: React.FC = () => {
             <Form.Group controlId="exampleForm.ControlSelect1">
               <Form.Label><b>Wet vorm</b></Form.Label>
               <Dropdown>
-                <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic" style={{ color: 'black', backgroundColor: annotation?.lawClass ? classes.find(law => law.name === annotation?.lawClass)?.color : '' }}
-                >
-                  {annotation?.lawClass || 'Selecteer'}
+                <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic" style={{ color: 'black', backgroundColor: annotation?.lawClass ? classes.find(law => law.name === annotation?.lawClass)?.color : '' }}>
+                  {annotation?.lawClass ? <>{annotation.lawClass}</> : <>Selecteer</>}
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu className="dropdown">
