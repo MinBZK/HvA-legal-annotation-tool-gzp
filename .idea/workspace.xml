@@ -4,45 +4,132 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="">
+    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="we are now able to save annotations!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/Annotation.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/Annotation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/LawClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/LawClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/annotations/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/annotations/page.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings">
-    <execution />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="Interface" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="development" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="JpbToolWindowState">
+    <option name="myId2FirstActivated">
+      <map>
+        <entry key="com.haulmont.jpb.jpaInspector" value="true" />
+        <entry key="com.haulmont.jpb.jpaPalette" value="true" />
+        <entry key="com.haulmont.jpb.jpaStructure" value="true" />
+      </map>
+    </option>
+    <option name="myId2Visible">
+      <map>
+        <entry key="com.haulmont.jpb.jpaInspector" value="false" />
+        <entry key="com.haulmont.jpb.jpaPalette" value="false" />
+        <entry key="com.haulmont.jpb.jpaStructure" value="true" />
+      </map>
+    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 1
-}</component>
   <component name="ProjectId" id="2YnSqd6NM13cbfa1LfKVppUZQlL" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/www/legal-annotation-tool/backend",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
-  }
-}]]></component>
+  <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="mysql" />
+    <property name="ExpandSpringBootJavaOptionsPanel" value="true" />
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/frontend/node_modules/typescript/lib" />
+  </component>
+  <component name="RunManager" selected="Spring Boot.LatBackendApplication">
+    <configuration name="LatBackendApplicationTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.LAT.backend.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.LAT.backend" />
+      <option name="MAIN_CLASS_NAME" value="com.LAT.backend.LatBackendApplicationTests" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <envs>
+        <env name="DB_PASS" value="jUok7ZbbTFhviK" />
+        <env name="DB_URL" value="jdbc:mysql://oege.ie.hva.nl:3306/zyeungc1" />
+        <env name="DB_USER" value="yeungc1" />
+      </envs>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LatBackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="backend" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.LAT.backend.LatBackendApplication" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SHORTEN_COMMAND_LINE" value="NONE" />
+      <envs>
+        <env name="DB_PASS" value="jUok7ZbbTFhviK" />
+        <env name="DB_URL" value="jdbc:mysql://oege.ie.hva.nl:3306/zyeungc1" />
+        <env name="DB_USER" value="yeungc1" />
+      </envs>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="JUnit.LatBackendApplicationTests" />
+      <item itemvalue="Spring Boot.LatBackendApplication" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.LatBackendApplicationTests" />
+        <item itemvalue="JUnit.LatBackendApplicationTests" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -57,13 +144,88 @@
       <workItem from="1701162140258" duration="101000" />
       <workItem from="1701162785771" duration="14000" />
       <workItem from="1701525762291" duration="3000" />
-      <workItem from="1701703155310" duration="604000" />
-      <workItem from="1701763331585" duration="626000" />
-      <workItem from="1701771960312" duration="31000" />
+      <workItem from="1701767621270" duration="15188000" />
+      <workItem from="1701851685985" duration="12290000" />
     </task>
+    <task id="LOCAL-00001" summary="merged dev into branch and modified code to new changes">
+      <created>1701773471795</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1701773471796</updated>
+    </task>
+    <task id="LOCAL-00002" summary="api calls to retreive data into popup with chi">
+      <created>1701778130323</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1701778130323</updated>
+    </task>
+    <task id="LOCAL-00003" summary="beginning of saving annotations">
+      <created>1701786772761</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1701786772761</updated>
+    </task>
+    <task id="LOCAL-00004" summary="further development of saving annotations">
+      <created>1701789604383</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1701789604383</updated>
+    </task>
+    <task id="LOCAL-00005" summary="recreate database structure to save annotation properly with the correct relationships">
+      <created>1701858093709</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1701858093710</updated>
+    </task>
+    <task id="LOCAL-00006" summary="together with chi worked on reparing api calls">
+      <created>1701866948175</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1701866948175</updated>
+    </task>
+    <task id="LOCAL-00007" summary="we are now able to save annotations!">
+      <created>1701867820334</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1701867820334</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="merged dev into branch and modified code to new changes" />
+    <MESSAGE value="api calls to retreive data into popup with chi" />
+    <MESSAGE value="beginning of saving annotations" />
+    <MESSAGE value="further development of saving annotations" />
+    <MESSAGE value="recreate database structure to save annotation properly with the correct relationships" />
+    <MESSAGE value="together with chi worked on reparing api calls" />
+    <MESSAGE value="we are now able to save annotations!" />
+    <option name="LAST_COMMIT_MESSAGE" value="we are now able to save annotations!" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

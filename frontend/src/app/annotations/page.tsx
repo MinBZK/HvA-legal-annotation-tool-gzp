@@ -1,4 +1,5 @@
 import AnnotationView from '../annotation-view/annotation-view';
+import Popup from '../annotations/comment/page'
 import '../static/annotations.css';
 
 export default function AnnotationPage() {
@@ -9,7 +10,7 @@ export default function AnnotationPage() {
       </nav>
       <main className="container">
         <section className="left-column">
-          {/* Left column content here */}
+            {<Popup></Popup>}
         </section>
         <section className="right-column">
           {<AnnotationView></AnnotationView>}
