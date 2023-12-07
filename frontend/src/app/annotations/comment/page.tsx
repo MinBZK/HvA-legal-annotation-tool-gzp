@@ -17,21 +17,21 @@ const Popup: React.FC = () => {
   }, []); // Empty dependency array ensures that this effect runs only once
 
   // Update the selected law
-  const handleSelectLaw = (lawName) => {
+  const handleSelectLaw = (lawName: any) => {
     setAnnotation((prevAnnotation) => ({
       ...(prevAnnotation as Annotation),
       lawClass: lawName,
     }));
   };
 
-  const handleNote = (note) => {
+  const handleNote = (note: any) => {
     setAnnotation((prevAnnotation) => ({
       ...(prevAnnotation as Annotation),
       text: note,
     }));
   };
 
-  const handleSelectedText = (text) => {
+  const handleSelectedText = (text: any) => {
     setAnnotation((prevAnnotation) => ({
       ...(prevAnnotation as Annotation),
       selectedWord: text,
@@ -69,9 +69,9 @@ const Popup: React.FC = () => {
     try {
       const backendAnnotation = {
           id: null,
-          selectedWord: annotation.selectedWord,
-          text: annotation.text,
-          lawClass: { name: annotation.lawClass },
+          selectedWord: annotation?.selectedWord,
+          text: annotation?.text,
+          lawClass: { name: annotation?.lawClass },
           project: { id: 1 },
       };
 
