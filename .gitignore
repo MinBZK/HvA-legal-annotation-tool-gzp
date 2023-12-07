@@ -11,7 +11,7 @@
 /frontend/coverage
 
 # next.js
-/frontend/.next/
+/frontend/.next/*
 /frontend/out/
 
 # production
@@ -38,3 +38,5 @@
 /.idea/
 # /frontend/package.json
 # /frontend/package-lock.json
+
+*/.next/*
