@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { FiTrash2 } from 'react-icons/fi';
 import './static/index.css';
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import React, { useRef, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { uploadXML } from './services/uploadXML'
@@ -18,6 +18,7 @@ export default function Home() {
   ];
 
   const [show, setShow] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -28,9 +29,16 @@ export default function Home() {
   const handleXmlUpload = async () => {
     if (fileInputRef.current != null) {
       const reader = new FileReader();
+      reader.readAsText(fileInputRef.current["files"][0]);
       reader.onload = async (event) => {
-        if (event.target != null && typeof event.target.result == "string") {
-          await uploadXML(event.target.result);
+        if (event.target != null && typeof event.target.result === "string") {
+          const response = await uploadXML(event.target.result);
+
+          if (response.status == 201) {            
+            setShow(false)
+          } else {
+            setShowError(true)
+          }
         }
       }
     };
@@ -69,6 +77,12 @@ export default function Home() {
           <Modal.Title>Upload bestand</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <Alert show={showError} variant="danger" dismissible>
+            <Alert.Heading>Error</Alert.Heading>
+            <p>
+              Something went wrong
+            </p>
+          </Alert>
           <Form action={handleXmlUpload}>
             <input
               type="file"
