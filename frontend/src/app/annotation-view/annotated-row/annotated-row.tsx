@@ -57,8 +57,7 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
             <div className={css.annotationTitle} style={{background: annotation.lawClass.color}} onClick={() => {
                 setOpen(!open)
             }}>
-                <h5>{annotation.lawClass.name}</h5>
-
+                <h5 className={css.annotationName}>{annotation.lawClass.name}</h5>
                 {open ? (
                     <FaChevronDown className={css.align}/>
                 ) : (
@@ -69,7 +68,7 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
             {open &&
                 <div className={css.annotationInfo}>
                     <div className={css.row}>
-                        <h4 className={css.leftCol}>Label</h4>
+                        <h4 className={`${css.leftCol} ${css.annotationName}`}>Label</h4>
                         {isEditing ? (
                             <Form.Control
                                 as="textarea"
@@ -79,16 +78,20 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
                                 }}
                             />
                         ) : (
-                            <h4 className={css.rightCol}>{annotation.selectedWord}</h4>
+                            <h4 className={`${css.rightCol} ${css.annotationName}`}>{annotation.selectedWord}</h4>
                         )}
-                        <FaEdit className={css.iconCol} onClick={() => setIsEditing(!isEditing)}/>
+                        <FaEdit className={css.iconCol}
+                                style={isEditing ? ({color: "rgb(112, 164, 255)"}) : ({color: "black"})}
+                                onClick={() => setIsEditing(!isEditing)}/>
+
                     </div>
 
                     <div className={css.row}>
-                        <h4 className={css.leftCol}>Notitie</h4>
+                        <h4 className={`${css.leftCol} ${css.annotationName}`}>Notitie</h4>
 
                         {isEditing ? (
                             <Form.Control
+                                className={""}
                                 as="textarea"
                                 value={editNoteText}
                                 onChange={(event) => {
@@ -96,40 +99,38 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
                                 }}
                             />
                         ) : (
-                            <h4 className={css.rightCol}>{annotation.text}</h4>
+                            <h4 className={`${css.rightCol} ${css.annotationName}`}>{annotation.text}</h4>
                         )}
                     </div>
                     <div className={css.row}>
-                        <h4 className={css.leftCol}>Begrip</h4>
-                        <h4 className={css.rightCol}>{}</h4>
+                        <h4 className={`${css.leftCol} ${css.annotationName}`}>Begrip</h4>
+                        <h4 className={`${css.rightCol} ${css.annotationName}`}>{}</h4>
                     </div>
 
                     {isEditing &&
                         <>
-                            <Button variant="success" onClick={() => setIsConfirmModalOpen(true)}>Opslaan</Button>
-                            <Button variant="danger" onClick={() => setIsDeleteModalOpen(true)}>Verwijderen</Button>
+                            <Button className={"border-dark m-2"} variant={"light"} onClick={() => setIsConfirmModalOpen(true)}>Opslaan</Button>
+                            <Button className={"border-dark m-2"} variant={"light"} onClick={() => setIsDeleteModalOpen(true)}>Verwijderen</Button>
                         </>
                     }
                 </div>
             }
 
-            <Modal show={isConfirmModalOpen}>
+            <Modal show={isConfirmModalOpen} onHide={() => {setIsConfirmModalOpen(!isConfirmModalOpen)}}>
                 <Modal.Header closeButton>
                     <Modal.Title>Wil je deze annotatie bijwerken?</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                    <Button variant="success" onClick={checkValues}>Ja</Button>
-                    <Button variant="danger" onClick={() => setIsConfirmModalOpen(!isConfirmModalOpen)}>Nee</Button>
+                <Modal.Body className={css.buttonGroup}>
+                    <Button  variant="success" onClick={checkValues}>Ja</Button>
                 </Modal.Body>
             </Modal>
 
-            <Modal show={isDeleteModalOpen}>
+            <Modal show={isDeleteModalOpen} onHide={() => {setIsDeleteModalOpen(!isDeleteModalOpen)}}>
                 <Modal.Header closeButton>
                     <Modal.Title>Wil je deze annotatie verwijderen?</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Button variant="success" onClick={checkDelete}>Ja</Button>
-                    <Button variant="danger" onClick={() => setIsDeleteModalOpen(!isDeleteModalOpen)}>Nee</Button>
                 </Modal.Body>
             </Modal>
 

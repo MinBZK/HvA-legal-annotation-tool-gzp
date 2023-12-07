@@ -31,4 +31,16 @@
 }
 .iconCol {
     width: 5%;
+    min-width: 20px;
+    min-height: 20px;
+}
+
+.buttonGroup {
+    display: flex;
+    justify-content: right;
+}
+
+.annotationName {
+    font-size: 14px;
+    margin: 0;
 }
