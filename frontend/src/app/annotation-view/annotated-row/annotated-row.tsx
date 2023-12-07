@@ -67,6 +67,13 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
 
             {open &&
                 <div className={css.annotationInfo}>
+
+                    <div className={css.iconRow}>
+                        <FaEdit className={css.iconCol}
+                                style={isEditing ? ({color: "rgb(112, 164, 255)"}) : ({color: "black"})}
+                                onClick={() => setIsEditing(!isEditing)}/>
+                    </div>
+
                     <div className={css.row}>
                         <h4 className={`${css.leftCol} ${css.annotationName}`}>Label</h4>
                         {isEditing ? (
@@ -80,10 +87,6 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
                         ) : (
                             <h4 className={`${css.rightCol} ${css.annotationName}`}>{annotation.selectedWord}</h4>
                         )}
-                        <FaEdit className={css.iconCol}
-                                style={isEditing ? ({color: "rgb(112, 164, 255)"}) : ({color: "black"})}
-                                onClick={() => setIsEditing(!isEditing)}/>
-
                     </div>
 
                     <div className={css.row}>
@@ -120,7 +123,7 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
                 <Modal.Header closeButton>
                     <Modal.Title>Wil je deze annotatie bijwerken?</Modal.Title>
                 </Modal.Header>
-                <Modal.Body className={css.buttonGroup}>
+                <Modal.Body>
                     <Button  variant="success" onClick={checkValues}>Ja</Button>
                 </Modal.Body>
             </Modal>
