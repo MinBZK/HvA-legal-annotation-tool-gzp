@@ -1,4 +1,4 @@
-bwb-inputbestand, intitule, meta-data, aanhef, li > :first-child {
+bwb-inputbestand, intitule, meta-data, aanhef {
     display: none;
 }
 
@@ -22,4 +22,51 @@ kop {
 paragraaf kop {
     color: #000;
     background-color: #f3f3f3;
+}
+
+lijst li al, lid li al {
+    margin: 0 0 1em 3.5em;
+}
+
+li {
+    list-style-type: none;
+}
+
+li> :first-child {
+    font-weight: bold;
+}
+
+lijst li, lid li {
+    display: flex;
+    flex-direction: row;
+}
+
+lidnr {
+    font-weight: bold;
+}
+
+nadruk {
+    font-style: italic;
+}
+
+lid {
+    display: block;
+}
+
+lidnr + al {
+    margin: 0 0 1em 3.5em;
+    width: calc(100% - 3.5em);
+    display: block;
+}
+
+lidnr {
+    position: absolute;
+}
+
+li > :first-child {
+    margin-left: 1em;
+}
+
+artikel lid {
+    margin-top: 16px;
 }
