@@ -16,18 +16,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 public class XmlController {
-    
+
     @Autowired
     private XmlRepository xmlRepository;
 
     @GetMapping("/projects")
-     public Iterable<Project> getAllProjects() {
+    public Iterable<Project> getAllProjects() {
         return xmlRepository.findAll();
     }
-    
+
     @PostMapping("/saveXml")
     public ResponseEntity<String> addProject(@RequestBody Project project) {
         xmlRepository.save(project);
         return new ResponseEntity<>("Project saved successfully", HttpStatus.CREATED);
     }
 }
+
