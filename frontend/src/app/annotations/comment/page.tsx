@@ -14,12 +14,18 @@ interface PopupProps {
 const Popup: React.FC<PopupProps> = (project) => {
 
   project.project.xml_content = project.project.xml_content.replace("bwb-inputbestand", "div")
-
+  
+  const [originalXML, setOriginalXML] = useState<Document | null>(null);
   const [renderXML, setRenderXML] = useState(false);
 
   useEffect(() => {
     setRenderXML(true);
-  }, []);
+
+    let parser = new DOMParser();
+    let xml = parser.parseFromString(project.project.xml_content, "application/xml");
+    setOriginalXML(xml);
+
+  }, [project.project.xml_content]);
 
   const [show, setShow] = useState(false);
   const [classes, setClasses] = useState<string[]>([]); // New state to store the laws
@@ -83,37 +89,85 @@ const Popup: React.FC<PopupProps> = (project) => {
     }
   };
 
-  const saveAnnotationToBackend = async () => {
-    try {
+    const handleSave = async () => {
+        const annotationId = await saveAnnotationToBackend();
+        if (annotation.selectedText && annotationId) {
+            annotateSelectedText(annotation.selectedText, annotationId);
+            addAnnotationTagsToXml();
+        }
+    };
+
+    const annotateSelectedText = (selectedText: string, annotationId: number) => {
+        if (originalXML) {
+            walkTheNode(originalXML.documentElement, function(node) {
+                if (node.nodeType === Node.TEXT_NODE && node.nodeValue?.includes(selectedText)) {
+                    let annotatedText = node.nodeValue.replace(selectedText, `<annotation id="${annotationId}">${selectedText}</annotation>`);
+                    node.nodeValue = annotatedText;
+                }
+            });
+            let updatedXMLString = new XMLSerializer().serializeToString(originalXML);
+            project.project.xml_content = updatedXMLString.replace(/&lt;annotation id="[0-9]+"&gt;/g, `<annotation id="${annotationId}">`).replace(/&lt;\/annotation&gt;/g, '</annotation>');
+        }
+    };
+
+const saveAnnotationToBackend = async () => {
+  try {
       const backendAnnotation = {
-        id: null,
-        selectedWord: annotation.selectedText,
-        text: annotation.note,
-        lawClass: { name: annotation.selectedLaw },
-        project: { id: 1 },
+          id: null,
+          selectedWord: annotation.selectedText,
+          text: annotation.note,
+          lawClass: { name: annotation.selectedLaw },
+          project: { id: 1 },
       };
 
       const response = await fetch('http://localhost:8000/api/annotations/project', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(backendAnnotation),
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(backendAnnotation),
       });
 
-      console.log(JSON.stringify(backendAnnotation));
-
       if (!response.ok) {
-        throw new Error('Failed to save annotation');
+          throw new Error('Failed to save annotation');
       }
 
-      console.log('Annotation saved successfully');
+      const responseData = await response.json();
+
       handleClose();
-    } catch (error) {
+
+      return responseData.id;
+  } catch (error) {
       console.error('Error saving annotation:', error);
-      console.log("hi")
-    }
-  };
+  }
+};
+
+const addAnnotationTagsToXml = async () => {
+  try {
+      const updatedProject = {
+          ...project.project,
+          xml_content: project.project.xml_content
+      };
+
+      const response = await fetch('http://localhost:8000/api/saveXml', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedProject)
+      });
+
+      if (!response.ok) {
+          throw new Error('Failed to update XML');
+      }
+
+      console.log('XML updated successfully');
+      handleClose();
+  } catch (error) {
+      console.error('Error updating XML:', error);
+  }
+};
+
 
   return (
     <>
@@ -159,7 +213,7 @@ const Popup: React.FC<PopupProps> = (project) => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={saveAnnotationToBackend}>
+          <Button variant="primary" onClick={handleSave}>
             <BsFillFloppy2Fill size={20} /> Opslaan
           </Button>
           <Button className="warning-text-color" variant="warning" onClick={handleClose}>
@@ -175,3 +229,12 @@ const Popup: React.FC<PopupProps> = (project) => {
 };
 
 export default Popup;
+
+function walkTheNode(node: Node, callback: (node: Node) => void) {
+  callback(node);
+  node = node.firstChild!;
+  while (node) {
+      walkTheNode(node, callback);
+      node = node.nextSibling!;
+  }
+}
