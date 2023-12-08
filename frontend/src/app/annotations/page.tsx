@@ -1,13 +1,13 @@
 "use client";
 import AnnotationView from '../annotation-view/annotation-view';
-import Popup from '../annotations/comment/page';
+import Popup from '../annotations/comment/annotation-popup';
 import '../static/annotations.css';
 import {getProjectById} from '../services/project';
 import { Project } from '../models/project';
 import { useSearchParams } from 'next/navigation'
 import {useEffect, useState} from "react";
 
-export default function AnnotationPage() {
+const AnnotationPage = () => {
 
     const [projectData, setProjectData] = useState<Project | null>(null);
 
@@ -45,9 +45,11 @@ export default function AnnotationPage() {
             {projectData && <Popup project={projectData} />}
         </section>
         <section className="right-column">
-          {<AnnotationView></AnnotationView>}
+          {<AnnotationView/>}
         </section>
       </main>
     </>
   );
 }
+
+export default AnnotationPage;
