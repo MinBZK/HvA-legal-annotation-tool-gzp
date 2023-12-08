@@ -18,12 +18,19 @@ const Popup: FC<PopupProps> = ({ project }) => {
   project.xml_content = project.xml_content.replace("bwb-inputbestand", "div")
   const [renderXML, setRenderXML] = useState(false);
   const [projectId, setProjectId] = useState<number>(0);
+  const [originalXML, setOriginalXML] = useState<Document | null>(null);
 
   useEffect(() => {
+
+    let parser = new DOMParser();
+    let xml = parser.parseFromString(project.xml_content, "application/xml");
+    setOriginalXML(xml);
+
     setRenderXML(true);
     fetchId();
     fetchClasses();
-  }, []);
+  }, [project.xml_content]);
+
 
   const fetchId = async () => {
     try {
@@ -86,7 +93,7 @@ const Popup: FC<PopupProps> = ({ project }) => {
       setShow(true);
     }
   };
-  const saveAnnotationToBackend = () => {
+  const saveAnnotationToBackend = async () => {
     const backendAnnotation = {
       id: null,
       selectedWord: annotation?.selectedWord,
@@ -94,89 +101,155 @@ const Popup: FC<PopupProps> = ({ project }) => {
       lawClass: {name: annotation?.lawClass},
       project: {id: projectId},
     };
+    try {
+      const response = await fetch('http://localhost:8000/api/annotations/project', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(backendAnnotation),
+      });
 
-    fetch('http://localhost:8000/api/annotations/project', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(backendAnnotation),
-    })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Failed to save annotation');
-          }
-          console.log('Annotation saved successfully');
-          handleClose();
-        })
-        .catch(error => {
-          console.error('Error saving annotation:', error);
-        });
+      if (!response.ok) {
+        throw new Error('Failed to save annotation');
+      }
+      const responseData = await response.json();
+      console.log('Annotation saved successfully');
+      handleClose();
+      return responseData.id;
+    } catch (error) {
+      console.error('Error saving annotation:', error);
+      return null;
+    }
   };
-   return (
-        <>
-          <p onMouseUp={handleShow} dangerouslySetInnerHTML={{__html: renderXML && project.xml_content}}>
-          </p>
 
-          <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>Annoteer de tekst</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              {annotation?.selectedWord && <p><b>Geselecteerde tekst: </b> {annotation?.selectedWord}</p>}
-              <Form>
-                <Form.Group controlId="exampleForm.ControlSelect1">
-                  <Form.Label><b>Wet vorm</b></Form.Label>
-                  <Dropdown>
-                    <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic" style={{
-                      color: 'black',
-                      backgroundColor: annotation?.lawClass ? (classes.find(law => law.name === annotation.lawClass.toString()) || {}).color || ''
-                          : '',
-                    }}>
-                      {annotation?.lawClass ? <>{annotation.lawClass}</> : <>Selecteer</>}
-                    </Dropdown.Toggle>
+  const addAnnotationTagsToXml = async () => {
+    console.log("ameland")
+    try {
+      const updatedProject = {
+        ...project,
+        xml_content: project.xml_content
+      };
 
-                    <Dropdown.Menu className="dropdown">
-                      {classes.map((law, index) => (
-                          <Dropdown.Item
-                              key={index}
-                              onClick={() => handleSelectLaw(law.name)}
-                              active={annotation?.lawClass && law.name === annotation.lawClass.toString()}
-                              style={{backgroundColor: law.color, color: 'black'}}
-                          >
-                            {law.name}
-                          </Dropdown.Item>
-                      ))}
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </Form.Group>
+      const response = await fetch('http://localhost:8000/api/saveXml', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedProject)
+      });
 
-                <Form.Group controlId="exampleForm.ControlInput1">
-                  <Form.Label className="padding"><b>Notitie</b></Form.Label>
-                  <Form.Control as="textarea" type="text" placeholder="Type hier uw notitie..." value={annotation?.text}
-                                onChange={(e) => handleNote(e.target.value)}/>
-                </Form.Group>
+      if (!response.ok) {
+        throw new Error('Failed to update XML');
+      }
 
-                <Form.Group controlId="exampleForm.ControlInput2">
-                  <Form.Label><b>Begrip</b></Form.Label>
-                  <Form.Control type="text" placeholder="Type hier uw notitie..."/>
-                </Form.Group>
-              </Form>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="primary" onClick={saveAnnotationToBackend}>
-                <BsFillFloppy2Fill size={20}/> Opslaan
-              </Button>
-              <Button className="warning-text-color" variant="warning" onClick={handleClose}>
-                <BsX size={20}/> Annuleer
-              </Button>
-              <Button variant="danger" onClick={handleClose}>
-                <BsFillTrashFill size={20}/> Verwijder
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        </>
-    );
+      console.log('XML updated successfully');
+      handleClose();
+    } catch (error) {
+      console.error('Error updating XML:', error);
+    }
+  };
+
+
+  const handleSave = async () => {
+    const annotationId = await saveAnnotationToBackend();
+    if (annotationId && annotation?.selectedWord) {
+      annotateSelectedText(annotation.selectedWord, annotationId);
+      await addAnnotationTagsToXml();
+    } else {
+      console.error('Failed to retrieve annotation ID');
+    }
+  };
+
+  const annotateSelectedText = (selectedText: string, annotationId: number) => {
+    if (originalXML) {
+      walkTheNode(originalXML.documentElement, function (node) {
+        if (node.nodeType === Node.TEXT_NODE && node.nodeValue?.includes(selectedText)) {
+          let annotatedText = node.nodeValue.replace(selectedText, `<annotation id="${annotationId}">${selectedText}</annotation>`);
+          node.nodeValue = annotatedText;
+        }
+      });
+      let updatedXMLString = new XMLSerializer().serializeToString(originalXML);
+      project.xml_content = updatedXMLString.replace(/&lt;annotation id="[0-9]+"&gt;/g, `<annotation id="${annotationId}">`).replace(/&lt;\/annotation&gt;/g, '</annotation>');
+    }
+  };
+
+
+  function walkTheNode(node: Node, callback: (node: Node) => void) {
+    callback(node);
+    node = node.firstChild!;
+    while (node) {
+      walkTheNode(node, callback);
+      node = node.nextSibling!;
+    }
+  }
+
+
+  return (
+      <>
+        <p onMouseUp={handleShow} dangerouslySetInnerHTML={{__html: renderXML && project.xml_content}}>
+        </p>
+
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Annoteer de tekst</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {annotation?.selectedWord && <p><b>Geselecteerde tekst: </b> {annotation?.selectedWord}</p>}
+            <Form>
+              <Form.Group controlId="exampleForm.ControlSelect1">
+                <Form.Label><b>Wet vorm</b></Form.Label>
+                <Dropdown>
+                  <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic" style={{
+                    color: 'black',
+                    backgroundColor: annotation?.lawClass ? (classes.find(law => law.name === annotation.lawClass.toString()) || {}).color || ''
+                        : '',
+                  }}>
+                    {annotation?.lawClass ? <>{annotation.lawClass}</> : <>Selecteer</>}
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu className="dropdown">
+                    {classes.map((law, index) => (
+                        <Dropdown.Item
+                            key={index}
+                            onClick={() => handleSelectLaw(law.name)}
+                            active={annotation?.lawClass && law.name === annotation.lawClass.toString()}
+                            style={{backgroundColor: law.color, color: 'black'}}
+                        >
+                          {law.name}
+                        </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+              </Form.Group>
+
+              <Form.Group controlId="exampleForm.ControlInput1">
+                <Form.Label className="padding"><b>Notitie</b></Form.Label>
+                <Form.Control as="textarea" type="text" placeholder="Type hier uw notitie..." value={annotation?.text}
+                              onChange={(e) => handleNote(e.target.value)}/>
+              </Form.Group>
+
+              <Form.Group controlId="exampleForm.ControlInput2">
+                <Form.Label><b>Begrip</b></Form.Label>
+                <Form.Control type="text" placeholder="Type hier uw notitie..."/>
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="primary" onClick={handleSave}>
+              <BsFillFloppy2Fill size={20}/> Opslaan
+            </Button>
+            <Button className="warning-text-color" variant="warning" onClick={handleClose}>
+              <BsX size={20}/> Annuleer
+            </Button>
+            <Button variant="danger" onClick={handleClose}>
+              <BsFillTrashFill size={20}/> Verwijder
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+  );
 }
 
 export default Popup;
+
