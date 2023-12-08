@@ -24,7 +24,7 @@ paragraaf kop {
     background-color: #f3f3f3;
 }
 
-lijst li al, lid li al {
+lijst li al, lid li al, artikel li:has(al) al {
     margin: 0 0 1em 3.5em;
 }
 
@@ -36,7 +36,7 @@ li> :first-child {
     font-weight: bold;
 }
 
-lijst li, lid li {
+lijst li, lid li, artikel li:has(al) {
     display: flex;
     flex-direction: row;
 }

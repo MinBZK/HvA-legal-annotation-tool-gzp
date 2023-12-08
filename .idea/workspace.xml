@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="we are now able to save annotations!">
+    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="bug: renamed files to prevent pipeline error">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/Annotation.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/Annotation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/LawClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/LawClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/annotations/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/annotations/page.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -26,7 +25,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="development" />
+        <entry key="$PROJECT_DIR$" value="46-backend-annotaties-aanmaken" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -51,7 +50,7 @@
       <map>
         <entry key="com.haulmont.jpb.jpaInspector" value="false" />
         <entry key="com.haulmont.jpb.jpaPalette" value="false" />
-        <entry key="com.haulmont.jpb.jpaStructure" value="true" />
+        <entry key="com.haulmont.jpb.jpaStructure" value="false" />
       </map>
     </option>
   </component>
@@ -111,9 +110,9 @@
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="SHORTEN_COMMAND_LINE" value="NONE" />
       <envs>
-        <env name="DB_PASS" value="jUok7ZbbTFhviK" />
-        <env name="DB_URL" value="jdbc:mysql://oege.ie.hva.nl:3306/zyeungc1" />
-        <env name="DB_USER" value="yeungc1" />
+        <env name="DB_PASS" value="hUDR/2NO3TU.6G" />
+        <env name="DB_URL" value="jdbc:mysql://oege.ie.hva.nl:3306/zschied2" />
+        <env name="DB_USER" value="schied2" />
       </envs>
       <method v="2">
         <option name="Make" enabled="true" />
@@ -146,6 +145,7 @@
       <workItem from="1701525762291" duration="3000" />
       <workItem from="1701767621270" duration="15188000" />
       <workItem from="1701851685985" duration="12290000" />
+      <workItem from="1702026927379" duration="6840000" />
     </task>
     <task id="LOCAL-00001" summary="merged dev into branch and modified code to new changes">
       <created>1701773471795</created>
@@ -196,7 +196,42 @@
       <option name="project" value="LOCAL" />
       <updated>1701867820334</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="fix: edited api endpoint to retrieve annotations by project id">
+      <created>1701981202857</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1701981202857</updated>
+    </task>
+    <task id="LOCAL-00009" summary="feat: put together functionalities to retrieve annotations by project id and fetch xml with path id">
+      <created>1701981255998</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1701981255998</updated>
+    </task>
+    <task id="LOCAL-00010" summary="bug: added use client string to fix pipeline error">
+      <created>1702034605127</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1702034605127</updated>
+    </task>
+    <task id="LOCAL-00011" summary="bug: added props to fix pipeline error">
+      <created>1702035200001</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1702035200001</updated>
+    </task>
+    <task id="LOCAL-00012" summary="bug: renamed files to prevent pipeline error">
+      <created>1702039086320</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1702039086320</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -222,7 +257,12 @@
     <MESSAGE value="recreate database structure to save annotation properly with the correct relationships" />
     <MESSAGE value="together with chi worked on reparing api calls" />
     <MESSAGE value="we are now able to save annotations!" />
-    <option name="LAST_COMMIT_MESSAGE" value="we are now able to save annotations!" />
+    <MESSAGE value="fix: edited api endpoint to retrieve annotations by project id" />
+    <MESSAGE value="feat: put together functionalities to retrieve annotations by project id and fetch xml with path id" />
+    <MESSAGE value="bug: added use client string to fix pipeline error" />
+    <MESSAGE value="bug: added props to fix pipeline error" />
+    <MESSAGE value="bug: renamed files to prevent pipeline error" />
+    <option name="LAST_COMMIT_MESSAGE" value="bug: renamed files to prevent pipeline error" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
