@@ -1,4 +1,4 @@
-// 'use client';
+'use client';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {useEffect, useState} from 'react';
 import {Button, Dropdown, Form, Modal} from 'react-bootstrap';
