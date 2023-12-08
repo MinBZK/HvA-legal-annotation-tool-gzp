@@ -9,7 +9,7 @@ const AnnotationView = () => {
     const [annotations, setAnnotations] = useState<Annotation[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const fetchAnnotations = async (projectId) => {
+    const fetchAnnotations = async (projectId: any) => {
         try {
             const response = await fetch(
                 `http://localhost:8000/api/annotations/project/${projectId}`

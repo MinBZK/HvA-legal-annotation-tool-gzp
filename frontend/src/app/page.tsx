@@ -25,7 +25,7 @@ export default function Home() {
     fetchProjects();
   }, []);
 
-  const handleProjectSelection = (projectId) => {
+  const handleProjectSelection = (projectId: number) => {
     window.location.href = `/annotations?id=${projectId}`;
   };
 

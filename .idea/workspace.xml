@@ -4,9 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="bug: added use client string to fix pipeline error">
+    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="bug: added props to fix pipeline error">
+      <change afterPath="$PROJECT_DIR$/frontend/src/app/annotations/comment/annotation-popup.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/annotations/comment/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/annotations/comment/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/annotation-view/annotation-view.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/annotation-view/annotation-view.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/annotations/comment/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/annotations/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/annotations/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/components/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/page.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -216,7 +222,14 @@
       <option name="project" value="LOCAL" />
       <updated>1702034605127</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="bug: added props to fix pipeline error">
+      <created>1702035200001</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1702035200001</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -245,7 +258,8 @@
     <MESSAGE value="fix: edited api endpoint to retrieve annotations by project id" />
     <MESSAGE value="feat: put together functionalities to retrieve annotations by project id and fetch xml with path id" />
     <MESSAGE value="bug: added use client string to fix pipeline error" />
-    <option name="LAST_COMMIT_MESSAGE" value="bug: added use client string to fix pipeline error" />
+    <MESSAGE value="bug: added props to fix pipeline error" />
+    <option name="LAST_COMMIT_MESSAGE" value="bug: added props to fix pipeline error" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
