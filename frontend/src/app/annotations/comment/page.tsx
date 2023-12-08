@@ -1,72 +1,76 @@
-'use client';
+// 'use client';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useEffect, useState } from 'react';
-import { Modal, Button, Dropdown, Form } from 'react-bootstrap';
+import React, {useEffect, useState} from 'react';
+import {Button, Dropdown, Form, Modal} from 'react-bootstrap';
 import '../../static/annotations.css'
-import { BsFillTrashFill, BsFillFloppy2Fill, BsX } from "react-icons/bs";
-import { Project } from "../../models/project";
+import {BsFillFloppy2Fill, BsFillTrashFill, BsX} from "react-icons/bs";
+import {Project} from "../../models/project";
 import './xml.css'
+import {Annotation} from "../../models/annotation";
+import {LawClass} from "../../models/lawclass";
 
 interface PopupProps {
   project: Project;
 }
 
-const Popup: React.FC<PopupProps> = (project) => {
+const Popup: React.FC<PopupProps> = ({ project }) => {
 
-  project.project.xml_content = project.project.xml_content.replace("bwb-inputbestand", "div")
-
+  project.xml_content = project.xml_content.replace("bwb-inputbestand", "div")
   const [renderXML, setRenderXML] = useState(false);
+  const [projectId, setProjectId] = useState<number>(0);
 
   useEffect(() => {
     setRenderXML(true);
+    fetchId();
+    fetchClasses();
   }, []);
 
+  const fetchId = async () => {
+    try {
+      const searchParams = await new URLSearchParams(window.location.search);
+      const projectId = parseInt(searchParams.get("id") as string) || 2
+      setProjectId(projectId)
+    } catch (error) {
+      console.error("Error fetching annotations:", error);
+    }
+  };
+
   const [show, setShow] = useState(false);
-  const [classes, setClasses] = useState<string[]>([]); // New state to store the laws
-  const [annotation, setAnnotation] = useState({
-    selectedText: null,
-    selectedLaw: null,
-    note: '',
-  });
+  const [classes, setClasses] = useState<LawClass[]>([]); // New state to store the laws
+  const [annotation, setAnnotation] = useState<Annotation>();
 
   // Update the selected law
-  const handleSelectLaw = (lawName) => {
+  const handleSelectLaw = (lawName: any) => {
     setAnnotation((prevAnnotation) => ({
-      ...prevAnnotation,
-      selectedLaw: lawName,
+      ...(prevAnnotation as Annotation),
+      lawClass: lawName,
     }));
   };
 
-  const handleNote = (note) => {
+  const handleNote = (note: any) => {
     setAnnotation((prevAnnotation) => ({
-      ...prevAnnotation,
-      note: note,
+      ...(prevAnnotation as Annotation),
+      text: note,
     }));
   };
 
-  const handleSelectedText = (text) => {
+  const handleSelectedText = (text: any) => {
     setAnnotation((prevAnnotation) => ({
-      ...prevAnnotation,
-      selectedText: text,
+      ...(prevAnnotation as Annotation),
+      selectedWord: text,
     }));
   };
 
-  useEffect(() => {
-    // Fetch laws from the backend when the component mounts
-    fetchClasses();
-  }, []); // Empty dependency array ensures that this effect runs only once
-
-  const fetchClasses = async () => {
-    try {
-      const response = await fetch('http://localhost:8000/api/classes');
-      if (!response.ok) {
-        throw new Error('Failed to fetch laws');
-      }
-      const data = await response.json();
-      setClasses(data); // Set the laws in the state]
-    } catch (error) {
-      console.error('Error fetching laws:', error);
-    }
+  const fetchClasses = () => {
+    fetch('http://localhost:8000/api/classes')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to fetch laws');
+          }
+          return response.json();
+        })
+        .then(data => setClasses(data))
+        .catch(error => console.error('Error fetching laws:', error));
   };
 
   const handleClose = () => {
@@ -82,42 +86,37 @@ const Popup: React.FC<PopupProps> = (project) => {
       setShow(true);
     }
   };
+  const saveAnnotationToBackend = () => {
+    const backendAnnotation = {
+      id: null,
+      selectedWord: annotation?.selectedWord,
+      text: annotation?.text,
+      lawClass: { name: annotation?.lawClass },
+      project: { id: projectId },
+    };
 
-  const saveAnnotationToBackend = async () => {
-    try {
-      const backendAnnotation = {
-        id: null,
-        selectedWord: annotation.selectedText,
-        text: annotation.note,
-        lawClass: { name: annotation.selectedLaw },
-        project: { id: 1 },
-      };
-
-      const response = await fetch('http://localhost:8000/api/annotations/project', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(backendAnnotation),
-      });
-
-      console.log(JSON.stringify(backendAnnotation));
-
-      if (!response.ok) {
-        throw new Error('Failed to save annotation');
-      }
-
-      console.log('Annotation saved successfully');
-      handleClose();
-    } catch (error) {
-      console.error('Error saving annotation:', error);
-      console.log("hi")
-    }
+    fetch('http://localhost:8000/api/annotations/project', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(backendAnnotation),
+    })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to save annotation');
+          }
+          console.log('Annotation saved successfully');
+          handleClose();
+        })
+        .catch(error => {
+          console.error('Error saving annotation:', error);
+        });
   };
 
   return (
     <>
-      <p onMouseUp={handleShow} dangerouslySetInnerHTML={{ __html: renderXML && project.project.xml_content }}>
+      <p onMouseUp={handleShow} dangerouslySetInnerHTML={{ __html: renderXML && project?.xml_content }}>
       </p>
 
       <Modal show={show} onHide={handleClose}>
@@ -125,22 +124,27 @@ const Popup: React.FC<PopupProps> = (project) => {
           <Modal.Title>Annoteer de tekst</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {annotation.selectedText && <p><b>Geselecteerde tekst: </b> {annotation.selectedText}</p>}
+          {annotation?.selectedWord && <p><b>Geselecteerde tekst: </b> {annotation?.selectedWord}</p>}
           <Form>
             <Form.Group controlId="exampleForm.ControlSelect1">
               <Form.Label><b>Wet vorm</b></Form.Label>
               <Dropdown>
-                <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic" style={{ color: 'black', backgroundColor: annotation.selectedLaw ? classes.find(law => law.name === annotation.selectedLaw)?.color : '' }}
-                >
-                  {annotation.selectedLaw || 'Selecteer'}
+                <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic" style={{ color: 'black', backgroundColor: annotation?.lawClass ? (classes.find(law => law.name === annotation.lawClass.toString()) || {}).color || ''
+                      : '',
+                }}>
+                  {annotation?.lawClass ? <>{annotation.lawClass}</> : <>Selecteer</>}
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu className="dropdown">
                   {classes.map((law, index) => (
-                    <Dropdown.Item key={index} onClick={() => handleSelectLaw(law.name)}
-                      active={annotation.selectedLaw === law.name} style={{ backgroundColor: law.color, color: 'black' }}>
-                      {law.name}
-                    </Dropdown.Item>
+                      <Dropdown.Item
+                          key={index}
+                          onClick={() => handleSelectLaw(law.name)}
+                          active={annotation?.lawClass && law.name === annotation.lawClass.toString()}
+                          style={{ backgroundColor: law.color, color: 'black' }}
+                      >
+                        {law.name}
+                      </Dropdown.Item>
                   ))}
                 </Dropdown.Menu>
               </Dropdown>
@@ -148,8 +152,8 @@ const Popup: React.FC<PopupProps> = (project) => {
 
             <Form.Group controlId="exampleForm.ControlInput1">
               <Form.Label className="padding"><b>Notitie</b></Form.Label>
-              <Form.Control as="textarea" type="text" placeholder="Type hier uw notitie..." value={annotation.note}
-                onChange={(e) => handleNote(e.target.value)} />
+              <Form.Control as="textarea" type="text" placeholder="Type hier uw notitie..." value={annotation?.text}
+                            onChange={(e) => handleNote(e.target.value)} />
             </Form.Group>
 
             <Form.Group controlId="exampleForm.ControlInput2">
@@ -160,13 +164,13 @@ const Popup: React.FC<PopupProps> = (project) => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={saveAnnotationToBackend}>
-            <BsFillFloppy2Fill size={20} /> Opslaan
+            <BsFillFloppy2Fill size={20}/> Opslaan
           </Button>
           <Button className="warning-text-color" variant="warning" onClick={handleClose}>
-            <BsX size={20} /> Annuleer
+            <BsX size={20}/> Annuleer
           </Button>
           <Button variant="danger" onClick={handleClose}>
-            <BsFillTrashFill size={20} /> Verwijder
+            <BsFillTrashFill size={20}/> Verwijder
           </Button>
         </Modal.Footer>
       </Modal>

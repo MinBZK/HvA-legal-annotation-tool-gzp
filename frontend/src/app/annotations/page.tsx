@@ -2,15 +2,17 @@
 import AnnotationView from '../annotation-view/annotation-view';
 import Popup from '../annotations/comment/page';
 import '../static/annotations.css';
-import { getProjectById } from '../services/project';
+import {getProjectById} from '../services/project';
 import { Project } from '../models/project';
-
 import { useSearchParams } from 'next/navigation'
+import {useEffect, useState} from "react";
 
-export default async function AnnotationPage() {
+export default function AnnotationPage() {
+
+    const [projectData, setProjectData] = useState<Project | null>(null);
 
     // Get id from url
-    const searchParams = useSearchParams()
+    const searchParams = useSearchParams();
     let id: number = 2;
 
     if (searchParams != null) {
@@ -19,22 +21,33 @@ export default async function AnnotationPage() {
         if (isNaN(id)) id = 2;
     }
 
-    const projectData = await getProjectById(id) as Project;
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await getProjectById(id) as Project;
+                setProjectData(data);
+            } catch (error) {
+                // Handle error
+                console.error('Error fetching project data:', error);
+            }
+        };
 
-    return (
-        <>
-            <nav className="navbar">
-                {<div className="navbar-title">Legal Annotation Tool</div>}
-            </nav>
-            <main className="container">
-                <section className="left-column">
-                    {<Popup project={projectData}></Popup>}
-                </section>
-                <section className="right-column">
-                    {<AnnotationView></AnnotationView>}
-                </section>
-            </main>
-        </>
-    );
+        fetchData();
+    }, [id]);
+
+  return (
+    <>
+      <nav className="navbar">
+        {<div className="navbar-title">Legal Annotation Tool</div>}
+      </nav>
+      <main className="container">
+        <section className="left-column">
+            {projectData && <Popup project={projectData} />}
+        </section>
+        <section className="right-column">
+          {<AnnotationView></AnnotationView>}
+        </section>
+      </main>
+    </>
+  );
 }
-

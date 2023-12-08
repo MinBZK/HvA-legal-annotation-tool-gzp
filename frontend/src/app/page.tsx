@@ -74,7 +74,7 @@ export default function Home() {
           <ul className="document-list">
             {projects.map((project) => (
                 <li key={project.id} className="document-item">
-                  <span className="document-title">{project.id}</span>
+                  <span className="document-title">Wet {project.id}</span>
                   <button
                       className="open-button"
                       onClick={() => handleProjectSelection(project.id)}

@@ -4,15 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="bug: commit for workspace">
+    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="feat: put together functionalities to retrieve annotations by project id and fetch xml with path id">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/repository/AnnotationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/repository/AnnotationRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/rest/AnnotationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/rest/AnnotationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/annotation-view/annotation-view.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/annotation-view/annotation-view.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/annotations/comment/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/annotations/comment/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/annotations/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/annotations/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/annotations/project.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/models/project.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/models/project.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/app/services/project.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/services/project.tsx" afterDir="false" />
     </list>
@@ -152,6 +147,7 @@
       <workItem from="1701525762291" duration="3000" />
       <workItem from="1701767621270" duration="15188000" />
       <workItem from="1701851685985" duration="12290000" />
+      <workItem from="1702026927379" duration="6840000" />
     </task>
     <task id="LOCAL-00001" summary="merged dev into branch and modified code to new changes">
       <created>1701773471795</created>
@@ -202,7 +198,21 @@
       <option name="project" value="LOCAL" />
       <updated>1701867820334</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="fix: edited api endpoint to retrieve annotations by project id">
+      <created>1701981202857</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1701981202857</updated>
+    </task>
+    <task id="LOCAL-00009" summary="feat: put together functionalities to retrieve annotations by project id and fetch xml with path id">
+      <created>1701981255998</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1701981255998</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -228,7 +238,9 @@
     <MESSAGE value="recreate database structure to save annotation properly with the correct relationships" />
     <MESSAGE value="together with chi worked on reparing api calls" />
     <MESSAGE value="we are now able to save annotations!" />
-    <option name="LAST_COMMIT_MESSAGE" value="we are now able to save annotations!" />
+    <MESSAGE value="fix: edited api endpoint to retrieve annotations by project id" />
+    <MESSAGE value="feat: put together functionalities to retrieve annotations by project id and fetch xml with path id" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: put together functionalities to retrieve annotations by project id and fetch xml with path id" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
