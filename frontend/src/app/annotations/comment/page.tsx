@@ -13,9 +13,9 @@ interface PopupProps {
   project: Project;
 }
 
-const Popup: React.FC<PopupProps> = ({ project }) => {
+const Popup: React.FC<PopupProps> = (project ) => {
 
-  project.xml_content = project.xml_content.replace("bwb-inputbestand", "div")
+  project.project.xml_content = project.project.xml_content.replace("bwb-inputbestand", "div")
   const [renderXML, setRenderXML] = useState(false);
   const [projectId, setProjectId] = useState<number>(0);
 
@@ -116,7 +116,7 @@ const Popup: React.FC<PopupProps> = ({ project }) => {
 
   return (
     <>
-      <p onMouseUp={handleShow} dangerouslySetInnerHTML={{ __html: renderXML && project?.xml_content }}>
+      <p onMouseUp={handleShow} dangerouslySetInnerHTML={{ __html: renderXML && project.project.xml_content }}>
       </p>
 
       <Modal show={show} onHide={handleClose}>
