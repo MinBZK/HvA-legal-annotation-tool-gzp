@@ -104,7 +104,7 @@ const Popup: FC<PopupProps> = ({ project }) => {
     let count = offset;
     while (node.previousSibling) {
       node = node.previousSibling;
-      count += node.textContent?.length || 0; 
+      count += node.textContent?.length || 0;
     }
     return count;
   }
@@ -189,7 +189,7 @@ const Popup: FC<PopupProps> = ({ project }) => {
           if (currentOffset + nodeLength > startOffset) {
             const textIndex = node.nodeValue?.indexOf(selectedText);
 
-            if (textIndex !== -1 && currentOffset + textIndex >= startOffset) {
+            if (typeof textIndex === 'number' && textIndex !== -1 && currentOffset + textIndex >= startOffset) {
               node.nodeValue = node.nodeValue?.substring(0, textIndex) +
                   `<annotation id="${annotationId}">${selectedText}</annotation>` +
                   node.nodeValue.substring(textIndex + selectedText.length);
