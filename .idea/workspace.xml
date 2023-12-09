@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="commit workspace for pull">
+    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="bug: renamed files to prevent pipeline error">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/annotations/comment/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/annotations/comment/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/annotations/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/annotations/page.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,7 +25,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="development" />
+        <entry key="$PROJECT_DIR$" value="46-backend-annotaties-aanmaken" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -78,7 +79,7 @@
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/frontend/node_modules/typescript/lib" />
   </component>
   <component name="RunManager" selected="Spring Boot.LatBackendApplication">
@@ -125,7 +126,6 @@
       <list>
         <item itemvalue="JUnit.LatBackendApplicationTests" />
         <item itemvalue="JUnit.LatBackendApplicationTests" />
-        <item itemvalue="JUnit.LatBackendApplicationTests" />
       </list>
     </recent_temporary>
   </component>
@@ -145,7 +145,7 @@
       <workItem from="1701525762291" duration="3000" />
       <workItem from="1701767621270" duration="15188000" />
       <workItem from="1701851685985" duration="12290000" />
-      <workItem from="1701944156577" duration="11915000" />
+      <workItem from="1702026927379" duration="6840000" />
     </task>
     <task id="LOCAL-00001" summary="merged dev into branch and modified code to new changes">
       <created>1701773471795</created>
@@ -196,40 +196,40 @@
       <option name="project" value="LOCAL" />
       <updated>1701867820334</updated>
     </task>
-    <task id="LOCAL-00008" summary="fixed small bug to prevent stack overflow error in json">
-      <created>1701871900722</created>
+    <task id="LOCAL-00008" summary="fix: edited api endpoint to retrieve annotations by project id">
+      <created>1701981202857</created>
       <option name="number" value="00008" />
       <option name="presentableId" value="LOCAL-00008" />
       <option name="project" value="LOCAL" />
-      <updated>1701871900722</updated>
+      <updated>1701981202857</updated>
     </task>
-    <task id="LOCAL-00009" summary="workspace updated">
-      <created>1701953348997</created>
+    <task id="LOCAL-00009" summary="feat: put together functionalities to retrieve annotations by project id and fetch xml with path id">
+      <created>1701981255998</created>
       <option name="number" value="00009" />
       <option name="presentableId" value="LOCAL-00009" />
       <option name="project" value="LOCAL" />
-      <updated>1701953348997</updated>
+      <updated>1701981255998</updated>
     </task>
-    <task id="LOCAL-00010" summary="chi and i changed object naming for pipeline error and code convention">
-      <created>1701955708061</created>
+    <task id="LOCAL-00010" summary="bug: added use client string to fix pipeline error">
+      <created>1702034605127</created>
       <option name="number" value="00010" />
       <option name="presentableId" value="LOCAL-00010" />
       <option name="project" value="LOCAL" />
-      <updated>1701955708061</updated>
+      <updated>1702034605127</updated>
     </task>
-    <task id="LOCAL-00011" summary="bug: &quot;any&quot; type to variables that were not defined">
-      <created>1701955988578</created>
+    <task id="LOCAL-00011" summary="bug: added props to fix pipeline error">
+      <created>1702035200001</created>
       <option name="number" value="00011" />
       <option name="presentableId" value="LOCAL-00011" />
       <option name="project" value="LOCAL" />
-      <updated>1701955988579</updated>
+      <updated>1702035200001</updated>
     </task>
-    <task id="LOCAL-00012" summary="commit workspace for pull">
-      <created>1701966408209</created>
+    <task id="LOCAL-00012" summary="bug: renamed files to prevent pipeline error">
+      <created>1702039086320</created>
       <option name="number" value="00012" />
       <option name="presentableId" value="LOCAL-00012" />
       <option name="project" value="LOCAL" />
-      <updated>1701966408209</updated>
+      <updated>1702039086320</updated>
     </task>
     <option name="localTasksCounter" value="13" />
     <servers />
@@ -257,13 +257,12 @@
     <MESSAGE value="recreate database structure to save annotation properly with the correct relationships" />
     <MESSAGE value="together with chi worked on reparing api calls" />
     <MESSAGE value="we are now able to save annotations!" />
-    <MESSAGE value="fixed small bug to prevent stack overflow error in json" />
-    <MESSAGE value="bug fix and added component into main page" />
-    <MESSAGE value="workspace updated" />
-    <MESSAGE value="chi and i changed object naming for pipeline error and code convention" />
-    <MESSAGE value="bug: &quot;any&quot; type to variables that were not defined" />
-    <MESSAGE value="commit workspace for pull" />
-    <option name="LAST_COMMIT_MESSAGE" value="commit workspace for pull" />
+    <MESSAGE value="fix: edited api endpoint to retrieve annotations by project id" />
+    <MESSAGE value="feat: put together functionalities to retrieve annotations by project id and fetch xml with path id" />
+    <MESSAGE value="bug: added use client string to fix pipeline error" />
+    <MESSAGE value="bug: added props to fix pipeline error" />
+    <MESSAGE value="bug: renamed files to prevent pipeline error" />
+    <option name="LAST_COMMIT_MESSAGE" value="bug: renamed files to prevent pipeline error" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

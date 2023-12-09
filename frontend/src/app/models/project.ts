@@ -1,10 +1,4 @@
-// export interface Project {
-//     id: number
-//     xml_content: string
-//     selectedArticles: string
-// }
-
-import { Annotation } from "./annotation";
+import {Annotation} from "./annotation";
 
 export interface Project {
     id: number,
