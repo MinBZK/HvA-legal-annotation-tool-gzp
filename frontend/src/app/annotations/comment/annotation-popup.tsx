@@ -16,6 +16,7 @@ interface PopupProps {
 const Popup: FC<PopupProps> = ({ project }) => {
 
   project.xml_content = project.xml_content.replace("bwb-inputbestand", "div")
+  const [annotationStyles, setAnnotationStyles] = useState({});
   const [renderXML, setRenderXML] = useState(false);
   const [projectId, setProjectId] = useState<number>(0);
   const [originalXML, setOriginalXML] = useState<Document | null>(null);
@@ -29,8 +30,39 @@ const Popup: FC<PopupProps> = ({ project }) => {
     setRenderXML(true);
     fetchId();
     fetchClasses();
+
+    fetchAnnotationsAndStyles(xml);
   }, [project.xml_content]);
 
+
+  const fetchAnnotationsAndStyles = async (xmlDoc) => {
+    const annotations = xmlDoc.getElementsByTagName('annotation');
+    let newAnnotationStyles = {};
+
+    for (let annotation of annotations) {
+      const id = annotation.getAttribute('id');
+      if (id) {
+        const response = await fetch(`http://localhost:8000/api/annotations/${id}`);
+        if (response.ok) {
+          const annotationData = await response.json();
+          const color = annotationData.lawClass.color;
+          newAnnotationStyles[`${id}`] = color;
+        } else {
+          console.error('Failed to fetch annotation data');
+        }
+      }
+    }
+
+    setAnnotationStyles(newAnnotationStyles);
+  };
+
+  const renderStyles = () => {
+    let styleString = "";
+    for (const [selector, color] of Object.entries(annotationStyles)) {
+      styleString += `annotation[id="${selector}"] { background-color: ${color}; }\n`;
+    }
+    return styleString;
+  };
 
   const fetchId = async () => {
     try {
@@ -124,7 +156,6 @@ const Popup: FC<PopupProps> = ({ project }) => {
   };
 
   const addAnnotationTagsToXml = async () => {
-    console.log("ameland")
     try {
       const updatedProject = {
         ...project,
@@ -187,6 +218,10 @@ const Popup: FC<PopupProps> = ({ project }) => {
 
   return (
       <>
+        <style>
+          {renderStyles()}
+        </style>
+
         <p onMouseUp={handleShow} dangerouslySetInnerHTML={{__html: renderXML && project.xml_content}}>
         </p>
 
