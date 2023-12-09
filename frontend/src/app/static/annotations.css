@@ -1,21 +1,27 @@
 .navbar {
-    background-color: #003366; 
-    height: 50px;
-  }
-  
-  .container {
-    display: flex;
-    gap: 20px;
-    padding: 20px;
-  }
-  
-  .left-column, .right-column {
-    flex: 1;
-    border: 1px solid #ccc;
-    padding: 10px;
-  }
+  background-color: #007BC0;
+  height: 50px;
+}
 
-  
+.container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.left-column, .right-column {
+  flex: 1;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.navbar-title {
+  color: #fff;
+  padding-left: 10px;
+  font-weight: bold;
+  font-size: 22px;
+}
+
 .dropdown {
   width: 100%;
 }

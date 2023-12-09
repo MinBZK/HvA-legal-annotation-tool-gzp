@@ -1,30 +1,41 @@
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #fff;
-}
-
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-bottom: 20px;
-  border-bottom: 1px solid #eaeaea;
+  background-color: #0056b3;
 }
 
 .header h1 {
   font-size: 24px;
   color: #333;
 }
+.navbar {
+  background-color: #007BC0;
+  height: 50px;
+  font-size: 22px;
+}
+
+.navbar-title {
+  color: #fff;
+  padding-left: 10px;
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.doc-text {
+  color: #154270 !important;
+  font-size: 22px !important;
+  font-weight: bold;
+}
 
 .import-button {
-  padding: 10px 20px;
-  background-color: #0070f3;
-  color: white;
-  border: none;
-  border-radius: 5px;
+  background-color: #EBEBEB !important;
+  color: #000 !important;
+  border-color: #B1B1B1 !important;
+  border-radius: 20px;
   cursor: pointer;
+  padding: 5px 20px;
 }
 
 .import-button:hover {
@@ -37,6 +48,16 @@
   margin-top: 20px;
 }
 
+.document-info {
+  display: flex;
+  align-items: center;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+}
+
 .document-list {
   list-style: none;
   padding: 0;
@@ -47,20 +68,23 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid #eaeaea;
+  padding: 15px;
+  background-color: #FBFBFB;
+  margin: 10px;
+  border-radius: 10px;
 }
 
 .document-title {
   font-size: 16px;
   color: #555;
+  font-weight: bold;
 }
 
 .open-button {
-  padding: 10px 20px;
-  background-color: #22c55e;
-  color: white;
-  border: none;
+  padding: 5px 10px;
+  background-color: #EBEBEB !important;
+  color: #000 !important;
+  border-color: #B1B1B1 !important;
   border-radius: 5px;
   text-decoration: none;
   cursor: pointer;
@@ -74,10 +98,15 @@
   font-size: 24px;
   color: #ef4444;
   cursor: pointer;
+  margin-left: 10px; /* Add margin to separate the delete icon */
 }
 
 .delete-icon:hover {
   color: #b91c1c;
+}
+
+.download-icon{
+  padding-right: 5px;
 }
 
 body {
@@ -97,3 +126,4 @@ button.success {
 button.success:hover {
   background-color: rgba(76, 167, 74, 0.62);
 }
+

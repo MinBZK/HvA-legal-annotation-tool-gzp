@@ -1,5 +1,3 @@
-
-
 'use client'
 import { FiTrash2 } from 'react-icons/fi';
 import './static/index.css';
@@ -8,6 +6,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {getProjects, uploadXML} from './services/project'
 import {Project} from "./models/project";
+import { BsDownload } from "react-icons/bs";
 
 export default function Home() {
 
@@ -58,30 +57,38 @@ export default function Home() {
   };
 
   return (
-      <div className="container">
-        <header className="header">
-          <h1>Legal Annotation Tool</h1>
-          <Button
-              color="primary"
-              type="button"
-              onClick={handleShow}
-          >
-            Importeer
-          </Button>
-        </header>
-        <main className="main-content">
-          <h2>Documenten</h2>
+      <>
+          <div>
+              <nav className="navbar">
+                  {<div className="navbar-title">Legal Annotation Tool</div>}
+              </nav>
+          </div>
+          <div className="container">
+              <main className="main-content">
+                  <div className="d-flex justify-content-between align-items-center mb-3">
+                      <h2 className="doc-text">Documenten</h2>
+                      <button
+                          className="import-button"
+                          onClick={handleShow}>
+                          <BsDownload className="download-icon" size={20}/>
+                          Importeer XML
+                      </button>
+                  </div>
           <ul className="document-list">
             {projects.map((project) => (
                 <li key={project.id} className="document-item">
-                  <span className="document-title">Wet {project.id}</span>
-                  <button
-                      className="open-button"
-                      onClick={() => handleProjectSelection(project.id)}
-                  >
-                    Open project
-                  </button>
-                  <FiTrash2 className="delete-icon" />
+                    <div className="document-info">
+                        <span className="document-title">Wet {project.id}</span>
+                    </div>
+                    <div className="actions">
+                        <button
+                            className="open-button"
+                            onClick={() => handleProjectSelection(project.id)}
+                            >
+                            Open project
+                        </button>
+                        <FiTrash2 className="delete-icon" />
+                    </div>
                 </li>
             ))}
           </ul>
@@ -112,7 +119,6 @@ export default function Home() {
           </Modal.Body>
         </Modal>
       </div>
-  );
+      </>
+    );
 }
-
-
