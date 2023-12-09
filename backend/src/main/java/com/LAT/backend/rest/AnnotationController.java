@@ -96,7 +96,18 @@ public class AnnotationController {
         return annotationRepository.save(annotation);
     }
 
-
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getAnnotationById(@PathVariable Integer id) {
+        try {
+            Optional<Annotation> annotation = annotationRepository.findById(id);
+            return ResponseEntity.ok(annotation);
+        } catch (Exception e) {
+            // Log the exception for debugging
+            System.out.println("Error fetching annotation: " + e.getMessage());
+            // Return an error response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching annotation");
+        }
+    }
 
 
 }
