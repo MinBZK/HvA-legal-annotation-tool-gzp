@@ -190,10 +190,13 @@ const Popup: FC<PopupProps> = ({ project }) => {
             const textIndex = node.nodeValue?.indexOf(selectedText);
 
             if (typeof textIndex === 'number' && textIndex !== -1 && currentOffset + textIndex >= startOffset) {
-              node.nodeValue = node.nodeValue?.substring(0, textIndex) +
+              const newNodeValue = node.nodeValue
+                  ? node.nodeValue.substring(0, textIndex) +
                   `<annotation id="${annotationId}">${selectedText}</annotation>` +
-                  node.nodeValue.substring(textIndex + selectedText.length);
+                  node.nodeValue.substring(textIndex + selectedText.length)
+                  : '';
 
+              node.nodeValue = newNodeValue;
               annotationAdded = true;
             }
           }
