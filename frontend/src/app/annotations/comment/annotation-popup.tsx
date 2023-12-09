@@ -100,7 +100,7 @@ const Popup: FC<PopupProps> = ({ project }) => {
   };
 
   // Bereken de totale positie van de selectie in de tekst
-  function calculateOffset(node, offset: number): number {
+  function calculateOffset(node: Node, offset: number): number {
     let count = offset;
     while (node.previousSibling) {
       node = node.previousSibling;
