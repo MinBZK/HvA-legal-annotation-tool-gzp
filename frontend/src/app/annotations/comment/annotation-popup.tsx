@@ -104,7 +104,7 @@ const Popup: FC<PopupProps> = ({ project }) => {
     let count = offset;
     while (node.previousSibling) {
       node = node.previousSibling;
-      count += node.textContent?.length;
+      count += node.textContent?.length || 0; // Safely handle possible null or undefined values
     }
     return count;
   }
