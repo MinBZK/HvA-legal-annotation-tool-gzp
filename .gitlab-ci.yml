@@ -27,7 +27,10 @@ test_frontend:
     - cd frontend
     - npm install
     - nohup npm run dev &            # Start de server op de achtergrond
-    - sleep 10                       # Wacht even om de server tijd te geven om te starten
+    - until curl --output /dev/null --silent --head --fail http://localhost:3000; do 
+        printf '.'
+        sleep 1
+      done # check meerdere malen of de server aan staat. Elke keer wanneer de server nog niet ready is wordt er een punt uitgeprint. 
     - npm run test                   # Voer Cypress tests uit
     
 deploy_frontend:
