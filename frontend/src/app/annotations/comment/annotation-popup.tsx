@@ -93,13 +93,13 @@ const Popup: FC<PopupProps> = ({ project }) => {
     }));
   };
 
-  const handleSelectedText = (text: any) => {
+  const handleSelectedText = (text: string, startOffset: number) => {
     setAnnotation((prevAnnotation) => ({
       ...(prevAnnotation as Annotation),
       selectedWord: text,
+      startOffset: startOffset,
     }));
   };
-
   const fetchClasses = () => {
     fetch('http://localhost:8000/api/classes')
         .then(response => {
@@ -118,13 +118,29 @@ const Popup: FC<PopupProps> = ({ project }) => {
 
   const handleShow = () => {
     const selection = window.getSelection();
-    const text = selection ? selection.toString() : null;
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      const text = range.toString();
 
-    if (text) {
-      handleSelectedText(text);
-      setShow(true);
+      if (text) {
+        // Bereken de totale positie van de selectie in de tekst
+        const startOffset = calculateOffset(range.startContainer, range.startOffset);
+        handleSelectedText(text, startOffset);
+        setShow(true);
+      }
     }
   };
+
+  // Bereken de totale positie van de selectie in de tekst
+  function calculateOffset(node: Node, offset: number): number {
+    let count = offset;
+    while (node.previousSibling) {
+      node = node.previousSibling;
+      count += node.textContent?.length || 0;
+    }
+    return count;
+  }
+
   const saveAnnotationToBackend = async () => {
     const backendAnnotation = {
       id: null,
@@ -184,24 +200,47 @@ const Popup: FC<PopupProps> = ({ project }) => {
 
   const handleSave = async () => {
     const annotationId = await saveAnnotationToBackend();
-    if (annotationId && annotation?.selectedWord) {
-      annotateSelectedText(annotation.selectedWord, annotationId);
+    if (annotationId && annotation?.selectedWord && typeof annotation.startOffset === 'number') {
+      annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset);
       await addAnnotationTagsToXml();
     } else {
       console.error('Failed to retrieve annotation ID');
     }
   };
 
-  const annotateSelectedText = (selectedText: string, annotationId: number) => {
+  const annotateSelectedText = (selectedText: string, annotationId: number, startOffset: number) => {
     if (originalXML) {
+      let currentOffset = 0;
+      let annotationAdded = false;
+
       walkTheNode(originalXML.documentElement, function (node) {
-        if (node.nodeType === Node.TEXT_NODE && node.nodeValue?.includes(selectedText)) {
-          let annotatedText = node.nodeValue.replace(selectedText, `<annotation id="${annotationId}">${selectedText}</annotation>`);
-          node.nodeValue = annotatedText;
+        if (node.nodeType === Node.TEXT_NODE && !annotationAdded) {
+          const nodeLength = node.nodeValue?.length || 0;
+
+          if (currentOffset + nodeLength > startOffset) {
+            const textIndex = node.nodeValue?.indexOf(selectedText);
+
+            if (typeof textIndex === 'number' && textIndex !== -1 && currentOffset + textIndex >= startOffset) {
+              const newNodeValue = node.nodeValue
+                  ? node.nodeValue.substring(0, textIndex) +
+                  `<annotation id="${annotationId}">${selectedText}</annotation>` +
+                  node.nodeValue.substring(textIndex + selectedText.length)
+                  : '';
+
+              node.nodeValue = newNodeValue;
+              annotationAdded = true;
+            }
+          }
+          currentOffset += nodeLength;
         }
       });
-      let updatedXMLString = new XMLSerializer().serializeToString(originalXML);
-      project.xml_content = updatedXMLString.replace(/&lt;annotation id="[0-9]+"&gt;/g, `<annotation id="${annotationId}">`).replace(/&lt;\/annotation&gt;/g, '</annotation>');
+
+      if (annotationAdded) {
+        let serializedXML = new XMLSerializer().serializeToString(originalXML);
+        // Vervang de tijdelijke annotatie-tags door de daadwerkelijke tags
+        project.xml_content = serializedXML.replace(/&lt;annotation id="([0-9]+)"&gt;/g, `<annotation id="$1">`)
+            .replace(/&lt;\/annotation&gt;/g, '</annotation>');
+      }
     }
   };
 

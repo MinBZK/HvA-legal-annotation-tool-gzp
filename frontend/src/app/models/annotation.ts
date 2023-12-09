@@ -7,4 +7,5 @@ export interface Annotation {
     selectedWord: string,
     lawClass: LawClass,
     project: Project
+    startOffset?: number;
 }
