@@ -5,9 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="bug: renamed files to prevent pipeline error">
+      <change afterPath="$PROJECT_DIR$/frontend/cypress/e2e/legal-annotation-test/project.cy.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/annotations/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/annotations/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/cypress/e2e/legal-annotation-test/annotation.cy.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/cypress/e2e/legal-annotation-test/annotation.cy.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/annotations/comment/annotation-popup.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/annotations/comment/annotation-popup.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/.package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/fs/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/fs/package.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,7 +29,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="46-backend-annotaties-aanmaken" />
+        <entry key="$PROJECT_DIR$" value="development" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -50,7 +54,7 @@
       <map>
         <entry key="com.haulmont.jpb.jpaInspector" value="false" />
         <entry key="com.haulmont.jpb.jpaPalette" value="false" />
-        <entry key="com.haulmont.jpb.jpaStructure" value="false" />
+        <entry key="com.haulmont.jpb.jpaStructure" value="true" />
       </map>
     </option>
   </component>
@@ -81,6 +85,11 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/frontend/node_modules/typescript/lib" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
   </component>
   <component name="RunManager" selected="Spring Boot.LatBackendApplication">
     <configuration name="LatBackendApplicationTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
@@ -231,7 +240,14 @@
       <option name="project" value="LOCAL" />
       <updated>1702039086320</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="doc: evaluation form M&amp;T">
+      <created>1702237523773</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1702237523773</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -262,7 +278,8 @@
     <MESSAGE value="bug: added use client string to fix pipeline error" />
     <MESSAGE value="bug: added props to fix pipeline error" />
     <MESSAGE value="bug: renamed files to prevent pipeline error" />
-    <option name="LAST_COMMIT_MESSAGE" value="bug: renamed files to prevent pipeline error" />
+    <MESSAGE value="doc: evaluation form M&amp;T" />
+    <option name="LAST_COMMIT_MESSAGE" value="doc: evaluation form M&amp;T" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

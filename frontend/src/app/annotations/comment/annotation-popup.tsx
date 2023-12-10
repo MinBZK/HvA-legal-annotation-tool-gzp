@@ -261,7 +261,7 @@ const Popup: FC<PopupProps> = ({ project }) => {
           {renderStyles()}
         </style>
 
-        <p onMouseUp={handleShow} dangerouslySetInnerHTML={{__html: renderXML && project.xml_content}}>
+        <p className="xml-content" onMouseUp={handleShow} dangerouslySetInnerHTML={{__html: renderXML && project.xml_content}}>
         </p>
 
         <Modal show={show} onHide={handleClose}>
