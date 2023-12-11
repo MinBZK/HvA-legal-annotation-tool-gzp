@@ -3,6 +3,7 @@ package com.LAT.backend.model;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Project {
@@ -26,6 +27,10 @@ public class Project {
         this.annotations = annotations;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }
@@ -44,5 +49,12 @@ public class Project {
 
     public void setSelectedArticles(String selectedArticles) {
         this.selectedArticles = selectedArticles;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Project project)) return false;
+        return Objects.equals(getId(), project.getId());
     }
 }

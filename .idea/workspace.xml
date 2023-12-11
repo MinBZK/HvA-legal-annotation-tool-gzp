@@ -4,14 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="bug: renamed files to prevent pipeline error">
-      <change afterPath="$PROJECT_DIR$/frontend/cypress/e2e/legal-annotation-test/project.cy.js" afterDir="false" />
+    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="test: annotation and project cypress tests">
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/exceptions/LawClassNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/exceptions/ProjectNotFoundException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/cypress/e2e/legal-annotation-test/annotation.cy.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/cypress/e2e/legal-annotation-test/annotation.cy.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/annotations/comment/annotation-popup.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/annotations/comment/annotation-popup.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/.package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/fs/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/node_modules/fs/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/Annotation.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/Annotation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/LawClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/LawClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/Project.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/model/Project.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/repository/XmlRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/rest/AnnotationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/rest/AnnotationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/rest/ClassController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/rest/LawClassController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/rest/XmlController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/LAT/backend/rest/ProjectController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/LAT/backend/AnnotationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/com/LAT/backend/AnnotationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/LAT/backend/XmlTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/com/LAT/backend/ProjectTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,8 +26,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -91,7 +96,60 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.LatBackendApplication">
+  <component name="RunManager" selected="JUnit.AnnotationTest">
+    <configuration name="AnnotationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.LAT.backend.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.LAT.backend" />
+      <option name="MAIN_CLASS_NAME" value="com.LAT.backend.AnnotationTest" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <envs>
+        <env name="DB_PASS" value="hUDR/2NO3TU.6G" />
+        <env name="DB_URL" value="jdbc:mysql://oege.ie.hva.nl:3306/zschied2" />
+        <env name="DB_USER" value="schied2" />
+      </envs>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AnnotationTest.testCreateAnnotation_ValidationErrors" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.LAT.backend.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.LAT.backend" />
+      <option name="MAIN_CLASS_NAME" value="com.LAT.backend.AnnotationTest" />
+      <option name="METHOD_NAME" value="testCreateAnnotation_ValidationErrors" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AnnotationTest.testSaveAndGetAnnotation" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.LAT.backend.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.LAT.backend" />
+      <option name="MAIN_CLASS_NAME" value="com.LAT.backend.AnnotationTest" />
+      <option name="METHOD_NAME" value="testSaveAndGetAnnotation" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="LatBackendApplicationTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="backend" />
       <extension name="coverage">
@@ -105,9 +163,30 @@
       <option name="METHOD_NAME" value="" />
       <option name="TEST_OBJECT" value="class" />
       <envs>
-        <env name="DB_PASS" value="jUok7ZbbTFhviK" />
-        <env name="DB_URL" value="jdbc:mysql://oege.ie.hva.nl:3306/zyeungc1" />
-        <env name="DB_USER" value="yeungc1" />
+        <env name="DB_PASS" value="hUDR/2NO3TU.6G" />
+        <env name="DB_URL" value="jdbc:mysql://oege.ie.hva.nl:3306/zschied2" />
+        <env name="DB_USER" value="schied2" />
+      </envs>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ProjectTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.LAT.backend.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.LAT.backend" />
+      <option name="MAIN_CLASS_NAME" value="com.LAT.backend.ProjectTest" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <envs>
+        <env name="DB_PASS" value="hUDR/2NO3TU.6G" />
+        <env name="DB_URL" value="jdbc:mysql://oege.ie.hva.nl:3306/zschied2" />
+        <env name="DB_USER" value="schied2" />
       </envs>
       <method v="2">
         <option name="Make" enabled="true" />
@@ -129,12 +208,19 @@
     </configuration>
     <list>
       <item itemvalue="JUnit.LatBackendApplicationTests" />
+      <item itemvalue="JUnit.AnnotationTest" />
+      <item itemvalue="JUnit.AnnotationTest.testCreateAnnotation_ValidationErrors" />
+      <item itemvalue="JUnit.AnnotationTest.testSaveAndGetAnnotation" />
+      <item itemvalue="JUnit.ProjectTest" />
       <item itemvalue="Spring Boot.LatBackendApplication" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.AnnotationTest" />
+        <item itemvalue="JUnit.AnnotationTest.testSaveAndGetAnnotation" />
+        <item itemvalue="JUnit.ProjectTest" />
         <item itemvalue="JUnit.LatBackendApplicationTests" />
-        <item itemvalue="JUnit.LatBackendApplicationTests" />
+        <item itemvalue="JUnit.AnnotationTest.testCreateAnnotation_ValidationErrors" />
       </list>
     </recent_temporary>
   </component>
@@ -155,6 +241,7 @@
       <workItem from="1701767621270" duration="15188000" />
       <workItem from="1701851685985" duration="12290000" />
       <workItem from="1702026927379" duration="6840000" />
+      <workItem from="1702303269998" duration="13424000" />
     </task>
     <task id="LOCAL-00001" summary="merged dev into branch and modified code to new changes">
       <created>1701773471795</created>
@@ -247,7 +334,14 @@
       <option name="project" value="LOCAL" />
       <updated>1702237523773</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="test: annotation and project cypress tests">
+      <created>1702247197104</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1702247197104</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -279,7 +373,8 @@
     <MESSAGE value="bug: added props to fix pipeline error" />
     <MESSAGE value="bug: renamed files to prevent pipeline error" />
     <MESSAGE value="doc: evaluation form M&amp;T" />
-    <option name="LAST_COMMIT_MESSAGE" value="doc: evaluation form M&amp;T" />
+    <MESSAGE value="test: annotation and project cypress tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="test: annotation and project cypress tests" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
