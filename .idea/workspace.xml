@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="test: annotation and project junit tests with and without mock">
+    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="bug: set link component instead of href for faster routing and data fetching">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/cypress/e2e/legal-annotation-test/annotation.cy.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/cypress/e2e/legal-annotation-test/annotation.cy.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -231,7 +231,7 @@
       <workItem from="1701767621270" duration="15188000" />
       <workItem from="1701851685985" duration="12290000" />
       <workItem from="1702026927379" duration="6840000" />
-      <workItem from="1702303269998" duration="14993000" />
+      <workItem from="1702303269998" duration="15701000" />
     </task>
     <task id="LOCAL-00001" summary="merged dev into branch and modified code to new changes">
       <created>1701773471795</created>
@@ -338,7 +338,14 @@
       <option name="project" value="LOCAL" />
       <updated>1702318286759</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="bug: set link component instead of href for faster routing and data fetching">
+      <created>1702324991379</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1702324991379</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -372,7 +379,8 @@
     <MESSAGE value="doc: evaluation form M&amp;T" />
     <MESSAGE value="test: annotation and project cypress tests" />
     <MESSAGE value="test: annotation and project junit tests with and without mock" />
-    <option name="LAST_COMMIT_MESSAGE" value="test: annotation and project junit tests with and without mock" />
+    <MESSAGE value="bug: set link component instead of href for faster routing and data fetching" />
+    <option name="LAST_COMMIT_MESSAGE" value="bug: set link component instead of href for faster routing and data fetching" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

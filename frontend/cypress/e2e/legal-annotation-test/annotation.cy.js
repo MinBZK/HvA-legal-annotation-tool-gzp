@@ -7,9 +7,7 @@ describe('Visit annotation page', () => {
     })
 
     it('annotaties element bestaat', () => {
-
         cy.get('.annolist').should('exist')
-
     })
 
     // Hanna
@@ -29,11 +27,18 @@ describe('Visit annotation page', () => {
             }],
         }
 
+        const lawClassOptions = [
+            { id: 1, name: 'LawClass 1', color: '#FF0000' },
+            { id: 2, name: 'LawClass 2', color: '#00FF00' },
+            { id: 3, name: 'LawClass 3', color: '#0000FF' },
+        ];
+
         // Intercept the data fetching request and respond with the mock data
         cy.intercept('GET', '/api/project/*', mockData).as('getProject');
+        cy.intercept('GET', '/api/classes', lawClassOptions).as('getLawClasses');
 
         // Wait for the data fetching to complete
-        cy.wait('@getProject');
+        cy.wait(['@getProject', '@getLawClasses']);
 
         // Check if the page contains the expected elements
         cy.get('.navbar-title').should('contain', 'Legal Annotation Tool');
@@ -61,6 +66,18 @@ describe('Visit annotation page', () => {
         cy.get('.modal-footer').contains('Opslaan');
         cy.get('.modal-footer').contains('Annuleer');
         cy.get('.modal-footer').contains('Verwijder');
+
+        // Click on the dropdown toggle to open the dropdown
+        cy.get('.dropdown-toggle').click();
+
+        cy.get('.dropdown-menu').should('be.visible');
+
+        cy.get('.dropdown-menu').contains('LawClass 1').should('exist');
+        cy.get('.dropdown-menu').contains('LawClass 2').should('exist');
+        cy.get('.dropdown-menu').contains('LawClass 3').should('exist');
+
+        cy.get('.dropdown-menu').contains('LawClass 1').click();
+        cy.get('.dropdown-toggle').should('contain.text', 'LawClass 1');
     });
 
 });
