@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {getProjects, uploadXML} from './services/project'
 import {Project} from "./models/project";
 import { BsDownload } from "react-icons/bs";
+import Link from 'next/link';
 
 export default function Home() {
 
@@ -81,12 +82,9 @@ export default function Home() {
                         <span className="document-title">Wet {project.id}</span>
                     </div>
                     <div className="actions">
-                        <button
-                            className="open-button"
-                            onClick={() => handleProjectSelection(project.id)}
-                            >
-                            Open project
-                        </button>
+                        <Link href={{ pathname: '/annotations', query: { id: project.id } }} passHref>
+                            <button className="open-button">Open project</button>
+                        </Link>
                         <FiTrash2 className="delete-icon" />
                     </div>
                 </li>
