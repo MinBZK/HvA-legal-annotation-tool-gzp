@@ -35,9 +35,9 @@ const Popup: FC<PopupProps> = ({ project }) => {
   }, [project.xml_content]);
 
 
-  const fetchAnnotationsAndStyles = async (xmlDoc) => {
+  const fetchAnnotationsAndStyles = async (xmlDoc: any) => {
     const annotations = xmlDoc.getElementsByTagName('annotation');
-    let newAnnotationStyles = {};
+    let newAnnotationStyles: any = {};
 
     for (let annotation of annotations) {
       const id = annotation.getAttribute('id');
