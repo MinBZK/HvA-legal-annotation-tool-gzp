@@ -85,7 +85,7 @@ export default function Home() {
                   </Alert>
 
           <ul className="document-list">
-            {projects.map((project) => (
+            {projects && projects.map((project) => (
                 <li key={project.id} className="document-item">
                     <div className="document-info">
                         <span className="document-title">Wet {project.id}</span>

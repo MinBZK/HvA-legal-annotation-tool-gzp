@@ -20,9 +20,12 @@ const Popup: FC<PopupProps> = ({ project }) => {
   const [renderXML, setRenderXML] = useState(false);
   const [projectId, setProjectId] = useState<number>(0);
   const [originalXML, setOriginalXML] = useState<Document | null>(null);
+  const [show, setShow] = useState(false);
+  const [classes, setClasses] = useState<LawClass[]>([]); // New state to store the laws
+  const [annotation, setAnnotation] = useState<Annotation>();
+  const [lawClassError, setLawClassError] = useState(false);
 
   useEffect(() => {
-
     let parser = new DOMParser();
     let xml = parser.parseFromString(project.xml_content, "application/xml");
     setOriginalXML(xml);
@@ -67,17 +70,12 @@ const Popup: FC<PopupProps> = ({ project }) => {
   const fetchId = async () => {
     try {
       const searchParams = await new URLSearchParams(window.location.search);
-      const projectId = parseInt(searchParams.get("id") as string) || 2
+      const projectId = parseInt(searchParams.get("id") as string) || 0
       setProjectId(projectId)
     } catch (error) {
       console.error("Error fetching annotations:", error);
     }
   };
-
-  const [show, setShow] = useState(false);
-  const [classes, setClasses] = useState<LawClass[]>([]); // New state to store the laws
-  const [annotation, setAnnotation] = useState<Annotation>();
-  const [lawClassError, setLawClassError] = useState(false);
 
   // Update the selected law
   const handleSelectLaw = (lawName: any) => {
@@ -101,6 +99,7 @@ const Popup: FC<PopupProps> = ({ project }) => {
       startOffset: startOffset,
     }));
   };
+
   const fetchClasses = () => {
     fetch('http://localhost:8000/api/classes')
         .then(response => {

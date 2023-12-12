@@ -6,11 +6,11 @@ describe('Open xml upload modal', () => {
     })
 
     it('Check if upload button exists', () => {
-        cy.get('header button').should('exist');
+        cy.get('button.import-button').should('exist');
     })
 
     it('Open modal and check contents', () => {
-        cy.get('header button').click();
+        cy.get('button.import-button').click();
         cy.get('.modal.show').should('exist');
         cy.get('.modal form').should('exist');
         cy.get('.modal form input').should('exist');
