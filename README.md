@@ -17,6 +17,7 @@ After the form is complete please upload this (as a '*.PDF' file ) to your sprin
 | Delbert Densu     | **2**        | [Link to backlog item](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/42) [Link to backlog item](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/55) [Link to backlog item](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/43) [Link to backlog item](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/56) [Link to backlog item](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/50) [Link to backlog item](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/36)|
 | Hanna Toenbreker     | **2**        | [Link to backlog item](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/42) [Link to backlog item](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/11) [Link to backlog item](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/49) [Link to backlog item](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/46) [Link to backlog item](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/60) [Link to backlog item](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/56) [Link to backlog item](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/36) |
 | Taner Özgüner     | **2**        | [Link to backlog item](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/42) [Link to backlog item](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/10) [Link to backlog item](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/55) [Link to backlog item](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/56) [Link to backlog item](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/50) [Link to backlog item](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/36)|
+| Chi Yu Yeung     | **2**        | [Link to backlog item](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/21) [Link to backlog item](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/42) [Link to backlog item](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/11) [Link to backlog item](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/46) [Link to backlog item](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/48) [Link to backlog item](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/56) [Link to backlog item](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/36)|
 
 
 
@@ -44,9 +45,23 @@ After the form is complete please upload this (as a '*.PDF' file ) to your sprin
 #### Tops:
 - Completed CI/CD pipeline with the help of member 1
 - Tech stack does not use middleware any more
-- Back end calls are now more secure
+- Back end calls are now more secure  
 
 #### Tips:
 
 - Database schema is not in line with rest of team, needs refactor
 - tests written do not use testing principles , need to refactor 
+
+|  Name       | Focus 1     | Focus 2  | Focus 3 | Focus 4 |
+|---------|-------------|----------|---------|---------|
+| Chi Yu Yeung | Frontend create annotation | Backend create annotation  | Styling home page XMLs  |   Documenting Overview of System Architecture    | 
+
+#### Tops:
+- Created a pop up for making an annotation feature (together with Hanna)
+- Created the saving function for the annotation (together with Hanna)
+- Made some styling from the Figma design at the home page of showing the XMLs
+
+#### Tips:
+
+- The pop up will be changed later in the following sprint, so it will be more user friendly
+- For the next sprint I want to work on more backend tasks
