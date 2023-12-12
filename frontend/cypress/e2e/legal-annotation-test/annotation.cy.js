@@ -12,7 +12,7 @@ describe('Visit annotation page', () => {
 
     // Hanna
 
-    it('Display the popup when text is selected', () => {
+    const openPopupAndSelectText = () => {
         // Mock data to be returned by getProjectById
         const mockData = {
             id: 2, xml_content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
@@ -43,7 +43,8 @@ describe('Visit annotation page', () => {
         // Check if the page contains the expected elements
         cy.get('.navbar-title').should('contain', 'Legal Annotation Tool');
 
-        cy.get('p')
+        // Trigger selection event
+        cy.get('p.xml-content')
             .trigger('mousedown')
             .then(($el) => {
                 const el = $el[0]
@@ -55,6 +56,10 @@ describe('Visit annotation page', () => {
             })
             .trigger('mouseup')
         cy.document().trigger('selectionchange')
+    }
+
+    it('Display the popup when text is selected and select a law class', () => {
+        openPopupAndSelectText();
 
         // Wait for the popup to be visible
         cy.get('.modal').should('be.visible');
@@ -78,6 +83,22 @@ describe('Visit annotation page', () => {
 
         cy.get('.dropdown-menu').contains('LawClass 1').click();
         cy.get('.dropdown-toggle').should('contain.text', 'LawClass 1');
+    });
+
+    it('Shows error alert when law class is not selected', () => {
+        openPopupAndSelectText();
+
+        cy.get('.modal-title').should('contain', 'Annoteer de tekst');
+
+        // Click the "Opslaan" button without selecting a law class
+        cy.get('button:contains("Opslaan")').click();
+
+        // Check if the error alert is visible
+        cy.get('.alert-danger').should('be.visible');
+        cy.get('.alert-danger').should('contain', 'Selecteer alstublieft een juridische klasse.');
+
+        // Close the popup
+        cy.get('button:contains("Annuleer")').click();
     });
 
 });
