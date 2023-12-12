@@ -79,3 +79,13 @@ After the form is complete please upload this (as a '*.PDF' file ) to your sprin
 - For the next sprint, my goal is to focus on code quality from the outset, rather than addressing it at the end.
 - I also plan to assess the security aspects of my code. 
 - In the upcoming sprint, I aim to have my teammates review my code and, in turn, review someone else's code (peer feedback).
+
+|  Name       | Focus 1     | Focus 2  | Focus 3 | Focus 4 |
+|---------|-------------|----------|---------|---------|
+| Kevin van Hout |  |  |  |  | 
+
+#### Tops:
+- 
+
+#### Tips:
+- 
