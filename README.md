@@ -56,6 +56,7 @@ After the form is complete please upload this (as a '*.PDF' file ) to your sprin
 |---------|-------------|----------|---------|---------|
 | Chi Yu Yeung | Frontend create annotation | Backend create annotation  | Styling home page XMLs  |   Documenting Overview of System Architecture    | 
 
+
 #### Tops:
 - Created a pop up for making an annotation feature (together with Hanna)
 - Created the saving function for the annotation (together with Hanna)
@@ -65,3 +66,17 @@ After the form is complete please upload this (as a '*.PDF' file ) to your sprin
 
 - The pop up will be changed later in the following sprint, so it will be more user friendly
 - For the next sprint I want to work on more backend tasks
+
+|  Name       | Focus 1     | Focus 2  | Focus 3 | Focus 4 |
+|---------|-------------|----------|---------|---------|
+| Hanna Toenbreker | Architecture | Testing | Coding standards (DRY, SOLID, etc.) |  (Optional) Specific files or subsystems in your codebase: TEI investigation     | 
+
+#### Tops:
+- I gained insights into the architecture of the Next.js framework.
+- I acquired new skills, such as adding custom TEI tags to an XML file.
+- I enjoyed the variety of tasks (frontend, backend, documentation, investigation).
+
+#### Tips:
+- For the next sprint, my goal is to focus on code quality from the outset, rather than addressing it at the end.
+- I also plan to assess the security aspects of my code. 
+- In the upcoming sprint, I aim to have my teammates review my code and, in turn, review someone else's code (peer feedback).
