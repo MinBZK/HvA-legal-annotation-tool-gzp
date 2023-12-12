@@ -14,6 +14,7 @@ export default function Home() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [show, setShow] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -25,16 +26,16 @@ export default function Home() {
     fetchProjects();
   }, []);
 
-  const handleProjectSelection = (projectId: number) => {
-    window.location.href = `/annotations?id=${projectId}`;
-  };
-
   const fetchProjects = async () => {
     try {
-      const projectsData = await getProjects();
-      setProjects(projectsData);
+        setLoading(true); // Set loading to true when starting the fetch
+        const projectsData = await getProjects();
+        setProjects(projectsData);
     } catch (error) {
-      console.error('Error fetching projects:', error);
+        console.error('Error fetching projects:', error);
+        setShowError(true);
+    } finally {
+        setLoading(false); // Set loading to false regardless of success or failure
     }
   };
 
@@ -75,6 +76,14 @@ export default function Home() {
                           Importeer XML
                       </button>
                   </div>
+
+                  {loading && <p className="loading-message">Loading...</p>}
+
+                  <Alert show={showError} variant="danger" dismissible>
+                      <Alert.Heading>Error</Alert.Heading>
+                      <p>Something went wrong</p>
+                  </Alert>
+
           <ul className="document-list">
             {projects.map((project) => (
                 <li key={project.id} className="document-item">

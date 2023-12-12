@@ -1,7 +1,7 @@
 'use client';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {FC, useEffect, useState} from 'react';
-import {Button, Dropdown, Form, Modal} from 'react-bootstrap';
+import {Alert, Button, Dropdown, Form, Modal} from 'react-bootstrap';
 import '../../static/annotations.css'
 import {BsFillFloppy2Fill, BsFillTrashFill, BsX} from "react-icons/bs";
 import {Project} from "../../models/project";
@@ -77,6 +77,7 @@ const Popup: FC<PopupProps> = ({ project }) => {
   const [show, setShow] = useState(false);
   const [classes, setClasses] = useState<LawClass[]>([]); // New state to store the laws
   const [annotation, setAnnotation] = useState<Annotation>();
+  const [lawClassError, setLawClassError] = useState(false);
 
   // Update the selected law
   const handleSelectLaw = (lawName: any) => {
@@ -114,6 +115,7 @@ const Popup: FC<PopupProps> = ({ project }) => {
 
   const handleClose = () => {
     setShow(false);
+    setLawClassError(false);
   };
 
   const handleShow = () => {
@@ -199,6 +201,12 @@ const Popup: FC<PopupProps> = ({ project }) => {
 
 
   const handleSave = async () => {
+    // Check if the law class is selected before saving
+    if (!annotation?.lawClass) {
+      setLawClassError(true);
+      return;
+    }
+    setLawClassError(false);
     const annotationId = await saveAnnotationToBackend();
     if (annotationId && annotation?.selectedWord && typeof annotation.startOffset === 'number') {
       annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset);
@@ -269,6 +277,12 @@ const Popup: FC<PopupProps> = ({ project }) => {
             <Modal.Title>Annoteer de tekst</Modal.Title>
           </Modal.Header>
           <Modal.Body>
+            {lawClassError && (
+                <Alert variant="danger">
+                  <Alert.Heading>Error</Alert.Heading>
+                  <p>Selecteer alstublieft een juridische klasse.</p>
+                </Alert>
+            )}
             {annotation?.selectedWord && <p><b>Geselecteerde tekst: </b> {annotation?.selectedWord}</p>}
             <Form>
               <Form.Group controlId="exampleForm.ControlSelect1">

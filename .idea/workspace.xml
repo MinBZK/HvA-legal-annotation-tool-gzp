@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="test: extra element for testing" />
+    <list default="true" id="1b192c0f-2084-4761-b255-97a72a30fdf5" name="Changes" comment="bug: fixed any types so pipeline test wont fail">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/cypress/e2e/legal-annotation-test/annotation.cy.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/cypress/e2e/legal-annotation-test/annotation.cy.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/cypress/e2e/legal-annotation-test/project.cy.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/cypress/e2e/legal-annotation-test/project.cy.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/annotations/comment/annotation-popup.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/annotations/comment/annotation-popup.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/page.tsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -228,7 +234,8 @@
       <workItem from="1701767621270" duration="15188000" />
       <workItem from="1701851685985" duration="12290000" />
       <workItem from="1702026927379" duration="6840000" />
-      <workItem from="1702303269998" duration="16046000" />
+      <workItem from="1702303269998" duration="16524000" />
+      <workItem from="1702382637778" duration="4912000" />
     </task>
     <task id="LOCAL-00001" summary="merged dev into branch and modified code to new changes">
       <created>1701773471795</created>
@@ -349,7 +356,14 @@
       <option name="project" value="LOCAL" />
       <updated>1702325670711</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="bug: fixed any types so pipeline test wont fail">
+      <created>1702326041908</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1702326041908</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -385,7 +399,8 @@
     <MESSAGE value="test: annotation and project junit tests with and without mock" />
     <MESSAGE value="bug: set link component instead of href for faster routing and data fetching" />
     <MESSAGE value="test: extra element for testing" />
-    <option name="LAST_COMMIT_MESSAGE" value="test: extra element for testing" />
+    <MESSAGE value="bug: fixed any types so pipeline test wont fail" />
+    <option name="LAST_COMMIT_MESSAGE" value="bug: fixed any types so pipeline test wont fail" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
