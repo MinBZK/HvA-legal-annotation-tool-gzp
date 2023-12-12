@@ -1,5 +1,7 @@
 package com.LAT.backend.rest;
 
+import com.LAT.backend.exceptions.LawClassNotFoundException;
+import com.LAT.backend.exceptions.ProjectNotFoundException;
 import com.LAT.backend.model.Annotation;
 import com.LAT.backend.model.LawClass;
 import com.LAT.backend.model.Project;
@@ -52,23 +54,27 @@ public class AnnotationController {
     // Endpoint to create a new annotation for a specific project
     // Hanna
     @PostMapping("/project")
-    public Annotation createAnnotation(@RequestBody Annotation annotation) {
-        // Validate if the project exists
-        Project project = projectRepository.findById(annotation.getProject().getId())
-                .orElseThrow(() -> new RuntimeException("Project not found"));
+    public ResponseEntity<Annotation> createAnnotation(@RequestBody Annotation annotation) {
+        try {
+            // Validate if the project exists
+            Project project = projectRepository.findById(annotation.getProject().getId())
+                    .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
 
-        // Validate if the annotation class exists
-        LawClass lawClass = lawClassRepository.findByName(annotation.getLawClass().getName())
-                .orElseThrow(() -> new RuntimeException("Annotation class not found"));
+            // Validate if the annotation class exists
+            LawClass lawClass = lawClassRepository.findByName(annotation.getLawClass().getName())
+                    .orElseThrow(() -> new LawClassNotFoundException("Annotation class not found"));
 
-        // Set the project for the annotation
-        annotation.setProject(project);
+            annotation.setProject(project);
+            annotation.setLawClass(lawClass);
 
-        // Set the annotation class for the annotation
-        annotation.setLawClass(lawClass);
-
-        // Save the annotation to the repository
-        return annotationRepository.save(annotation);
+            // Save the annotation to the repository
+            Annotation savedAnnotation = annotationRepository.save(annotation);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedAnnotation);
+        } catch (ProjectNotFoundException | LawClassNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @DeleteMapping("/deleteannotation/{id}")

@@ -7,12 +7,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {getProjects, uploadXML} from './services/project'
 import {Project} from "./models/project";
 import { BsDownload } from "react-icons/bs";
+import Link from 'next/link';
 
 export default function Home() {
 
   const [projects, setProjects] = useState<Project[]>([]);
   const [show, setShow] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -24,16 +26,16 @@ export default function Home() {
     fetchProjects();
   }, []);
 
-  const handleProjectSelection = (projectId: number) => {
-    window.location.href = `/annotations?id=${projectId}`;
-  };
-
   const fetchProjects = async () => {
     try {
-      const projectsData = await getProjects();
-      setProjects(projectsData);
+        setLoading(true); // Set loading to true when starting the fetch
+        const projectsData = await getProjects();
+        setProjects(projectsData);
     } catch (error) {
-      console.error('Error fetching projects:', error);
+        console.error('Error fetching projects:', error);
+        setShowError(true);
+    } finally {
+        setLoading(false); // Set loading to false regardless of success or failure
     }
   };
 
@@ -74,19 +76,24 @@ export default function Home() {
                           Importeer XML
                       </button>
                   </div>
+
+                  {loading && <p className="loading-message">Loading...</p>}
+
+                  <Alert show={showError} variant="danger" dismissible>
+                      <Alert.Heading>Error</Alert.Heading>
+                      <p>Something went wrong</p>
+                  </Alert>
+
           <ul className="document-list">
-            {projects.map((project) => (
+            {projects && projects.map((project) => (
                 <li key={project.id} className="document-item">
                     <div className="document-info">
                         <span className="document-title">Wet {project.id}</span>
                     </div>
                     <div className="actions">
-                        <button
-                            className="open-button"
-                            onClick={() => handleProjectSelection(project.id)}
-                            >
-                            Open project
-                        </button>
+                        <Link href={{ pathname: '/annotations', query: { id: project.id } }} passHref>
+                            <button className="open-button">Open project</button>
+                        </Link>
                         <FiTrash2 className="delete-icon" />
                     </div>
                 </li>
