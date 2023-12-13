@@ -115,7 +115,7 @@ After the form is complete please upload this (as a '*.PDF' file ) to your sprin
 
 #### Tops:
 - Completed setting up the CI/CD pipeline and Cypress with the help of Taner
-- Right side of the annotation page was finished for this component
+- Right side of the annotation page was finished for this sprint
 
 #### Tips:
 
