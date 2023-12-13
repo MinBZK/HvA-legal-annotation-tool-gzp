@@ -1,4 +1,4 @@
-#M&T: Self Evaluation Form -
+# M&T: Self Evaluation Form -
 
 Fill in for each group member:
 
@@ -22,35 +22,6 @@ After the form is complete please upload this (as a '*.PDF' file ) to your sprin
 
 
 ### Individual Evaluation Feedback
-
-|  Name       | Focus 1     | Focus 2  | Focus 3 | Focus 4 |
-|---------|-------------|----------|---------|---------|
-| Member 1 | JWT Tokens  | Login System | Database setup  | Wrote 5 tests      |      
-
-#### Tops:
-- Created nesting feature login
-- Completed on design patterns (state pattern) for login
-- tests written for the nested reply
-
-#### Tips:
-
-- Database schema is not in line with rest of team, needs refactor
-- login system still not secure, jwt tokens implemented but not used
-
-
-|  Name       | Focus 1     | Focus 2  | Focus 3 | Focus 4 |
-|---------|-------------|----------|---------|---------|
-| Member 2 | CI/CD  | Architecture Setup | Back end rest calls  | N/A      |      
-
-#### Tops:
-- Completed CI/CD pipeline with the help of member 1
-- Tech stack does not use middleware any more
-- Back end calls are now more secure  
-
-#### Tips:
-
-- Database schema is not in line with rest of team, needs refactor
-- tests written do not use testing principles , need to refactor 
 
 |  Name       | Focus 1     | Focus 2  | Focus 3 | Focus 4 |
 |---------|-------------|----------|---------|---------|
@@ -93,3 +64,47 @@ After the form is complete please upload this (as a '*.PDF' file ) to your sprin
 #### Tips:
 - For the upcoming sprints, I want to get an even better understanding of Next.js.
 - I want to be more involved in the documentation.
+
+|  Name       | Focus 1     | Focus 2  | Focus 3 | Focus 4 |
+|---------|-------------|----------|---------|---------|
+| Dennis van Schie | Database models | Add annotation tags to XML | Display existing annotations | Testing add annotation to XML | 
+
+#### Tops:
+- Database structure and models are implemented and functional.
+- Annotation tags are added to the XML content.
+- Existing annotations are properly loaded and displayed when re-opening a project.
+- Tests are in place to assert correct functioning of adding the annotation tags to xml documents.
+
+#### Tips:
+- Database relationships need to be refactored to comply to the wishes of Steven.
+- The Popup component in the frontend now also handles the transformations on the XML. This should be refactored to a separate component.
+
+
+| Name          | Focus 1                               | Focus 2              | Focus 3            | Focus 4                    |
+|---------------|---------------------------------------|----------------------|--------------------|----------------------------|
+| Delbert Densu | Retrieving and displaying annotations | Updating annotations | Setting up Cypress | Right side annotation page |      
+
+#### Tops:
+- Completed setting up the Cypress environment
+- Right side of the annotation page was finished for this sprint
+
+#### Tips:
+
+- Endpoint calls are sometimes taking longer than expected.
+- Tests written most likely need to be reformatted due to change on the annotation page.
+
+
+| Name          | Focus 1                      | Focus 2                    | Focus 3                 | Focus 4                    |
+|---------------|------------------------------|----------------------------|-------------------------|----------------------------|
+| Taner Ozguner | CI/CD Pipeline configuration | Architecture setup next.js | Backend delete function | Right side annotation page |     
+
+#### Tops:
+- Completed CI/CD pipeline 
+- Right side of the annotation page was finished for this sprint (together with Delbert)
+- Next.js architecture setup works well with navigation and components
+
+#### Tips:
+- I want to gain more knowledge about testing and how to write tests the most optimal way with JUnit and Cypress.
+- The project could be more efficient and user-friendly, so I want to learn more about how to make the project more efficient. 
+I already have a good general idea how to do this, but I want to be sure that I am doing it the right way.
+
