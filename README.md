@@ -86,7 +86,8 @@ After the form is complete please upload this (as a '*.PDF' file ) to your sprin
 
 #### Tops:
 - Learned the basics of Next.js.
-- Consistent code quality.
+- Test follow AAA (Arrange, Act, Assert).
+- Held myself to the DRY coding standard.
 - I got to work in both front- and back-end.
 
 #### Tips:
