@@ -93,3 +93,18 @@ After the form is complete please upload this (as a '*.PDF' file ) to your sprin
 #### Tips:
 - For the upcoming sprints, I want to get an even better understanding of Next.js.
 - I want to be more involved in the documentation.
+
+|  Name       | Focus 1     | Focus 2  | Focus 3 | Focus 4 |
+|---------|-------------|----------|---------|---------|
+| Dennis van Schie | Database models | Add annotation tags to XML | Display existing annotations | Testing add annotation to XML | 
+
+#### Tops:
+- Database structure and models are implemented and functional.
+- Annotation tags are added to the XML content.
+- Existing annotations are properly loaded and displayed when re-opening a project.
+- Tests are in place to assert correct functioning of adding the annotation tags to xml documents.
+
+#### Tips:
+- Database relationships need to be refactored to comply to the wishes of Steven.
+- The Popup component in the frontend now also handles the transformations on the XML. This should be refactored to a separate component.
+
