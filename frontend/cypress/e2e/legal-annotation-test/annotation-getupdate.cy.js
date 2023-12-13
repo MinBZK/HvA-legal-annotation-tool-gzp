@@ -8,33 +8,65 @@ describe('Visit main page', () => {
                 statusCode: 200,
                 body: {
                     id: 1,
-                    xml_content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam lobortis augue eu vehicula volutpat. Integer eget ligula felis. Sed semper tristique mi, at convallis dui posuere vel. Suspendisse id tincidunt nulla. Morbi non erat vitae ipsum scelerisque hendrerit. Quisque ullamcorper nisl dolor, eu ultricies lectus mollis sit amet. Vestibulum sit amet fermentum libero. Pellentesque dignissim purus vel diam pellentesque, a rhoncus erat auctor. Aenean consectetur sapien eu dolor efficitur, in pretium metus porttitor. Sed et enim at augue iaculis tristique sed tincidunt nunc.",
+                    xml_content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam lobortis augue eu vehicula volutpat. Integer eget ligula felis. Sed semper tristique mi, at convallis dui posuere vel. Suspendisse id tincidunt nulla. Morbi non erat vitae ipsum scelerisque hendrerit. Quisque ullamcorper nisl dolor, eu ultricies lectus mollis sit amet. Vestibulum sit amet fermentum libero. Pellentesque dignissim purus vel diam pellentesque, a rhoncus erat auctor.",
                     selectedArticles: null
                 },
             })
         })
-            .as('projectrequest').then(currentSubject => console.warn("loadedproject"))
+            .as('projectrequest').then(() => console.warn("loadedproject"))
 
         cy.intercept('GET', 'http://localhost:8000/api/annotations/project/1', (req) => {
             req.reply({
                 statusCode: 200,
-                body: [{
-                    id: 15,
-                    selectedWord: "Lorem ipsum",
-                    text: "test",
-                    lawClass: {
-                        id: 2,
-                        name: "Rechtssubject",
-                        color: "#c2e7ff"
+                body: [
+                    {
+                        id: 15,
+                        selectedWord: "Lorem ipsum",
+                        text: "test",
+                        lawClass: {
+                            id: 2,
+                            name: "Rechtssubject",
+                            color: "#c2e7ff"
+                        },
+                        project: {
+                            id: 1,
+                            xml_content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam lobortis augue eu vehicula volutpat. Integer eget ligula felis. Sed semper tristique mi, at convallis dui posuere vel. Suspendisse id tincidunt nulla. Morbi non erat vitae ipsum scelerisque hendrerit. Quisque ullamcorper nisl dolor, eu ultricies lectus mollis sit amet. Vestibulum sit amet fermentum libero. Pellentesque dignissim purus vel diam pellentesque, a rhoncus erat auctor.",
+                            selectedArticles: null
+                        }
                     },
-                    project: {
-                        id: 1,
-                        xml_content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam lobortis augue eu vehicula volutpat. Integer eget ligula felis. Sed semper tristique mi, at convallis dui posuere vel. Suspendisse id tincidunt nulla. Morbi non erat vitae ipsum scelerisque hendrerit. Quisque ullamcorper nisl dolor, eu ultricies lectus mollis sit amet. Vestibulum sit amet fermentum libero. Pellentesque dignissim purus vel diam pellentesque, a rhoncus erat auctor.",
-                        selectedArticles: null
-                    }
-                }]
+                    {
+                        id: 16,
+                        selectedWord: "consectetur adipiscing elit",
+                        text: "second note test",
+                        lawClass: {
+                            id: 1,
+                            name: "Rechtbetrekking",
+                            color: "#70a4ff"
+                        },
+                        project: {
+                            id: 1,
+                            xml_content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam lobortis augue eu vehicula volutpat. Integer eget ligula felis. Sed semper tristique mi, at convallis dui posuere vel. Suspendisse id tincidunt nulla. Morbi non erat vitae ipsum scelerisque hendrerit. Quisque ullamcorper nisl dolor, eu ultricies lectus mollis sit amet. Vestibulum sit amet fermentum libero. Pellentesque dignissim purus vel diam pellentesque, a rhoncus erat auctor.",
+                            selectedArticles: null
+                        }
+                    },
+                    {
+                        id: 16,
+                        selectedWord: "Aliquam lobortis augue eu",
+                        text: "third note test",
+                        lawClass: {
+                            id: 3,
+                            name: "Voorwaarde",
+                            color: "#B7D7CD"
+                        },
+                        project: {
+                            id: 1,
+                            xml_content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam lobortis augue eu vehicula volutpat. Integer eget ligula felis. Sed semper tristique mi, at convallis dui posuere vel. Suspendisse id tincidunt nulla. Morbi non erat vitae ipsum scelerisque hendrerit. Quisque ullamcorper nisl dolor, eu ultricies lectus mollis sit amet. Vestibulum sit amet fermentum libero. Pellentesque dignissim purus vel diam pellentesque, a rhoncus erat auctor.",
+                            selectedArticles: null
+                        }
+                    },
+                ]
             })
-        }).as('annotationprojectrequest').then(currentSubject => console.warn("loadedannotationproject"))
+        }).as('annotationprojectrequest').then(() => console.warn("loadedannotationproject"))
 
 
         cy.intercept('GET', 'http://localhost:8000/api/classes', (req) => {
@@ -51,63 +83,38 @@ describe('Visit main page', () => {
                         name: "Rechtssubject",
                         color: "#c2e7ff"
                     },
+                    {
+                        id: 3,
+                        name: "Voorwaarde",
+                        color: "##B7D7CD"
+                    },
                 ]
             })
-        }).as('classesrequest').then(currentSubject => console.warn("loadedclasses"))
+        }).as('classesrequest').then(() => console.warn("loadedclasses"))
 
-        // Bezoek de annotatiepagina
+        // Visit the annotation page
         cy.visit('http://localhost:3000/annotations?id=1').wait(3000)
     })
 
     it('annotatie get', () => {
 
-        // cy.wait('@projectrequest').then((interception) => {
-
-        // })
-
+        // wait for the fetching of mockdata to complete
         cy.wait("@projectrequest", {timeout: 10000})
         cy.wait("@annotationprojectrequest", {timeout: 10000})
         cy.wait("@classesrequest", {timeout: 10000})
 
 
-        // const element = cy.get('al').contains('aldaar').first()
-        const element = cy.get('p').contains('Lorem').first()
+        // check if page exists
+        cy.get('.annolist').should("exist")
 
-        element.should("be.visible")
-        element.trigger('mousedown').then(($el) => {
-            const el = $el[0]
-            const document = el.ownerDocument
-            const range = document.createRange()
-            range.selectNodeContents(el)
-            document.getSelection().removeAllRanges(range)
-            document.getSelection().addRange(range)
+        // check length of annotations
+        cy.get('.annolist').children().should('have.length', 3)
 
-            console.warn(document.getSelection())
-            console.warn(document.getSelection().toString())
+        // check if retrieved data is there
+        cy.get('.annolist').children().first().click()
+        cy.get('.annolist').children().first().contains("Rechtssubject")
+        cy.get('.annolist').children().first().contains("test")
+        cy.get('.annolist').children().first().contains("Lorem ipsum")
 
-            element.click()
-        })
-            .wait(3000)
-
-
-        // const dropdownBasic = cy.get('#dropdown-basic')
-        // const noteInput = cy.get('#exampleForm.ControlInput1')
-        // const buttonSave = cy.get('.btn-primary')
-
-        // select type
-        // dropdownBasic.click()
-        // cy.get(".dropdown-item").first().click()
-
-        // type note
-        // noteInput.type("test notitie blablabla")
-
-        // press save
-        // buttonSave.click().then(currentSubject => {
-        //     cy.visit('http://localhost:3000/annotations?id=1').wait(1000)
-        // })
-
-        cy.get('.annolist').children().should('have.length', 1)
-
-        // })
     })
 })
