@@ -6,34 +6,39 @@ import com.LAT.backend.model.Project;
 import com.LAT.backend.repository.AnnotationRepository;
 import com.LAT.backend.repository.LawClassRepository;
 import com.LAT.backend.repository.ProjectRepository;
+import com.LAT.backend.rest.AnnotationController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
+@WebMvcTest(AnnotationController.class)
 @AutoConfigureMockMvc
 public class AnnotationTest {
 
-    @Autowired
+    @MockBean
     private AnnotationRepository annotationRepository;
 
-    @Autowired
+    @MockBean
     private LawClassRepository lawClassRepository;
 
-    @Autowired
+    @MockBean
     private ProjectRepository projectRepository;
 
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
@@ -44,83 +49,102 @@ public class AnnotationTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @InjectMocks
+    private AnnotationController annotationController;
+
     @Test
-    public void testSaveAndGetAnnotation() {
-        LawClass lawClass = new LawClass();
-        lawClass.setName("ExampleLawClass");
-        lawClassRepository.save(lawClass);
+    public void testCreateAnnotation() throws Exception {
+        // Mock objects
+        Project mockProject = new Project();
+        mockProject.setId(1L);
 
-        Project project = new Project();
-        project.setXml_content("test");
-        projectRepository.save(project);
+        LawClass mockLawClass = new LawClass();
+        mockLawClass.setName("ExampleLawClass");
 
-        Annotation annotation = new Annotation();
-        annotation.setSelectedWord("ExampleWord");
-        annotation.setText("ExampleText");
-        annotation.setLawClass(lawClass);
-        annotation.setProject(project);
+        Annotation mockAnnotation = new Annotation();
+        mockAnnotation.setId(1);
+        mockAnnotation.setSelectedWord("ExampleWord");
+        mockAnnotation.setText("ExampleText");
 
-        // Save the Annotation to the repository
-        annotationRepository.save(annotation);
+        // Mock repository interactions
+        when(projectRepository.findById(anyLong())).thenReturn(Optional.of(mockProject));
+        when(lawClassRepository.findByName(anyString())).thenReturn(Optional.of(mockLawClass));
+        when(annotationRepository.save(any(Annotation.class))).thenReturn(mockAnnotation);
 
-        // Retrieve the Annotation from the repository
-        Optional<Annotation> retrievedAnnotation = annotationRepository.findById(annotation.getId());
+        // Request annotation object
+        Annotation requestAnnotation = new Annotation();
+        // Set properties for the request annotation
+        requestAnnotation.setLawClass(mockLawClass);
+        requestAnnotation.setProject(mockProject);
+
+        // Perform the request using mockMvc
+        ResultActions result = mockMvc.perform(post("/api/annotations/project")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(requestAnnotation)));
 
         // Assertions
-        assertNotNull(retrievedAnnotation.orElse(null));
-        assertEquals("ExampleWord", retrievedAnnotation.map(Annotation::getSelectedWord).orElse(null));
-        assertEquals("ExampleText", retrievedAnnotation.map(Annotation::getText).orElse(null));
-        assertEquals(lawClass, retrievedAnnotation.map(Annotation::getLawClass).orElse(null));
-        assertEquals(project, retrievedAnnotation.map(Annotation::getProject).orElse(null));
+        result.andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.selectedWord").value("ExampleWord"))
+                .andExpect(jsonPath("$.text").value("ExampleText"));
 
-        // Cross-check results - Additional assertions
-        Annotation crossCheckedAnnotation = retrievedAnnotation.orElseThrow();
-        assertEquals(annotation.getId(), crossCheckedAnnotation.getId());
-        assertEquals(annotation.getSelectedWord(), crossCheckedAnnotation.getSelectedWord());
-        assertEquals(annotation.getText(), crossCheckedAnnotation.getText());
-        assertEquals(annotation.getLawClass(), crossCheckedAnnotation.getLawClass());
-        assertEquals(annotation.getProject(), crossCheckedAnnotation.getProject());
+        // Verify repository interactions
+        verify(projectRepository, times(1)).findById(anyLong());
+        verify(lawClassRepository, times(1)).findByName(anyString());
+        verify(annotationRepository, times(1)).save(any(Annotation.class));
     }
 
     @Test
     void testCreateAnnotationMissingLawClassId() throws Exception {
-        ProjectRepository mockProjectRepository = Mockito.mock(ProjectRepository.class);
-
         // Arrange
         long projectId = 1L;
-        when(mockProjectRepository.findById(projectId)).thenReturn(Optional.of(new Project()));
+        when(projectRepository.findById(projectId)).thenReturn(Optional.of(new Project()));
 
         Annotation annotation = new Annotation();
         annotation.setSelectedWord("ExampleWord");
         annotation.setText("ExampleText");
-        annotation.setProject(new Project()); // A valid project with an ID
+        Project project = new Project();
+        project.setXml_content("lorem ipsum");
+        annotation.setProject(project); // A valid project with an ID
 
         // Act and Assert
-        mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/project")
+        mockMvc.perform(post("/api/annotations/project")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(annotation)))
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
+                .andExpect(status().isNotFound());
     }
 
     @Test
-    void testCreateAnnotationMissingProjectId() throws Exception {
-        LawClassRepository mockLawClassRepository = Mockito.mock(LawClassRepository.class);
-
+    void testCreateAnnotationWithProjectNotFound() throws Exception {
         // Arrange
-        String lawClassName = "ExampleLawClass";
-        when(mockLawClassRepository.findByName(lawClassName)).thenReturn(Optional.of(new LawClass()));
-
         Annotation annotation = new Annotation();
         annotation.setSelectedWord("ExampleWord");
         annotation.setText("ExampleText");
-        annotation.setLawClass(new LawClass()); // A valid law class with a name
+        annotation.setProject(new Project());
+
+        // Mock the projectRepository to return an empty Optional, simulating "Project not found"
+        when(projectRepository.findById(any(Long.class))).thenReturn(Optional.empty());
 
         // Act and Assert
-        mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/project")
+        mockMvc.perform(post("/api/annotations/project")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(annotation)))
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void testCreateAnnotationWithNullValues() {
+        // Test with null annotation
+        ResponseEntity<Annotation> response = annotationController.createAnnotation(null);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNull(response.getBody());
+
+        // Test with annotation having null project and law class
+        Annotation annotation = new Annotation();
+        annotation.setId(1);
+        annotation.setText("ExampleText");
+        ResponseEntity<Annotation> response2 = annotationController.createAnnotation(annotation);
+        assertEquals(HttpStatus.BAD_REQUEST, response2.getStatusCode());
+        assertNull(response2.getBody());
     }
 }
