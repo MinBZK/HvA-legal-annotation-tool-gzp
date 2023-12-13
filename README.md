@@ -56,7 +56,6 @@ After the form is complete please upload this (as a '*.PDF' file ) to your sprin
 |---------|-------------|----------|---------|---------|
 | Chi Yu Yeung | Frontend create annotation | Backend create annotation  | Styling home page XMLs  |   Documenting Overview of System Architecture    | 
 
-
 #### Tops:
 - Created a pop up for making an annotation feature (together with Hanna)
 - Created the saving function for the annotation (together with Hanna)
@@ -80,3 +79,17 @@ After the form is complete please upload this (as a '*.PDF' file ) to your sprin
 - For the next sprint, my goal is to focus on code quality from the outset, rather than addressing it at the end.
 - I also plan to assess the security aspects of my code. 
 - In the upcoming sprint, I aim to have my teammates review my code and, in turn, review someone else's code (peer feedback).
+
+|  Name       | Focus 1     | Focus 2  | Focus 3 | Focus 4 |
+|---------|-------------|----------|---------|---------|
+| Kevin van Hout | Front-end upload XML file | Front-end services project | Testing XML upload | Back-end api for XML | 
+
+#### Tops:
+- Learned the basics of Next.js.
+- Test follow AAA (Arrange, Act, Assert).
+- Held myself to the DRY coding standard.
+- I got to work in both front- and back-end.
+
+#### Tips:
+- For the upcoming sprints, I want to get an even better understanding of Next.js.
+- I want to be more involved in the documentation.

@@ -42,7 +42,7 @@ export default function Home() {
 
   // Handle XML Upload
   const handleXmlUpload = async () => {
-    if (fileInputRef.current != null) {
+    if (fileInputRef.current != null && fileInputRef.current["value"] != "") {
       const reader = new FileReader();
       reader.readAsText(fileInputRef.current["files"][0]);
       reader.onload = async (event) => {
