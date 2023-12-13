@@ -29,51 +29,38 @@ describe('Visit annotation page', () => {
     }
 
     it('Shows error alert when law class is not selected', () => {
-        // openPopupAndSelectText();
-
-        const mockData = {
-            id: 2, xml_content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-            selectedArticles: 'test',
-            annotations: [{
-                id: 1,
-                text: 'test',
-                selectedWord: 'test',
-                lawClass: null,
-                project: null,
-                startOffset: 1
-            }],
-        }
-
-        const lawClassOptions = [
-            { id: 1, name: 'LawClass 1', color: '#FF0000' },
-            { id: 2, name: 'LawClass 2', color: '#00FF00' },
-            { id: 3, name: 'LawClass 3', color: '#0000FF' },
-        ];
-
         // Intercept the data fetching request and respond with the mock data
-        cy.intercept('GET', '/api/project/*', mockData).as('getProject2');
-        cy.intercept('GET', '/api/classes', lawClassOptions).as('getLawClasses2');
+        cy.fixture('lawclasses').then((lawClassOptions) => {
+            const mockLawClasses = lawClassOptions.lawClasses
+            cy.fixture('single-project').then((projectData) => {
+                const mockProjectData = projectData;
 
-        // Wait for the data fetching to complete
-        cy.wait(['@getProject2', '@getLawClasses2']);
+                // Intercept the data fetching request and respond with the mock data
+                cy.intercept('GET', '/api/project/*', mockProjectData).as('getProject');
+                cy.intercept('GET', '/api/classes', mockLawClasses).as('getLawClasses');
 
-        // Check if the page contains the expected elements
-        cy.get('.navbar-title').should('contain', 'Legal Annotation Tool');
+                // Wait for the data fetching to complete
+                cy.wait(['@getProject', '@getLawClasses']);
 
-        openPopupAndSelectText();
-        cy.document().trigger('selectionchange')
+                // Check if the page contains the expected elements
+                cy.get('.navbar-title').should('contain', 'Legal Annotation Tool');
 
-        cy.get('.modal-title').should('contain', 'Annoteer de tekst');
+                openPopupAndSelectText();
+                cy.document().trigger('selectionchange')
 
-        // Click the "Opslaan" button without selecting a law class
-        cy.get('button:contains("Opslaan")').click();
+                cy.get('.modal-title').should('contain', 'Annoteer de tekst');
 
-        // Check if the error alert is visible
-        cy.get('.alert-danger').should('be.visible');
-        cy.get('.alert-danger').should('contain', 'Selecteer alstublieft een juridische klasse.');
+                // Click the "Opslaan" button without selecting a law class
+                cy.get('button:contains("Opslaan")').click();
 
-        // Close the popup
-        cy.get('button:contains("Annuleer")').click();
+                // Check if the error alert is visible
+                cy.get('.alert-danger').should('be.visible');
+                cy.get('.alert-danger').should('contain', 'Selecteer alstublieft een juridische klasse.');
+
+                // Close the popup
+                cy.get('button:contains("Annuleer")').click();
+            });
+        });
     });
 
 });

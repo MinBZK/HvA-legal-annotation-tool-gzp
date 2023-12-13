@@ -29,60 +29,52 @@ describe('Visit annotation page', () => {
     }
 
     it('Display the popup when text is selected and select a law class', () => {
-        const mockData = {
-            id: 2, xml_content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-            selectedArticles: 'test',
-            annotations: [{
-                id: 1,
-                text: 'test',
-                selectedWord: 'test',
-                lawClass: null,
-                project: null,
-                startOffset: 1
-            }],
-        }
+        // Load law class options from a fixture file
+        cy.fixture('lawclasses').then((lawClassOptions) => {
+            const mockLawClasses = lawClassOptions.lawClasses
+            cy.fixture('single-project').then((projectData) => {
+                const mockProjectData = projectData;
 
-        const lawClassOptions = [
-            { id: 1, name: 'LawClass 1', color: '#FF0000' },
-            { id: 2, name: 'LawClass 2', color: '#00FF00' },
-            { id: 3, name: 'LawClass 3', color: '#0000FF' },
-        ];
+                // Intercept the data fetching request and respond with the mock data
+                cy.intercept('GET', '/api/project/*', mockProjectData).as('getProject');
+                cy.intercept('GET', '/api/classes', mockLawClasses).as('getLawClasses');
 
-        // Intercept the data fetching request and respond with the mock data
-        cy.intercept('GET', '/api/project/*', mockData).as('getProject');
-        cy.intercept('GET', '/api/classes', lawClassOptions).as('getLawClasses');
+                // Wait for the data fetching to complete
+                cy.wait(['@getProject', '@getLawClasses']);
 
-        // Wait for the data fetching to complete
-        cy.wait(['@getProject', '@getLawClasses']);
+                // Check if the page contains the expected elements
+                cy.get('.navbar-title').should('contain', 'Legal Annotation Tool');
 
-        // Check if the page contains the expected elements
-        cy.get('.navbar-title').should('contain', 'Legal Annotation Tool');
+                openPopupAndSelectText();
+                cy.document().trigger('selectionchange');
 
-        openPopupAndSelectText();
-        cy.document().trigger('selectionchange')
+                // Wait for the popup to be visible
+                cy.get('.modal').should('be.visible');
+                cy.get('.modal-body').contains('Geselecteerde tekst: ');
 
-        // Wait for the popup to be visible
-        cy.get('.modal').should('be.visible');
-        cy.get('.modal-body').contains('Geselecteerde tekst: ');
+                cy.get('.dropdown').should('be.visible');
+                cy.get('.modal-body').contains('Notitie');
+                cy.get('.modal-body').contains('Begrip');
+                cy.get('.modal-footer').contains('Opslaan');
+                cy.get('.modal-footer').contains('Annuleer');
+                cy.get('.modal-footer').contains('Verwijder');
 
-        cy.get('.dropdown').should('be.visible');
-        cy.get('.modal-body').contains('Notitie');
-        cy.get('.modal-body').contains('Begrip');
-        cy.get('.modal-footer').contains('Opslaan');
-        cy.get('.modal-footer').contains('Annuleer');
-        cy.get('.modal-footer').contains('Verwijder');
+                // Click on the dropdown toggle to open the dropdown
+                cy.get('.dropdown-toggle').click();
 
-        // Click on the dropdown toggle to open the dropdown
-        cy.get('.dropdown-toggle').click();
+                cy.get('.dropdown-menu').should('be.visible');
 
-        cy.get('.dropdown-menu').should('be.visible');
+                cy.get('.dropdown-menu').contains(mockLawClasses[0].name).should('exist');
+                cy.get('.dropdown-menu').contains(mockLawClasses[1].name).should('exist');
+                cy.get('.dropdown-menu').contains(mockLawClasses[2].name).should('exist');
 
-        cy.get('.dropdown-menu').contains('LawClass 1').should('exist');
-        cy.get('.dropdown-menu').contains('LawClass 2').should('exist');
-        cy.get('.dropdown-menu').contains('LawClass 3').should('exist');
+                // Click on the first law class option
+                cy.get('.dropdown-menu').contains(mockLawClasses[0].name).click();
 
-        cy.get('.dropdown-menu').contains('LawClass 1').click();
-        cy.get('.dropdown-toggle').should('contain.text', 'LawClass 1');
+                // Verify that the dropdown toggle now displays the selected law class
+                cy.get('.dropdown-toggle').should('contain.text', mockLawClasses[0].name);
+            });
+        });
     });
 
 });
