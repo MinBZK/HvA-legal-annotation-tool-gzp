@@ -121,3 +121,19 @@ After the form is complete please upload this (as a '*.PDF' file ) to your sprin
 
 - Endpoint calls are sometimes taking longer than expected.
 - Tests written most likely need to be reformatted due to change on the annotation page.
+
+
+| Name          | Focus 1                      | Focus 2                    | Focus 3                 | Focus 4                    |
+|---------------|------------------------------|----------------------------|-------------------------|----------------------------|
+| Taner Ozguner | CI/CD Pipeline configuration | Architecture setup next.js | Backend delete function | Right side annotation page |     
+
+#### Tops:
+- Completed CI/CD pipeline 
+- Right side of the annotation page was finished for this sprint (together with Delbert)
+- Next.js architecture setup works well with navigation and components
+
+#### Tips:
+- I want to gain more knowledge about testing and how to write tests the most optimal way with JUnit and Cypress.
+- The project could be more efficient and user-friendly, so I want to learn more about how to make the project more efficient. 
+I already have a good general idea how to do this, but I want to be sure that I am doing it the right way.
+
