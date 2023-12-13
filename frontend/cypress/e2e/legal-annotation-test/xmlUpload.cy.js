@@ -50,4 +50,14 @@ describe('Open xml upload modal', () => {
         cy.get('.modal .alert.alert-danger').should('exist');
     });
 
+    it('No file selected', () => {
+
+
+        cy.get('button.import-button').click();
+        cy.get('.modal.show').should('exist');
+        cy.get('.modal form button').click();
+        cy.get('.modal.show').should('exist');
+        cy.get('.modal .alert.alert-danger').should('not.exist');
+    });
+
 })
