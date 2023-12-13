@@ -1,0 +1,16 @@
+{
+  "lawClasses": [
+    { "id": 1,
+      "name": "LawClass 1",
+      "color": "#FF0000"
+    },
+    { "id": 2,
+      "name": "LawClass 2",
+      "color": "#00FF00"
+    },
+    { "id": 3,
+      "name": "LawClass 3",
+      "color": "#0000FF"
+    }
+  ]
+}
