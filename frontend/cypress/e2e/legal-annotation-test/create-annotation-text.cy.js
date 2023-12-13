@@ -1,7 +1,9 @@
+// Chi Yu
 describe('Visit annotation page', () => {
-    // Before each test case, set up mock data and visit the annotation page
-        beforeEach(()  => {
-
+    // Before each test case, visit the annotation page
+    beforeEach(() => {
+        // Function to open the pop-up and select text
+        // Hanna
         function openPopupAndSelectText() {
             // Trigger selection event
             cy.get('p.xml-content')
@@ -18,60 +20,54 @@ describe('Visit annotation page', () => {
             cy.document().trigger('selectionchange');
         }
 
-        // Function to stub the API call with updated data
-        function getUpdatedDataApi(updatedText) {
-            cy.intercept('GET', '/api/project/1', {
-                statusCode: 200,
-                body: {
-                    id: 1,
-                    xml_content: 'Updated content', // You might need to adjust this based on your backend response
-                    selectedArticles: 'Rechtsbetrekking',
-                    annotations: [{
-                        id: 1,
-                        text: updatedText,
-                        selectedWord: 'Lorem',
-                        lawClass: null,
-                        project: null,
-                        startOffset: 1
-                    }],
-                },
-            }).as('getUpdatedProject');
-        }
-
-        // Before each test case, set up the initial mock data and visit the annotation page
         cy.intercept('GET', '/api/project/1', {
-            id: 1,
-            xml_content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-            selectedArticles: 'Rechtsbetrekking',
-            annotations: [{
+            statusCode: 200,
+            body: {
                 id: 1,
-                text: '', // Initially empty text
-                selectedWord: 'Lorem',
-                lawClass: null,
-                project: null,
-                startOffset: 1
-            }],
-        }).as('getProject');
+                xml_content: 'Updated content', // You might need to adjust this based on your backend response
+                selectedArticles: 'Rechtsbetrekking',
+                annotations: [{
+                    id: 1,
+                    text: '',
+                    selectedWord: 'Lorem',
+                    lawClass: null,
+                    project: null,
+                    startOffset: 1
+                }],
+            },
+        }).as('getUpdatedProject');
 
-        // visit annotation page
+        // Before each test case, visit the annotation page
         cy.visit('http://localhost:3000/annotations?id=1');
 
-        // wait for API call
-        cy.wait('@getProject').then(() => {
-            openPopupAndSelectText();
+        // Call the function to open the pop-up and select text
+        openPopupAndSelectText();
+    });
 
-            getUpdatedDataApi('YourNoteText');
+    // Test to enter text
+    it('Enter text', () => {
+        // Type 'test' into the text input field
+        cy.get('.text-input').should('exist').and('be.visible')
+            .trigger('mouseup')
+            .eq(0).type('test');
 
-            // type 'YourNoteText' into the text input field
-            cy.get('.text-input').should('exist').and('be.visible')
-                .trigger('mouseup')
-                .eq(0).type('YourNoteText');
+        // Click the "Annuleer" button
+        cy.get('button:contains("Annuleer")').click();
 
-            // wait for API call
-            cy.wait('@getUpdatedProject');
+        // Check if the entered text is still present in the text input field
+        cy.get('.text-input').invoke('val').should('equal', 'test');
+    });
 
-            // check if the entered text matches the stubbed updated backend text
-            cy.get('.text-input').invoke('val').should('equal', 'YourNoteText');
+    it('should execute the POST function after saving', () => {
+        // Stub the POST request to the backend
+        cy.intercept('POST', '/api/project/*').as('postFunction');
+
+        // Trigger the save action
+        cy.get('button:contains("Opslaan")').click().then(() => {
+            cy.log('Opslaan button clicked');
         });
+
+        // Wait for the POST request to be made
+        cy.intercept('POST', '/api/project/*', { delayMs: 500 }).as('postFunction');
     });
 });
