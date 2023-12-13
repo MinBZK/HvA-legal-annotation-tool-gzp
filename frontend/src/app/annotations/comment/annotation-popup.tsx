@@ -26,6 +26,7 @@ const Popup: FC<PopupProps> = ({ project }) => {
   const [lawClassError, setLawClassError] = useState(false);
 
   useEffect(() => {
+    // Convert the XML string to a readable DOM object
     let parser = new DOMParser();
     let xml = parser.parseFromString(project.xml_content, "application/xml");
     setOriginalXML(xml);
@@ -39,7 +40,8 @@ const Popup: FC<PopupProps> = ({ project }) => {
 
   /**
    * Fetches annotation data for each annotation tag in the given XML document.
-   * For each annotation, it retrieves the color associated with its law class and applies it.
+   * For each annotation, it retrieves the color associated with its law class and adds it as a CSS rule, which is later
+   * applied to the page.
    *
    * @param {Document} xmlDoc - The XML document containing annotation tags.
    */
@@ -47,6 +49,7 @@ const Popup: FC<PopupProps> = ({ project }) => {
     const annotations = xmlDoc.getElementsByTagName('annotation');
     let newAnnotationStyles: any = {};
 
+    // Loop through all annotations and fetch the annotation data
     // @ts-ignore
     for (let annotation of annotations) {
       const id = annotation.getAttribute('id');
@@ -54,8 +57,7 @@ const Popup: FC<PopupProps> = ({ project }) => {
         const response = await fetch(`http://localhost:8000/api/annotations/${id}`);
         if (response.ok) {
           const annotationData = await response.json();
-          const color = annotationData.lawClass.color;
-          newAnnotationStyles[`${id}`] = color;
+          newAnnotationStyles[`${id}`] = annotationData.lawClass.color;
         } else {
           console.error('Failed to fetch annotation data');
         }
@@ -129,14 +131,18 @@ const Popup: FC<PopupProps> = ({ project }) => {
     setLawClassError(false);
   };
 
+  /**
+   * This event handler is triggered when the user selects text in the XML content and shows the popup.
+   */
   const handleShow = () => {
     const selection = window.getSelection();
+
+    // Check if the selection is valid
     if (selection && selection.rangeCount > 0) {
       const range = selection.getRangeAt(0);
       const text = range.toString();
 
       if (text) {
-        // Bereken de totale positie van de selectie in de tekst
         const startOffset = calculateOffset(range.startContainer, range.startOffset);
         handleSelectedText(text, startOffset);
         setShow(true);
@@ -144,7 +150,12 @@ const Popup: FC<PopupProps> = ({ project }) => {
     }
   };
 
-  // Bereken de totale positie van de selectie in de tekst
+  /**
+   * Calculates the offset of the selected text in the XML content relative to the start of the document.
+   *
+   * @param node
+   * @param offset
+   */
   function calculateOffset(node: Node, offset: number): number {
     let count = offset;
     while (node.previousSibling) {
@@ -190,9 +201,9 @@ const Popup: FC<PopupProps> = ({ project }) => {
    */
   const addAnnotationTagsToXml = async () => {
     try {
+      // Create a copy of Project to avoid mutating the original object
       const updatedProject = {
         ...project,
-        xml_content: project.xml_content
       };
 
       const response = await fetch('http://localhost:8000/api/saveXml', {
@@ -234,11 +245,19 @@ const Popup: FC<PopupProps> = ({ project }) => {
     }
   };
 
+  /**
+   * Adds annotation tags to the XML content based on the users selection.
+   *
+   * @param selectedText
+   * @param annotationId
+   * @param startOffset
+   */
   const annotateSelectedText = (selectedText: string, annotationId: number, startOffset: number) => {
     if (originalXML) {
       let currentOffset = 0;
       let annotationAdded = false;
 
+      // Loop through all text nodes in the XML content until the node containing the selected text is found
       walkTheNode(originalXML.documentElement, function (node) {
         if (node.nodeType === Node.TEXT_NODE && !annotationAdded) {
           const nodeLength = node.nodeValue?.length || 0;
@@ -262,15 +281,22 @@ const Popup: FC<PopupProps> = ({ project }) => {
       });
 
       if (annotationAdded) {
+        // Convert the XML DOM back to a string
         let serializedXML = new XMLSerializer().serializeToString(originalXML);
-        // Vervang de tijdelijke annotatie-tags door de daadwerkelijke tags
+        // Replace the escaped annotation tags with the original tags
         project.xml_content = serializedXML.replace(/&lt;annotation id="([0-9]+)"&gt;/g, `<annotation id="$1">`)
             .replace(/&lt;\/annotation&gt;/g, '</annotation>');
       }
     }
   };
 
-
+  /**
+   * A recursive function that walks through all nodes in the XML content. This is used by the annotateSelectedText
+   * in combination with a callback function to find the node containing the selected text.
+   *
+   * @param node
+   * @param callback
+   */
   function walkTheNode(node: Node, callback: (node: Node) => void) {
     callback(node);
     node = node.firstChild!;
