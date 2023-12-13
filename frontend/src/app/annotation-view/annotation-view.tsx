@@ -77,8 +77,11 @@ const AnnotationView = () => {
             );
 
             if (response.ok) {
-                alert("Annotatie succesvol verwijderd");
-                fetchAnnotations(id); // Refetch annotations to update the list
+                // alert("Annotatie succesvol verwijderd");
+                // get the project id
+                const searchParams = new URLSearchParams(window.location.search);
+                const projectId = parseInt(searchParams.get("id") as string);
+                fetchAnnotations(projectId); // Refetch annotations to update the list
             } else {
                 alert("Fout annotatie verwijderen");
             }

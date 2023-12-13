@@ -68,7 +68,7 @@ After the form is complete please upload this (as a '*.PDF' file ) to your sprin
 
 |  Name       | Focus 1     | Focus 2  | Focus 3 | Focus 4 |
 |---------|-------------|----------|---------|---------|
-| Hanna Toenbreker | Architecture | Testing | Coding standards (DRY, SOLID, etc.) |  (Optional) Specific files or subsystems in your codebase: TEI investigation     | 
+| Hanna Toenbreker | Creating Annotations | Testing | Retrieving projects and by id |  TEI investigation  | 
 
 #### Tops:
 - I gained insights into the architecture of the Next.js framework.
@@ -93,3 +93,31 @@ After the form is complete please upload this (as a '*.PDF' file ) to your sprin
 #### Tips:
 - For the upcoming sprints, I want to get an even better understanding of Next.js.
 - I want to be more involved in the documentation.
+
+|  Name       | Focus 1     | Focus 2  | Focus 3 | Focus 4 |
+|---------|-------------|----------|---------|---------|
+| Dennis van Schie | Database models | Add annotation tags to XML | Display existing annotations | Testing add annotation to XML | 
+
+#### Tops:
+- Database structure and models are implemented and functional.
+- Annotation tags are added to the XML content.
+- Existing annotations are properly loaded and displayed when re-opening a project.
+- Tests are in place to assert correct functioning of adding the annotation tags to xml documents.
+
+#### Tips:
+- Database relationships need to be refactored to comply to the wishes of Steven.
+- The Popup component in the frontend now also handles the transformations on the XML. This should be refactored to a separate component.
+
+
+| Name          | Focus 1                               | Focus 2              | Focus 3            | Focus 4                    |
+|---------------|---------------------------------------|----------------------|--------------------|----------------------------|
+| Delbert Densu | Retrieving and displaying annotations | Updating annotations | Setting up Cypress | Right side annotation page |      
+
+#### Tops:
+- Completed setting up the CI/CD pipeline and Cypress with the help of Taner
+- Right side of the annotation page was finished for this sprint
+
+#### Tips:
+
+- Endpoint calls are sometimes taking longer than expected.
+- Tests written most likely need to be reformatted due to change on the annotation page.

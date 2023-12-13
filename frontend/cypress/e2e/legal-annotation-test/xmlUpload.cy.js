@@ -52,7 +52,6 @@ describe('Open xml upload modal', () => {
 
     it('No file selected', () => {
 
-
         cy.get('button.import-button').click();
         cy.get('.modal.show').should('exist');
         cy.get('.modal form button').click();
