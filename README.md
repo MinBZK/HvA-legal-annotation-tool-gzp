@@ -109,13 +109,13 @@ After the form is complete please upload this (as a '*.PDF' file ) to your sprin
 - The Popup component in the frontend now also handles the transformations on the XML. This should be refactored to a separate component.
 
 
-| Name          | Focus 1                               | Focus 2              | Focus 3            | Focus 4                 |
-|---------------|---------------------------------------|----------------------|--------------------|-------------------------|
-| Delbert Densu | Retrieving and displaying annotations | Updating annotations | Setting up Cypress | Right component |      
+| Name          | Focus 1                               | Focus 2              | Focus 3            | Focus 4                    |
+|---------------|---------------------------------------|----------------------|--------------------|----------------------------|
+| Delbert Densu | Retrieving and displaying annotations | Updating annotations | Setting up Cypress | Right side annotation page |      
 
 #### Tops:
 - Completed setting up the CI/CD pipeline and Cypress with the help of Taner
-- Right component was finished for this component
+- Right side of the annotation page was finished for this component
 
 #### Tips:
 
