@@ -14,6 +14,7 @@ export default function Home() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [show, setShow] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [showProjectError, setShowProjectError] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -33,7 +34,7 @@ export default function Home() {
         setProjects(projectsData);
     } catch (error) {
         console.error('Error fetching projects:', error);
-        setShowError(true);
+        setShowProjectError(true);
     } finally {
         setLoading(false); // Set loading to false regardless of success or failure
     }
@@ -79,7 +80,7 @@ export default function Home() {
 
                   {loading && <p className="loading-message">Loading...</p>}
 
-                  <Alert show={showError} variant="danger" dismissible>
+                  <Alert show={showProjectError} variant="danger" dismissible>
                       <Alert.Heading>Error</Alert.Heading>
                       <p>Something went wrong</p>
                   </Alert>
