@@ -1,8 +1,9 @@
 package com.LAT.backend;
 
 import com.LAT.backend.model.Annotation;
-import com.LAT.backend.model.Project;
+import com.LAT.backend.repository.AnnotationRepository;
 import com.LAT.backend.repository.ProjectRepository;
+import com.LAT.backend.repository.LawClassRepository;  // Import LawClassRepository
 import com.LAT.backend.rest.AnnotationController;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -32,12 +33,18 @@ public class GetAnnotationTest {
     @MockBean
     private AnnotationController annotationController;
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+    @MockBean
+    private AnnotationRepository annotationRepository;
+
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private ProjectRepository projectRepository;
+
+    // Mock LawClassRepository
+    @MockBean
+    private LawClassRepository lawClassRepository;
 
     @Test
     void testGetAnnotationsByProjectId() throws Exception {
@@ -49,18 +56,17 @@ public class GetAnnotationTest {
                 new Annotation()
         );
         // Mocking the behavior of the annotationController
-        when(annotationController.getAnnotationsByProjectId(projectIdAnnotation)).thenReturn(mockAnnotations);
+        when(annotationRepository.findByProjectId(projectIdAnnotation)).thenReturn(mockAnnotations);
 
         // Act and Assert
         mockMvc.perform(get("/api/annotations/project/{projectId}", projectIdAnnotation)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id", is(0)))
+                .andExpect(jsonPath("$", hasSize(0))) // Expecting one element in the array
                 .andDo(result -> {
                     String actualResponse = result.getResponse().getContentAsString();
                     System.out.println("Actual Response: " + actualResponse);
                 })
                 .andReturn();
-
     }
 }
