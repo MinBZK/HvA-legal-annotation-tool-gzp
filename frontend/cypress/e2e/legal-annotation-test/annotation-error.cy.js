@@ -28,7 +28,9 @@ describe('Visit annotation page', () => {
         cy.document().trigger('selectionchange')
     }
 
-    it('Display the popup when text is selected and select a law class', () => {
+    it('Shows error alert when law class is not selected', () => {
+        // openPopupAndSelectText();
+
         const mockData = {
             id: 2, xml_content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
             selectedArticles: 'test',
@@ -49,11 +51,11 @@ describe('Visit annotation page', () => {
         ];
 
         // Intercept the data fetching request and respond with the mock data
-        cy.intercept('GET', '/api/project/*', mockData).as('getProject');
-        cy.intercept('GET', '/api/classes', lawClassOptions).as('getLawClasses');
+        cy.intercept('GET', '/api/project/*', mockData).as('getProject2');
+        cy.intercept('GET', '/api/classes', lawClassOptions).as('getLawClasses2');
 
         // Wait for the data fetching to complete
-        cy.wait(['@getProject', '@getLawClasses']);
+        cy.wait(['@getProject2', '@getLawClasses2']);
 
         // Check if the page contains the expected elements
         cy.get('.navbar-title').should('contain', 'Legal Annotation Tool');
@@ -61,28 +63,17 @@ describe('Visit annotation page', () => {
         openPopupAndSelectText();
         cy.document().trigger('selectionchange')
 
-        // Wait for the popup to be visible
-        cy.get('.modal').should('be.visible');
-        cy.get('.modal-body').contains('Geselecteerde tekst: ');
+        cy.get('.modal-title').should('contain', 'Annoteer de tekst');
 
-        cy.get('.dropdown').should('be.visible');
-        cy.get('.modal-body').contains('Notitie');
-        cy.get('.modal-body').contains('Begrip');
-        cy.get('.modal-footer').contains('Opslaan');
-        cy.get('.modal-footer').contains('Annuleer');
-        cy.get('.modal-footer').contains('Verwijder');
+        // Click the "Opslaan" button without selecting a law class
+        cy.get('button:contains("Opslaan")').click();
 
-        // Click on the dropdown toggle to open the dropdown
-        cy.get('.dropdown-toggle').click();
+        // Check if the error alert is visible
+        cy.get('.alert-danger').should('be.visible');
+        cy.get('.alert-danger').should('contain', 'Selecteer alstublieft een juridische klasse.');
 
-        cy.get('.dropdown-menu').should('be.visible');
-
-        cy.get('.dropdown-menu').contains('LawClass 1').should('exist');
-        cy.get('.dropdown-menu').contains('LawClass 2').should('exist');
-        cy.get('.dropdown-menu').contains('LawClass 3').should('exist');
-
-        cy.get('.dropdown-menu').contains('LawClass 1').click();
-        cy.get('.dropdown-toggle').should('contain.text', 'LawClass 1');
+        // Close the popup
+        cy.get('button:contains("Annuleer")').click();
     });
 
 });

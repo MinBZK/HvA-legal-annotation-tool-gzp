@@ -1,7 +1,7 @@
 'use client';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {FC, useEffect, useState} from 'react';
-import {Button, Dropdown, Form, Modal} from 'react-bootstrap';
+import {Alert, Button, Dropdown, Form, Modal} from 'react-bootstrap';
 import '../../static/annotations.css'
 import {BsFillFloppy2Fill, BsFillTrashFill, BsX} from "react-icons/bs";
 import {Project} from "../../models/project";
@@ -20,9 +20,12 @@ const Popup: FC<PopupProps> = ({ project }) => {
   const [renderXML, setRenderXML] = useState(false);
   const [projectId, setProjectId] = useState<number>(0);
   const [originalXML, setOriginalXML] = useState<Document | null>(null);
+  const [show, setShow] = useState(false);
+  const [classes, setClasses] = useState<LawClass[]>([]); // New state to store the laws
+  const [annotation, setAnnotation] = useState<Annotation>();
+  const [lawClassError, setLawClassError] = useState(false);
 
   useEffect(() => {
-
     let parser = new DOMParser();
     let xml = parser.parseFromString(project.xml_content, "application/xml");
     setOriginalXML(xml);
@@ -35,9 +38,9 @@ const Popup: FC<PopupProps> = ({ project }) => {
   }, [project.xml_content]);
 
 
-  const fetchAnnotationsAndStyles = async (xmlDoc) => {
+  const fetchAnnotationsAndStyles = async (xmlDoc: any) => {
     const annotations = xmlDoc.getElementsByTagName('annotation');
-    let newAnnotationStyles = {};
+    let newAnnotationStyles: any = {};
 
     for (let annotation of annotations) {
       const id = annotation.getAttribute('id');
@@ -67,16 +70,12 @@ const Popup: FC<PopupProps> = ({ project }) => {
   const fetchId = async () => {
     try {
       const searchParams = await new URLSearchParams(window.location.search);
-      const projectId = parseInt(searchParams.get("id") as string) || 2
+      const projectId = parseInt(searchParams.get("id") as string) || 0
       setProjectId(projectId)
     } catch (error) {
       console.error("Error fetching annotations:", error);
     }
   };
-
-  const [show, setShow] = useState(false);
-  const [classes, setClasses] = useState<LawClass[]>([]); // New state to store the laws
-  const [annotation, setAnnotation] = useState<Annotation>();
 
   // Update the selected law
   const handleSelectLaw = (lawName: any) => {
@@ -100,6 +99,7 @@ const Popup: FC<PopupProps> = ({ project }) => {
       startOffset: startOffset,
     }));
   };
+
   const fetchClasses = () => {
     fetch('http://localhost:8000/api/classes')
         .then(response => {
@@ -114,6 +114,7 @@ const Popup: FC<PopupProps> = ({ project }) => {
 
   const handleClose = () => {
     setShow(false);
+    setLawClassError(false);
   };
 
   const handleShow = () => {
@@ -199,6 +200,12 @@ const Popup: FC<PopupProps> = ({ project }) => {
 
 
   const handleSave = async () => {
+    // Check if the law class is selected before saving
+    if (!annotation?.lawClass) {
+      setLawClassError(true);
+      return;
+    }
+    setLawClassError(false);
     const annotationId = await saveAnnotationToBackend();
     if (annotationId && annotation?.selectedWord && typeof annotation.startOffset === 'number') {
       annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset);
@@ -261,7 +268,7 @@ const Popup: FC<PopupProps> = ({ project }) => {
           {renderStyles()}
         </style>
 
-        <p onMouseUp={handleShow} dangerouslySetInnerHTML={{__html: renderXML && project.xml_content}}>
+        <p className="xml-content" onMouseUp={handleShow} dangerouslySetInnerHTML={{__html: renderXML && project.xml_content}}>
         </p>
 
         <Modal show={show} onHide={handleClose}>
@@ -269,6 +276,12 @@ const Popup: FC<PopupProps> = ({ project }) => {
             <Modal.Title>Annoteer de tekst</Modal.Title>
           </Modal.Header>
           <Modal.Body>
+            {lawClassError && (
+                <Alert variant="danger">
+                  <Alert.Heading>Error</Alert.Heading>
+                  <p>Selecteer alstublieft een juridische klasse.</p>
+                </Alert>
+            )}
             {annotation?.selectedWord && <p><b>Geselecteerde tekst: </b> {annotation?.selectedWord}</p>}
             <Form>
               <Form.Group controlId="exampleForm.ControlSelect1">
