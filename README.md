@@ -25,35 +25,6 @@ After the form is complete please upload this (as a '*.PDF' file ) to your sprin
 
 |  Name       | Focus 1     | Focus 2  | Focus 3 | Focus 4 |
 |---------|-------------|----------|---------|---------|
-| Member 1 | JWT Tokens  | Login System | Database setup  | Wrote 5 tests      |      
-
-#### Tops:
-- Created nesting feature login
-- Completed on design patterns (state pattern) for login
-- tests written for the nested reply
-
-#### Tips:
-
-- Database schema is not in line with rest of team, needs refactor
-- login system still not secure, jwt tokens implemented but not used
-
-
-|  Name       | Focus 1     | Focus 2  | Focus 3 | Focus 4 |
-|---------|-------------|----------|---------|---------|
-| Member 2 | CI/CD  | Architecture Setup | Back end rest calls  | N/A      |      
-
-#### Tops:
-- Completed CI/CD pipeline with the help of member 1
-- Tech stack does not use middleware any more
-- Back end calls are now more secure  
-
-#### Tips:
-
-- Database schema is not in line with rest of team, needs refactor
-- tests written do not use testing principles , need to refactor 
-
-|  Name       | Focus 1     | Focus 2  | Focus 3 | Focus 4 |
-|---------|-------------|----------|---------|---------|
 | Chi Yu Yeung | Frontend create annotation | Backend create annotation  | Styling home page XMLs  |   Documenting Overview of System Architecture    | 
 
 #### Tops:
