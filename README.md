@@ -82,10 +82,13 @@ After the form is complete please upload this (as a '*.PDF' file ) to your sprin
 
 |  Name       | Focus 1     | Focus 2  | Focus 3 | Focus 4 |
 |---------|-------------|----------|---------|---------|
-| Kevin van Hout |  |  |  |  | 
+| Kevin van Hout | Front-end upload XML file | Front-end services project | Testing XML upload | Back-end api for XML | 
 
 #### Tops:
-- 
+- Learned the basics of Next.js.
+- Consistent code quality.
+- I got to work in both front- and back-end.
 
 #### Tips:
-- 
+- For the upcoming sprints, I want to get an even better understanding of Next.js.
+- I want to be more involved in the documentation.
