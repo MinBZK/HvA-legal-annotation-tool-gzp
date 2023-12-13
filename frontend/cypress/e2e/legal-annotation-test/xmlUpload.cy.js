@@ -47,6 +47,7 @@ describe('Open xml upload modal', () => {
             statusCode: 500,
         });
         cy.get('.modal.show').should('exist');
+        cy.get('.modal .alert.alert-danger').should('exist');
     });
 
 })
