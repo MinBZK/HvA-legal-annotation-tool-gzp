@@ -37,11 +37,17 @@ const Popup: FC<PopupProps> = ({ project }) => {
     fetchAnnotationsAndStyles(xml);
   }, [project.xml_content]);
 
-
-  const fetchAnnotationsAndStyles = async (xmlDoc: any) => {
+  /**
+   * Fetches annotation data for each annotation tag in the given XML document.
+   * For each annotation, it retrieves the color associated with its law class and applies it.
+   *
+   * @param {Document} xmlDoc - The XML document containing annotation tags.
+   */
+  const fetchAnnotationsAndStyles = async (xmlDoc: Document) => {
     const annotations = xmlDoc.getElementsByTagName('annotation');
     let newAnnotationStyles: any = {};
 
+    // @ts-ignore
     for (let annotation of annotations) {
       const id = annotation.getAttribute('id');
       if (id) {
@@ -59,6 +65,12 @@ const Popup: FC<PopupProps> = ({ project }) => {
     setAnnotationStyles(newAnnotationStyles);
   };
 
+  /**
+   * Generates CSS styles for annotations based on their id and the associated color.
+   * It creates a string of CSS rules that is later added to the HTML.
+   *
+   * @returns {string} A string of CSS rules for styling annotations.
+   */
   const renderStyles = () => {
     let styleString = "";
     for (const [selector, color] of Object.entries(annotationStyles)) {
@@ -172,6 +184,10 @@ const Popup: FC<PopupProps> = ({ project }) => {
     }
   };
 
+  /**
+   * Updates the XML content with new annotation tags based on the users selection.
+   * Sends the updated XML content to the backend server to be saved.
+   */
   const addAnnotationTagsToXml = async () => {
     try {
       const updatedProject = {
@@ -198,7 +214,10 @@ const Popup: FC<PopupProps> = ({ project }) => {
     }
   };
 
-
+  /**
+   * Handles the save button click.
+   * Saves the annotation to the backend and adds the annotation tags to the XML content.
+   */
   const handleSave = async () => {
     // Check if the law class is selected before saving
     if (!annotation?.lawClass) {
