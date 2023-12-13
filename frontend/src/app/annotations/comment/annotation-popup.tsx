@@ -312,7 +312,7 @@ const Popup: FC<PopupProps> = ({ project }) => {
 
               <Form.Group controlId="exampleForm.ControlInput1">
                 <Form.Label className="padding"><b>Notitie</b></Form.Label>
-                <Form.Control as="textarea" type="text" placeholder="Type hier uw notitie..." value={annotation?.text}
+                <Form.Control className={"text-input"} as="textarea" type="text" placeholder="Type hier uw notitie..." value={annotation?.text}
                               onChange={(e) => handleNote(e.target.value)}/>
               </Form.Group>
 
