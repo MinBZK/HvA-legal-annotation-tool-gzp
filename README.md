@@ -68,7 +68,7 @@ After the form is complete please upload this (as a '*.PDF' file ) to your sprin
 
 |  Name       | Focus 1     | Focus 2  | Focus 3 | Focus 4 |
 |---------|-------------|----------|---------|---------|
-| Hanna Toenbreker | Architecture | Testing | Coding standards (DRY, SOLID, etc.) |  (Optional) Specific files or subsystems in your codebase: TEI investigation     | 
+| Hanna Toenbreker | Creating Annotations | Testing | Retrieving projects and by id |  TEI investigation  | 
 
 #### Tops:
 - I gained insights into the architecture of the Next.js framework.
