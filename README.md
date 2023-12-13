@@ -108,3 +108,16 @@ After the form is complete please upload this (as a '*.PDF' file ) to your sprin
 - Database relationships need to be refactored to comply to the wishes of Steven.
 - The Popup component in the frontend now also handles the transformations on the XML. This should be refactored to a separate component.
 
+
+| Name          | Focus 1                               | Focus 2              | Focus 3            | Focus 4                 |
+|---------------|---------------------------------------|----------------------|--------------------|-------------------------|
+| Delbert Densu | Retrieving and displaying annotations | Updating annotations | Setting up Cypress | Right component |      
+
+#### Tops:
+- Completed setting up the CI/CD pipeline and Cypress with the help of Taner
+- Right component was finished for this component
+
+#### Tips:
+
+- Endpoint calls are sometimes taking longer than expected.
+- Tests written most likely need to be reformatted due to change on the annotation page.
