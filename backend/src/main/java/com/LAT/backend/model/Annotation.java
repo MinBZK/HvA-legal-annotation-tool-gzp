@@ -24,6 +24,20 @@ public class Annotation {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    @JsonIgnoreProperties({"annotations"})
+    @ManyToOne
+    @JoinColumn(name = "term_id")
+    private Term term;
+
+
+
+    public void setLawClass(LawClass lawClass) {
+        this.lawClass = lawClass;
+    }
+
+    public LawClass getLawClass() {
+        return lawClass;
+    }
 
     public Project getProject() {
         return project;
@@ -33,12 +47,12 @@ public class Annotation {
         this.project = project;
     }
 
-    public void setLawClass(LawClass lawClass) {
-        this.lawClass = lawClass;
+    public Term getTerm() {
+        return term;
     }
 
-    public LawClass getLawClass() {
-        return lawClass;
+    public void setTerm(Term term) {
+        this.term = term;
     }
 
     public int getId() {

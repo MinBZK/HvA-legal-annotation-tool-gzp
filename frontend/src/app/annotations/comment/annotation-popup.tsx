@@ -8,6 +8,7 @@ import {Project} from "../../models/project";
 import './xml.css'
 import {Annotation} from "../../models/annotation";
 import {LawClass} from "../../models/lawclass";
+import {Term} from "@/app/models/term";
 
 interface PopupProps {
   project: Project;
@@ -51,18 +52,25 @@ const Popup: FC<PopupProps> = ({ project }) => {
 
     // Loop through all annotations and fetch the annotation data
     // @ts-ignore
+    // Loop through all annotations and fetch the annotation data
     for (let annotation of annotations) {
       const id = annotation.getAttribute('id');
       if (id) {
         const response = await fetch(`http://localhost:8000/api/annotations/${id}`);
         if (response.ok) {
           const annotationData = await response.json();
-          newAnnotationStyles[`${id}`] = annotationData.lawClass.color;
+          // Add a null check before accessing the lawClass property
+          if (annotationData && annotationData.lawClass) {
+            newAnnotationStyles[`${id}`] = annotationData.lawClass.color;
+          } else {
+            console.error('Annotation data or lawClass property is null or undefined');
+          }
         } else {
           console.error('Failed to fetch annotation data');
         }
       }
     }
+
 
     setAnnotationStyles(newAnnotationStyles);
   };
@@ -106,11 +114,19 @@ const Popup: FC<PopupProps> = ({ project }) => {
     }));
   };
 
-  const handleSelectedText = (text: string, startOffset: number) => {
+  const handleTerm = (term: any) => {
+    setAnnotation((prevAnnotation) => ({
+      ...(prevAnnotation as Annotation),
+      term: term,
+    }));
+  };
+
+  const handleSelectedText = (text: string, startOffset: number, term: Term) => {
     setAnnotation((prevAnnotation) => ({
       ...(prevAnnotation as Annotation),
       selectedWord: text,
       startOffset: startOffset,
+      term: term
     }));
   };
 
@@ -363,8 +379,15 @@ const Popup: FC<PopupProps> = ({ project }) => {
 
               <Form.Group controlId="exampleForm.ControlInput2">
                 <Form.Label><b>Begrip</b></Form.Label>
-                <Form.Control type="text" placeholder="Type hier uw notitie..."/>
+                <Form.Control
+                    as="textarea"
+                    type="text"
+                    placeholder="Type hier uw begrip..."
+                    // value={annotation?.term?.reference || ''} // Assuming 'name' is the property you want to display
+                    // onChange={(e) => handleTerm(e.target.value)}
+                />
               </Form.Group>
+
             </Form>
           </Modal.Body>
           <Modal.Footer>

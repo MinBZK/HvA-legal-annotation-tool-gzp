@@ -5,9 +5,11 @@ import com.LAT.backend.exceptions.ProjectNotFoundException;
 import com.LAT.backend.model.Annotation;
 import com.LAT.backend.model.LawClass;
 import com.LAT.backend.model.Project;
+import com.LAT.backend.model.Term;
 import com.LAT.backend.repository.AnnotationRepository;
 import com.LAT.backend.repository.LawClassRepository;
 import com.LAT.backend.repository.ProjectRepository;
+import com.LAT.backend.repository.TermRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +33,9 @@ public class AnnotationController {
 
     @Autowired
     private LawClassRepository lawClassRepository;
+
+    @Autowired
+    private TermRepository termRepository;
 
     @GetMapping("/")
     public ResponseEntity<?> getAllAnnotations() {
@@ -64,8 +69,12 @@ public class AnnotationController {
             LawClass lawClass = lawClassRepository.findByName(annotation.getLawClass().getName())
                     .orElseThrow(() -> new LawClassNotFoundException("Annotation class not found"));
 
+            Term term = termRepository.findByName(annotation.getTerm().getDefinition())
+                    .orElseThrow(() -> new LawClassNotFoundException("Term not found"));
+
             annotation.setProject(project);
             annotation.setLawClass(lawClass);
+            annotation.setTerm(term);
 
             // Save the annotation to the repository
             Annotation savedAnnotation = annotationRepository.save(annotation);

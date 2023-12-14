@@ -7,34 +7,40 @@ import {FaEdit} from "react-icons/fa";
 import css from "./annotated-row.module.css";
 import {Button, Form, Modal} from "react-bootstrap";
 import {Annotation} from "@/app/models/annotation";
+import {Term} from "@/app/models/term";
 
-interface AnnotatationProps {
+interface AnnotationProps {
     annotation: Annotation
-    handleEdit: (annotation: Annotation, id: number) => void
+    term: Term
+    handleEdit: (annotation: Annotation, term: Term, id: number) => void
     handleDelete: (id: number) => void
 }
 
-const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDelete}) => {
+const AnnotatedRow: FC<AnnotationProps> = ({annotation, term, handleEdit, handleDelete}) => {
 
     const [open, setOpen] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [editLabelText, setEditLabelText] = useState(''); // text being edited
     const [editNoteText, setEditNoteText] = useState(''); // text being edited
+    const [editTermText, setEditTermText] = useState<Term>(term); // text being edited
     const [updatedAnnotation, setUpdatedAnnotation] = useState<Annotation>(annotation);
+    const [updatedTerm, setUpdatedTerm] = useState<Term>(term);
+
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
 
 
     const checkValues = () => {
         // check is input aren't empty
-        if (editLabelText.length != 0 && editNoteText.length != 0) {
+        if (editLabelText.length != 0 && editNoteText.length != 0 && editTermText != null) {
             setIsConfirmModalOpen(!isConfirmModalOpen)
 
             updatedAnnotation.selectedWord = editLabelText
             updatedAnnotation.text = editNoteText
+            updatedAnnotation.term = editTermText
 
             setIsEditing(false)
-            handleEdit(updatedAnnotation, annotation.id)
+            handleEdit(updatedAnnotation, updatedTerm, annotation.id)
         } else {
             alert("Velden zijn leeg, vul deze in!")
         }
@@ -107,7 +113,24 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
                     </div>
                     <div className={css.row}>
                         <h4 className={`${css.leftCol} ${css.annotationName}`}>Begrip</h4>
-                        <h4 className={`${css.rightCol} ${css.annotationName}`}>{}</h4>
+                        {isEditing ? (
+                            <Form.Control
+                                className={""}
+                                as="textarea"
+                                value={editTermText?.definition || ''}
+                                onChange={(event) => {
+                                    if (editTermText) {
+                                        setEditTermText({
+                                            ...editTermText,
+                                            definition: event.target.value,
+                                        });
+                                    }
+                                }}
+                            />
+
+                        ) : (
+                            <h4 className={`${css.rightCol} ${css.annotationName}`}>{term?.definition}</h4>
+                        )}
                     </div>
 
                     {isEditing &&
