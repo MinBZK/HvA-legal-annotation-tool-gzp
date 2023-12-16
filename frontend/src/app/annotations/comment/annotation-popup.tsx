@@ -52,7 +52,6 @@ const Popup: FC<PopupProps> = ({ project }) => {
 
     // Loop through all annotations and fetch the annotation data
     // @ts-ignore
-    // Loop through all annotations and fetch the annotation data
     for (let annotation of annotations) {
       const id = annotation.getAttribute('id');
       if (id) {
@@ -70,8 +69,6 @@ const Popup: FC<PopupProps> = ({ project }) => {
         }
       }
     }
-
-
     setAnnotationStyles(newAnnotationStyles);
   };
 
@@ -114,19 +111,19 @@ const Popup: FC<PopupProps> = ({ project }) => {
     }));
   };
 
-  const handleTerm = (term: any) => {
+  const handleTerm = (definition: any) => {
     setAnnotation((prevAnnotation) => ({
       ...(prevAnnotation as Annotation),
-      term: term,
+      term: definition,
     }));
   };
 
-  const handleSelectedText = (text: string, startOffset: number, term: Term) => {
+
+  const handleSelectedText = (text: string, startOffset: number) => {
     setAnnotation((prevAnnotation) => ({
       ...(prevAnnotation as Annotation),
       selectedWord: text,
       startOffset: startOffset,
-      term: term
     }));
   };
 
@@ -188,6 +185,7 @@ const Popup: FC<PopupProps> = ({ project }) => {
       text: annotation?.text,
       lawClass: {name: annotation?.lawClass},
       project: {id: projectId},
+      term: {definition: annotation?.term}
     };
     try {
       const response = await fetch('http://localhost:8000/api/annotations/project', {
@@ -379,12 +377,8 @@ const Popup: FC<PopupProps> = ({ project }) => {
 
               <Form.Group controlId="exampleForm.ControlInput2">
                 <Form.Label><b>Begrip</b></Form.Label>
-                <Form.Control
-                    as="textarea"
-                    type="text"
-                    placeholder="Type hier uw begrip..."
-                    // value={annotation?.term?.reference || ''} // Assuming 'name' is the property you want to display
-                    // onChange={(e) => handleTerm(e.target.value)}
+                <Form.Control as="textarea" type="text" placeholder="Type hier uw begrip..." value={annotation?.term || ''}
+                    onChange={(e) => handleTerm(e.target.value)}
                 />
               </Form.Group>
 

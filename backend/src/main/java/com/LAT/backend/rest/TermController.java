@@ -18,8 +18,8 @@ public class TermController {
     @Autowired
     private TermRepository termRepository;
 
-    @GetMapping("/classes")
-    public Iterable<Term> getAllAnnotations() {
+    @GetMapping("/terms")
+    public Iterable<Term> getAllDefinitions() {
         return termRepository.findAll();
     }
 

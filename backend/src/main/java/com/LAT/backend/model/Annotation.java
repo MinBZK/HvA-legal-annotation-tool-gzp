@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Annotation {
     @Id
@@ -24,13 +26,6 @@ public class Annotation {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @JsonIgnoreProperties({"annotations"})
-    @ManyToOne
-    @JoinColumn(name = "term_id")
-    private Term term;
-
-
-
     public void setLawClass(LawClass lawClass) {
         this.lawClass = lawClass;
     }
@@ -45,14 +40,6 @@ public class Annotation {
 
     public void setProject(Project project) {
         this.project = project;
-    }
-
-    public Term getTerm() {
-        return term;
-    }
-
-    public void setTerm(Term term) {
-        this.term = term;
     }
 
     public int getId() {

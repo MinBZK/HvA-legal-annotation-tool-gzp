@@ -60,6 +60,7 @@ public class AnnotationController {
     // Hanna
     @PostMapping("/project")
     public ResponseEntity<Annotation> createAnnotation(@RequestBody Annotation annotation) {
+        int index = 0;
         try {
             // Validate if the project exists
             Project project = projectRepository.findById(annotation.getProject().getId())
@@ -69,7 +70,8 @@ public class AnnotationController {
             LawClass lawClass = lawClassRepository.findByName(annotation.getLawClass().getName())
                     .orElseThrow(() -> new LawClassNotFoundException("Annotation class not found"));
 
-            Term term = termRepository.findByName(annotation.getTerm().getDefinition())
+            // Validate if the term exists
+            Term term = termRepository.findByDefinition(annotation.getTerm().getDefinition())
                     .orElseThrow(() -> new LawClassNotFoundException("Term not found"));
 
             annotation.setProject(project);
@@ -85,6 +87,7 @@ public class AnnotationController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
+
 
     @DeleteMapping("/deleteannotation/{id}")
     public ResponseEntity<String> deleteAnnotation(@PathVariable Integer id) {
@@ -106,6 +109,7 @@ public class AnnotationController {
         annotation.setSelectedWord(annotationDetails.getSelectedWord());
         annotation.setLawClass(annotationDetails.getLawClass());
         annotation.setProject(annotationDetails.getProject());
+        annotation.setTerm(annotation.getTerm());
 
 
         return annotationRepository.save(annotation);

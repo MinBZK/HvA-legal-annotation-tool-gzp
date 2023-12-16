@@ -22,7 +22,7 @@ const AnnotatedRow: FC<AnnotationProps> = ({annotation, term, handleEdit, handle
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [editLabelText, setEditLabelText] = useState(''); // text being edited
     const [editNoteText, setEditNoteText] = useState(''); // text being edited
-    const [editTermText, setEditTermText] = useState<Term>(term); // text being edited
+    const [editTermText, setEditTermText] = useState(''); // text being edited
     const [updatedAnnotation, setUpdatedAnnotation] = useState<Annotation>(annotation);
     const [updatedTerm, setUpdatedTerm] = useState<Term>(term);
 
@@ -117,14 +117,9 @@ const AnnotatedRow: FC<AnnotationProps> = ({annotation, term, handleEdit, handle
                             <Form.Control
                                 className={""}
                                 as="textarea"
-                                value={editTermText?.definition || ''}
+                                value={editTermText}
                                 onChange={(event) => {
-                                    if (editTermText) {
-                                        setEditTermText({
-                                            ...editTermText,
-                                            definition: event.target.value,
-                                        });
-                                    }
+                                    setEditTermText(event.target.value);
                                 }}
                             />
 

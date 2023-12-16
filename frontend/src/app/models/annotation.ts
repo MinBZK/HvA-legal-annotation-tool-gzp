@@ -9,5 +9,5 @@ export interface Annotation {
     lawClass: LawClass,
     project: Project
     startOffset?: number;
-    term: Term;
+    term: string;
 }
