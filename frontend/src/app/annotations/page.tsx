@@ -1,15 +1,19 @@
 "use client";
 import AnnotationView from '../annotation-view/annotation-view';
-import Popup from '../annotations/comment/annotation-popup';
 import '../static/annotations.css';
 import {getProjectById} from '../services/project';
 import { Project } from '../models/project';
 import { useSearchParams } from 'next/navigation'
 import {useEffect, useState} from "react";
+import LoadXML from "./comment/render-xml";
+import CreateAnnotation from "./create-annotation/create-annotation";
 
 const AnnotationPage = () => {
 
     const [projectData, setProjectData] = useState<Project | null>(null);
+    const [isTextSelected, setIsTextSelected] = useState(false);
+    const [selectedText, setSelectedText] = useState("");
+    const [startOffset, setStartOffset] = useState(0);
 
     // Get id from url
     const searchParams = useSearchParams();
@@ -35,6 +39,18 @@ const AnnotationPage = () => {
         fetchData();
     }, [id]);
 
+    const handleTextSelection = (text: string, offset: number) => {
+        setIsTextSelected(true);
+        setSelectedText(text);
+        setStartOffset(offset)
+    };
+
+    const handleCloseCreate = () => {
+        setIsTextSelected(false);
+        setSelectedText("");
+        setStartOffset(0);
+    }
+
   return (
     <>
       <nav className="navbar">
@@ -42,10 +58,17 @@ const AnnotationPage = () => {
       </nav>
       <main className="container">
         <section className="left-column">
-            {projectData && <Popup project={projectData} />}
+            {projectData && <LoadXML project={projectData}  onTextSelection={handleTextSelection}
+            />}
         </section>
         <section className="right-column">
-          {<AnnotationView/>}
+            {isTextSelected ? (
+                // Render Create annotation when text is selected
+                <CreateAnnotation selectedText={selectedText} startOffset={startOffset} onClose={handleCloseCreate}/>
+            ) : (
+                // Render AnnotationView when text is not selected
+                <AnnotationView/>
+            )}
         </section>
       </main>
     </>
