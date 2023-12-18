@@ -48,7 +48,7 @@ const Popup: FC<PopupProps> = ({ project }) => {
         const response = await fetch(`http://localhost:8000/api/annotations/${id}`);
         if (response.ok) {
           const annotationData = await response.json();
-          const color = annotationData.lawClass.color;
+          const color = annotationData?.lawClass.color;
           newAnnotationStyles[`${id}`] = color;
         } else {
           console.error('Failed to fetch annotation data');

@@ -26,7 +26,7 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
 
 
     const checkValues = () => {
-        // check is input aren't empty
+        // check is input aren't empty (label and notitie)
         if (editLabelText.length != 0 && editNoteText.length != 0) {
             setIsConfirmModalOpen(!isConfirmModalOpen)
 
@@ -40,21 +40,24 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
         }
     }
 
+
+    // Delete annotation with id
     const checkDelete = () => {
         setIsDeleteModalOpen(!isDeleteModalOpen)
         setIsEditing(false)
         handleDelete(annotation.id)
     }
 
-
+    // Update UI when annotation changes
     useEffect(() => {
         setEditLabelText(annotation.selectedWord)
         setEditNoteText(annotation.text)
     }, []);
 
     return (
+        // Dropdown rechtsbetrekking
         <div>
-            <div className={css.annotationTitle} style={{background: annotation.lawClass.color}} onClick={() => {
+            <div className={css.annotationTitle} style={{background: annotation.lawClass.color}} onClick={() => {``
                 setOpen(!open)
             }}>
                 <h5 className={css.annotationName}>{annotation.lawClass.name}</h5>
@@ -73,6 +76,7 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
                                 style={isEditing ? ({color: "rgb(112, 164, 255)"}) : ({color: "black"})}
                                 onClick={() => setIsEditing(!isEditing)}/>
                     </div>
+
 
                     <div className={css.row}>
                         <h4 className={`${css.leftCol} ${css.annotationName}`}>Label</h4>

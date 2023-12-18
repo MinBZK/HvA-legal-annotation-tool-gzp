@@ -37,7 +37,6 @@ const AnnotationView = () => {
                 console.error("Error fetching annotations:", error);
             }
         };
-
         fetchIdAndAnnotations();
     }, []); // The empty dependency array ensures that this effect runs only once, similar to componentDidMount
 
