@@ -40,3 +40,5 @@
 # /frontend/package-lock.json
 
 */.next/*
+
+backend/src/main/resources/.env
