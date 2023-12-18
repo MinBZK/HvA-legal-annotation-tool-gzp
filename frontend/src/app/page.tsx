@@ -4,7 +4,7 @@ import './static/index.css';
 import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import React, { useEffect, useRef, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { getProjects, uploadXML } from './services/project'
+import {getMaxXmlCount, getProjectCounts, getProjects, uploadXML} from './services/project'
 import { Project } from "./models/project";
 import { BsDownload } from "react-icons/bs";
 import Link from 'next/link';
@@ -16,6 +16,12 @@ export default function Home() {
   const [showError, setShowError] = useState(false); // State variable for managing error visibility for the upload
   const [showProjectError, setShowProjectError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showMaxXmlWarning, setShowMaxXmlWarning] = useState(false);
+
+
+
+  const [maxXmlCount, setMaxXmlCount] = useState(0);
+  const [currentXmlCount, setCurrentXmlCount] = useState(0);
 
   // Wrapper function to handle close and show of upload modal
   const handleClose = () => setShow(false);
@@ -26,7 +32,29 @@ export default function Home() {
   useEffect(() => {
     // Fetch the list of projects when the component mounts
     fetchProjects();
+    fetchMaxXmlCount();
+    fetchProjectCounts();
   }, []);
+
+  useEffect(() => {
+    if (currentXmlCount >= 40) {
+      setShowMaxXmlWarning(true);
+    } else {
+      setShowMaxXmlWarning(false);
+    }
+  }, [currentXmlCount]);
+
+
+
+  const fetchMaxXmlCount = async () => {
+    const maxCount = await getMaxXmlCount();
+    setMaxXmlCount(maxCount);
+  };
+
+  const fetchProjectCounts = async () => {
+    const counts = await getProjectCounts();
+    setCurrentXmlCount(counts.currentCount);
+  };
 
   const fetchProjects = async () => {
     try {
@@ -67,6 +95,8 @@ export default function Home() {
     }
   };
 
+
+
   return (
     <>
       <div>
@@ -74,10 +104,14 @@ export default function Home() {
           {<div className="navbar-title">Legal Annotation Tool</div>}
         </nav>
       </div>
-      <div className="container">
+      <div className="container-md container-sm">
         <main className="main-content">
           <div className="d-flex justify-content-between align-items-center mb-3">
             <h2 className="doc-text">Documenten</h2>
+            <p>{currentXmlCount}/{maxXmlCount} XML's beschikbaar</p>
+            <Alert show={showMaxXmlWarning} variant="warning">
+              U heeft het maximale aantal van 40 XML's bereikt. Verwijder eerst een XML voordat u verder gaat.
+            </Alert>
             <button
               className="import-button"
               onClick={handleShow}>

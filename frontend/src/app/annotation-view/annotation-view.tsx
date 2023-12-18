@@ -37,7 +37,6 @@ const AnnotationView = () => {
                 console.error("Error fetching annotations:", error);
             }
         };
-
         fetchIdAndAnnotations();
     }, []); // The empty dependency array ensures that this effect runs only once, similar to componentDidMount
 
@@ -57,7 +56,7 @@ const AnnotationView = () => {
             console.log(response);
             if (response.ok) {
                 alert("Annotatie succesvol bijgewerkt");
-                fetchAnnotations(id); // Refetch annotations
+                fetchAnnotations(annotationDetails.project.id); // Refetch annotations
             } else {
                 alert("Fout annotatie bijwerken");
             }

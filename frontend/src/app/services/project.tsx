@@ -37,3 +37,25 @@ export async function getProjectById(id: number) {
 
     return response.json();
 }
+
+export async function getMaxXmlCount() {
+    const response = await fetch(`http://localhost:8000/api/maxXmlCount`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+
+    return response.json();
+}
+
+export async function getProjectCounts() {
+    const response = await fetch(`http://localhost:8000/api/projectCounts`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+
+    return response.json();
+}
