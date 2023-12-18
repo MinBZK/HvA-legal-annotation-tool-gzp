@@ -40,7 +40,7 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection }) => {
         const response = await fetch(`http://localhost:8000/api/annotations/${id}`);
         if (response.ok) {
           const annotationData = await response.json();
-          newAnnotationStyles[`${id}`] = annotationData.lawClass.color;
+          newAnnotationStyles[`${id}`] = annotationData?.lawClass.color;
         } else {
           console.error('Failed to fetch annotation data');
         }
