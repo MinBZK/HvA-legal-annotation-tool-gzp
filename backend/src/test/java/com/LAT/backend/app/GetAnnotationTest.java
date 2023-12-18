@@ -1,4 +1,4 @@
-package com.LAT.backend;
+package com.LAT.backend.app;
 
 import com.LAT.backend.model.Annotation;
 import com.LAT.backend.repository.AnnotationRepository;

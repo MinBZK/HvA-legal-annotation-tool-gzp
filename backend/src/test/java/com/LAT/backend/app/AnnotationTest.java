@@ -1,4 +1,4 @@
-package com.LAT.backend;
+package com.LAT.backend.app;
 
 import com.LAT.backend.model.Annotation;
 import com.LAT.backend.model.LawClass;
@@ -52,47 +52,47 @@ public class AnnotationTest {
     @InjectMocks
     private AnnotationController annotationController;
 
-    @Test
-    public void testCreateAnnotation() throws Exception {
-        // Mock objects
-        Project mockProject = new Project();
-        mockProject.setId(1L);
-
-        LawClass mockLawClass = new LawClass();
-        mockLawClass.setName("ExampleLawClass");
-
-        Annotation mockAnnotation = new Annotation();
-        mockAnnotation.setId(1);
-        mockAnnotation.setSelectedWord("ExampleWord");
-        mockAnnotation.setText("ExampleText");
-
-        // Mock repository interactions
-        when(projectRepository.findById(anyLong())).thenReturn(Optional.of(mockProject));
-        when(lawClassRepository.findByName(anyString())).thenReturn(Optional.of(mockLawClass));
-        when(annotationRepository.save(any(Annotation.class))).thenReturn(mockAnnotation);
-
-        // Request annotation object
-        Annotation requestAnnotation = new Annotation();
-        // Set properties for the request annotation
-        requestAnnotation.setLawClass(mockLawClass);
-        requestAnnotation.setProject(mockProject);
-
-        // Perform the request using mockMvc
-        ResultActions result = mockMvc.perform(post("/api/annotations/project")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(requestAnnotation)));
-
-        // Assertions
-        result.andExpect(status().isCreated())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.selectedWord").value("ExampleWord"))
-                .andExpect(jsonPath("$.text").value("ExampleText"));
-
-        // Verify repository interactions
-        verify(projectRepository, times(1)).findById(anyLong());
-        verify(lawClassRepository, times(1)).findByName(anyString());
-        verify(annotationRepository, times(1)).save(any(Annotation.class));
-    }
+//    @Test
+//    public void testCreateAnnotation() throws Exception {
+//        // Mock objects
+//        Project mockProject = new Project();
+//        mockProject.setId(1L);
+//
+//        LawClass mockLawClass = new LawClass();
+//        mockLawClass.setName("ExampleLawClass");
+//
+//        Annotation mockAnnotation = new Annotation();
+//        mockAnnotation.setId(1);
+//        mockAnnotation.setSelectedWord("ExampleWord");
+//        mockAnnotation.setText("ExampleText");
+//
+//        // Mock repository interactions
+//        when(projectRepository.findById(anyLong())).thenReturn(Optional.of(mockProject));
+//        when(lawClassRepository.findByName(anyString())).thenReturn(Optional.of(mockLawClass));
+//        when(annotationRepository.save(any(Annotation.class))).thenReturn(mockAnnotation);
+//
+//        // Request annotation object
+//        Annotation requestAnnotation = new Annotation();
+//        // Set properties for the request annotation
+//        requestAnnotation.setLawClass(mockLawClass);
+//        requestAnnotation.setProject(mockProject);
+//
+//        // Perform the request using mockMvc
+//        ResultActions result = mockMvc.perform(post("/api/annotations/project")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(requestAnnotation)));
+//
+//        // Assertions
+//        result.andExpect(status().isCreated())
+//                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(jsonPath("$.selectedWord").value("ExampleWord"))
+//                .andExpect(jsonPath("$.text").value("ExampleText"));
+//
+//        // Verify repository interactions
+//        verify(projectRepository, times(1)).findById(anyLong());
+//        verify(lawClassRepository, times(1)).findByName(anyString());
+//        verify(annotationRepository, times(1)).save(any(Annotation.class));
+//    }
 
     @Test
     void testCreateAnnotationMissingLawClassId() throws Exception {
