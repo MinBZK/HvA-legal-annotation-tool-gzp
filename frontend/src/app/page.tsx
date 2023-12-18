@@ -16,6 +16,8 @@ export default function Home() {
   const [showError, setShowError] = useState(false); // State variable for managing error visibility for the upload
   const [showProjectError, setShowProjectError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showMaxXmlWarning, setShowMaxXmlWarning] = useState(false);
+
 
 
   const [maxXmlCount, setMaxXmlCount] = useState(0);
@@ -33,6 +35,15 @@ export default function Home() {
     fetchMaxXmlCount();
     fetchProjectCounts();
   }, []);
+
+  useEffect(() => {
+    if (currentXmlCount >= 40) {
+      setShowMaxXmlWarning(true);
+    } else {
+      setShowMaxXmlWarning(false);
+    }
+  }, [currentXmlCount]);
+
 
 
   const fetchMaxXmlCount = async () => {
@@ -98,6 +109,9 @@ export default function Home() {
           <div className="d-flex justify-content-between align-items-center mb-3">
             <h2 className="doc-text">Documenten</h2>
             <p>{currentXmlCount}/{maxXmlCount} XML's beschikbaar</p>
+            <Alert show={showMaxXmlWarning} variant="warning">
+              U heeft het maximale aantal van 40 XML's bereikt. Verwijder eerst een XML voordat u verder gaat.
+            </Alert>
             <button
               className="import-button"
               onClick={handleShow}>
