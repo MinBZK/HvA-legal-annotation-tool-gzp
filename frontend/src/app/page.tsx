@@ -74,7 +74,7 @@ export default function Home() {
           {<div className="navbar-title">Legal Annotation Tool</div>}
         </nav>
       </div>
-      <div className="container">
+      <div className="container-md container-sm">
         <main className="main-content">
           <div className="d-flex justify-content-between align-items-center mb-3">
             <h2 className="doc-text">Documenten</h2>

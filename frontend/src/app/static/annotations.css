@@ -3,6 +3,14 @@
   height: 50px;
 }
 
+#annoteren {
+  font-size: 20px;
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #154273;
+}
+
 .container {
   display: flex;
   gap: 20px;

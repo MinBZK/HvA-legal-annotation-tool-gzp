@@ -72,7 +72,7 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
                 <div className={css.annotationInfo}>
 
                     <div className={css.iconRow}>
-                        <FaEdit className={css.iconCol}
+                        <FaEdit className={css.iconCol} id={"iconEdit"}
                                 style={isEditing ? ({color: "rgb(112, 164, 255)"}) : ({color: "black"})}
                                 onClick={() => setIsEditing(!isEditing)}/>
                     </div>
