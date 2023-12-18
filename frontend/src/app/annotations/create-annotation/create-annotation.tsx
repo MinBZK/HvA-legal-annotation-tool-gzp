@@ -7,9 +7,10 @@ import {BsFillFloppy2Fill, BsFillTrashFill, BsX} from "react-icons/bs";
 import {Annotation} from "../../models/annotation";
 import {LawClass} from "../../models/lawclass";
 import {getProjectById} from "../../services/project";
+import {Project} from "../../models/project";
 
 interface PopupProps {
-    text: string;
+    selectedText: string;
     startOffset: number;
     onClose: () => void; // Callback to indicate closing
 }
@@ -19,14 +20,16 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
     const [projectId, setProjectId] = useState<number>(0);
     const [classes, setClasses] = useState<LawClass[]>([]); // New state to store the laws
     const [lawClassError, setLawClassError] = useState(false);
-    const [project, setProject] = useState(false);
+    const [project, setProject] = useState<Project>({
+        id:0
+    } as Project);
     const [originalXML, setOriginalXML] = useState<Document | null>(null);
     const [annotation, setAnnotation] = useState<Annotation>({
         id: 0,
         text: "",
         selectedWord: "",
-        lawClass: null,
-        project: null,
+        lawClass: {name:""},
+        project: {id:0},
         startOffset: 0
     } as Annotation);
 
@@ -46,7 +49,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
             setProject(project)
 
             let parser = new DOMParser();
-            let xml = parser.parseFromString(project.xml_content, "application/xml");
+            let xml = parser.parseFromString(project?.xml_content, "application/xml");
             await setOriginalXML(xml);
         } catch (error) {
             console.error("Error fetching annotations:", error);

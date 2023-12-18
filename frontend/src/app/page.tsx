@@ -1,13 +1,13 @@
-'use client'
-import { FiTrash2 } from 'react-icons/fi';
-import './static/index.css';
-import { Modal, Button, Form, Alert } from 'react-bootstrap';
-import React, { useEffect, useRef, useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import {getMaxXmlCount, getProjectCounts, getProjects, uploadXML} from './services/project'
+"use client"
+import { FiTrash2 } from "react-icons/fi";
+import "./static/index.css";
+import { Modal, Button, Form, Alert } from "react-bootstrap";
+import React, { useEffect, useRef, useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import {getMaxXmlCount, getProjectCounts, getProjects, uploadXML} from "./services/project"
 import { Project } from "./models/project";
 import { BsDownload } from "react-icons/bs";
-import Link from 'next/link';
+import Link from "next/link";
 
 export default function Home() {
 
@@ -108,9 +108,9 @@ export default function Home() {
         <main className="main-content">
           <div className="d-flex justify-content-between align-items-center mb-3">
             <h2 className="doc-text">Documenten</h2>
-            <p>{currentXmlCount}/{maxXmlCount} XML's beschikbaar</p>
+            <p>{currentXmlCount}/{maxXmlCount} XML&apos;s beschikbaar</p>
             <Alert show={showMaxXmlWarning} variant="warning">
-              U heeft het maximale aantal van 40 XML's bereikt. Verwijder eerst een XML voordat u verder gaat.
+              U heeft het maximale aantal van 40 XML&apos;s bereikt. Verwijder eerst een XML voordat u verder gaat.
             </Alert>
             <button
               className="import-button"
