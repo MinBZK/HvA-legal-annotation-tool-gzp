@@ -26,6 +26,10 @@ public class Annotation {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    @ManyToOne
+    @JoinColumn(name = "term_id")
+    private Term term;
+
     public void setLawClass(LawClass lawClass) {
         this.lawClass = lawClass;
     }
@@ -64,5 +68,13 @@ public class Annotation {
 
     public void setSelectedWord(String selectedWord) {
         this.selectedWord = selectedWord;
+    }
+
+    public Term getTerm() {
+        return term;
+    }
+
+    public void setTerm(Term term) {
+        this.term = term;
     }
 }
