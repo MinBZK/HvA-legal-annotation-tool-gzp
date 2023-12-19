@@ -43,7 +43,7 @@ build_backend:
     - hva
   script:
     - cd backend
-    - mvn clean install
+    - mvn clean install -DskipTests # Want to isolate the build from the tests
 
 test_backend:
   stage: test
@@ -52,8 +52,9 @@ test_backend:
     - hva
   script:
     - cd backend
-    - mvn test -Ddb.pass=$DB_PASS -Ddb.url=$DB_URL -Ddb.user=$DB_USER
+    - mvn test -Ddb.pass=$DB_PASS -Ddb.url=$DB_URL -Ddb.user=$DB_USER # pass the gitlab variables of the db properties
 
+# TODO: next sprint deploy app with docker
 deploy_frontend:
   stage: deploy
   tags:
