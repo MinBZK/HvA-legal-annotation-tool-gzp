@@ -31,7 +31,7 @@ const AnnotatedRow: FC<AnnotationProps> = ({annotation, term, handleEdit, handle
 
 
     const checkValues = () => {
-        // check is input aren't empty
+        // check is input aren't empty (label and notitie)
         if (editLabelText.length != 0 && editNoteText.length != 0 && editTermText != null) {
             setIsConfirmModalOpen(!isConfirmModalOpen)
 
@@ -46,24 +46,27 @@ const AnnotatedRow: FC<AnnotationProps> = ({annotation, term, handleEdit, handle
         }
     }
 
+
+    // Delete annotation with id
     const checkDelete = () => {
         setIsDeleteModalOpen(!isDeleteModalOpen)
         setIsEditing(false)
         handleDelete(annotation.id)
     }
 
-
+    // Update UI when annotation changes
     useEffect(() => {
         setEditLabelText(annotation.selectedWord)
         setEditNoteText(annotation.text)
-    }, []);
+    }, [annotation.selectedWord, annotation.text]);
 
     return (
+        // Dropdown rechtsbetrekking
         <div>
-            <div className={css.annotationTitle} style={{background: annotation.lawClass.color}} onClick={() => {
+            <div className={css.annotationTitle} style={{background: annotation.lawClass?.color}} onClick={() => {``
                 setOpen(!open)
             }}>
-                <h5 className={css.annotationName}>{annotation.lawClass.name}</h5>
+                <h5 className={css.annotationName}>{annotation.lawClass?.name}</h5>
                 {open ? (
                     <FaChevronDown className={css.align}/>
                 ) : (
@@ -75,10 +78,11 @@ const AnnotatedRow: FC<AnnotationProps> = ({annotation, term, handleEdit, handle
                 <div className={css.annotationInfo}>
 
                     <div className={css.iconRow}>
-                        <FaEdit className={css.iconCol}
-                                style={isEditing ? ({color: "rgb(112, 164, 255)"}) : ({color: "black"})}
-                                onClick={() => setIsEditing(!isEditing)}/>
+                        <FaEdit className={css.iconCol} id={"iconEdit"}
+                                style={isEditing ? ({display: "none"}) : ({display: "block"})}
+                                onClick={() => setIsEditing(true)}/>
                     </div>
+
 
                     <div className={css.row}>
                         <h4 className={`${css.leftCol} ${css.annotationName}`}>Label</h4>
@@ -129,10 +133,11 @@ const AnnotatedRow: FC<AnnotationProps> = ({annotation, term, handleEdit, handle
                     </div>
 
                     {isEditing &&
-                        <>
-                            <Button className={"border-dark m-2"} variant={"light"} onClick={() => setIsConfirmModalOpen(true)}>Opslaan</Button>
-                            <Button className={"border-dark m-2"} variant={"light"} onClick={() => setIsDeleteModalOpen(true)}>Verwijderen</Button>
-                        </>
+                        <div className={`${css.buttonsRight}`}>
+                            <button className={`${css.save}`} onClick={() => setIsConfirmModalOpen(true)}>Opslaan</button>
+                            <button className={`${css.cancel}`} onClick={() => setIsEditing(false)}>Annureer</button>
+                            <button className={`${css.delete}`} onClick={() => setIsDeleteModalOpen(true)}>Verwijderen</button>
+                        </div>
                     }
                 </div>
             }

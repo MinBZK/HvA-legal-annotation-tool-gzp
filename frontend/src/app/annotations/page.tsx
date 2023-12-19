@@ -56,7 +56,7 @@ const AnnotationPage = () => {
       <nav className="navbar">
         {<div className="navbar-title">Legal Annotation Tool</div>}
       </nav>
-      <main className="container">
+      <main className='d-flex'>
         <section className="left-column">
             {projectData && <LoadXML project={projectData}  onTextSelection={handleTextSelection}
             />}

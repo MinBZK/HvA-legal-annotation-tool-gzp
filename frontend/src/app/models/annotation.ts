@@ -6,7 +6,7 @@ export interface Annotation {
     id: number,
     text: string,
     selectedWord: string,
-    lawClass: LawClass,
+    lawClass: LawClass | undefined,
     project: Project
     startOffset?: number;
     term: string;

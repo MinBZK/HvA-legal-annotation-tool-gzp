@@ -3,6 +3,11 @@ stages:
   - test
   - deploy
 
+variables:
+  DB_PASS: $CI_DB_PASS
+  DB_URL: $CI_DB_URL
+  DB_USER: $CI_DB_USER
+
 # Frontend jobs
 build_frontend:
   stage: build
@@ -29,7 +34,27 @@ test_frontend:
     - nohup npm run dev &            # Start de server op de achtergrond
     - sleep 10                       # Wacht even om de server tijd te geven om te starten
     - npm run test                   # Voer Cypress tests uit
-    
+
+# Backend jobs for Spring Boot
+build_backend:
+  stage: build
+  image: maven:3.8.4-openjdk-17
+  tags:
+    - hva
+  script:
+    - cd backend
+    - mvn clean install -DskipTests # Want to isolate the build from the tests
+
+test_backend:
+  stage: test
+  image: maven:3.8.4-openjdk-17
+  tags:
+    - hva
+  script:
+    - cd backend
+    - mvn test -Ddb.pass=$DB_PASS -Ddb.url=$DB_URL -Ddb.user=$DB_USER # pass the gitlab variables of the db properties
+
+# TODO: next sprint deploy app with docker
 deploy_frontend:
   stage: deploy
   tags:

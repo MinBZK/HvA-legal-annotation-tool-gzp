@@ -4,7 +4,7 @@ import './static/index.css';
 import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import React, { useEffect, useRef, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { getProjects, uploadXML } from './services/project'
+import { getMaxXmlCount, getProjectCounts, getProjects, uploadXML } from './services/project'
 import { Project } from "./models/project";
 import { BsDownload } from "react-icons/bs";
 import Link from 'next/link';
@@ -14,8 +14,15 @@ export default function Home() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [show, setShow] = useState(false); // State variable for controlling visibility of the upload modal
   const [showError, setShowError] = useState(false); // State variable for managing error visibility for the upload
+  const [errorMsg, setErrorMsg] = useState("");
   const [showProjectError, setShowProjectError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showMaxXmlWarning, setShowMaxXmlWarning] = useState(false);
+
+
+
+  const [maxXmlCount, setMaxXmlCount] = useState(0);
+  const [currentXmlCount, setCurrentXmlCount] = useState(0);
 
   // Wrapper function to handle close and show of upload modal
   const handleClose = () => setShow(false);
@@ -26,7 +33,29 @@ export default function Home() {
   useEffect(() => {
     // Fetch the list of projects when the component mounts
     fetchProjects();
+    fetchMaxXmlCount();
+    fetchProjectCounts();
   }, []);
+
+  useEffect(() => {
+    if (currentXmlCount >= 40) {
+      setShowMaxXmlWarning(true);
+    } else {
+      setShowMaxXmlWarning(false);
+    }
+  }, [currentXmlCount]);
+
+
+
+  const fetchMaxXmlCount = async () => {
+    const maxCount = await getMaxXmlCount();
+    setMaxXmlCount(maxCount);
+  };
+
+  const fetchProjectCounts = async () => {
+    const counts = await getProjectCounts();
+    setCurrentXmlCount(counts.currentCount);
+  };
 
   const fetchProjects = async () => {
     try {
@@ -54,18 +83,37 @@ export default function Home() {
       reader.onload = async (event) => {
         // Check if the event target is not null and the result is a string
         if (event.target != null && typeof event.target.result === "string") {
-          const response = await uploadXML(event.target.result);
+          const parser = new DOMParser();
+          const xmlDoc = parser.parseFromString(event.target.result, 'application/xml');
+          const citeertitelElement = xmlDoc.querySelector('citeertitel');
 
-          // Check the status of the response
-          if (response.status == 201) {
-            setShow(false);
+          if (citeertitelElement && citeertitelElement.childNodes.length > 0) {
+            const firstChildNode = citeertitelElement.childNodes[0];
+            if (firstChildNode && firstChildNode.nodeValue !== null) {
+              const title = firstChildNode.nodeValue.trim();
+              const response = await uploadXML(event.target.result, title);
+
+              // Check the status of the response
+              if (response.status == 201) {
+                setShow(false);
+              } else {
+                setErrorMsg("Er is iets fout gegaan bij het uploaden");
+                setShowError(true);
+              }
+            } else {
+              setErrorMsg("De XML bevat geen citeertitel");
+              setShowError(true);
+            }
           } else {
+            setErrorMsg("De XML bevat geen citeertitel");
             setShowError(true);
           }
         }
       };
     }
   };
+
+
 
   return (
     <>
@@ -74,15 +122,19 @@ export default function Home() {
           {<div className="navbar-title">Legal Annotation Tool</div>}
         </nav>
       </div>
-      <div className="container">
+      <div className="container-md container-sm">
         <main className="main-content">
           <div className="d-flex justify-content-between align-items-center mb-3">
             <h2 className="doc-text">Documenten</h2>
+            <p className='xml-minmax'>{currentXmlCount}/{maxXmlCount} XML&apos;s beschikbaar</p>
+            <Alert show={showMaxXmlWarning} variant="warning">
+              U heeft het maximale aantal van 40 XML&apos;s bereikt. Verwijder eerst een XML voordat u verder gaat.
+            </Alert>
             <button
               className="import-button"
               onClick={handleShow}>
               <BsDownload className="download-icon" size={20} />
-              Importeer XML
+              <span>Importeer XML</span>
             </button>
           </div>
 
@@ -97,13 +149,13 @@ export default function Home() {
             {projects && projects.map((project) => (
               <li key={project.id} className="document-item">
                 <div className="document-info">
-                  <span className="document-title">Wet {project.id}</span>
+                  <span className="document-title">{project.title}</span>
                 </div>
                 <div className="actions">
                   <Link href={{ pathname: '/annotations', query: { id: project.id } }} passHref>
                     <button className="open-button">Open project</button>
                   </Link>
-                  <FiTrash2 className="delete-icon" />
+                  <button className='delete-button'><FiTrash2 className="delete-icon" /></button>
                 </div>
               </li>
             ))}
@@ -119,7 +171,7 @@ export default function Home() {
             <Alert show={showError} variant="danger" dismissible>
               <Alert.Heading>Error</Alert.Heading>
               <p>
-                Something went wrong
+                {errorMsg}
               </p>
             </Alert>
             <Form action={handleXmlUpload}>

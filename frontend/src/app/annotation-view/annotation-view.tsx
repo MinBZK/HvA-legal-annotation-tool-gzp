@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import AnnotatedRow from "@/app/annotation-view/annotated-row/annotated-row";
 import { Annotation } from "@/app/models/annotation";
 import css from "./annotation-view.module.css";
+import Image from "next/image"
 
 const AnnotationView = () => {
     const [annotations, setAnnotations] = useState<Annotation[]>([]);
@@ -37,7 +38,6 @@ const AnnotationView = () => {
                 console.error("Error fetching annotations:", error);
             }
         };
-
         fetchIdAndAnnotations();
     }, []); // The empty dependency array ensures that this effect runs only once, similar to componentDidMount
 
@@ -57,7 +57,7 @@ const AnnotationView = () => {
             console.log(response);
             if (response.ok) {
                 alert("Annotatie succesvol bijgewerkt");
-                fetchAnnotations(id); // Refetch annotations
+                fetchAnnotations(annotationDetails.project.id); // Refetch annotations
             } else {
                 alert("Fout annotatie bijwerken");
             }
@@ -96,8 +96,10 @@ const AnnotationView = () => {
             <div className={css.topBar}>
                 <h2 className={css.title}>Annotaties</h2>
 
-                <img
+                <Image
+                    height={100}
                     className={css.image}
+                    width={200}
                     src="/juridischanalyseschema.png"
                     alt={"Juridisch Analyseschema"}
                     onClick={() => {
@@ -113,7 +115,9 @@ const AnnotationView = () => {
                         setIsModalOpen(!isModalOpen);
                     }}
                 >
-                    <img
+                    <Image
+                        height={300}
+                        width={450}
                         className={css.imageModal}
                         src="/juridischanalyseschema.png"
                         alt={"Juridisch Analyseschema"}
@@ -121,7 +125,7 @@ const AnnotationView = () => {
                 </div>
             )}
 
-            <div className={"annolist shadow-sm p-3 mb-5 bg-white rounded"}>
+            <div className={"annolist p-3 mb-5 bg-white"}>
                 {annotations &&
                 annotations.map((value, index) => (
                     <div className={css.annotatedRow} key={index}>

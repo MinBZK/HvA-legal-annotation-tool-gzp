@@ -1,16 +1,18 @@
-package com.LAT.backend;
+package com.LAT.backend.app;
 
 import com.LAT.backend.model.Annotation;
 import com.LAT.backend.repository.AnnotationRepository;
 import com.LAT.backend.repository.ProjectRepository;
 import com.LAT.backend.repository.LawClassRepository;  // Import LawClassRepository
 import com.LAT.backend.rest.AnnotationController;
+import com.LAT.backend.rest.ProjectController;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -26,7 +28,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@WebMvcTest(AnnotationController.class)
 @AutoConfigureMockMvc
 public class GetAnnotationTest {
 

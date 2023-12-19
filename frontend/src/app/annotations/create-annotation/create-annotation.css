@@ -1,3 +1,57 @@
+.form-label {
+    margin-bottom: 0.5rem;
+    padding: 0.55rem 1rem;
+}
+
+.btn-secondary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #e9ecef;
+    --bs-btn-border-color: #fff
+}
+
+#annoteren {
+    font-size: 20px;
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #154273;
+    margin-left: 15px;
+}
+
+.form-control {
+    margin-left: 10px;
+    width: 95%;
+    background-color: #e9ecef;
+    padding: 0.5rem 0.75rem
+}
+
+button#dropdown-basic.dropdown.dropdown-toggle.btn.btn-secondary {
+    margin-left: 10px;
+    width: 95%;
+}
+
+.buttonGroup {
+    display: flex;
+    justify-content: right;
+}
+
+.annotationName {
+    font-size: 14px;
+    margin: 0;
+}
+
+.left-column, .right-column {
+    height: calc(100lvh - 50px);
+    overflow: auto;
+    width: 100%;
+}
+
+
+.left-column, .right-column {
+    border-right: 1px solid lightgray;
+    padding: 40px 30px;
+}
+
 .row {
     display: flex;
     justify-content: start;
@@ -34,11 +88,7 @@
 }
 
 .annotationInfo {
-    background-color: #FBFBFB;
-    border-radius: 0.75rem;
-    padding: 20px 0;
-    border: 1px solid #ebebeb;
-    position: relative;
+    margin-bottom: 10px;
 }
 
 .leftCol {

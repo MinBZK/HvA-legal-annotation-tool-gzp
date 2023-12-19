@@ -2,14 +2,16 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {FC, useEffect, useState} from 'react';
 import {Alert, Button, Dropdown, Form, Modal} from 'react-bootstrap';
-import '../../static/annotations.css'
 import {BsFillFloppy2Fill, BsFillTrashFill, BsX} from "react-icons/bs";
 import {Annotation} from "../../models/annotation";
 import {LawClass} from "../../models/lawclass";
 import {getProjectById} from "../../services/project";
+import {Project} from "../../models/project";
+import "./create-annotation.css"
+import css from "../../annotation-view/annotated-row/annotated-row.module.css"
 
 interface PopupProps {
-    text: string;
+    selectedText: string;
     startOffset: number;
     onClose: () => void; // Callback to indicate closing
 }
@@ -19,14 +21,16 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
     const [projectId, setProjectId] = useState<number>(0);
     const [classes, setClasses] = useState<LawClass[]>([]); // New state to store the laws
     const [lawClassError, setLawClassError] = useState(false);
-    const [project, setProject] = useState(false);
+    const [project, setProject] = useState<Project>({
+        id:0
+    } as Project);
     const [originalXML, setOriginalXML] = useState<Document | null>(null);
     const [annotation, setAnnotation] = useState<Annotation>({
         id: 0,
         text: "",
         selectedWord: "",
-        lawClass: null,
-        project: null,
+        lawClass: undefined,
+        project: {id:0},
         startOffset: 0
     } as Annotation);
 
@@ -34,7 +38,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
         fetchId();
         fetchClasses();
         handleSelectedText(selectedText, startOffset);
-    }, []);
+    }, [selectedText, startOffset]);
 
     const fetchId = async () => {
         try {
@@ -46,7 +50,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
             setProject(project)
 
             let parser = new DOMParser();
-            let xml = parser.parseFromString(project.xml_content, "application/xml");
+            let xml = parser.parseFromString(project?.xml_content, "application/xml");
             await setOriginalXML(xml);
         } catch (error) {
             console.error("Error fetching annotations:", error);
@@ -245,7 +249,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
                 </Alert>
             )}
 
-            <Form>
+            <Form className="annotationInfo">
                 <Form.Group controlId="selectedText">
                     <Form.Label><b>Geselecteerde tekst</b></Form.Label>
                     <Form.Control type="text" readOnly value={annotation?.selectedWord} />
@@ -256,7 +260,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
                     <Dropdown>
                         <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic" style={{
                             color: 'black',
-                            backgroundColor: annotation?.lawClass ? (classes.find(law => law.name === annotation.lawClass.toString()) || {}).color || ''
+                            backgroundColor: annotation?.lawClass ? (classes.find(law => law.name === annotation.lawClass?.toString()) || {}).color || ''
                                 : '',
                         }}>
                             {annotation?.lawClass ? <>{annotation.lawClass}</> : <>Selecteer</>}
@@ -290,13 +294,13 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
             </Form>
         </div>
 
-        <div style={{ padding: 1, display: 'flex', justifyContent: 'flex-end' }}>
-            <Button variant="primary" onClick={handleSave}>
+        <div className={`${css.buttonsRight}`}>
+            <button className={`${css.save}`} onClick={handleSave}>
                 <BsFillFloppy2Fill size={20} /> Opslaan
-            </Button>
-            <Button className="warning-text-color" variant="warning" onClick={handleClose}>
+            </button>
+            <button className={`${css.cancel}`} onClick={handleClose}>
                 <BsX size={20} /> Annuleer
-            </Button>
+            </button>
         </div>
     </>
 );
