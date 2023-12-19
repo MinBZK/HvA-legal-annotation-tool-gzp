@@ -14,6 +14,7 @@ export default function Home() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [show, setShow] = useState(false); // State variable for controlling visibility of the upload modal
   const [showError, setShowError] = useState(false); // State variable for managing error visibility for the upload
+  const [errorMsg, setErrorMsg] = useState("");
   const [showProjectError, setShowProjectError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showMaxXmlWarning, setShowMaxXmlWarning] = useState(false);
@@ -82,12 +83,29 @@ export default function Home() {
       reader.onload = async (event) => {
         // Check if the event target is not null and the result is a string
         if (event.target != null && typeof event.target.result === "string") {
-          const response = await uploadXML(event.target.result);
+          const parser = new DOMParser();
+          const xmlDoc = parser.parseFromString(event.target.result, 'application/xml');
+          const citeertitelElement = xmlDoc.querySelector('citeertitel');
 
-          // Check the status of the response
-          if (response.status == 201) {
-            setShow(false);
+          if (citeertitelElement && citeertitelElement.childNodes.length > 0) {
+            const firstChildNode = citeertitelElement.childNodes[0];
+            if (firstChildNode && firstChildNode.nodeValue !== null) {
+              const title = firstChildNode.nodeValue.trim();
+              const response = await uploadXML(event.target.result, title);
+
+              // Check the status of the response
+              if (response.status == 201) {
+                setShow(false);
+              } else {
+                setErrorMsg("Er is iets fout gegaan bij het uploaden");
+                setShowError(true);
+              }
+            } else {
+              setErrorMsg("De XML bevat geen citeertitel");
+              setShowError(true);
+            }
           } else {
+            setErrorMsg("De XML bevat geen citeertitel");
             setShowError(true);
           }
         }
@@ -131,7 +149,7 @@ export default function Home() {
             {projects && projects.map((project) => (
               <li key={project.id} className="document-item">
                 <div className="document-info">
-                  <span className="document-title">Wet {project.id}</span>
+                  <span className="document-title">{project.title}</span>
                 </div>
                 <div className="actions">
                   <Link href={{ pathname: '/annotations', query: { id: project.id } }} passHref>
@@ -153,7 +171,7 @@ export default function Home() {
             <Alert show={showError} variant="danger" dismissible>
               <Alert.Heading>Error</Alert.Heading>
               <p>
-                Something went wrong
+                {errorMsg}
               </p>
             </Alert>
             <Form action={handleXmlUpload}>
