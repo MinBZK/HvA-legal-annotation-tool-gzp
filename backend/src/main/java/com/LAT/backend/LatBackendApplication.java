@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.Objects;
 
-@SpringBootApplication(scanBasePackages = {"controller","service","model", "repository"})
+@SpringBootApplication()
 public class LatBackendApplication {
 
 	public static void main(String[] args) {

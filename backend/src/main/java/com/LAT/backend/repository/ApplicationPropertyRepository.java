@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
+@Repository("applicationPropertyRepository")
 public interface ApplicationPropertyRepository extends CrudRepository<ApplicationProperty, Long> {
     Optional<ApplicationProperty> findByPropertyName(String propertyName);
 }

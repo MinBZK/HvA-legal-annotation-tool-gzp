@@ -9,6 +9,7 @@ import com.LAT.backend.repository.AnnotationRepository;
 import com.LAT.backend.repository.LawClassRepository;
 import com.LAT.backend.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

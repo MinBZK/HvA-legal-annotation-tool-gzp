@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
+@Repository("projectRepository")
 public interface ProjectRepository extends CrudRepository<Project, Long> {
 
     @Query("SELECT COUNT(p) FROM Project p")
