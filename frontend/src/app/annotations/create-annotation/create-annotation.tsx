@@ -29,7 +29,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
         id: 0,
         text: "",
         selectedWord: "",
-        lawClass: null,
+        lawClass: undefined,
         project: {id:0},
         startOffset: 0
     } as Annotation);
@@ -260,7 +260,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
                     <Dropdown>
                         <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic" style={{
                             color: 'black',
-                            backgroundColor: annotation?.lawClass ? (classes.find(law => law.name === annotation.lawClass.toString()) || {}).color || ''
+                            backgroundColor: annotation?.lawClass ? (classes.find(law => law.name === annotation.lawClass?.toString()) || {}).color || ''
                                 : '',
                         }}>
                             {annotation?.lawClass ? <>{annotation.lawClass}</> : <>Selecteer</>}

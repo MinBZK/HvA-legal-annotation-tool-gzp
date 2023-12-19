@@ -57,10 +57,10 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
     return (
         // Dropdown rechtsbetrekking
         <div>
-            <div className={css.annotationTitle} style={{background: annotation.lawClass.color}} onClick={() => {``
+            <div className={css.annotationTitle} style={{background: annotation.lawClass?.color}} onClick={() => {``
                 setOpen(!open)
             }}>
-                <h5 className={css.annotationName}>{annotation.lawClass.name}</h5>
+                <h5 className={css.annotationName}>{annotation.lawClass?.name}</h5>
                 {open ? (
                     <FaChevronDown className={css.align}/>
                 ) : (
