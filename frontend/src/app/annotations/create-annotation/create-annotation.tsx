@@ -2,12 +2,13 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {FC, useEffect, useState} from 'react';
 import {Alert, Button, Dropdown, Form, Modal} from 'react-bootstrap';
-import '../../static/annotations.css'
 import {BsFillFloppy2Fill, BsFillTrashFill, BsX} from "react-icons/bs";
 import {Annotation} from "../../models/annotation";
 import {LawClass} from "../../models/lawclass";
 import {getProjectById} from "../../services/project";
 import {Project} from "../../models/project";
+import "./create-annotation.css"
+import css from "../../annotation-view/annotated-row/annotated-row.module.css"
 
 interface PopupProps {
     selectedText: string;
@@ -28,7 +29,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
         id: 0,
         text: "",
         selectedWord: "",
-        lawClass: {name:""},
+        lawClass: null,
         project: {id:0},
         startOffset: 0
     } as Annotation);
@@ -248,7 +249,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
                 </Alert>
             )}
 
-            <Form>
+            <Form className="annotationInfo">
                 <Form.Group controlId="selectedText">
                     <Form.Label><b>Geselecteerde tekst</b></Form.Label>
                     <Form.Control type="text" readOnly value={annotation?.selectedWord} />
@@ -293,13 +294,13 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
             </Form>
         </div>
 
-        <div style={{ padding: 1, display: 'flex', justifyContent: 'flex-end' }}>
-            <Button variant="primary" onClick={handleSave}>
+        <div className={`${css.buttonsRight}`}>
+            <button className={`${css.save}`} onClick={handleSave}>
                 <BsFillFloppy2Fill size={20} /> Opslaan
-            </Button>
-            <Button className="warning-text-color" variant="warning" onClick={handleClose}>
+            </button>
+            <button className={`${css.cancel}`} onClick={handleClose}>
                 <BsX size={20} /> Annuleer
-            </Button>
+            </button>
         </div>
     </>
 );
