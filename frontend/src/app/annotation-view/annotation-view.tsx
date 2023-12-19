@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import AnnotatedRow from "@/app/annotation-view/annotated-row/annotated-row";
 import { Annotation } from "@/app/models/annotation";
 import css from "./annotation-view.module.css";
+import Image from "next/image"
 
 const AnnotationView = () => {
     const [annotations, setAnnotations] = useState<Annotation[]>([]);
@@ -95,8 +96,10 @@ const AnnotationView = () => {
             <div className={css.topBar}>
                 <h2 className={css.title}>Annotaties</h2>
 
-                <img
+                <Image
+                    height={100}
                     className={css.image}
+                    width={200}
                     src="/juridischanalyseschema.png"
                     alt={"Juridisch Analyseschema"}
                     onClick={() => {
@@ -112,7 +115,9 @@ const AnnotationView = () => {
                         setIsModalOpen(!isModalOpen);
                     }}
                 >
-                    <img
+                    <Image
+                        height={300}
+                        width={450}
                         className={css.imageModal}
                         src="/juridischanalyseschema.png"
                         alt={"Juridisch Analyseschema"}

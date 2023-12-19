@@ -37,7 +37,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
         fetchId();
         fetchClasses();
         handleSelectedText(selectedText, startOffset);
-    }, []);
+    }, [selectedText, startOffset]);
 
     const fetchId = async () => {
         try {

@@ -52,7 +52,7 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
     useEffect(() => {
         setEditLabelText(annotation.selectedWord)
         setEditNoteText(annotation.text)
-    }, []);
+    }, [annotation.selectedWord, annotation.text]);
 
     return (
         // Dropdown rechtsbetrekking
