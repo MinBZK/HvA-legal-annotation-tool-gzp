@@ -73,8 +73,8 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
 
                     <div className={css.iconRow}>
                         <FaEdit className={css.iconCol} id={"iconEdit"}
-                                style={isEditing ? ({color: "rgb(112, 164, 255)"}) : ({color: "black"})}
-                                onClick={() => setIsEditing(!isEditing)}/>
+                                style={isEditing ? ({display: "none"}) : ({display: "block"})}
+                                onClick={() => setIsEditing(true)}/>
                     </div>
 
 
@@ -115,10 +115,11 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
                     </div>
 
                     {isEditing &&
-                        <>
-                            <Button className={"border-dark m-2"} variant={"light"} onClick={() => setIsConfirmModalOpen(true)}>Opslaan</Button>
-                            <Button className={"border-dark m-2"} variant={"light"} onClick={() => setIsDeleteModalOpen(true)}>Verwijderen</Button>
-                        </>
+                        <div className={`${css.buttonsRight}`}>
+                            <button className={`${css.save}`} onClick={() => setIsConfirmModalOpen(true)}>Opslaan</button>
+                            <button className={`${css.cancel}`} onClick={() => setIsEditing(false)}>Annureer</button>
+                            <button className={`${css.delete}`} onClick={() => setIsDeleteModalOpen(true)}>Verwijderen</button>
+                        </div>
                     }
                 </div>
             }

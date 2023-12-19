@@ -5,21 +5,28 @@
 }
 
 .iconRow {
-    display: flex;
-    justify-content: end;
-    margin: 1rem 1rem 0 0;
-    position: relative;
+    position: absolute;
+    right: 10px;
+    top: 7px;
     margin-bottom: 4% !important;
+    cursor: pointer;
 }
 
-.annotationTitle{
+.iconRow:hover svg {
+    color: rgb(0, 0, 0) !important;
+}
+
+.iconRow svg {
+    color: #404040 !important;
+}
+
+.annotationTitle {
     display: flex;
     justify-content: space-between;
     border-radius: 8px;
     padding: 0.75rem 1rem;
-    margin: 1rem 0;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-
+    margin: .5rem 0;
+    cursor: pointer;
 }
 
 .align {
@@ -27,18 +34,21 @@
 }
 
 .annotationInfo {
-    background-color: #FAFAFA;
+    background-color: #FBFBFB;
     border-radius: 0.75rem;
-    padding: 0.25rem 0 ;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 20px 0;
+    border: 1px solid #ebebeb;
+    position: relative;
 }
 
 .leftCol {
     width: 30%;
 }
+
 .rightCol {
     width: 65%;
 }
+
 .iconCol {
     width: 5%;
     min-width: 20px;
@@ -61,4 +71,36 @@
     border: 1px solid #ccc;
     padding: 10px;
     box-shadow: 0 4px 1px 0 rgba(0, 0, 0, 0.2), 0 0px 12px 0 rgba(0, 0, 0, 0.19);
+}
+
+.save, .cancel, .delete {
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 10px;
+    padding: 0 10px;
+    border-radius: 20px;
+    transition: .2s;
+}
+
+.save {
+    color: #000;
+    background: #4CA74A41;
+    border: 1px solid #3A9B38;
+}
+
+.cancel {
+    color: #000;
+    background: #F2E78661;
+    border: 1px solid #C0B44F;
+}
+
+.delete {
+    color: #000;
+    background: #FACACA;
+    border: 1px solid #CA5858;
+}
+
+.buttonsRight {
+    display: flex;
+    justify-content: end;
 }
