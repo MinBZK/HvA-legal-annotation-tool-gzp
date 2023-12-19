@@ -60,7 +60,7 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection }) => {
   const renderStyles = () => {
     let styleString = "";
     for (const [selector, color] of Object.entries(annotationStyles)) {
-      styleString += `annotation[id="${selector}"] { background-color: ${color}; }\n`;
+      styleString += `annotation[id="${selector}"] { background-color: ${color}; border-radius: 4px; outline: ${color} solid 1px }\n`;
     }
     return styleString;
   };

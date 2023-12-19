@@ -4,7 +4,7 @@ import './static/index.css';
 import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import React, { useEffect, useRef, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {getMaxXmlCount, getProjectCounts, getProjects, uploadXML} from './services/project'
+import { getMaxXmlCount, getProjectCounts, getProjects, uploadXML } from './services/project'
 import { Project } from "./models/project";
 import { BsDownload } from "react-icons/bs";
 import Link from 'next/link';
@@ -108,7 +108,7 @@ export default function Home() {
         <main className="main-content">
           <div className="d-flex justify-content-between align-items-center mb-3">
             <h2 className="doc-text">Documenten</h2>
-            <p>{currentXmlCount}/{maxXmlCount} XML's beschikbaar</p>
+            <p className='xml-minmax'>{currentXmlCount}/{maxXmlCount} XML's beschikbaar</p>
             <Alert show={showMaxXmlWarning} variant="warning">
               U heeft het maximale aantal van 40 XML's bereikt. Verwijder eerst een XML voordat u verder gaat.
             </Alert>
@@ -116,7 +116,7 @@ export default function Home() {
               className="import-button"
               onClick={handleShow}>
               <BsDownload className="download-icon" size={20} />
-              Importeer XML
+              <span>Importeer XML</span>
             </button>
           </div>
 
@@ -137,7 +137,7 @@ export default function Home() {
                   <Link href={{ pathname: '/annotations', query: { id: project.id } }} passHref>
                     <button className="open-button">Open project</button>
                   </Link>
-                  <FiTrash2 className="delete-icon" />
+                  <button className='delete-button'><FiTrash2 className="delete-icon" /></button>
                 </div>
               </li>
             ))}

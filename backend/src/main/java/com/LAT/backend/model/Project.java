@@ -1,5 +1,6 @@
 package com.LAT.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -10,12 +11,10 @@ public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String xml_content;
 
     private String selectedArticles;
-
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Annotation> annotations;
 

@@ -120,7 +120,7 @@ const AnnotationView = () => {
                 </div>
             )}
 
-            <div className={"annolist shadow-sm p-3 mb-5 bg-white rounded"}>
+            <div className={"annolist p-3 mb-5 bg-white"}>
                 {annotations &&
                 annotations.map((value, index) => (
                     <div className={css.annotatedRow} key={index}>
