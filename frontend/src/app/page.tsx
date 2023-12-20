@@ -24,7 +24,9 @@ export default function Home() {
   const [maxXmlCount, setMaxXmlCount] = useState(0);
   const [currentXmlCount, setCurrentXmlCount] = useState(0);
 
-  // Wrapper function to handle close and show of upload modal
+  const [articlePieces, setArticlePieces] = useState<any[]>();
+
+    // Wrapper function to handle close and show of upload modal
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -79,27 +81,38 @@ export default function Home() {
       // Read the content of the first file in the file input
       reader.readAsText(fileInputRef.current["files"][0]);
 
-      // Handle the 'onload' event when the file reading is complete
-      reader.onload = async (event) => {
-        // Check if the event target is not null and the result is a string
-        if (event.target != null && typeof event.target.result === "string") {
-          const parser = new DOMParser();
-          const xmlDoc = parser.parseFromString(event.target.result, 'application/xml');
-          const citeertitelElement = xmlDoc.querySelector('citeertitel');
+            // Handle the 'onload' event when the file reading is complete
+            reader.onload = async (event) => {
+                // Check if the event target is not null and the result is a string
+                if (event.target != null && typeof event.target.result === "string") {
+                    const parser = new DOMParser();
+                    const xmlDoc = parser.parseFromString(event.target.result, 'application/xml');
+
+                    const listElements = xmlDoc.querySelectorAll("li")
+                    console.warn("tesrt", listElements)
+                    console.warn("tesrt", listElements[1])
+                  const arr: any[] = []
+                  for (let i = 0; i < listElements.length; i++) {
+                    arr.push(listElements.item(i))
+                  }
+
+                  setArticlePieces(arr)
+
+                  const citeertitelElement = xmlDoc.querySelector('citeertitel');
 
           if (citeertitelElement && citeertitelElement.childNodes.length > 0) {
             const firstChildNode = citeertitelElement.childNodes[0];
             if (firstChildNode && firstChildNode.nodeValue !== null) {
               const title = firstChildNode.nodeValue.trim();
-              const response = await uploadXML(event.target.result, title);
-
-              // Check the status of the response
-              if (response.status == 201) {
-                setShow(false);
-              } else {
-                setErrorMsg("Er is iets fout gegaan bij het uploaden");
-                setShowError(true);
-              }
+              // const response = await uploadXML(event.target.result, title);
+              //
+              // // Check the status of the response
+              // if (response.status == 201) {
+              //   setShow(false);
+              // } else {
+              //   setErrorMsg("Er is iets fout gegaan bij het uploaden");
+              //   setShowError(true);
+              // }
             } else {
               setErrorMsg("De XML bevat geen citeertitel");
               setShowError(true);
@@ -162,6 +175,14 @@ export default function Home() {
           </ul>
 
         </main>
+
+        {articlePieces && articlePieces.map((value: any, index) => (
+            <div key={index}>
+              <input type={"checkbox"}/>
+              <p dangerouslySetInnerHTML={{__html: value.innerHTML}}/>
+            </div>
+        ))
+        }
 
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
