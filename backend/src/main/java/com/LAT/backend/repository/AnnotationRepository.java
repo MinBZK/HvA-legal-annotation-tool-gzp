@@ -13,6 +13,6 @@ import java.util.Optional;
 
 @Repository
 public interface AnnotationRepository extends CrudRepository<Annotation, Integer> {
-    Optional<List<Annotation>> findByProjectId(Integer projectId);
+    List<Annotation> findByProjectId(Integer projectId);
 
 }

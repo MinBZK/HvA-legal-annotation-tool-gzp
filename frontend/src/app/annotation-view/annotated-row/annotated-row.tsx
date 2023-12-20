@@ -22,7 +22,7 @@ const AnnotatedRow: FC<AnnotationProps> = ({annotation, term, handleEdit, handle
     const [editNoteText, setEditNoteText] = useState(''); // text being edited
     const [editTermText, setEditTermText] = useState('');
 
-    const [updatedTerm, setUpdatedTerm] = useState<Term | undefined>();
+    const [updatedTerm, setUpdatedTerm] = useState<Term | undefined>(term);
     const [updatedAnnotation, setUpdatedAnnotation] = useState<Annotation>(annotation);
 
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
@@ -46,8 +46,6 @@ const AnnotatedRow: FC<AnnotationProps> = ({annotation, term, handleEdit, handle
             alert("Velden zijn leeg, vul deze in!");
         }
     };
-
-
 
 
     // Delete annotation with id

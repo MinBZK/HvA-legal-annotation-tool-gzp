@@ -44,8 +44,10 @@ const AnnotationView = () => {
     }, []); // The empty dependency array ensures that this effect runs only once, similar to componentDidMount
 
     // Update the handleEdit function to include a term parameter
-    const handleEdit = async (annotationDetails: Annotation, term: Term, id: number) => {
+    const handleEdit = async (annotationDetails: Annotation, term: Term | undefined, id: number) => {
         try {
+            annotationDetails.term = term;
+
             const response = await fetch(
                 `http://localhost:8000/api/annotations/updateannotation/${id}`,
                 {
@@ -57,10 +59,10 @@ const AnnotationView = () => {
                 }
             );
 
-            console.log(response);
             if (response.ok) {
                 alert("Annotatie succesvol bijgewerkt");
                 fetchAnnotations(annotationDetails.project.id); // Refetch annotations
+                fetchAnnotations(annotationDetails.term)
             } else {
                 alert("Fout annotatie bijwerken");
             }
@@ -135,8 +137,8 @@ const AnnotationView = () => {
                     <div className={css.annotatedRow} key={index}>
                         <AnnotatedRow
                             annotation={value}
-                            term={value.term?.definition}
-                            handleEdit={handleEdit}
+                            term={value.term ? { id: 0, definition: value.term.definition, reference: "" } : undefined}
+                            handleEdit={(annotation: Annotation, term: Term | undefined, id: number) => handleEdit(annotation, term, id)}
                             handleDelete={handleDelete}
                         />
                     </div>

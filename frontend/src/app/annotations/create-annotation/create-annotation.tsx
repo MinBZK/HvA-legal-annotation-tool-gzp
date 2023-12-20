@@ -9,6 +9,7 @@ import {getProjectById} from "../../services/project";
 import {Project} from "../../models/project";
 import "./create-annotation.css"
 import css from "../../annotation-view/annotated-row/annotated-row.module.css"
+import {Term} from "@/app/models/term";
 
 interface PopupProps {
     selectedText: string;
@@ -32,8 +33,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
         lawClass: undefined,
         project: {id: 0},
         startOffset: 0,
-        term: ""
-    } as unknown as Annotation);
+        term: { definition: "" }
+    } as Annotation);
 
     useEffect(() => {
         fetchId();
@@ -106,13 +107,17 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
     };
 
     const saveAnnotationToBackend = async () => {
+
+        console.log('Annotation:', annotation);
+        console.log('Term:', annotation.term);
+        console.log('Term Definition:', annotation?.term?.definition);
         const backendAnnotation = {
             id: null,
             selectedWord: annotation?.selectedWord,
             text: annotation?.text,
             lawClass: {name: annotation?.lawClass},
             project: {id: projectId},
-            term: {definition: annotation?.term?.definition}
+            term: { definition: annotation?.term || undefined },
         };
         try {
             const response = await fetch('http://localhost:8000/api/annotations/project', {
@@ -178,8 +183,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
         }
         setLawClassError(false);
         const annotationId = await saveAnnotationToBackend();
-        if (annotationId && annotation?.selectedWord && annotation.term?.definition && typeof annotation.startOffset === 'number') {
-            annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset, annotation.term?.definition);
+        if (annotationId && annotation?.selectedWord && annotation?.term?.definition && typeof annotation.startOffset === 'number') {
+            annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset, annotation.term.definition);
             await addAnnotationTagsToXml();
         } else {
             console.error('Failed to retrieve annotation ID');
@@ -192,8 +197,9 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
      * @param selectedText
      * @param annotationId
      * @param startOffset
+     * @param definition
      */
-    const annotateSelectedText = (selectedText: string, annotationId: number, startOffset: number, definition: string | undefined) => {
+    const annotateSelectedText = (selectedText: string, annotationId: number, startOffset: number, definition: string) => {
         if (originalXML) {
             let currentOffset = 0;
             let annotationAdded = false;
@@ -209,7 +215,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
                         if (typeof textIndex === 'number' && textIndex !== -1 && currentOffset + textIndex >= startOffset) {
                             const newNodeValue = node.nodeValue
                                 ? node.nodeValue.substring(0, textIndex) +
-                                `<annotation id="${annotationId}">${selectedText}</annotation>` +
+                                `<annotation id="${annotationId}" definition="${definition}">${selectedText}</annotation>` +
                                 node.nodeValue.substring(textIndex + selectedText.length)
                                 : '';
 
@@ -225,8 +231,9 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
                 // Convert the XML DOM back to a string
                 let serializedXML = new XMLSerializer().serializeToString(originalXML);
                 // Replace the escaped annotation tags with the original tags
-                project.xml_content = serializedXML.replace(/&lt;annotation id="([0-9]+)"&gt;/g, `<annotation id="$1">`)
-                    .replace(/&lt;\/annotation&gt;/g, '</annotation>');
+                project.xml_content = serializedXML.replace(/&lt;annotation id="([0-9]+)" definition="([^"]*)"&gt;/g,
+                    `<annotation id="$1" definition="$2">`
+                ).replace(/&lt;\/annotation&gt;/g, '</annotation>');
             }
         }
     };

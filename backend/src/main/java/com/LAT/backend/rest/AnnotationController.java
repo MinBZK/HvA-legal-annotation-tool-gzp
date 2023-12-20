@@ -52,7 +52,7 @@ public class AnnotationController {
     // Endpoint to get all annotations for a specific project
     // Chi Yu
     @GetMapping("/project/{projectId}")
-    public Optional<List<Annotation>> getAnnotationsByProjectId(@PathVariable Integer projectId) {
+    public List<Annotation> getAnnotationsByProjectId(@PathVariable Integer projectId) {
         return annotationRepository.findByProjectId(projectId);
     }
 
