@@ -30,9 +30,10 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
         text: "",
         selectedWord: "",
         lawClass: undefined,
-        project: {id:0},
-        startOffset: 0
-    } as Annotation);
+        project: {id: 0},
+        startOffset: 0,
+        term: ""
+    } as unknown as Annotation);
 
     useEffect(() => {
         fetchId();
@@ -72,6 +73,13 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
         }));
     };
 
+    const handleTerm = (term: any) => {
+        setAnnotation((prevAnnotation) => ({
+            ...(prevAnnotation as Annotation),
+            term: term,
+        }));
+    };
+
     const handleSelectedText = (text: string, startOffset: number) => {
         setAnnotation((prevAnnotation) => ({
             ...(prevAnnotation as Annotation),
@@ -104,6 +112,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
             text: annotation?.text,
             lawClass: {name: annotation?.lawClass},
             project: {id: projectId},
+            term: {definition: annotation?.term?.definition}
         };
         try {
             const response = await fetch('http://localhost:8000/api/annotations/project', {
@@ -169,8 +178,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
         }
         setLawClassError(false);
         const annotationId = await saveAnnotationToBackend();
-        if (annotationId && annotation?.selectedWord && typeof annotation.startOffset === 'number') {
-            annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset);
+        if (annotationId && annotation?.selectedWord && annotation.term?.definition && typeof annotation.startOffset === 'number') {
+            annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset, annotation.term?.definition);
             await addAnnotationTagsToXml();
         } else {
             console.error('Failed to retrieve annotation ID');
@@ -184,7 +193,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
      * @param annotationId
      * @param startOffset
      */
-    const annotateSelectedText = (selectedText: string, annotationId: number, startOffset: number) => {
+    const annotateSelectedText = (selectedText: string, annotationId: number, startOffset: number, definition: string | undefined) => {
         if (originalXML) {
             let currentOffset = 0;
             let annotationAdded = false;
@@ -289,7 +298,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
 
                 <Form.Group controlId="exampleForm.ControlInput2">
                     <Form.Label><b>Begrip</b></Form.Label>
-                    <Form.Control type="text" placeholder="Type hier uw begrip..." />
+                    <Form.Control type="text" placeholder="Type hier uw begrip..." value={annotation?.term?.definition}
+                                  onChange={(e) => handleTerm(e.target.value)}/>
                 </Form.Group>
             </Form>
         </div>

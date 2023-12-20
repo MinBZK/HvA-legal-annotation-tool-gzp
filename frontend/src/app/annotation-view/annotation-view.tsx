@@ -5,10 +5,12 @@ import AnnotatedRow from "@/app/annotation-view/annotated-row/annotated-row";
 import { Annotation } from "@/app/models/annotation";
 import css from "./annotation-view.module.css";
 import Image from "next/image"
+import {Term} from "@/app/models/term";
 
 const AnnotationView = () => {
     const [annotations, setAnnotations] = useState<Annotation[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+        const [term, setTerm] = useState<Term>();
 
     const fetchAnnotations = async (projectId: any) => {
         try {
@@ -41,7 +43,8 @@ const AnnotationView = () => {
         fetchIdAndAnnotations();
     }, []); // The empty dependency array ensures that this effect runs only once, similar to componentDidMount
 
-    const handleEdit = async (annotationDetails: Annotation, id: number) => {
+    // Update the handleEdit function to include a term parameter
+    const handleEdit = async (annotationDetails: Annotation, term: Term, id: number) => {
         try {
             const response = await fetch(
                 `http://localhost:8000/api/annotations/updateannotation/${id}`,
@@ -66,6 +69,7 @@ const AnnotationView = () => {
             alert("Fout annotatie verwijderen");
         }
     };
+
 
     const handleDelete = async (id: number) => {
         try {
@@ -131,6 +135,7 @@ const AnnotationView = () => {
                     <div className={css.annotatedRow} key={index}>
                         <AnnotatedRow
                             annotation={value}
+                            term={value.term?.definition}
                             handleEdit={handleEdit}
                             handleDelete={handleDelete}
                         />

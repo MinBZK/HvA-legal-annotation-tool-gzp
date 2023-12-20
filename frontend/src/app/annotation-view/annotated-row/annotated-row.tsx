@@ -1,19 +1,17 @@
 "use client"; // This is a client component 👈🏽
 
 import React, {FC, useEffect, useState} from "react";
-import {FaChevronDown} from "react-icons/fa";
-import {FaChevronUp} from "react-icons/fa";
-import {FaEdit} from "react-icons/fa";
+import {FaChevronDown, FaChevronUp, FaEdit} from "react-icons/fa";
 import css from "./annotated-row.module.css";
 import {Button, Form, Modal} from "react-bootstrap";
 import {Annotation} from "@/app/models/annotation";
 import {Term} from "@/app/models/term";
 
 interface AnnotationProps {
-    annotation: Annotation
-    term: Term
-    handleEdit: (annotation: Annotation, term: Term, id: number) => void
-    handleDelete: (id: number) => void
+    annotation: Annotation;
+    term: Term | undefined;
+    handleEdit: (annotation: Annotation, term: Term | undefined, id: number) => void;
+    handleDelete: (id: number) => void;
 }
 
 const AnnotatedRow: FC<AnnotationProps> = ({annotation, term, handleEdit, handleDelete}) => {
@@ -22,29 +20,34 @@ const AnnotatedRow: FC<AnnotationProps> = ({annotation, term, handleEdit, handle
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [editLabelText, setEditLabelText] = useState(''); // text being edited
     const [editNoteText, setEditNoteText] = useState(''); // text being edited
-    const [editTermText, setEditTermText] = useState(''); // text being edited
+    const [editTermText, setEditTermText] = useState('');
+
+    const [updatedTerm, setUpdatedTerm] = useState<Term | undefined>();
     const [updatedAnnotation, setUpdatedAnnotation] = useState<Annotation>(annotation);
-    const [updatedTerm, setUpdatedTerm] = useState<Term>(term);
 
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
 
 
     const checkValues = () => {
-        // check is input aren't empty (label and notitie)
-        if (editLabelText.length != 0 && editNoteText.length != 0 && editTermText != null) {
-            setIsConfirmModalOpen(!isConfirmModalOpen)
+        if (editLabelText.length !== 0 && editNoteText.length !== 0 && editTermText !== null) {
+            setIsConfirmModalOpen(!isConfirmModalOpen);
 
-            updatedAnnotation.selectedWord = editLabelText
-            updatedAnnotation.text = editNoteText
-            updatedAnnotation.term = editTermText
+            updatedAnnotation.selectedWord = editLabelText;
+            updatedAnnotation.text = editNoteText;
 
-            setIsEditing(false)
-            handleEdit(updatedAnnotation, updatedTerm, annotation.id)
+            if (updatedTerm) {
+                updatedTerm.definition;
+            }
+
+            setIsEditing(false);
+            handleEdit(updatedAnnotation, updatedTerm, annotation.id);
         } else {
-            alert("Velden zijn leeg, vul deze in!")
+            alert("Velden zijn leeg, vul deze in!");
         }
-    }
+    };
+
+
 
 
     // Delete annotation with id
@@ -126,16 +129,15 @@ const AnnotatedRow: FC<AnnotationProps> = ({annotation, term, handleEdit, handle
                                     setEditTermText(event.target.value);
                                 }}
                             />
-
                         ) : (
-                            <h4 className={`${css.rightCol} ${css.annotationName}`}>{term?.definition}</h4>
+                            <h4 className={`${css.rightCol} ${css.annotationName}`}>{annotation.term?.definition}</h4>
                         )}
                     </div>
 
                     {isEditing &&
                         <div className={`${css.buttonsRight}`}>
                             <button className={`${css.save}`} onClick={() => setIsConfirmModalOpen(true)}>Opslaan</button>
-                            <button className={`${css.cancel}`} onClick={() => setIsEditing(false)}>Annureer</button>
+                            <button className={`${css.cancel}`} onClick={() => setIsEditing(false)}>Annuleer</button>
                             <button className={`${css.delete}`} onClick={() => setIsDeleteModalOpen(true)}>Verwijderen</button>
                         </div>
                     }

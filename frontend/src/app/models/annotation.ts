@@ -9,5 +9,5 @@ export interface Annotation {
     lawClass: LawClass | undefined,
     project: Project
     startOffset?: number;
-    term: string;
+    term: Term | undefined;
 }
