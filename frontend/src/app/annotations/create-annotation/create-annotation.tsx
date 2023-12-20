@@ -208,9 +208,11 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
                 }
             });
 
+            // If everything succeeded, update the XML content of the original project
             if (annotationAdded) {
                 // Convert the XML DOM back to a string
                 let serializedXML = new XMLSerializer().serializeToString(originalXML);
+
                 // Replace the escaped annotation tags with the original tags
                 project.xml_content = serializedXML.replace(/&lt;annotation id="([0-9]+)"&gt;/g, `<annotation id="$1">`)
                     .replace(/&lt;\/annotation&gt;/g, '</annotation>');
