@@ -11,7 +11,6 @@ import com.LAT.backend.repository.LawClassRepository;
 import com.LAT.backend.repository.ProjectRepository;
 import com.LAT.backend.repository.TermRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -53,7 +52,7 @@ public class AnnotationController {
     // Endpoint to get all annotations for a specific project
     // Chi Yu
     @GetMapping("/project/{projectId}")
-    public List<Annotation> getAnnotationsByProjectId(@PathVariable Integer projectId) {
+    public Optional<List<Annotation>> getAnnotationsByProjectId(@PathVariable Integer projectId) {
         return annotationRepository.findByProjectId(projectId);
     }
 
