@@ -17,12 +17,12 @@ public class Annotation {
     private String text;
 
     @JsonIgnoreProperties({"annotations"})
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne
     @JoinColumn(name = "lawClass_id")
     private LawClass lawClass;
 
     @JsonIgnoreProperties({"annotations"})
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
 
