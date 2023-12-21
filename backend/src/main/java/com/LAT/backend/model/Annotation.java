@@ -26,6 +26,7 @@ public class Annotation {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    @JsonIgnoreProperties({"annotations"})
     @ManyToOne
     @JoinColumn(name = "term_id")
     private Term term;

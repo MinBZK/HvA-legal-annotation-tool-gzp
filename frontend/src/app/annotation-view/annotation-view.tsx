@@ -5,12 +5,10 @@ import AnnotatedRow from "@/app/annotation-view/annotated-row/annotated-row";
 import { Annotation } from "@/app/models/annotation";
 import css from "./annotation-view.module.css";
 import Image from "next/image"
-import {Term} from "@/app/models/term";
 
 const AnnotationView = () => {
     const [annotations, setAnnotations] = useState<Annotation[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
-        const [term, setTerm] = useState<Term>();
 
     const fetchAnnotations = async (projectId: any) => {
         try {
@@ -44,10 +42,9 @@ const AnnotationView = () => {
     }, []); // The empty dependency array ensures that this effect runs only once, similar to componentDidMount
 
     // Update the handleEdit function to include a term parameter
-    const handleEdit = async (annotationDetails: Annotation, term: Term | undefined, id: number) => {
+    const handleEdit = async (annotationDetails: Annotation, id: number) => {
+        console.log(annotationDetails)
         try {
-            annotationDetails.term = term;
-
             const response = await fetch(
                 `http://localhost:8000/api/annotations/updateannotation/${id}`,
                 {
@@ -62,7 +59,6 @@ const AnnotationView = () => {
             if (response.ok) {
                 alert("Annotatie succesvol bijgewerkt");
                 fetchAnnotations(annotationDetails.project.id); // Refetch annotations
-                fetchAnnotations(annotationDetails.term)
             } else {
                 alert("Fout annotatie bijwerken");
             }
@@ -137,8 +133,7 @@ const AnnotationView = () => {
                     <div className={css.annotatedRow} key={index}>
                         <AnnotatedRow
                             annotation={value}
-                            term={value.term ? { id: 0, definition: value.term.definition, reference: "" } : undefined}
-                            handleEdit={(annotation: Annotation, term: Term | undefined, id: number) => handleEdit(annotation, term, id)}
+                            handleEdit={handleEdit}
                             handleDelete={handleDelete}
                         />
                     </div>

@@ -61,7 +61,7 @@ public class AnnotationController {
     @PostMapping("/project")
     public ResponseEntity<Annotation> createAnnotation(@RequestBody Annotation annotation) {
         int index = 0;
-        try {
+//        try {
             // Validate if the project exists
             Project project = projectRepository.findById(annotation.getProject().getId())
                     .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
@@ -70,9 +70,10 @@ public class AnnotationController {
             LawClass lawClass = lawClassRepository.findByName(annotation.getLawClass().getName())
                     .orElseThrow(() -> new LawClassNotFoundException("Annotation class not found"));
 
-            // Validate if the term exists
-            Term term = termRepository.findByDefinition(annotation.getTerm().getDefinition())
-                    .orElseThrow(() -> new LawClassNotFoundException("Term not found"));
+            Term term = annotation.getTerm();
+            term.setReference(annotation.getSelectedWord());
+
+            termRepository.save(term);
 
             annotation.setProject(project);
             annotation.setLawClass(lawClass);
@@ -81,11 +82,11 @@ public class AnnotationController {
             // Save the annotation to the repository
             Annotation savedAnnotation = annotationRepository.save(annotation);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedAnnotation);
-        } catch (ProjectNotFoundException | LawClassNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
+//        } catch (ProjectNotFoundException | LawClassNotFoundException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+//        }
     }
 
 
@@ -109,8 +110,27 @@ public class AnnotationController {
         annotation.setSelectedWord(annotationDetails.getSelectedWord());
         annotation.setLawClass(annotationDetails.getLawClass());
         annotation.setProject(annotationDetails.getProject());
-        annotation.setTerm(annotation.getTerm());
 
+        // TODO
+        if (annotationDetails.getTerm() != null && annotationDetails.getTerm().getId() != null) {
+            Term termDetails = annotationDetails.getTerm();
+            Term term = termRepository.findById(termDetails.getId())
+                    .orElse(null);  // Create a new Term if it doesn't exist
+
+            if (term == null) {
+                term = new Term();
+            }
+
+            // Set the new values from termDetails
+            term.setReference(termDetails.getReference());
+            term.setDefinition(termDetails.getDefinition());
+
+            // Save the term to the database
+            term = termRepository.save(term);
+
+            // Set the term to the annotation
+            annotation.setTerm(term);
+        }
 
         return annotationRepository.save(annotation);
     }
@@ -127,6 +147,4 @@ public class AnnotationController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching annotation");
         }
     }
-
-
 }

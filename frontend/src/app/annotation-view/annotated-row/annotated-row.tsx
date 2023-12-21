@@ -5,24 +5,21 @@ import {FaChevronDown, FaChevronUp, FaEdit} from "react-icons/fa";
 import css from "./annotated-row.module.css";
 import {Button, Form, Modal} from "react-bootstrap";
 import {Annotation} from "@/app/models/annotation";
-import {Term} from "@/app/models/term";
 
 interface AnnotationProps {
     annotation: Annotation;
-    term: Term | undefined;
-    handleEdit: (annotation: Annotation, term: Term | undefined, id: number) => void;
+    handleEdit: (annotation: Annotation, id: number) => void;
     handleDelete: (id: number) => void;
 }
 
-const AnnotatedRow: FC<AnnotationProps> = ({annotation, term, handleEdit, handleDelete}) => {
+const AnnotatedRow: FC<AnnotationProps> = ({annotation, handleEdit, handleDelete}) => {
 
     const [open, setOpen] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [editLabelText, setEditLabelText] = useState(''); // text being edited
     const [editNoteText, setEditNoteText] = useState(''); // text being edited
-    const [editTermText, setEditTermText] = useState('');
+    const [editTermText, setEditTermText] = useState<string | undefined>('');
 
-    const [updatedTerm, setUpdatedTerm] = useState<Term | undefined>(term);
     const [updatedAnnotation, setUpdatedAnnotation] = useState<Annotation>(annotation);
 
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
@@ -30,18 +27,18 @@ const AnnotatedRow: FC<AnnotationProps> = ({annotation, term, handleEdit, handle
 
 
     const checkValues = () => {
-        if (editLabelText.length !== 0 && editNoteText.length !== 0 && editTermText !== null) {
+        if (editLabelText.length !== 0 && editNoteText.length !== 0) {
             setIsConfirmModalOpen(!isConfirmModalOpen);
 
             updatedAnnotation.selectedWord = editLabelText;
             updatedAnnotation.text = editNoteText;
 
-            if (updatedTerm) {
-                updatedTerm.definition;
+            if (updatedAnnotation.term && editTermText != null) {
+                updatedAnnotation.term.definition = editTermText;
             }
 
             setIsEditing(false);
-            handleEdit(updatedAnnotation, updatedTerm, annotation.id);
+            handleEdit(updatedAnnotation,annotation.id);
         } else {
             alert("Velden zijn leeg, vul deze in!");
         }
@@ -59,7 +56,8 @@ const AnnotatedRow: FC<AnnotationProps> = ({annotation, term, handleEdit, handle
     useEffect(() => {
         setEditLabelText(annotation.selectedWord)
         setEditNoteText(annotation.text)
-    }, [annotation.selectedWord, annotation.text]);
+        setEditTermText(annotation?.term?.definition)
+    }, [annotation.selectedWord, annotation.text, annotation.term?.definition]);
 
     return (
         // Dropdown rechtsbetrekking
