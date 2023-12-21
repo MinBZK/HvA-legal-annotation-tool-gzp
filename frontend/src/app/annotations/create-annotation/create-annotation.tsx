@@ -160,7 +160,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
             text: annotation?.text,
             lawClass: {name: annotation?.lawClass},
             project: {id: projectId},
-            term: { definition: annotation?.term.definition|| undefined, reference: annotation?.selectedWord},
+            term: { definition: annotation?.term?.definition|| undefined, reference: annotation?.selectedWord},
         };
         try {
             const response = await fetch('http://localhost:8000/api/annotations/project', {
@@ -363,7 +363,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
                     <Form.Label><b>Begrip</b></Form.Label>
                     <Dropdown>
                         <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic">
-                            {annotation?.term.definition ? <>{annotation.term.definition}</> : <>
+                            {annotation?.term?.definition ? <>{annotation.term.definition}</> : <>
                                 Selecteer</>}
                         </Dropdown.Toggle>
 
@@ -372,7 +372,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
                                 <Dropdown.Item
                                     key={index}
                                     onClick={() => handleTerm(term)}
-                                    active={annotation?.term.definition === term.definition}
+                                    active={annotation?.term?.definition === term.definition}
                                     style={{color: 'black' }}
                                 >
                                     {term.definition}
