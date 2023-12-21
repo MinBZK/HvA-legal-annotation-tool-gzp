@@ -19,6 +19,7 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection }) => {
     let xml = parser.parseFromString(project.xml_content, "application/xml");
     setRenderXML(true);
     fetchAnnotationsAndStyles(xml);
+
   }, [project.xml_content]);
 
   /**
@@ -31,7 +32,6 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection }) => {
   const fetchAnnotationsAndStyles = async (xmlDoc: Document) => {
     const annotations = xmlDoc.getElementsByTagName('annotation');
     let newAnnotationStyles: any = {};
-
     // Loop through all annotations and fetch the annotation data
     // @ts-ignore
     for (let annotation of annotations) {
@@ -79,6 +79,30 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection }) => {
     }
   };
 
+  const renderXMLContent = () => {
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(project.xml_content, "application/xml");
+
+    if (project.selectedArticles != "" && project.selectedArticles != null) {
+      const articles = project.selectedArticles.split(',');
+      // Loop through all the selected articles and show them on the page
+      for (let i = 0; i < articles.length; i++) {
+        const element = xml.getElementById(articles[i]);
+
+        if (element !== null && element !== undefined) {
+          if (element.classList) {
+            // Add the class show to the article
+            element.classList.add('show');
+          }
+        }
+      }
+    } {
+      xml.getElementsByTagName('bwb-inputbestand')[0].classList.add('show-all')
+    }
+
+    return xml.documentElement.innerHTML;
+  }
+
   function calculateOffset(node: Node, offset: number): number {
     let count = offset;
     while (node.previousSibling) {
@@ -90,14 +114,14 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection }) => {
 
 
   return (
-      <>
+    <>
       <style>
         {renderStyles()}
       </style>
       <>
-        <p className="xml-content" onMouseUp={handleShow} dangerouslySetInnerHTML={{__html: renderXML && project.xml_content}}/>
+        <p className="xml-content" onMouseUp={handleShow} dangerouslySetInnerHTML={{ __html: renderXML && renderXMLContent() }} />
       </>
-      </>
+    </>
   );
 }
 

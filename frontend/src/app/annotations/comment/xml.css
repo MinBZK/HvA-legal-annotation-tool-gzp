@@ -1,4 +1,4 @@
-bwb-inputbestand, intitule, meta-data, aanhef, toestand div:not(:has(bwb-wijzigingen)) {
+bwb-inputbestand:not(:has(bwb-wijzigingen)), intitule, meta-data, aanhef, toestand div:not(:has(bwb-wijzigingen)), wetsluiting {
     display: none;
 }
 
@@ -56,11 +56,12 @@ lid {
 lidnr + al {
     margin: 0 0 1em 3.5em;
     width: calc(100% - 3.5em);
-    display: block;
+    display: inline;
 }
 
 lidnr {
-    position: absolute;
+    margin: 0 0 1em;
+    display: inline-block;
 }
 
 li > :first-child {
@@ -69,4 +70,16 @@ li > :first-child {
 
 artikel lid {
     margin-top: 16px;
+}
+
+artikel, hoofdstuk, paragraaf {
+    display: none;
+}
+
+artikel.show, hoofdstuk:has(artikel.show), paragraaf:has(artikel.show) {
+    display: block;
+}
+
+bwb-inputbestand.show-all artikel, bwb-inputbestand.show-all hoofdstuk, bwb-inputbestand.show-all paragraaf {
+    display: block;
 }
