@@ -10,18 +10,18 @@ import java.util.Objects;
 public class LatBackendApplication {
 
 	public static void main(String[] args) {
-		loadEnvVariables();
+//		loadEnvVariables();
 		SpringApplication.run(LatBackendApplication.class, args);
 	}
 
-	private static void loadEnvVariables() {
-		Dotenv dotenv = Dotenv.configure()
-				.filename(".env") // Specify the filename
-				.directory("./backend/")    // Specify the directory
-				.load();
-
-		System.setProperty("DB_URL", Objects.requireNonNull(dotenv.get("DB_URL")));
-		System.setProperty("DB_USER", Objects.requireNonNull(dotenv.get("DB_USER")));
-		System.setProperty("DB_PASS", Objects.requireNonNull(dotenv.get("DB_PASS")));
-	}
+//	private static void loadEnvVariables() {
+//		Dotenv dotenv = Dotenv.configure()
+//				.filename(".env") // Specify the filename
+//				.directory("./backend/")    // Specify the directory
+//				.load();
+//
+//		System.setProperty("DB_URL", Objects.requireNonNull(dotenv.get("DB_URL")));
+//		System.setProperty("DB_USER", Objects.requireNonNull(dotenv.get("DB_USER")));
+//		System.setProperty("DB_PASS", Objects.requireNonNull(dotenv.get("DB_PASS")));
+//	}
 }

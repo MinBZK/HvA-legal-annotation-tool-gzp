@@ -17,12 +17,12 @@ const AnnotationPage = () => {
 
     // Get id from url
     const searchParams = useSearchParams();
-    let id: number = 2;
+    let id: number = 0;
 
     if (searchParams != null) {
         const param = searchParams.get('id');
-        id = param != null ? parseInt(param) : 2;
-        if (isNaN(id)) id = 2;
+        id = param != null ? parseInt(param) : 0;
+        if (isNaN(id)) id = 0;
     }
 
     useEffect(() => {

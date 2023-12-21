@@ -9,6 +9,7 @@ import {getProjectById} from "../../services/project";
 import {Project} from "../../models/project";
 import "./create-annotation.css"
 import css from "../../annotation-view/annotated-row/annotated-row.module.css"
+import {Term} from "@/app/models/term";
 
 interface PopupProps {
     selectedText: string;
@@ -20,6 +21,13 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
 
     const [projectId, setProjectId] = useState<number>(0);
     const [classes, setClasses] = useState<LawClass[]>([]); // New state to store the laws
+    const [terms, setTerms] = useState<Term[]>([]); // New state to store the laws
+    const [newTerm, setNewTerm] = useState<Term>({
+        id:0,
+        definition:"",
+        reference: ""
+    } as Term);
+
     const [lawClassError, setLawClassError] = useState(false);
     const [project, setProject] = useState<Project>({
         id:0
@@ -30,13 +38,17 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
         text: "",
         selectedWord: "",
         lawClass: undefined,
-        project: {id:0},
-        startOffset: 0
+        project: {id: 0},
+        startOffset: 0,
+        term: { definition: "", reference: "" }
     } as Annotation);
+    const [showModal, setShowModal] = useState(false);
+
 
     useEffect(() => {
         fetchId();
         fetchClasses();
+        fetchTerms();
         handleSelectedText(selectedText, startOffset);
     }, [selectedText, startOffset]);
 
@@ -72,6 +84,13 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
         }));
     };
 
+    const handleTerm = (term: any) => {
+        setAnnotation((prevAnnotation) => ({
+            ...(prevAnnotation as Annotation),
+            term: term,
+        }));
+    };
+
     const handleSelectedText = (text: string, startOffset: number) => {
         setAnnotation((prevAnnotation) => ({
             ...(prevAnnotation as Annotation),
@@ -92,6 +111,43 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
             .catch(error => console.error('Error fetching laws:', error));
     };
 
+    const fetchTerms = () => {
+        fetch('http://localhost:8000/api/terms')
+            .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch laws');
+            }
+            return response.json();
+            })
+            .then(data => setTerms(data))
+            .catch(error => console.error('Error fetching laws:', error));
+    }
+
+    const handleAddTerm = async () => {
+        try {
+            const response = await fetch('http://localhost:8000/api/saveTerm', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newTerm),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to save annotation');
+            }
+            const responseData = await response.json();
+            console.log('Annotation saved successfully');
+            await fetchTerms();
+            await handleTerm(newTerm);
+            setShowModal(false);
+            return responseData.id;
+        } catch (error) {
+            console.error('Error saving annotation:', error);
+            return null;
+        }
+    };
+
     const handleClose = () => {
         setLawClassError(false);
         onClose();
@@ -104,6 +160,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
             text: annotation?.text,
             lawClass: {name: annotation?.lawClass},
             project: {id: projectId},
+            term: { definition: annotation?.term.definition|| undefined, reference: annotation?.selectedWord},
         };
         try {
             const response = await fetch('http://localhost:8000/api/annotations/project', {
@@ -113,6 +170,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
                 },
                 body: JSON.stringify(backendAnnotation),
             });
+
+            console.log(JSON.stringify(backendAnnotation));
 
             if (!response.ok) {
                 throw new Error('Failed to save annotation');
@@ -169,8 +228,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
         }
         setLawClassError(false);
         const annotationId = await saveAnnotationToBackend();
-        if (annotationId && annotation?.selectedWord && typeof annotation.startOffset === 'number') {
-            annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset);
+        if (annotationId && annotation?.selectedWord && annotation?.term?.definition && typeof annotation.startOffset === 'number') {
+            annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset, annotation.term.definition);
             await addAnnotationTagsToXml();
         } else {
             console.error('Failed to retrieve annotation ID');
@@ -183,8 +242,9 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
      * @param selectedText
      * @param annotationId
      * @param startOffset
+     * @param definition
      */
-    const annotateSelectedText = (selectedText: string, annotationId: number, startOffset: number) => {
+    const annotateSelectedText = (selectedText: string, annotationId: number, startOffset: number, definition: string) => {
         if (originalXML) {
             let currentOffset = 0;
             let annotationAdded = false;
@@ -200,7 +260,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
                         if (typeof textIndex === 'number' && textIndex !== -1 && currentOffset + textIndex >= startOffset) {
                             const newNodeValue = node.nodeValue
                                 ? node.nodeValue.substring(0, textIndex) +
-                                `<annotation id="${annotationId}">${selectedText}</annotation>` +
+                                `<annotation id="${annotationId}" definition="${definition}">${selectedText}</annotation>` +
                                 node.nodeValue.substring(textIndex + selectedText.length)
                                 : '';
 
@@ -216,8 +276,9 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
                 // Convert the XML DOM back to a string
                 let serializedXML = new XMLSerializer().serializeToString(originalXML);
                 // Replace the escaped annotation tags with the original tags
-                project.xml_content = serializedXML.replace(/&lt;annotation id="([0-9]+)"&gt;/g, `<annotation id="$1">`)
-                    .replace(/&lt;\/annotation&gt;/g, '</annotation>');
+                project.xml_content = serializedXML.replace(/&lt;annotation id="([0-9]+)" definition="([^"]*)"&gt;/g,
+                    `<annotation id="$1" definition="$2">`
+                ).replace(/&lt;\/annotation&gt;/g, '</annotation>');
             }
         }
     };
@@ -289,7 +350,48 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
 
                 <Form.Group controlId="exampleForm.ControlInput2">
                     <Form.Label><b>Begrip</b></Form.Label>
-                    <Form.Control type="text" placeholder="Type hier uw begrip..." />
+                    <Dropdown>
+                        <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic">
+                            {annotation?.term.definition ? <>{annotation.term.definition}</> : <>
+                                Selecteer</>}
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu className="dropdown">
+                            {terms.map((term, index) => (
+                                <Dropdown.Item
+                                    key={index}
+                                    onClick={() => handleTerm(term)}
+                                    active={annotation?.term.definition === term.definition}
+                                    style={{color: 'black' }}
+                                >
+                                    {term.definition}
+                                </Dropdown.Item>
+                            ))}
+                            <Dropdown.Item onClick={() => setShowModal(true)}>Add New Term</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+
+                    <Modal show={showModal} onHide={() => setShowModal(false)}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Add New Term</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Form.Control
+                                type="text"
+                                placeholder="Enter new term"
+                                value={newTerm.definition}
+                                onChange={(e) => setNewTerm({ ...newTerm, definition: e.target.value, reference: annotation?.selectedWord })}
+                            />
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={() => setShowModal(false)}>
+                                Cancel
+                            </Button>
+                            <Button variant="primary" onClick={handleAddTerm}>
+                                Add Term
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
                 </Form.Group>
             </Form>
         </div>
