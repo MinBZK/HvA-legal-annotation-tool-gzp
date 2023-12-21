@@ -181,15 +181,25 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
             setLawClassError(true);
             return;
         }
+
         setLawClassError(false);
         const annotationId = await saveAnnotationToBackend();
-        if (annotationId && annotation?.selectedWord && annotation?.term?.definition && typeof annotation.startOffset === 'number') {
-            annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset, annotation.term.definition);
+
+        if (annotationId && annotation?.selectedWord && typeof annotation.startOffset === 'number') {
+            if (annotation.term || annotation.text) {
+                const termDefinition = annotation.term?.definition ?? '';
+                const text = annotation.text ?? '';
+                annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset, termDefinition, text);
+            } else {
+                annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset, '', '');
+            }
+
             await addAnnotationTagsToXml();
         } else {
             console.error('Failed to retrieve annotation ID');
         }
     };
+
 
     /**
      * Adds annotation tags to the XML content based on the users selection.
@@ -198,8 +208,9 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
      * @param annotationId
      * @param startOffset
      * @param definition
+     * @param text
      */
-    const annotateSelectedText = (selectedText: string, annotationId: number, startOffset: number, definition: string) => {
+    const annotateSelectedText = (selectedText: string, annotationId: number, startOffset: number, definition: string, text: string) => {
         if (originalXML) {
             let currentOffset = 0;
             let annotationAdded = false;
@@ -215,7 +226,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
                         if (typeof textIndex === 'number' && textIndex !== -1 && currentOffset + textIndex >= startOffset) {
                             const newNodeValue = node.nodeValue
                                 ? node.nodeValue.substring(0, textIndex) +
-                                `<annotation id="${annotationId}" definition="${definition}">${selectedText}</annotation>` +
+                                `<annotation id="${annotationId}" definition="${definition}" text="${text}" >${selectedText}</annotation>` +
                                 node.nodeValue.substring(textIndex + selectedText.length)
                                 : '';
 

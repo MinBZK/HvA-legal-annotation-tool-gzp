@@ -5,20 +5,22 @@ import {FaChevronDown, FaChevronUp, FaEdit} from "react-icons/fa";
 import css from "./annotated-row.module.css";
 import {Button, Form, Modal} from "react-bootstrap";
 import {Annotation} from "@/app/models/annotation";
+import {Term} from "@/app/models/term";
 
 interface AnnotationProps {
     annotation: Annotation;
+    term: Term;
     handleEdit: (annotation: Annotation, id: number) => void;
     handleDelete: (id: number) => void;
 }
 
-const AnnotatedRow: FC<AnnotationProps> = ({annotation, handleEdit, handleDelete}) => {
+const AnnotatedRow: FC<AnnotationProps> = ({annotation, term, handleEdit, handleDelete}) => {
 
     const [open, setOpen] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [editLabelText, setEditLabelText] = useState(''); // text being edited
-    const [editNoteText, setEditNoteText] = useState(''); // text being edited
-    const [editTermText, setEditTermText] = useState<string | undefined>('');
+    const [editNoteText, setEditNoteText] = useState<string | undefined>(''); // text being edited
+    const [editTermText, setEditTermText] = useState<string | undefined>(term?.definition);
 
     const [updatedAnnotation, setUpdatedAnnotation] = useState<Annotation>(annotation);
 
@@ -27,18 +29,23 @@ const AnnotatedRow: FC<AnnotationProps> = ({annotation, handleEdit, handleDelete
 
 
     const checkValues = () => {
-        if (editLabelText.length !== 0 && editNoteText.length !== 0) {
+        if (editLabelText.length !== 0) {
             setIsConfirmModalOpen(!isConfirmModalOpen);
 
             updatedAnnotation.selectedWord = editLabelText;
-            updatedAnnotation.text = editNoteText;
+
+            // Check if editNoteText is not null before assigning
+            if (editNoteText != null) {
+                updatedAnnotation.text = editNoteText;
+            }
 
             if (updatedAnnotation.term && editTermText != null) {
+                // Assuming `editTermText` is a string
                 updatedAnnotation.term.definition = editTermText;
             }
 
             setIsEditing(false);
-            handleEdit(updatedAnnotation,annotation.id);
+            handleEdit(updatedAnnotation, annotation.id);
         } else {
             alert("Velden zijn leeg, vul deze in!");
         }

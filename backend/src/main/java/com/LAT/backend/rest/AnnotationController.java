@@ -111,7 +111,6 @@ public class AnnotationController {
         annotation.setLawClass(annotationDetails.getLawClass());
         annotation.setProject(annotationDetails.getProject());
 
-        // TODO
         if (annotationDetails.getTerm() != null && annotationDetails.getTerm().getId() != null) {
             Term termDetails = annotationDetails.getTerm();
             Term term = termRepository.findById(termDetails.getId())
@@ -121,7 +120,6 @@ public class AnnotationController {
                 term = new Term();
             }
 
-            // Set the new values from termDetails
             term.setReference(termDetails.getReference());
             term.setDefinition(termDetails.getDefinition());
 
