@@ -21,6 +21,13 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
 
     const [projectId, setProjectId] = useState<number>(0);
     const [classes, setClasses] = useState<LawClass[]>([]); // New state to store the laws
+    const [terms, setTerms] = useState<Term[]>([]); // New state to store the laws
+    const [newTerm, setNewTerm] = useState<Term>({
+        id:0,
+        definition:"",
+        reference: ""
+    } as Term);
+
     const [lawClassError, setLawClassError] = useState(false);
     const [project, setProject] = useState<Project>({
         id:0
@@ -33,12 +40,15 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
         lawClass: undefined,
         project: {id: 0},
         startOffset: 0,
-        term: { definition: "" }
+        term: { definition: "", reference: "" }
     } as Annotation);
+    const [showModal, setShowModal] = useState(false);
+
 
     useEffect(() => {
         fetchId();
         fetchClasses();
+        fetchTerms();
         handleSelectedText(selectedText, startOffset);
     }, [selectedText, startOffset]);
 
@@ -101,23 +111,56 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
             .catch(error => console.error('Error fetching laws:', error));
     };
 
+    const fetchTerms = () => {
+        fetch('http://localhost:8000/api/terms')
+            .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch laws');
+            }
+            return response.json();
+            })
+            .then(data => setTerms(data))
+            .catch(error => console.error('Error fetching laws:', error));
+    }
+
+    const handleAddTerm = async () => {
+        try {
+            const response = await fetch('http://localhost:8000/api/saveTerm', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newTerm),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to save annotation');
+            }
+            const responseData = await response.json();
+            console.log('Annotation saved successfully');
+            await fetchTerms();
+            await handleTerm(newTerm);
+            setShowModal(false);
+            return responseData.id;
+        } catch (error) {
+            console.error('Error saving annotation:', error);
+            return null;
+        }
+    };
+
     const handleClose = () => {
         setLawClassError(false);
         onClose();
     };
 
     const saveAnnotationToBackend = async () => {
-
-        console.log('Annotation:', annotation);
-        console.log('Term:', annotation.term);
-        console.log('Term Definition:', annotation?.term?.definition);
         const backendAnnotation = {
             id: null,
             selectedWord: annotation?.selectedWord,
             text: annotation?.text,
             lawClass: {name: annotation?.lawClass},
             project: {id: projectId},
-            term: { definition: annotation?.term || undefined },
+            term: { definition: annotation?.term.definition|| undefined, reference: annotation?.selectedWord},
         };
         try {
             const response = await fetch('http://localhost:8000/api/annotations/project', {
@@ -127,6 +170,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
                 },
                 body: JSON.stringify(backendAnnotation),
             });
+
+            console.log(JSON.stringify(backendAnnotation));
 
             if (!response.ok) {
                 throw new Error('Failed to save annotation');
@@ -305,8 +350,48 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
 
                 <Form.Group controlId="exampleForm.ControlInput2">
                     <Form.Label><b>Begrip</b></Form.Label>
-                    <Form.Control type="text" placeholder="Type hier uw begrip..." value={annotation?.term?.definition}
-                                  onChange={(e) => handleTerm(e.target.value)}/>
+                    <Dropdown>
+                        <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic">
+                            {annotation?.term.definition ? <>{annotation.term.definition}</> : <>
+                                Selecteer</>}
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu className="dropdown">
+                            {terms.map((term, index) => (
+                                <Dropdown.Item
+                                    key={index}
+                                    onClick={() => handleTerm(term)}
+                                    active={annotation?.term.definition === term.definition}
+                                    style={{color: 'black' }}
+                                >
+                                    {term.definition}
+                                </Dropdown.Item>
+                            ))}
+                            <Dropdown.Item onClick={() => setShowModal(true)}>Add New Term</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+
+                    <Modal show={showModal} onHide={() => setShowModal(false)}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Add New Term</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Form.Control
+                                type="text"
+                                placeholder="Enter new term"
+                                value={newTerm.definition}
+                                onChange={(e) => setNewTerm({ ...newTerm, definition: e.target.value, reference: annotation?.selectedWord })}
+                            />
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={() => setShowModal(false)}>
+                                Cancel
+                            </Button>
+                            <Button variant="primary" onClick={handleAddTerm}>
+                                Add Term
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
                 </Form.Group>
             </Form>
         </div>
