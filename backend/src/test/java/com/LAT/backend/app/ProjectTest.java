@@ -1,12 +1,18 @@
-package com.LAT.backend;
+package com.LAT.backend.app;
 
 import com.LAT.backend.exceptions.ProjectNotFoundException;
+import com.LAT.backend.model.ApplicationProperty;
 import com.LAT.backend.model.Project;
+import com.LAT.backend.repository.ApplicationPropertyRepository;
 import com.LAT.backend.repository.ProjectRepository;
 import com.LAT.backend.rest.ProjectController;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,6 +31,9 @@ public class ProjectTest {
 
     @MockBean
     private ProjectRepository projectRepository;
+
+    @MockBean
+    private ApplicationPropertyRepository applicationPropertyRepository; // Add this line
 
     @Autowired
     private ProjectController projectController;

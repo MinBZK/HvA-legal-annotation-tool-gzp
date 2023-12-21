@@ -5,9 +5,11 @@ import com.LAT.backend.exceptions.ProjectNotFoundException;
 import com.LAT.backend.model.Annotation;
 import com.LAT.backend.model.LawClass;
 import com.LAT.backend.model.Project;
+import com.LAT.backend.model.Term;
 import com.LAT.backend.repository.AnnotationRepository;
 import com.LAT.backend.repository.LawClassRepository;
 import com.LAT.backend.repository.ProjectRepository;
+import com.LAT.backend.repository.TermRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +34,9 @@ public class AnnotationController {
     @Autowired
     private LawClassRepository lawClassRepository;
 
+    @Autowired
+    private TermRepository termRepository;
+
     @GetMapping("/")
     public ResponseEntity<?> getAllAnnotations() {
         try {
@@ -55,7 +60,8 @@ public class AnnotationController {
     // Hanna
     @PostMapping("/project")
     public ResponseEntity<Annotation> createAnnotation(@RequestBody Annotation annotation) {
-        try {
+        int index = 0;
+//        try {
             // Validate if the project exists
             Project project = projectRepository.findById(annotation.getProject().getId())
                     .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
@@ -64,18 +70,25 @@ public class AnnotationController {
             LawClass lawClass = lawClassRepository.findByName(annotation.getLawClass().getName())
                     .orElseThrow(() -> new LawClassNotFoundException("Annotation class not found"));
 
+            Term term = annotation.getTerm();
+            term.setReference(annotation.getSelectedWord());
+
+            termRepository.save(term);
+
             annotation.setProject(project);
             annotation.setLawClass(lawClass);
+            annotation.setTerm(term);
 
             // Save the annotation to the repository
             Annotation savedAnnotation = annotationRepository.save(annotation);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedAnnotation);
-        } catch (ProjectNotFoundException | LawClassNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
+//        } catch (ProjectNotFoundException | LawClassNotFoundException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+//        }
     }
+
 
     @DeleteMapping("/deleteannotation/{id}")
     public ResponseEntity<String> deleteAnnotation(@PathVariable Integer id) {
@@ -98,6 +111,26 @@ public class AnnotationController {
         annotation.setLawClass(annotationDetails.getLawClass());
         annotation.setProject(annotationDetails.getProject());
 
+        // TODO
+        if (annotationDetails.getTerm() != null && annotationDetails.getTerm().getId() != null) {
+            Term termDetails = annotationDetails.getTerm();
+            Term term = termRepository.findById(termDetails.getId())
+                    .orElse(null);  // Create a new Term if it doesn't exist
+
+            if (term == null) {
+                term = new Term();
+            }
+
+            // Set the new values from termDetails
+            term.setReference(termDetails.getReference());
+            term.setDefinition(termDetails.getDefinition());
+
+            // Save the term to the database
+            term = termRepository.save(term);
+
+            // Set the term to the annotation
+            annotation.setTerm(term);
+        }
 
         return annotationRepository.save(annotation);
     }
@@ -114,6 +147,4 @@ public class AnnotationController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching annotation");
         }
     }
-
-
 }

@@ -32,10 +32,19 @@
 .import-button {
   background-color: #EBEBEB !important;
   color: #000 !important;
-  border-color: #B1B1B1 !important;
+  border: 1px solid #B1B1B1 !important;
   border-radius: 20px;
   cursor: pointer;
   padding: 5px 20px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.import-button svg {
+  width: 22px;
+  height: 22px;
+  margin-right: 10px;
 }
 
 .import-button:hover {
@@ -72,6 +81,12 @@
   background-color: #FBFBFB;
   margin: 10px;
   border-radius: 10px;
+  border: 1px solid #ebebeb;
+  transition: .2s;
+}
+
+.document-item:hover {
+  background-color: #f5f5f5;
 }
 
 .document-title {
@@ -81,28 +96,40 @@
 }
 
 .open-button {
-  padding: 5px 10px;
+  padding: 8px 20px;
   background-color: #EBEBEB !important;
   color: #000 !important;
-  border-color: #B1B1B1 !important;
+  border: 1px solid #B1B1B1 !important;
   border-radius: 5px;
   text-decoration: none;
   cursor: pointer;
+  font-size: 14px;
+  transition: .2s;
 }
 
 .open-button:hover {
-  background-color: #15803d;
+  background-color: #dfdfdf !important;
 }
 
-.delete-icon {
+.delete-button {
   font-size: 24px;
-  color: #ef4444;
+  color: #000;
   cursor: pointer;
   margin-left: 10px; /* Add margin to separate the delete icon */
+  padding: 0 10px;
+  background: #FACACA;
+  border: 1px solid #CA5858;
+  border-radius: 5px;
+  transition: .2s;
 }
 
-.delete-icon:hover {
-  color: #b91c1c;
+.delete-button svg {
+  width: 18px;
+  height: 18px;
+}
+
+.delete-button:hover {
+  background: #e69d9d;
 }
 
 .download-icon{
@@ -127,3 +154,9 @@ button.success:hover {
   background-color: rgba(76, 167, 74, 0.62);
 }
 
+.xml-minmax {
+  background: #f4f4f4;
+  padding: 5px 10px;
+  border-radius: 4px;
+  margin-bottom: 0;
+}

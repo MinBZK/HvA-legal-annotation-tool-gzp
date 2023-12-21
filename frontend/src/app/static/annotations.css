@@ -1,18 +1,24 @@
+html:has(.left-column) {
+  overflow: hidden;
+}
+
 .navbar {
   background-color: #007BC0;
   height: 50px;
+}
+
+#annoteren {
+  font-size: 20px;
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #154273;
 }
 
 .container {
   display: flex;
   gap: 20px;
   padding: 20px;
-}
-
-.left-column, .right-column {
-  flex: 1;
-  border: 1px solid #ccc;
-  padding: 10px;
 }
 
 .navbar-title {
@@ -35,8 +41,13 @@
 }
 
 .left-column, .right-column {
-  flex: 1 1;
-  border: 1px solid #ccc;
-  padding: 10px;
-  box-shadow: 0 4px 1px 0 rgba(0, 0, 0, 0.2), 0 0px 12px 0 rgba(0, 0, 0, 0.19);
+  height: calc(100lvh - 50px);
+  overflow: auto;
+  width: 100%;
+}
+
+
+.left-column, .right-column {
+  border-right: 1px solid lightgray;
+  padding: 40px 30px;
 }

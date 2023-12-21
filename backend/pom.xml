@@ -50,6 +50,11 @@
         <artifactId>javax.persistence-api</artifactId>
         <version>2.2</version>
     </dependency>
+		<dependency>
+			<groupId>io.github.cdimascio</groupId>
+			<artifactId>java-dotenv</artifactId>
+			<version>5.2.0</version> <!-- Check for the latest version on GitHub -->
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -4,6 +4,11 @@ import jakarta.persistence.*;
 
 @Entity
 public class Relation {
+
+    public enum Cardinality {V_1, NV_0_1_N, V_1_N, NV_0_1}
+
+    ;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -16,11 +21,11 @@ public class Relation {
     @JoinColumn(name = "sub_lawClass_id")
     private LawClass subLawClass;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String type;
-
+    private Cardinality cardinality;
     @Column(nullable = false)
-    private String cardinality;
+    private String description;
 
     public int getId() {
         return id;
@@ -42,19 +47,21 @@ public class Relation {
         this.subLawClass = subLawClass;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getCardinality() {
+    public Cardinality getCardinality() {
         return cardinality;
     }
 
-    public void setCardinality(String cardinality) {
+    public void setCardinality(Cardinality cardinality) {
         this.cardinality = cardinality;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
 }
