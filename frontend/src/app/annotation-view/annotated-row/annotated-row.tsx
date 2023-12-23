@@ -9,18 +9,17 @@ import {Term} from "@/app/models/term";
 
 interface AnnotationProps {
     annotation: Annotation;
-    term: Term;
     handleEdit: (annotation: Annotation, id: number) => void;
     handleDelete: (id: number) => void;
 }
 
-const AnnotatedRow: FC<AnnotationProps> = ({annotation, term, handleEdit, handleDelete}) => {
+const AnnotatedRow: FC<AnnotationProps> = ({annotation, handleEdit, handleDelete}) => {
 
     const [open, setOpen] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [editLabelText, setEditLabelText] = useState(''); // text being edited
     const [editNoteText, setEditNoteText] = useState<string | undefined>(''); // text being edited
-    const [editTermText, setEditTermText] = useState<string | undefined>(term?.definition);
+    const [editTermText, setEditTermText] = useState<string | undefined>('');
 
     const [updatedAnnotation, setUpdatedAnnotation] = useState<Annotation>(annotation);
 

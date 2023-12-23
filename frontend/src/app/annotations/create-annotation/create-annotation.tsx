@@ -163,16 +163,16 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
             term: { definition: annotation?.term?.definition|| undefined, reference: annotation?.selectedWord},
         };
 
-        if (annotation.text) {
-            backendAnnotation.text = annotation.text;
-        }
-
-        if (annotation.term && annotation.term.definition) {
-            backendAnnotation.term = {
-                definition: annotation.term.definition,
-                reference: annotation.selectedWord,
-            };
-        }
+        // if (annotation.text) {
+        //     backendAnnotation.text = annotation.text;
+        // }
+        //
+        // if (annotation.term && annotation.term.definition) {
+        //     backendAnnotation.term = {
+        //         definition: annotation.term.definition,
+        //         reference: annotation.selectedWord,
+        //     };
+        // }
 
         try {
             const response = await fetch('http://localhost:8000/api/annotations/project', {
@@ -242,15 +242,26 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
         setLawClassError(false);
         const annotationId = await saveAnnotationToBackend();
 
-        if (annotationId && annotation?.selectedWord && typeof annotation.startOffset === 'number') {
-            if (annotation.term || annotation.text) {
-                const termDefinition = annotation.term?.definition ?? '';
-                const text = annotation.text ?? '';
-                annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset, termDefinition, text);
-            } else {
-                annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset, '', '');
-            }
+        // if (annotationId && annotation?.selectedWord && typeof annotation.startOffset === 'number') {
+        //     if (annotation.term || annotation.text) {
+        //         const termDefinition = annotation.term?.definition ?? '';
+        //         const text = annotation.text ?? '';
+        //         annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset, termDefinition, text);
+        //     } else {
+        //         annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset, '', '');
+        //     }
+        //
+        //     await addAnnotationTagsToXml();
+        // } else {
+        //     console.error('Failed to retrieve annotation ID');
+        // }
 
+        if (annotationId && annotation?.selectedWord && typeof annotation.startOffset === 'number') {
+            const termDefinition = annotation.term?.definition;
+            const text = annotation.text;
+            if (termDefinition != null && text != null) {
+                    annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset, termDefinition, text);
+            }
             await addAnnotationTagsToXml();
         } else {
             console.error('Failed to retrieve annotation ID');
@@ -283,7 +294,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
                         if (typeof textIndex === 'number' && textIndex !== -1 && currentOffset + textIndex >= startOffset) {
                             const newNodeValue = node.nodeValue
                                 ? node.nodeValue.substring(0, textIndex) +
-                                `<annotation id="${annotationId}" definition="${definition}" text="${text}" >${selectedText}</annotation>` +
+                                // `<annotation id="${annotationId}" definition="${definition}" text="${text}" >${selectedText}</annotation>` +
+                                `<annotation id="${annotationId}">${selectedText}</annotation>` +
                                 node.nodeValue.substring(textIndex + selectedText.length)
                                 : '';
 
@@ -299,8 +311,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
                 // Convert the XML DOM back to a string
                 let serializedXML = new XMLSerializer().serializeToString(originalXML);
                 // Replace the escaped annotation tags with the original tags
-                project.xml_content = serializedXML.replace(/&lt;annotation id="([0-9]+)" definition="([^"]*)"&gt;/g,
-                    `<annotation id="$1" definition="$2">`
+                project.xml_content = serializedXML.replace(/&lt;annotation id="([0-9]+)"gt;/g,
+                    `<annotation id="$1">`
                 ).replace(/&lt;\/annotation&gt;/g, '</annotation>');
             }
         }
