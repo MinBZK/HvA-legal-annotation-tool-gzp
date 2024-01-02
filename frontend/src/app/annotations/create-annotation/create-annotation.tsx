@@ -48,8 +48,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
     useEffect(() => {
         fetchId();
         fetchClasses();
-        fetchTerms();
         handleSelectedText(selectedText, startOffset);
+        fetchTerms(selectedText);
     }, [selectedText, startOffset]);
 
     const fetchId = async () => {
@@ -111,37 +111,23 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
             .catch(error => console.error('Error fetching laws:', error));
     };
 
-    const fetchTerms = () => {
-        fetch('http://localhost:8000/api/terms')
+    const fetchTerms = (reference) => {
+        console.log(reference)
+        fetch(`http://localhost:8000/api/terms/${encodeURIComponent(reference)}`)
             .then(response => {
             if (!response.ok) {
-                throw new Error('Failed to fetch laws');
+                throw new Error('Failed to fetch terms');
             }
-            return response.json();
+                return response.json();
             })
             .then(data => setTerms(data))
-            .catch(error => console.error('Error fetching laws:', error));
+            .catch(error => console.error('Error fetching terms:', error));
     }
 
     const handleAddTerm = async () => {
         try {
-            const response = await fetch('http://localhost:8000/api/saveTerm', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newTerm),
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to save annotation');
-            }
-            const responseData = await response.json();
-            console.log('Annotation saved successfully');
-            await fetchTerms();
             await handleTerm(newTerm);
             setShowModal(false);
-            return responseData.id;
         } catch (error) {
             console.error('Error saving annotation:', error);
             return null;
