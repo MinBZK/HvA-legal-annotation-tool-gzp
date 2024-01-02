@@ -16,6 +16,19 @@ public class Annotation {
 
     private String text;
 
+
+    @ManyToOne
+    @JoinColumn(name = "parent_annotation_id")
+    private Annotation parentAnnotation;
+    public Annotation getParentAnnotation() {
+        return parentAnnotation;
+    }
+
+    public void setParentAnnotation(Annotation parentAnnotation) {
+        this.parentAnnotation = parentAnnotation;
+    }
+
+
     @JsonIgnoreProperties({"annotations"})
     @ManyToOne
     @JoinColumn(name = "lawClass_id")

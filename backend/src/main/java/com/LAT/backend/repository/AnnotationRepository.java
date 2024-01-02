@@ -15,4 +15,7 @@ import java.util.Optional;
 public interface AnnotationRepository extends CrudRepository<Annotation, Integer> {
     List<Annotation> findByProjectId(Integer projectId);
 
+    List<Annotation> findByParentAnnotation(Annotation parentAnnotation);
+
+
 }
