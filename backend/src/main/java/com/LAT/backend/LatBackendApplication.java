@@ -17,7 +17,7 @@ public class LatBackendApplication {
 	private static void loadEnvVariables() {
 		Dotenv dotenv = Dotenv.configure()
 				.filename(".env") // Specify the filename
-				.directory("./backend/")    // Specify the directory
+				.directory("./")    // Specify the directory
 				.load();
 
 		System.setProperty("DB_URL", Objects.requireNonNull(dotenv.get("DB_URL")));
