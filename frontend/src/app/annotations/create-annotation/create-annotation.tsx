@@ -163,16 +163,16 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
             term: { definition: annotation?.term?.definition|| undefined, reference: annotation?.selectedWord},
         };
 
-        // if (annotation.text) {
-        //     backendAnnotation.text = annotation.text;
-        // }
-        //
-        // if (annotation.term && annotation.term.definition) {
-        //     backendAnnotation.term = {
-        //         definition: annotation.term.definition,
-        //         reference: annotation.selectedWord,
-        //     };
-        // }
+        if (annotation.text) {
+            backendAnnotation.text = annotation.text;
+        }
+
+        if (annotation.term && annotation.term.definition) {
+            backendAnnotation.term = {
+                definition: annotation.term.definition,
+                reference: annotation.selectedWord,
+            };
+        }
 
         try {
             const response = await fetch('http://localhost:8000/api/annotations/project', {
