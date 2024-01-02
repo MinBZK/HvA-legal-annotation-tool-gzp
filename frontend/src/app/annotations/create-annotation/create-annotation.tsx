@@ -146,8 +146,20 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
             text: annotation?.text,
             lawClass: {name: annotation?.lawClass},
             project: {id: projectId},
-            term: { definition: annotation?.term.definition|| undefined, reference: annotation?.selectedWord},
+            term: { definition: annotation?.term?.definition|| undefined, reference: annotation?.selectedWord},
         };
+
+        if (annotation.text) {
+            backendAnnotation.text = annotation.text;
+        }
+
+        if (annotation.term && annotation.term.definition) {
+            backendAnnotation.term = {
+                definition: annotation.term.definition,
+                reference: annotation.selectedWord,
+            };
+        }
+
         try {
             const response = await fetch('http://localhost:8000/api/annotations/project', {
                 method: 'POST',
@@ -212,15 +224,36 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
             setLawClassError(true);
             return;
         }
+
         setLawClassError(false);
         const annotationId = await saveAnnotationToBackend();
-        if (annotationId && annotation?.selectedWord && annotation?.term?.definition && typeof annotation.startOffset === 'number') {
-            annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset, annotation.term.definition);
+
+        if (annotationId && annotation?.selectedWord && typeof annotation.startOffset === 'number') {
+            if (annotation.term || annotation.text) {
+                const termDefinition = annotation.term?.definition ?? '';
+                const text = annotation.text ?? '';
+                annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset, termDefinition, text);
+            } else {
+                annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset, '', '');
+            }
+
+            await addAnnotationTagsToXml();
+        } else {
+            console.error('Failed to retrieve annotation ID');
+        }
+
+        if (annotationId && annotation?.selectedWord && typeof annotation.startOffset === 'number') {
+            const termDefinition = annotation.term?.definition;
+            const text = annotation.text;
+            if (termDefinition != null && text != null) {
+                annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset, termDefinition, text);
+            }
             await addAnnotationTagsToXml();
         } else {
             console.error('Failed to retrieve annotation ID');
         }
     };
+
 
     /**
      * Adds annotation tags to the XML content based on the users selection.
@@ -229,8 +262,9 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
      * @param annotationId
      * @param startOffset
      * @param definition
+     * @param text
      */
-    const annotateSelectedText = (selectedText: string, annotationId: number, startOffset: number, definition: string) => {
+    const annotateSelectedText = (selectedText: string, annotationId: number, startOffset: number, definition: string, text: string) => {
         if (originalXML) {
             let currentOffset = 0;
             let annotationAdded = false;
@@ -246,7 +280,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
                         if (typeof textIndex === 'number' && textIndex !== -1 && currentOffset + textIndex >= startOffset) {
                             const newNodeValue = node.nodeValue
                                 ? node.nodeValue.substring(0, textIndex) +
-                                `<annotation id="${annotationId}" definition="${definition}">${selectedText}</annotation>` +
+                                // `<annotation id="${annotationId}" definition="${definition}" text="${text}" >${selectedText}</annotation>` +
+                                `<annotation id="${annotationId}">${selectedText}</annotation>` +
                                 node.nodeValue.substring(textIndex + selectedText.length)
                                 : '';
 
@@ -262,8 +297,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
                 // Convert the XML DOM back to a string
                 let serializedXML = new XMLSerializer().serializeToString(originalXML);
                 // Replace the escaped annotation tags with the original tags
-                project.xml_content = serializedXML.replace(/&lt;annotation id="([0-9]+)" definition="([^"]*)"&gt;/g,
-                    `<annotation id="$1" definition="$2">`
+                project.xml_content = serializedXML.replace(/&lt;annotation id="([0-9]+)"gt;/g,
+                    `<annotation id="$1">`
                 ).replace(/&lt;\/annotation&gt;/g, '</annotation>');
             }
         }
@@ -286,112 +321,117 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
     }
 
     return (
-    <>
-        <div>
-            <p id="annoteren" >Annoteren</p>
-            {lawClassError && (
-                <Alert variant="danger">
-                    <Alert.Heading>Error</Alert.Heading>
-                    <p>Selecteer alstublieft een juridische klasse.</p>
-                </Alert>
-            )}
+        <>
+            <div>
+                <p id="annoteren">Annoteren</p>
+                {lawClassError && (
+                    <Alert variant="danger">
+                        <Alert.Heading>Error</Alert.Heading>
+                        <p>Selecteer alstublieft een juridische klasse.</p>
+                    </Alert>
+                )}
 
-            <Form className="annotationInfo">
-                <Form.Group controlId="selectedText">
-                    <Form.Label><b>Geselecteerde tekst</b></Form.Label>
-                    <Form.Control type="text" readOnly value={annotation?.selectedWord} />
-                </Form.Group>
+                <Form className="annotationInfo">
+                    <Form.Group controlId="selectedText">
+                        <Form.Label><b>Geselecteerde tekst</b></Form.Label>
+                        <Form.Control type="text" readOnly value={annotation?.selectedWord}/>
+                    </Form.Group>
 
-                <Form.Group controlId="exampleForm.ControlSelect1">
-                    <Form.Label><b>Wet vorm</b></Form.Label>
-                    <Dropdown>
-                        <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic" style={{
-                            color: 'black',
-                            backgroundColor: annotation?.lawClass ? (classes.find(law => law.name === annotation.lawClass?.toString()) || {}).color || ''
-                                : '',
-                        }}>
-                            {annotation?.lawClass ? <>{annotation.lawClass}</> : <>Selecteer</>}
-                        </Dropdown.Toggle>
+                    <Form.Group controlId="exampleForm.ControlSelect1">
+                        <Form.Label><b>Wet vorm</b></Form.Label>
+                        <Dropdown>
+                            <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic" style={{
+                                color: 'black',
+                                backgroundColor: annotation?.lawClass ? (classes.find(law => law.name === annotation.lawClass?.toString()) || {}).color || ''
+                                    : '',
+                            }}>
+                                {annotation?.lawClass ? <>{annotation.lawClass}</> : <>Selecteer</>}
+                            </Dropdown.Toggle>
 
-                        <Dropdown.Menu className="dropdown">
-                            {classes.map((law, index) => (
-                                <Dropdown.Item
-                                    key={index}
-                                    onClick={() => handleSelectLaw(law.name)}
-                                    active={annotation?.lawClass && law.name === annotation.lawClass.toString()}
-                                    style={{ backgroundColor: law.color, color: 'black' }}
-                                >
-                                    {law.name}
-                                </Dropdown.Item>
-                            ))}
-                        </Dropdown.Menu>
-                    </Dropdown>
-                </Form.Group>
+                            <Dropdown.Menu className="dropdown">
+                                {classes.map((law, index) => (
+                                    <Dropdown.Item
+                                        key={index}
+                                        onClick={() => handleSelectLaw(law.name)}
+                                        active={annotation?.lawClass && law.name === annotation.lawClass.toString()}
+                                        style={{backgroundColor: law.color, color: 'black'}}
+                                    >
+                                        {law.name}
+                                    </Dropdown.Item>
+                                ))}
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Form.Group>
 
-                <Form.Group controlId="exampleForm.ControlInput1">
-                    <Form.Label className="padding"><b>Notitie</b></Form.Label>
-                    <Form.Control className={"text-input"} as="textarea" type="text" placeholder="Type hier uw notitie..." value={annotation?.text}
-                                  onChange={(e) => handleNote(e.target.value)} />
-                </Form.Group>
+                    <Form.Group controlId="exampleForm.ControlInput1">
+                        <Form.Label className="padding"><b>Notitie</b></Form.Label>
+                        <Form.Control className={"text-input"} as="textarea" type="text"
+                                      placeholder="Type hier uw notitie..." value={annotation?.text}
+                                      onChange={(e) => handleNote(e.target.value)}/>
+                    </Form.Group>
 
-                <Form.Group controlId="exampleForm.ControlInput2">
-                    <Form.Label><b>Begrip</b></Form.Label>
-                    <Dropdown>
-                        <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic">
-                            {annotation?.term.definition ? <>{annotation.term.definition}</> : <>
-                                Selecteer</>}
-                        </Dropdown.Toggle>
+                    <Form.Group controlId="exampleForm.ControlInput2">
+                        <Form.Label><b>Begrip</b></Form.Label>
+                        <Dropdown>
+                            <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic">
+                                {annotation?.term?.definition ? <>{annotation.term.definition}</> : <>
+                                    Selecteer</>}
+                            </Dropdown.Toggle>
 
-                        <Dropdown.Menu className="dropdown">
-                            {terms.map((term, index) => (
-                                <Dropdown.Item
-                                    key={index}
-                                    onClick={() => handleTerm(term)}
-                                    active={annotation?.term.definition === term.definition}
-                                    style={{color: 'black' }}
-                                >
-                                    {term.definition}
-                                </Dropdown.Item>
-                            ))}
-                            <Dropdown.Item onClick={() => setShowModal(true)}>Add New Term</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
+                            <Dropdown.Menu className="dropdown">
+                                {terms.map((term, index) => (
+                                    <Dropdown.Item
+                                        key={index}
+                                        onClick={() => handleTerm(term)}
+                                        active={annotation?.term?.definition === term.definition}
+                                        style={{color: 'black'}}
+                                    >
+                                        {term.definition}
+                                    </Dropdown.Item>
+                                ))}
+                                <Dropdown.Item onClick={() => setShowModal(true)}>Add New Term</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
 
-                    <Modal show={showModal} onHide={() => setShowModal(false)}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Add New Term</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <Form.Control
-                                type="text"
-                                placeholder="Enter new term"
-                                value={newTerm.definition}
-                                onChange={(e) => setNewTerm({ ...newTerm, definition: e.target.value, reference: annotation?.selectedWord })}
-                            />
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="secondary" onClick={() => setShowModal(false)}>
-                                Cancel
-                            </Button>
-                            <Button variant="primary" onClick={handleAddTerm}>
-                                Add Term
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
-                </Form.Group>
-            </Form>
-        </div>
+                        <Modal show={showModal} onHide={() => setShowModal(false)}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Add New Term</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Enter new term"
+                                    value={newTerm.definition}
+                                    onChange={(e) => setNewTerm({
+                                        ...newTerm,
+                                        definition: e.target.value,
+                                        reference: annotation?.selectedWord
+                                    })}
+                                />
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={() => setShowModal(false)}>
+                                    Cancel
+                                </Button>
+                                <Button variant="primary" onClick={handleAddTerm}>
+                                    Add Term
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
+                    </Form.Group>
+                </Form>
+            </div>
 
-        <div className={`${css.buttonsRight}`}>
-            <button className={`${css.save}`} onClick={handleSave}>
-                <BsFillFloppy2Fill size={20} /> Opslaan
-            </button>
-            <button className={`${css.cancel}`} onClick={handleClose}>
-                <BsX size={20} /> Annuleer
-            </button>
-        </div>
-    </>
-);
+            <div className={`${css.buttonsRight}`}>
+                <button className={`${css.save}`} onClick={handleSave}>
+                    <BsFillFloppy2Fill size={20}/> Opslaan
+                </button>
+                <button className={`${css.cancel}`} onClick={handleClose}>
+                    <BsX size={20}/> Annuleer
+                </button>
+            </div>
+        </>
+    );
 }
 
 export default CreateAnnotation;
