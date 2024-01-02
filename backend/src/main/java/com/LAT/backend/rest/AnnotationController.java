@@ -70,20 +70,20 @@ public class AnnotationController {
                     .orElseThrow(() -> new LawClassNotFoundException("Annotation class not found"));
 
             Term term = annotation.getTerm();
-//            if (term == null) {
-//                term = new Term();
-//            }
-//
-//            if (term.getDefinition() == null) {
-//                term.setDefinition("");
-//            }
+            if (term == null) {
+                term = new Term();
+            }
+
+            if (term.getDefinition() == null) {
+                term.setDefinition("");
+            }
             term.setReference(annotation.getSelectedWord());
 
             termRepository.save(term);
 
-//            if (annotation.getText() == null) {
-//                annotation.setText("");
-//            }
+            if (annotation.getText() == null) {
+                annotation.setText("");
+            }
 
             annotation.setProject(project);
             annotation.setLawClass(lawClass);
@@ -121,24 +121,24 @@ public class AnnotationController {
         annotation.setLawClass(annotationDetails.getLawClass());
         annotation.setProject(annotationDetails.getProject());
 
-//        if (annotationDetails.getTerm() != null && annotationDetails.getTerm().getId() != null) {
-//            Term termDetails = annotationDetails.getTerm();
-//            Term term = termRepository.findById(termDetails.getId())
-//                    .orElse(null);  // Create a new Term if it doesn't exist
-//
-//            if (term == null) {
-//                term = new Term();
-//            }
-//
-//            term.setReference(termDetails.getReference());
-//            term.setDefinition(termDetails.getDefinition());
-//
-//            // Save the term to the database
-//            term = termRepository.save(term);
-//
-//            // Set the term to the annotation
-//            annotation.setTerm(term);
-//        }
+        if (annotationDetails.getTerm() != null && annotationDetails.getTerm().getId() != null) {
+            Term termDetails = annotationDetails.getTerm();
+            Term term = termRepository.findById(termDetails.getId())
+                    .orElse(null);  // Create a new Term if it doesn't exist
+
+            if (term == null) {
+                term = new Term();
+            }
+
+            term.setReference(termDetails.getReference());
+            term.setDefinition(termDetails.getDefinition());
+
+            // Save the term to the database
+            term = termRepository.save(term);
+
+            // Set the term to the annotation
+            annotation.setTerm(term);
+        }
 
         return annotationRepository.save(annotation);
     }
