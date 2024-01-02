@@ -10,6 +10,8 @@ import {Project} from "../../models/project";
 import "./create-annotation.css"
 import css from "../../annotation-view/annotated-row/annotated-row.module.css"
 import {Term} from "@/app/models/term";
+import { Relation } from "@/app/models/relation";
+
 
 interface PopupProps {
     selectedText: string;
@@ -22,6 +24,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
     const [projectId, setProjectId] = useState<number>(0);
     const [classes, setClasses] = useState<LawClass[]>([]); // New state to store the laws
     const [terms, setTerms] = useState<Term[]>([]); // New state to store the laws
+    const [relations, setRelations] = useState<Relation[]>([]); // State voor het opslaan van relaties
     const [newTerm, setNewTerm] = useState<Term>({
         id:0,
         definition:"",
@@ -68,15 +71,21 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
             console.error("Error fetching annotations:", error);
         }
     };
+    const handleSelectLaw = async (lawClassName: any) => {
+        // Vind het LawClass object op basis van de gegeven naam
+        const selectedLawClass = classes.find(lawClass => lawClass.name === lawClassName);
 
-    // Update the selected law
-    const handleSelectLaw = (lawName: any) => {
-        setAnnotation((prevAnnotation) => ({
-            ...(prevAnnotation as Annotation),
-            lawClass: lawName,
-        }));
+        if (selectedLawClass) {
+            // Sla alleen de naam van de LawClass op in de annotation
+            setAnnotation((prevAnnotation) => ({
+                ...(prevAnnotation as Annotation),
+                lawClass: lawClassName, // Sla de naam van de LawClass op
+            }));
+
+            // Haal de relaties op voor de geselecteerde LawClass
+            await fetchRelationsForLawClass(selectedLawClass.id); // Gebruik het ID van de gevonden LawClass
+        }
     };
-
     const handleNote = (note: any) => {
         setAnnotation((prevAnnotation) => ({
             ...(prevAnnotation as Annotation),
@@ -299,6 +308,21 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
         }
     }
 
+    const fetchRelationsForLawClass = async (lawClassId) => {
+        try {
+            const response = await fetch(`http://localhost:8000/api/relations/${lawClassId}`);
+            if (response.ok) {
+                const fetchedRelations = await response.json();
+                setRelations(fetchedRelations);
+            } else {
+                console.error("Error fetching relations");
+            }
+        } catch (error) {
+            console.error("Error fetching relations:", error);
+        }
+    };
+
+
     return (
     <>
         <div>
@@ -362,14 +386,22 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
                                     key={index}
                                     onClick={() => handleTerm(term)}
                                     active={annotation?.term.definition === term.definition}
-                                    style={{color: 'black' }}
-                                >
+                                    style={{color: 'black' }}>
                                     {term.definition}
                                 </Dropdown.Item>
                             ))}
                             <Dropdown.Item onClick={() => setShowModal(true)}>Add New Term</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
+
+                    {/* Render de relaties als knoppen */}
+                    <div>
+                        {relations.map(relation => (
+                            <Button key={relation.id} variant="secondary" className="m-1">
+                                + {relation.description}
+                            </Button>
+                        ))}
+                    </div>
 
                     <Modal show={showModal} onHide={() => setShowModal(false)}>
                         <Modal.Header closeButton>

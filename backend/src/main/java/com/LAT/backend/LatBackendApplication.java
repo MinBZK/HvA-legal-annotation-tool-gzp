@@ -17,11 +17,14 @@ public class LatBackendApplication {
 	private static void loadEnvVariables() {
 		Dotenv dotenv = Dotenv.configure()
 				.filename(".env") // Specify the filename
-				.directory("./")    // Specify the directory
+				.directory("../")    // Specify the directory
 				.load();
 
 		System.setProperty("DB_URL", Objects.requireNonNull(dotenv.get("DB_URL")));
 		System.setProperty("DB_USER", Objects.requireNonNull(dotenv.get("DB_USER")));
 		System.setProperty("DB_PASS", Objects.requireNonNull(dotenv.get("DB_PASS")));
 	}
+
+
+
 }
