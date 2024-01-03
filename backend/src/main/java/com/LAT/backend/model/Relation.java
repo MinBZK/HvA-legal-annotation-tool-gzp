@@ -5,9 +5,7 @@ import jakarta.persistence.*;
 @Entity
 public class Relation {
 
-    public enum Cardinality {V_1, NV_0_1_N, V_1_N, NV_0_1}
-
-    ;
+    public enum Cardinality {V_1, NV_0_1_N, V_1_N, NV_0_1};
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -5,6 +5,8 @@ import com.LAT.backend.model.ApplicationProperty;
 import com.LAT.backend.model.Project;
 import com.LAT.backend.repository.ApplicationPropertyRepository;
 import com.LAT.backend.repository.ProjectRepository;
+import com.LAT.backend.views.Views;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -27,11 +29,13 @@ public class ProjectController {
     private ApplicationPropertyRepository applicationPropertyRepository;
 
     @GetMapping("/projects")
+    @JsonView(Views.Basic.class)
     public Iterable<Project> getAllProjects() {
         return projectRepository.findAll();
     }
 
     @GetMapping("project/{projectId}")
+    @JsonView(Views.Extended.class)
     public ResponseEntity<Project> getProjectById(@PathVariable Long projectId) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
@@ -46,6 +50,7 @@ public class ProjectController {
     }
 
     @GetMapping("/maxXmlCount")
+    @JsonView(Views.Basic.class)
     public ResponseEntity<Integer> getMaxXmlCount() {
         int maxXmlCount = applicationPropertyRepository.findByPropertyName("max_xml_files")
                 .map(ApplicationProperty::getPropertyValue)
@@ -55,6 +60,7 @@ public class ProjectController {
     }
 
     @GetMapping("/projectCounts")
+    @JsonView(Views.Basic.class)
     public ResponseEntity<Map<String, Long>> getProjectCounts() {
         long currentProjectCount = projectRepository.countProjects();
         int maxXmlCount = applicationPropertyRepository.findByPropertyName("max_xml_files")

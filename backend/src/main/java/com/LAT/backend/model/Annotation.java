@@ -1,25 +1,26 @@
 package com.LAT.backend.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.LAT.backend.views.Views;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
-
-import java.util.List;
 
 @Entity
 public class Annotation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(Views.Basic.class)
     private int id;
-
+    @JsonView(Views.Basic.class)
     private String selectedWord;
-
+    @JsonView(Views.Basic.class)
     private String text;
-
-
     @ManyToOne
-    @JoinColumn(name = "parent_annotation_id")
+    @JoinColumn(name = "parent_annotation_id", nullable = true)
+    @JsonView(Views.Extended.class)
     private Annotation parentAnnotation;
+
     public Annotation getParentAnnotation() {
         return parentAnnotation;
     }
@@ -34,7 +35,7 @@ public class Annotation {
     @JoinColumn(name = "lawClass_id")
     private LawClass lawClass;
 
-    @JsonIgnoreProperties({"annotations"})
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
