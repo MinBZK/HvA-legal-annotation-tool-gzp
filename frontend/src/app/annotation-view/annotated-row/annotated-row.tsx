@@ -163,6 +163,13 @@ const AnnotatedRow: FC<AnnotationProps> = ({annotation, handleEdit, handleDelete
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu className="dropdown">
+                                        <Dropdown.Item
+                                            onClick={() => setEditTermText("")}
+                                            active={!editTermText}  // Highlight if no term is selected
+                                            style={{ color: 'black' }}
+                                        >
+                                            Selecteer niets
+                                        </Dropdown.Item>
                                         {terms.map((term, index) => (
                                             <Dropdown.Item
                                                 key={index}

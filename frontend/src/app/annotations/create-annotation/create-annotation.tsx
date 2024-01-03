@@ -215,8 +215,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
         }
         setLawClassError(false);
         const annotationId = await saveAnnotationToBackend();
-        if (annotationId && annotation?.selectedWord && annotation?.term?.definition && typeof annotation.startOffset === 'number') {
-            annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset);
+        if (annotationId && annotation?.selectedWord && typeof annotation.startOffset === 'number') {
+            annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset, annotation.term.definition);
             await addAnnotationTagsToXml();
 
             // Trigger the callback to re-render LoadXML
@@ -236,7 +236,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
      * @param startOffset
      * @param definition
      */
-    const annotateSelectedText = (selectedText: string, annotationId: number, startOffset: number) => {
+    const annotateSelectedText = (selectedText: string, annotationId: number, startOffset: number, definition: string) => {
         if (originalXML) {
             let currentOffset = 0;
             let annotationAdded = false;
@@ -268,9 +268,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
                 // Convert the XML DOM back to a string
                 let serializedXML = new XMLSerializer().serializeToString(originalXML);
                 // Replace the escaped annotation tags with the original tags
-                project.xml_content = serializedXML.replace(/&lt;annotation id="([0-9]+)"gt;/g,
-                    `<annotation id="$1">`
-                ).replace(/&lt;\/annotation&gt;/g, '</annotation>');
+                project.xml_content = serializedXML.replace(/&lt;annotation id="([0-9]+)"&gt;/g, `<annotation id="$1">`)
+                    .replace(/&lt;\/annotation&gt;/g, '</annotation>');
             }
         }
     };
@@ -344,7 +343,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
                     <Form.Group controlId="exampleForm.ControlInput2">
                         <Form.Label><b>Begrip</b></Form.Label>
                         <Dropdown>
-                            <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic">
+                            <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic" style={{color: 'black'}}>
                                 {annotation?.term?.definition ? <>{annotation.term.definition}</> : <>
                                     Selecteer</>}
                             </Dropdown.Toggle>
