@@ -3,7 +3,7 @@
 import React, {FC, useEffect, useState} from "react";
 import {FaChevronDown, FaChevronUp, FaEdit} from "react-icons/fa";
 import css from "./annotated-row.module.css";
-import {Button, Form, Modal} from "react-bootstrap";
+import {Button, Dropdown, Form, Modal} from "react-bootstrap";
 import {Annotation} from "@/app/models/annotation";
 import {Term} from "@/app/models/term";
 
@@ -26,6 +26,14 @@ const AnnotatedRow: FC<AnnotationProps> = ({annotation, handleEdit, handleDelete
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
 
+    const [terms, setTerms] = useState<Term[]>([]); // New state to store the laws
+    const [newTerm, setNewTerm] = useState<Term>({
+        id:0,
+        definition:"",
+        reference: ""
+    } as Term);
+
+    const [showModal, setShowModal] = useState(false);
 
     const checkValues = () => {
         if (editLabelText.length !== 0) {
@@ -58,11 +66,35 @@ const AnnotatedRow: FC<AnnotationProps> = ({annotation, handleEdit, handleDelete
         handleDelete(annotation.id)
     }
 
+    const handleAddTerm = async () => {
+        try {
+            setEditTermText(newTerm.definition);
+            setShowModal(false);
+        } catch (error) {
+            console.error('Error saving annotation:', error);
+            return null;
+        }
+    };
+
+    const fetchTerms = (reference: any) => {
+        console.log(reference)
+        fetch(`http://localhost:8000/api/terms/${encodeURIComponent(reference)}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch terms');
+                }
+                return response.json();
+            })
+            .then(data => setTerms(data))
+            .catch(error => console.error('Error fetching terms:', error));
+    }
+
     // Update UI when annotation changes
     useEffect(() => {
         setEditLabelText(annotation.selectedWord)
         setEditNoteText(annotation.text)
         setEditTermText(annotation?.term?.definition)
+        fetchTerms(annotation.selectedWord)
     }, [annotation.selectedWord, annotation.text, annotation.term?.definition]);
 
     return (
@@ -123,14 +155,53 @@ const AnnotatedRow: FC<AnnotationProps> = ({annotation, handleEdit, handleDelete
                     <div className={css.row}>
                         <h4 className={`${css.leftCol} ${css.annotationName}`}>Begrip</h4>
                         {isEditing ? (
-                            <Form.Control
-                                className={""}
-                                as="textarea"
-                                value={editTermText}
-                                onChange={(event) => {
-                                    setEditTermText(event.target.value);
-                                }}
-                            />
+                            <Form.Group controlId="exampleForm.ControlInput2">
+                                <Dropdown>
+                                    <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic">
+                                        {editTermText ? editTermText : <>
+                                            Selecteer</>}
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu className="dropdown">
+                                        {terms.map((term, index) => (
+                                            <Dropdown.Item
+                                                key={index}
+                                                onClick={() => setEditTermText(term.definition)}
+                                                active={editTermText === term.definition}
+                                                style={{ color: 'black' }}
+                                            >
+                                                {term.definition}
+                                            </Dropdown.Item>
+                                        ))}
+                                        <Dropdown.Item onClick={() => setShowModal(true)}>Add New Term</Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                                <Modal show={showModal} onHide={() => setShowModal(false)}>
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>Add New Term</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Enter new term"
+                                            value={newTerm.definition}
+                                            onChange={(e) => setNewTerm({
+                                                ...newTerm,
+                                                definition: e.target.value,
+                                                reference: annotation?.selectedWord
+                                            })}
+                                        />
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                        <Button variant="secondary" onClick={() => setShowModal(false)}>
+                                            Cancel
+                                        </Button>
+                                        <Button variant="primary" onClick={handleAddTerm}>
+                                            Add Term
+                                        </Button>
+                                    </Modal.Footer>
+                                </Modal>
+                            </Form.Group>
                         ) : (
                             <h4 className={`${css.rightCol} ${css.annotationName}`}>{annotation.term?.definition}</h4>
                         )}
