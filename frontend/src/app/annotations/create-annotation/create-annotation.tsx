@@ -1,15 +1,15 @@
 'use client';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, {FC, useEffect, useState} from 'react';
-import {Alert, Button, Dropdown, Form, Modal} from 'react-bootstrap';
-import {BsFillFloppy2Fill, BsFillTrashFill, BsX} from "react-icons/bs";
-import {Annotation} from "../../models/annotation";
-import {LawClass} from "../../models/lawclass";
-import {getProjectById} from "../../services/project";
-import {Project} from "../../models/project";
+import React, { FC, useEffect, useState } from 'react';
+import { Alert, Button, Dropdown, Form, Modal } from 'react-bootstrap';
+import { BsFillFloppy2Fill, BsFillTrashFill, BsX } from "react-icons/bs";
+import { Annotation } from "../../models/annotation";
+import { LawClass } from "../../models/lawclass";
+import { getProjectById } from "../../services/project";
+import { Project } from "../../models/project";
 import "./create-annotation.css"
 import css from "../../annotation-view/annotated-row/annotated-row.module.css"
-import {Term} from "@/app/models/term";
+import { Term } from "@/app/models/term";
 import { Relation } from "@/app/models/relation";
 
 
@@ -26,14 +26,14 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
     const [terms, setTerms] = useState<Term[]>([]); // New state to store the laws
     const [relations, setRelations] = useState<Relation[]>([]); // State voor het opslaan van relaties
     const [newTerm, setNewTerm] = useState<Term>({
-        id:0,
-        definition:"",
+        id: 0,
+        definition: "",
         reference: ""
     } as Term);
 
     const [lawClassError, setLawClassError] = useState(false);
     const [project, setProject] = useState<Project>({
-        id:0
+        id: 0
     } as Project);
     const [originalXML, setOriginalXML] = useState<Document | null>(null);
     const [annotation, setAnnotation] = useState<Annotation>({
@@ -41,7 +41,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
         text: "",
         selectedWord: "",
         lawClass: undefined,
-        project: {id: 0},
+        project: { id: 0 },
         startOffset: 0,
         term: { definition: "", reference: "" }
     } as Annotation);
@@ -123,10 +123,10 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
     const fetchTerms = () => {
         fetch('http://localhost:8000/api/terms')
             .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to fetch laws');
-            }
-            return response.json();
+                if (!response.ok) {
+                    throw new Error('Failed to fetch laws');
+                }
+                return response.json();
             })
             .then(data => setTerms(data))
             .catch(error => console.error('Error fetching laws:', error));
@@ -167,9 +167,9 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
             id: null,
             selectedWord: annotation?.selectedWord,
             text: annotation?.text,
-            lawClass: {name: annotation?.lawClass},
-            project: {id: projectId},
-            term: { definition: annotation?.term.definition|| undefined, reference: annotation?.selectedWord},
+            lawClass: { name: annotation?.lawClass },
+            project: { id: projectId },
+            term: { definition: annotation?.term.definition || undefined, reference: annotation?.selectedWord },
         };
         try {
             const response = await fetch('http://localhost:8000/api/annotations/project', {
@@ -324,120 +324,137 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
 
 
     return (
-    <>
-        <div>
-            <p id="annoteren" >Annoteren</p>
-            {lawClassError && (
-                <Alert variant="danger">
-                    <Alert.Heading>Error</Alert.Heading>
-                    <p>Selecteer alstublieft een juridische klasse.</p>
-                </Alert>
-            )}
+        <>
+            <div>
+                <p id="annoteren" >Annoteren</p>
+                {lawClassError && (
+                    <Alert variant="danger">
+                        <Alert.Heading>Error</Alert.Heading>
+                        <p>Selecteer alstublieft een juridische klasse.</p>
+                    </Alert>
+                )}
 
-            <Form className="annotationInfo">
-                <Form.Group controlId="selectedText">
-                    <Form.Label><b>Geselecteerde tekst</b></Form.Label>
-                    <Form.Control type="text" readOnly value={annotation?.selectedWord} />
-                </Form.Group>
+                <Form className="annotationInfo">
+                    <Form.Group controlId="selectedText">
+                        <Form.Label><b>Geselecteerde tekst</b></Form.Label>
+                        <Form.Control type="text" readOnly value={annotation?.selectedWord} />
+                    </Form.Group>
 
-                <Form.Group controlId="exampleForm.ControlSelect1">
-                    <Form.Label><b>Wet vorm</b></Form.Label>
-                    <Dropdown>
-                        <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic" style={{
-                            color: 'black',
-                            backgroundColor: annotation?.lawClass ? (classes.find(law => law.name === annotation.lawClass?.toString()) || {}).color || ''
-                                : '',
-                        }}>
-                            {annotation?.lawClass ? <>{annotation.lawClass}</> : <>Selecteer</>}
-                        </Dropdown.Toggle>
+                    <Form.Group controlId="exampleForm.ControlSelect1">
+                        <Form.Label><b>Wet vorm</b></Form.Label>
+                        <Dropdown>
+                            <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic" style={{
+                                color: 'black',
+                                backgroundColor: annotation?.lawClass ? (classes.find(law => law.name === annotation.lawClass?.toString()) || {}).color || ''
+                                    : '',
+                            }}>
+                                {annotation?.lawClass ? <>{annotation.lawClass}</> : <>Selecteer</>}
+                            </Dropdown.Toggle>
 
-                        <Dropdown.Menu className="dropdown">
-                            {classes.map((law, index) => (
-                                <Dropdown.Item
-                                    key={index}
-                                    onClick={() => handleSelectLaw(law.name)}
-                                    active={annotation?.lawClass && law.name === annotation.lawClass.toString()}
-                                    style={{ backgroundColor: law.color, color: 'black' }}
-                                >
-                                    {law.name}
-                                </Dropdown.Item>
-                            ))}
-                        </Dropdown.Menu>
-                    </Dropdown>
-                </Form.Group>
+                            <Dropdown.Menu className="dropdown">
+                                {classes.map((law, index) => (
+                                    <Dropdown.Item
+                                        key={index}
+                                        onClick={() => handleSelectLaw(law.name)}
+                                        active={annotation?.lawClass && law.name === annotation.lawClass.toString()}
+                                        style={{ backgroundColor: law.color, color: 'black' }}
+                                    >
+                                        {law.name}
+                                    </Dropdown.Item>
+                                ))}
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Form.Group>
 
-                <Form.Group controlId="exampleForm.ControlInput1">
-                    <Form.Label className="padding"><b>Notitie</b></Form.Label>
-                    <Form.Control className={"text-input"} as="textarea" type="text" placeholder="Type hier uw notitie..." value={annotation?.text}
-                                  onChange={(e) => handleNote(e.target.value)} />
-                </Form.Group>
+                    <Form.Group controlId="exampleForm.ControlInput1">
+                        <Form.Label className="padding"><b>Notitie</b></Form.Label>
+                        <Form.Control className={"text-input"} as="textarea" type="text" placeholder="Type hier uw notitie..." value={annotation?.text}
+                            onChange={(e) => handleNote(e.target.value)} />
+                    </Form.Group>
 
-                <Form.Group controlId="exampleForm.ControlInput2">
-                    <Form.Label><b>Begrip</b></Form.Label>
-                    <Dropdown>
-                        <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic">
-                            {annotation?.term.definition ? <>{annotation.term.definition}</> : <>
-                                Selecteer</>}
-                        </Dropdown.Toggle>
+                    <Form.Group controlId="exampleForm.ControlInput2">
+                        <Form.Label><b>Begrip</b></Form.Label>
+                        <Dropdown>
+                            <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic">
+                                {annotation?.term.definition ? <>{annotation.term.definition}</> : <>
+                                    Selecteer</>}
+                            </Dropdown.Toggle>
 
-                        <Dropdown.Menu className="dropdown">
-                            {terms.map((term, index) => (
-                                <Dropdown.Item
-                                    key={index}
-                                    onClick={() => handleTerm(term)}
-                                    active={annotation?.term.definition === term.definition}
-                                    style={{color: 'black' }}>
-                                    {term.definition}
-                                </Dropdown.Item>
-                            ))}
-                            <Dropdown.Item onClick={() => setShowModal(true)}>Add New Term</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
+                            <Dropdown.Menu className="dropdown">
+                                {terms.map((term, index) => (
+                                    <Dropdown.Item
+                                        key={index}
+                                        onClick={() => handleTerm(term)}
+                                        active={annotation?.term.definition === term.definition}
+                                        style={{ color: 'black' }}>
+                                        {term.definition}
+                                    </Dropdown.Item>
+                                ))}
+                                <Dropdown.Item onClick={() => setShowModal(true)}>Add New Term</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
 
-                    {/* Render de relaties als knoppen */}
-                    <div>
-                        {relations.map(relation => (
-                            <Button key={relation.id} variant="secondary" className="m-1">
-                                + {relation.description}
-                            </Button>
-                        ))}
-                    </div>
+                        {/* Render de relaties als knoppen */}
+                        <div>
+                            <Form.Label><b>Relaties</b></Form.Label>
+                            <br />
+                            <div className='relation-buttons'>
+                                <p>Verplicht</p>
+                                {relations.map(relation => (
+                                    relation.cardinality.split("_")[0] === "V" ? (
+                                        <Button key={relation.id} variant="secondary" className="me-1 text-dark">
+                                            + {relation.description}
+                                        </Button>
+                                    ) : null
+                                ))}
+                            </div>
+                            <div className='relation-buttons'>
+                                <p>Optioneel</p>
+                                {relations.map(relation => (
+                                    relation.cardinality.split("_")[0] === "NV" ? (
+                                        <Button key={relation.id} variant="secondary" className="me-1 text-dark">
+                                            + {relation.description}
+                                        </Button>
+                                    ) : null
+                                ))}
+                            </div>
+                        </div>
 
-                    <Modal show={showModal} onHide={() => setShowModal(false)}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Add New Term</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <Form.Control
-                                type="text"
-                                placeholder="Enter new term"
-                                value={newTerm.definition}
-                                onChange={(e) => setNewTerm({ ...newTerm, definition: e.target.value, reference: annotation?.selectedWord })}
-                            />
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="secondary" onClick={() => setShowModal(false)}>
-                                Cancel
-                            </Button>
-                            <Button variant="primary" onClick={handleAddTerm}>
-                                Add Term
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
-                </Form.Group>
-            </Form>
-        </div>
+                        <Modal show={showModal} onHide={() => setShowModal(false)}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Add New Term</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Enter new term"
+                                    value={newTerm.definition}
+                                    onChange={(e) => setNewTerm({ ...newTerm, definition: e.target.value, reference: annotation?.selectedWord })}
+                                />
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={() => setShowModal(false)}>
+                                    Cancel
+                                </Button>
+                                <Button variant="primary" onClick={handleAddTerm}>
+                                    Add Term
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
+                    </Form.Group >
+                </Form >
+            </div >
 
-        <div className={`${css.buttonsRight}`}>
-            <button className={`${css.save}`} onClick={handleSave}>
-                <BsFillFloppy2Fill size={20} /> Opslaan
-            </button>
-            <button className={`${css.cancel}`} onClick={handleClose}>
-                <BsX size={20} /> Annuleer
-            </button>
-        </div>
-    </>
-);
+            <div className={`${css.buttonsRight}`}>
+                <button className={`${css.save}`} onClick={handleSave}>
+                    Opslaan
+                </button>
+                <button className={`${css.cancel}`} onClick={handleClose}>
+                    Annuleer
+                </button>
+            </div>
+        </>
+    );
 }
 
 export default CreateAnnotation;

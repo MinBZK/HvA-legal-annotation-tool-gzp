@@ -28,6 +28,7 @@
 button#dropdown-basic.dropdown.dropdown-toggle.btn.btn-secondary {
     margin-left: 10px;
     width: 95%;
+    color: #000;
 }
 
 .buttonGroup {
@@ -153,4 +154,17 @@ button#dropdown-basic.dropdown.dropdown-toggle.btn.btn-secondary {
 .buttonsRight {
     display: flex;
     justify-content: end;
+}
+
+.relation-buttons {
+    padding: 0 1rem 10px;
+}
+
+.relation-buttons p {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.relation-buttons:not(:has(button)) {
+    display: none;
 }
