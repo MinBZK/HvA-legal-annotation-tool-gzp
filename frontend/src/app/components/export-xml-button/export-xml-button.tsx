@@ -1,6 +1,8 @@
 // src/app/components/export/ExportXMLButton.tsx
 
 import React from 'react';
+import './export-xml-button.css';
+import {BsDownload} from "react-icons/bs";
 
 type ExportXMLButtonProps = {
     xmlData: string; // De XML-data die geëxporteerd moet worden
@@ -26,7 +28,7 @@ const ExportXMLButton: React.FC<ExportXMLButtonProps> = ({ xmlData }) => {
         URL.revokeObjectURL(url);
     };
 
-    return <button onClick={handleExport}>Export XML</button>;
+    return <button className="exportButton" onClick={handleExport}> <BsDownload/> Export XML</button>;
 };
 
 export default ExportXMLButton;
