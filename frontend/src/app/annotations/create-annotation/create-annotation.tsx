@@ -112,7 +112,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
             .catch(error => console.error('Error fetching laws:', error));
     };
 
-    const fetchTerms = (reference) => {
+    const fetchTerms = (reference: any) => {
         console.log(reference)
         fetch(`http://localhost:8000/api/terms/${encodeURIComponent(reference)}`)
             .then(response => {
