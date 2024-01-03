@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { Project } from "../../models/project";
 import '../../static/annotations.css'
 import './xml.css'
-import ExportXMLButton from "@/app/components/export-xml-button";
+import ExportXMLButton from "@/app/components/export-xml-button/export-xml-button";
 
 interface XMLProps {
   project: Project;
