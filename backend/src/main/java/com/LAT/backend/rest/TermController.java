@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
@@ -21,6 +24,12 @@ public class TermController {
     @GetMapping("/terms")
     public Iterable<Term> getAllDefinitions() {
         return termRepository.findAll();
+    }
+
+    @GetMapping("/terms/{reference}")
+    public ResponseEntity<List<Term>> getTermsByReference(@PathVariable String reference) {
+        List<Term> terms = termRepository.findByReference(reference);
+        return ResponseEntity.ok(terms);
     }
 
     @PostMapping("/saveTerm")
