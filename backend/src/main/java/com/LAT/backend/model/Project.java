@@ -14,6 +14,9 @@ public class Project {
     @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String xml_content;
 
+    @Column(nullable = false)
+    private String title;
+
     private String selectedArticles;
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Annotation> annotations;
@@ -48,6 +51,14 @@ public class Project {
 
     public void setSelectedArticles(String selectedArticles) {
         this.selectedArticles = selectedArticles;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override

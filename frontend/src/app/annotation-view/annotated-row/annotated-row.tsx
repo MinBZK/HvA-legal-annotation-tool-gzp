@@ -1,44 +1,48 @@
 "use client"; // This is a client component 👈🏽
 
 import React, {FC, useEffect, useState} from "react";
-import {FaChevronDown} from "react-icons/fa";
-import {FaChevronUp} from "react-icons/fa";
-import {FaEdit} from "react-icons/fa";
+import {FaChevronDown, FaChevronUp, FaEdit} from "react-icons/fa";
 import css from "./annotated-row.module.css";
 import {Button, Form, Modal} from "react-bootstrap";
 import {Annotation} from "@/app/models/annotation";
 
-interface AnnotatationProps {
-    annotation: Annotation
-    handleEdit: (annotation: Annotation, id: number) => void
-    handleDelete: (id: number) => void
+interface AnnotationProps {
+    annotation: Annotation;
+    handleEdit: (annotation: Annotation, id: number) => void;
+    handleDelete: (id: number) => void;
 }
 
-const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDelete}) => {
+const AnnotatedRow: FC<AnnotationProps> = ({annotation, handleEdit, handleDelete}) => {
 
     const [open, setOpen] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [editLabelText, setEditLabelText] = useState(''); // text being edited
     const [editNoteText, setEditNoteText] = useState(''); // text being edited
+    const [editTermText, setEditTermText] = useState<string | undefined>('');
+
     const [updatedAnnotation, setUpdatedAnnotation] = useState<Annotation>(annotation);
+
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
 
 
     const checkValues = () => {
-        // check is input aren't empty (label and notitie)
-        if (editLabelText.length != 0 && editNoteText.length != 0) {
-            setIsConfirmModalOpen(!isConfirmModalOpen)
+        if (editLabelText.length !== 0 && editNoteText.length !== 0) {
+            setIsConfirmModalOpen(!isConfirmModalOpen);
 
-            updatedAnnotation.selectedWord = editLabelText
-            updatedAnnotation.text = editNoteText
+            updatedAnnotation.selectedWord = editLabelText;
+            updatedAnnotation.text = editNoteText;
 
-            setIsEditing(false)
-            handleEdit(updatedAnnotation, annotation.id)
+            if (updatedAnnotation.term && editTermText != null) {
+                updatedAnnotation.term.definition = editTermText;
+            }
+
+            setIsEditing(false);
+            handleEdit(updatedAnnotation,annotation.id);
         } else {
-            alert("Velden zijn leeg, vul deze in!")
+            alert("Velden zijn leeg, vul deze in!");
         }
-    }
+    };
 
 
     // Delete annotation with id
@@ -52,15 +56,16 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
     useEffect(() => {
         setEditLabelText(annotation.selectedWord)
         setEditNoteText(annotation.text)
-    }, []);
+        setEditTermText(annotation?.term?.definition)
+    }, [annotation.selectedWord, annotation.text, annotation.term?.definition]);
 
     return (
         // Dropdown rechtsbetrekking
         <div>
-            <div className={css.annotationTitle} style={{background: annotation.lawClass.color}} onClick={() => {``
+            <div className={css.annotationTitle} style={{background: annotation.lawClass?.color}} onClick={() => {``
                 setOpen(!open)
             }}>
-                <h5 className={css.annotationName}>{annotation.lawClass.name}</h5>
+                <h5 className={css.annotationName}>{annotation.lawClass?.name}</h5>
                 {open ? (
                     <FaChevronDown className={css.align}/>
                 ) : (
@@ -111,13 +116,24 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
                     </div>
                     <div className={css.row}>
                         <h4 className={`${css.leftCol} ${css.annotationName}`}>Begrip</h4>
-                        <h4 className={`${css.rightCol} ${css.annotationName}`}>{}</h4>
+                        {isEditing ? (
+                            <Form.Control
+                                className={""}
+                                as="textarea"
+                                value={editTermText}
+                                onChange={(event) => {
+                                    setEditTermText(event.target.value);
+                                }}
+                            />
+                        ) : (
+                            <h4 className={`${css.rightCol} ${css.annotationName}`}>{annotation.term?.definition}</h4>
+                        )}
                     </div>
 
                     {isEditing &&
                         <div className={`${css.buttonsRight}`}>
                             <button className={`${css.save}`} onClick={() => setIsConfirmModalOpen(true)}>Opslaan</button>
-                            <button className={`${css.cancel}`} onClick={() => setIsEditing(false)}>Annureer</button>
+                            <button className={`${css.cancel}`} onClick={() => setIsEditing(false)}>Annuleer</button>
                             <button className={`${css.delete}`} onClick={() => setIsDeleteModalOpen(true)}>Verwijderen</button>
                         </div>
                     }

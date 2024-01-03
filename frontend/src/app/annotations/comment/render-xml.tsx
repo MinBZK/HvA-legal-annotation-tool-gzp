@@ -7,7 +7,6 @@ import ExportXMLButton from "@/app/components/export-xml-button";
 interface XMLProps {
   project: Project;
   onTextSelection: (text: string, offset: number) => void;
-  onTextDeselection: () => void;
 }
 
 const LoadXML: FC<XMLProps> = ({ project, onTextSelection }) => {

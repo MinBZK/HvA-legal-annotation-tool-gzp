@@ -1,4 +1,4 @@
-html {
+html:has(.left-column) {
   overflow: hidden;
 }
 
@@ -47,7 +47,7 @@ html {
 }
 
 
-.left-column {
+.left-column, .right-column {
   border-right: 1px solid lightgray;
   padding: 40px 30px;
 }
