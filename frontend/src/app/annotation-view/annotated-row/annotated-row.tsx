@@ -68,8 +68,14 @@ const AnnotatedRow: FC<AnnotationProps> = ({annotation, handleEdit, handleDelete
 
     const handleAddTerm = async () => {
         try {
-            setEditTermText(newTerm.definition);
+            await setEditTermText(newTerm.definition);
+            fetchTerms(annotation.selectedWord)
             setShowModal(false);
+            setNewTerm({
+                ...newTerm,
+                definition: "",
+                reference: annotation?.selectedWord
+            });
         } catch (error) {
             console.error('Error saving annotation:', error);
             return null;
