@@ -25,6 +25,8 @@ export default function Home() {
     const [currentXmlCount, setCurrentXmlCount] = useState(0);
 
     const [articlePieces, setArticlePieces] = useState<any[]>([]);
+    const [articleChecked, setArticleChecked] = useState<boolean[]>([]);
+    const [selectedArticlesIds, setSelectedArticleIds] = useState<string[]>([]);
 
     // Wrapper function to handle close and show of upload modal
     const handleClose = () => setShow(false);
@@ -93,52 +95,94 @@ export default function Home() {
                     console.warn("tesrt", listArticles[1].id)
 
                     // check if children exist
-                    if (listArticles && listArticles.length > 0) {
-
+                    if (listArticles == null || listArticles.length == 0) {
+                        alert("no articles in xml")
                     }
 
-                  const arr: any[] = []
-                  for (let i = 0; i < listArticles.length; i++) {
-                    arr.push(listArticles.item(i))
-                  }
-
-                  setArticlePieces(arr)
-
-                  const citeertitelElement = xmlDoc.querySelector('citeertitel');
-
-                    if (citeertitelElement && citeertitelElement.childNodes.length > 0) {
-                        const firstChildNode = citeertitelElement.childNodes[0];
-
-                        if (firstChildNode && firstChildNode.nodeValue !== null) {
-                            const title = firstChildNode.nodeValue.trim();
-                            // const response = await uploadXML(event.target.result, title);
-                            //
-                            // // Check the status of the response
-                            // if (response.status == 201) {
-                            //   setShow(false);
-                            // } else {
-                            //   setErrorMsg("Er is iets fout gegaan bij het uploaden");
-                            //   setShowError(true);
-                            // }
-                        } else {
-                            setErrorMsg("De XML bevat geen citeertitel");
-                            setShowError(true);
-                        }
-                    } else {
-                        setErrorMsg("De XML bevat geen citeertitel");
-                        setShowError(true);
+                    const arrArticle: any[] = []
+                    const arrArticleBools: boolean[] = []
+                    for (let i = 0; i < listArticles.length; i++) {
+                        arrArticle.push(listArticles.item(i))
+                        arrArticleBools.push(false)
                     }
+
+                    setArticlePieces(arrArticle)
+                    setArticleChecked(arrArticleBools)
+
+                    // const citeertitelElement = xmlDoc.querySelector('citeertitel');
+                    //
+                    // if (citeertitelElement && citeertitelElement.childNodes.length > 0) {
+                    //     const firstChildNode = citeertitelElement.childNodes[0];
+                    //
+                    //     if (firstChildNode && firstChildNode.nodeValue !== null) {
+                    //         const title = firstChildNode.nodeValue.trim();
+                    //         // const response = await uploadXML(event.target.result, title);
+                    //         //
+                    //         // // Check the status of the response
+                    //         // if (response.status == 201) {
+                    //         //   setShow(false);
+                    //         // } else {
+                    //         //   setErrorMsg("Er is iets fout gegaan bij het uploaden");
+                    //         //   setShowError(true);
+                    //         // }
+                    //     } else {
+                    //         setErrorMsg("De XML bevat geen citeertitel");
+                    //         setShowError(true);
+                    //     }
+                    // } else {
+                    //     setErrorMsg("De XML bevat geen citeertitel");
+                    //     setShowError(true);
+                    // }
                 }
             };
         }
     };
 
+    const startUpload = () => {
+
+    }
+
+    const checkHandler = (index: number) => {
+        const currentList = articleChecked;
+        currentList[index] = !currentList[index]
+        setArticleChecked(currentList)
+    }
+
+    const collectSelectedArticles = () => {
+        const list = [];
+
+        for (let i = 0; i < articlePieces.length; i++) {
+            if (articleChecked[i]) {
+                list.push(articlePieces[i].id)
+            }
+        }
+
+        if (list.length > 0) {
+            setSelectedArticleIds(list)
+        }
+
+        startUpload()
+    }
+
+    useEffect(() => {
+        console.warn(selectedArticlesIds)
+    }, [selectedArticlesIds]);
+
 
     return (
         <>
+            {articlePieces &&
+                <Button style={{padding: '2rem', background: 'gray', position: 'sticky', top: '0'}}
+                        disabled={selectedArticlesIds.length == 0}
+                        onClick={event => collectSelectedArticles()}
+                >Upload Selected Articles</Button>
+            }
+
             {articlePieces && articlePieces.map((value: any, index) => (
                 <div key={index} style={{display: "inline-block"}}>
-                    <input type={"checkbox"}/>
+                    <input type={"checkbox"} checked={articleChecked[index]}
+                           onChange={event => checkHandler(index)
+                    }/>
                     <label dangerouslySetInnerHTML={{__html: value.innerHTML}}/>
                 </div>
             ))
@@ -188,7 +232,6 @@ export default function Home() {
                             </li>
                         ))}
                     </ul>
-
                 </main>
 
 
@@ -210,7 +253,7 @@ export default function Home() {
                                 ref={fileInputRef}
                             />
                             <Button type='submit' className='success float-end mt-3'>
-                                Upload
+                                Continue
                             </Button>
                         </Form>
                     </Modal.Body>
