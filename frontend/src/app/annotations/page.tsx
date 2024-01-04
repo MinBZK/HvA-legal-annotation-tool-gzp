@@ -7,6 +7,9 @@ import { useSearchParams } from 'next/navigation'
 import {useEffect, useState} from "react";
 import LoadXML from "./comment/render-xml";
 import CreateAnnotation from "./create-annotation/create-annotation";
+import {useRouter} from "next/navigation";
+import {Button} from "react-bootstrap";
+import { BsArrowLeft } from 'react-icons/bs';
 
 const AnnotationPage = () => {
 
@@ -14,6 +17,8 @@ const AnnotationPage = () => {
     const [isTextSelected, setIsTextSelected] = useState(false);
     const [selectedText, setSelectedText] = useState("");
     const [startOffset, setStartOffset] = useState(0);
+    const [reloadXML, setReloadXML] = useState(false);
+    const router = useRouter();
 
     // Get id from url
     const searchParams = useSearchParams();
@@ -37,7 +42,7 @@ const AnnotationPage = () => {
         };
 
         fetchData();
-    }, [id]);
+    }, [id, reloadXML]);
 
     const handleTextSelection = (text: string, offset: number) => {
         setIsTextSelected(true);
@@ -51,6 +56,14 @@ const AnnotationPage = () => {
         setStartOffset(0);
     }
 
+    const handleAnnotationSaved = () => {
+        setReloadXML((prev) => !prev);
+    };
+
+    const handleGoBack = () => {
+        router.push('/');
+    };
+
   return (
     <>
       <nav className="navbar">
@@ -58,13 +71,18 @@ const AnnotationPage = () => {
       </nav>
       <main className='d-flex'>
         <section className="left-column">
+            <Button variant="light" className="back-button p-2 m-1"
+                    onClick={handleGoBack}>
+                <BsArrowLeft size={23} className="icon" /> Terug
+            </Button>
             {projectData && <LoadXML project={projectData}  onTextSelection={handleTextSelection}
             />}
         </section>
         <section className="right-column">
             {isTextSelected ? (
                 // Render Create annotation when text is selected
-                <CreateAnnotation selectedText={selectedText} startOffset={startOffset} onClose={handleCloseCreate}/>
+                <CreateAnnotation selectedText={selectedText} startOffset={startOffset} onClose={handleCloseCreate} onAnnotationSaved={handleAnnotationSaved} // Pass the callback
+                />
             ) : (
                 // Render AnnotationView when text is not selected
                 <AnnotationView/>

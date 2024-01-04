@@ -15,9 +15,10 @@ interface PopupProps {
     selectedText: string;
     startOffset: number;
     onClose: () => void; // Callback to indicate closing
+    onAnnotationSaved: () => void; // Callback to indicate closing
 }
 
-const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }) => {
+const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, onAnnotationSaved }) => {
 
     const [projectId, setProjectId] = useState<number>(0);
     const [classes, setClasses] = useState<LawClass[]>([]); // New state to store the laws
@@ -40,7 +41,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
         lawClass: undefined,
         project: {id: 0},
         startOffset: 0,
-        term: { definition: "", reference: "" }
+        term: Term || undefined
     } as Annotation);
     const [showModal, setShowModal] = useState(false);
 
@@ -140,26 +141,15 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
     };
 
     const saveAnnotationToBackend = async () => {
+        console.log(annotation?.term?.definition)
         const backendAnnotation = {
             id: null,
             selectedWord: annotation?.selectedWord,
             text: annotation?.text,
-            lawClass: {name: annotation?.lawClass},
-            project: {id: projectId},
-            term: { definition: annotation?.term?.definition|| undefined, reference: annotation?.selectedWord},
+            lawClass: { name: annotation?.lawClass },
+            project: { id: projectId },
+            ...(annotation?.term?.definition && { term: { definition: annotation.term.definition, reference: annotation?.selectedWord } }),
         };
-
-        if (annotation.text) {
-            backendAnnotation.text = annotation.text;
-        }
-
-        if (annotation.term && annotation.term.definition) {
-            backendAnnotation.term = {
-                definition: annotation.term.definition,
-                reference: annotation.selectedWord,
-            };
-        }
-
         try {
             const response = await fetch('http://localhost:8000/api/annotations/project', {
                 method: 'POST',
@@ -224,17 +214,20 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
             setLawClassError(true);
             return;
         }
-
         setLawClassError(false);
         const annotationId = await saveAnnotationToBackend();
-        if (annotationId && annotation?.selectedWord && annotation?.term?.definition && typeof annotation.startOffset === 'number') {
-            annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset, annotation.term.definition);
+        if (annotationId && annotation?.selectedWord && typeof annotation.startOffset === 'number') {
+            annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset);
             await addAnnotationTagsToXml();
+
+            // Trigger the callback to re-render LoadXML
+            if (onAnnotationSaved) {
+                onAnnotationSaved();
+            }
         } else {
             console.error('Failed to retrieve annotation ID');
         }
     };
-
 
     /**
      * Adds annotation tags to the XML content based on the users selection.
@@ -242,10 +235,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
      * @param selectedText
      * @param annotationId
      * @param startOffset
-     * @param definition
-     * @param text
      */
-    const annotateSelectedText = (selectedText: string, annotationId: number, startOffset: number, definition: string) => {
+    const annotateSelectedText = (selectedText: string, annotationId: number, startOffset: number) => {
         if (originalXML) {
             let currentOffset = 0;
             let annotationAdded = false;
@@ -261,7 +252,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
                         if (typeof textIndex === 'number' && textIndex !== -1 && currentOffset + textIndex >= startOffset) {
                             const newNodeValue = node.nodeValue
                                 ? node.nodeValue.substring(0, textIndex) +
-                                `<annotation id="${annotationId} definition="${definition}">${selectedText}</annotation>` +
+                                `<annotation id="${annotationId}">${selectedText}</annotation>` +
                                 node.nodeValue.substring(textIndex + selectedText.length)
                                 : '';
 
@@ -277,9 +268,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
                 // Convert the XML DOM back to a string
                 let serializedXML = new XMLSerializer().serializeToString(originalXML);
                 // Replace the escaped annotation tags with the original tags
-                project.xml_content = serializedXML.replace(/&lt;annotation id="([0-9]+)" definition="([^"]*)"&gt;/g,
-                    `<annotation id="$1" definition="$2">`
-                ).replace(/&lt;\/annotation&gt;/g, '</annotation>');
+                project.xml_content = serializedXML.replace(/&lt;annotation id="([0-9]+)"&gt;/g, `<annotation id="$1">`)
+                    .replace(/&lt;\/annotation&gt;/g, '</annotation>');
             }
         }
     };
@@ -353,7 +343,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose }
                     <Form.Group controlId="exampleForm.ControlInput2">
                         <Form.Label><b>Begrip</b></Form.Label>
                         <Dropdown>
-                            <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic">
+                            <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic" style={{color: 'black'}}>
                                 {annotation?.term?.definition ? <>{annotation.term.definition}</> : <>
                                     Selecteer</>}
                             </Dropdown.Toggle>
