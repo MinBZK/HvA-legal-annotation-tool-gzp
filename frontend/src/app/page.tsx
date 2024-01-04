@@ -19,8 +19,6 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [showMaxXmlWarning, setShowMaxXmlWarning] = useState(false);
 
-
-
   const [maxXmlCount, setMaxXmlCount] = useState(0);
   const [currentXmlCount, setCurrentXmlCount] = useState(0);
 
@@ -44,8 +42,6 @@ export default function Home() {
       setShowMaxXmlWarning(false);
     }
   }, [currentXmlCount]);
-
-
 
   const fetchMaxXmlCount = async () => {
     const maxCount = await getMaxXmlCount();
@@ -95,6 +91,7 @@ export default function Home() {
 
               // Check the status of the response
               if (response.status == 201) {
+                await fetchProjects();
                 setShow(false);
               } else {
                 setErrorMsg("Er is iets fout gegaan bij het uploaden");
