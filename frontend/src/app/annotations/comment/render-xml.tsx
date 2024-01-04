@@ -87,7 +87,7 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection }) => {
       const articles = project.selectedArticles.split(',');
       // Loop through all the selected articles and show them on the page
       for (let i = 0; i < articles.length; i++) {
-        const element = xml.getElementById(articles[i]);
+        const element = xml.getElementById(articles[i].trim());
 
         if (element !== null && element !== undefined) {
           if (element.classList) {
