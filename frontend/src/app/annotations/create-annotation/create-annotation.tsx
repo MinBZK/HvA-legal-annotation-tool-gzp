@@ -11,6 +11,7 @@ import "./create-annotation.css"
 import css from "../../annotation-view/annotated-row/annotated-row.module.css"
 import { Term } from "@/app/models/term";
 import { Relation } from "@/app/models/relation";
+import { getChildAnnotationsFromParentId } from '@/app/services/annotation';
 
 
 interface PopupProps {
@@ -47,7 +48,6 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
         term: { definition: "", reference: "" }
     } as Annotation);
     const [showModal, setShowModal] = useState(false);
-
 
     useEffect(() => {
         fetchId();
@@ -299,7 +299,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
         }
     }
 
-    const fetchRelationsForLawClass = async (lawClassId) => {
+    const fetchRelationsForLawClass = async (lawClassId: number) => {
         try {
             const response = await fetch(`http://localhost:8000/api/relations/${lawClassId}`);
             if (response.ok) {
@@ -312,6 +312,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
             console.error("Error fetching relations:", error);
         }
     };
+
 
 
     return (
