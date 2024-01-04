@@ -8,7 +8,6 @@ import {getMaxXmlCount, getProjectCounts, getProjects, uploadXML} from './servic
 import {Project} from "./models/project";
 import {BsDownload} from "react-icons/bs";
 import Link from 'next/link';
-import {router} from "next/client";
 
 export default function Home() {
 
@@ -23,6 +22,8 @@ export default function Home() {
 
     const [maxXmlCount, setMaxXmlCount] = useState(0);
     const [currentXmlCount, setCurrentXmlCount] = useState(0);
+    const [xmlDoc, setXmlDoc] = useState<any>();
+    const [eventTargetResult, setEventTargetResult] = useState<any>();
 
     const [articlePieces, setArticlePieces] = useState<any[]>([]);
     const [articleChecked, setArticleChecked] = useState<boolean[]>([]);
@@ -75,6 +76,7 @@ export default function Home() {
 
     // Handle XML Upload
     const handleXmlUpload = async () => {
+        handleClose()
         // Check if file input reference is not null and has a non-empty value
         if (fileInputRef.current != null && fileInputRef.current["value"] != "") {
             const reader = new FileReader();
@@ -87,7 +89,8 @@ export default function Home() {
                 // Check if the event target is not null and the result is a string
                 if (event.target != null && typeof event.target.result === "string") {
                     const parser = new DOMParser();
-                    const xmlDoc = parser.parseFromString(event.target.result, 'application/xml');
+                    setEventTargetResult(event.target.result)
+                    setXmlDoc(parser.parseFromString(event.target.result, 'application/xml'));
 
                     const listArticles = xmlDoc.querySelectorAll("artikel")
                     console.warn("tesrt", listArticles)
@@ -138,8 +141,38 @@ export default function Home() {
         }
     };
 
-    const startUpload = () => {
+    const startUpload = async (list: string[]) => {
+        const citeertitelElement = xmlDoc.querySelector('citeertitel');
 
+        if (citeertitelElement && citeertitelElement.childNodes.length > 0) {
+            const firstChildNode = citeertitelElement.childNodes[0];
+
+            if (firstChildNode && firstChildNode.nodeValue !== null) {
+                const title = firstChildNode.nodeValue.trim();
+                // const selectedArticles = selectedArticlesIds.join(', ');
+                const selectedArticles = list.join(', ');
+
+                console.warn(selectedArticles)
+
+                const response = await uploadXML(eventTargetResult, title, selectedArticles);
+
+
+
+                // Check the status of the response
+                if (response.status == 201) {
+                  setShow(false);
+                } else {
+                  setErrorMsg("Er is iets fout gegaan bij het uploaden");
+                  setShowError(true);
+                }
+            } else {
+                setErrorMsg("De XML bevat geen citeertitel");
+                setShowError(true);
+            }
+        } else {
+            setErrorMsg("De XML bevat geen citeertitel");
+            setShowError(true);
+        }
     }
 
     const checkHandler = (index: number) => {
@@ -149,7 +182,7 @@ export default function Home() {
     }
 
     const collectSelectedArticles = () => {
-        const list = [];
+        const list: string[] = [];
 
         for (let i = 0; i < articlePieces.length; i++) {
             if (articleChecked[i]) {
@@ -159,9 +192,11 @@ export default function Home() {
 
         if (list.length > 0) {
             setSelectedArticleIds(list)
+            setTimeout(() => {
+                startUpload(list)
+            }, 1000);
         }
 
-        startUpload()
     }
 
     useEffect(() => {
@@ -173,7 +208,7 @@ export default function Home() {
         <>
             {articlePieces &&
                 <Button style={{padding: '2rem', background: 'gray', position: 'sticky', top: '0'}}
-                        disabled={selectedArticlesIds.length == 0}
+                        // disabled={selectedArticlesIds.length == 0}
                         onClick={event => collectSelectedArticles()}
                 >Upload Selected Articles</Button>
             }

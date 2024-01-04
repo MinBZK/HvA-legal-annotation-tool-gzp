@@ -1,6 +1,6 @@
 // POST METHODS
 
-export async function uploadXML(xmlContent: String, title: String) {
+export async function uploadXML(xmlContent: String, title: String, selectedArticles: string) {
     const response = await fetch(`http://localhost:8000/api/saveXml`, {
         method: 'POST',
         headers: {
@@ -8,7 +8,8 @@ export async function uploadXML(xmlContent: String, title: String) {
         },
         body: JSON.stringify({
             "xml_content": xmlContent,
-            "title": title
+            "title": title,
+            "selectedArticles": selectedArticles
         }),
     });
 
