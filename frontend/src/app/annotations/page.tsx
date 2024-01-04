@@ -7,6 +7,9 @@ import { useSearchParams } from 'next/navigation'
 import {useEffect, useState} from "react";
 import LoadXML from "./comment/render-xml";
 import CreateAnnotation from "./create-annotation/create-annotation";
+import {useRouter} from "next/navigation";
+import {Button} from "react-bootstrap";
+import { BsArrowLeft } from 'react-icons/bs';
 
 const AnnotationPage = () => {
 
@@ -15,6 +18,7 @@ const AnnotationPage = () => {
     const [selectedText, setSelectedText] = useState("");
     const [startOffset, setStartOffset] = useState(0);
     const [reloadXML, setReloadXML] = useState(false);
+    const router = useRouter();
 
     // Get id from url
     const searchParams = useSearchParams();
@@ -56,6 +60,10 @@ const AnnotationPage = () => {
         setReloadXML((prev) => !prev);
     };
 
+    const handleGoBack = () => {
+        router.push('/');
+    };
+
   return (
     <>
       <nav className="navbar">
@@ -63,6 +71,10 @@ const AnnotationPage = () => {
       </nav>
       <main className='d-flex'>
         <section className="left-column">
+            <Button variant="light" className="back-button p-2 m-1"
+                    onClick={handleGoBack}>
+                <BsArrowLeft size={23} className="icon" /> Terug
+            </Button>
             {projectData && <LoadXML project={projectData}  onTextSelection={handleTextSelection}
             />}
         </section>
