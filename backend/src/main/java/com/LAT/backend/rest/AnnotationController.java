@@ -64,7 +64,6 @@ public class AnnotationController {
     // Hanna
     @PostMapping("/project")
     public ResponseEntity<Annotation> createAnnotation(@RequestBody Annotation annotation) {
-        int index = 0;
 //        try {
         // Validate if the project exists
         Project project = projectRepository.findById(annotation.getProject().getId())
@@ -74,14 +73,25 @@ public class AnnotationController {
         LawClass lawClass = lawClassRepository.findByName(annotation.getLawClass().getName())
                 .orElseThrow(() -> new LawClassNotFoundException("Annotation class not found"));
 
-        Term term = annotation.getTerm();
-        term.setReference(annotation.getSelectedWord());
+            Term term = annotation.getTerm();
+            if (term == null) {
+                term = new Term();
+            }
+
+            if (term.getDefinition() == null) {
+                term.setDefinition("");
+            }
+            term.setReference(annotation.getSelectedWord());
 
         termRepository.save(term);
 
-        annotation.setProject(project);
-        annotation.setLawClass(lawClass);
-        annotation.setTerm(term);
+            if (annotation.getText() == null) {
+                annotation.setText("");
+            }
+
+            annotation.setProject(project);
+            annotation.setLawClass(lawClass);
+            annotation.setTerm(term);
 
         // Save the annotation to the repository
         Annotation savedAnnotation = annotationRepository.save(annotation);
@@ -115,7 +125,6 @@ public class AnnotationController {
         annotation.setLawClass(annotationDetails.getLawClass());
         annotation.setProject(annotationDetails.getProject());
 
-        // TODO
         if (annotationDetails.getTerm() != null && annotationDetails.getTerm().getId() != null) {
             Term termDetails = annotationDetails.getTerm();
             Term term = termRepository.findById(termDetails.getId())
@@ -125,7 +134,6 @@ public class AnnotationController {
                 term = new Term();
             }
 
-            // Set the new values from termDetails
             term.setReference(termDetails.getReference());
             term.setDefinition(termDetails.getDefinition());
 
