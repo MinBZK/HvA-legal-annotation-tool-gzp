@@ -8,6 +8,7 @@ import { getMaxXmlCount, getProjectCounts, getProjects, uploadXML } from './serv
 import { Project } from "./models/project";
 import { BsDownload } from "react-icons/bs";
 import Link from 'next/link';
+import {Annotation} from "@/app/models/annotation";
 
 export default function Home() {
 
@@ -18,8 +19,8 @@ export default function Home() {
   const [showProjectError, setShowProjectError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showMaxXmlWarning, setShowMaxXmlWarning] = useState(false);
-
-
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [projectIdToDelete, setProjectIdToDelete] = useState<number | null>(null);
 
   const [maxXmlCount, setMaxXmlCount] = useState(0);
   const [currentXmlCount, setCurrentXmlCount] = useState(0);
@@ -27,6 +28,16 @@ export default function Home() {
   // Wrapper function to handle close and show of upload modal
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const handleShowDeleteModal = (projectId: number) => {
+    setProjectIdToDelete(projectId);
+    setShowDeleteModal(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setProjectIdToDelete(null);
+    setShowDeleteModal(false);
+  };
 
   const fileInputRef = useRef(null);
 
@@ -113,6 +124,26 @@ export default function Home() {
     }
   };
 
+  const handleDelete = async (id: number) => {
+    try {
+      const response = await fetch(`http://localhost:8000/api/project/${id}/delete`, {
+          method: "DELETE",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify(id)
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log(result);
+      } else {
+        console.error('Failed to delete xml');
+      }
+    } catch (error) {
+      console.error('Error deleting xml', error);
+    }
+  };
 
 
   return (
@@ -155,7 +186,11 @@ export default function Home() {
                   <Link href={{ pathname: '/annotations', query: { id: project.id } }} passHref>
                     <button className="open-button">Open project</button>
                   </Link>
-                  <button className='delete-button'><FiTrash2 className="delete-icon" /></button>
+                  <button
+                      className='delete-button'
+                      onClick={() => handleShowDeleteModal(project.id)}>
+                    <FiTrash2 className="delete-icon" />
+                  </button>
                 </div>
               </li>
             ))}
@@ -185,6 +220,29 @@ export default function Home() {
               </Button>
             </Form>
           </Modal.Body>
+        </Modal>
+
+        <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Verwijder xml</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Alert show={showError} variant="danger" dismissible>
+              <Alert.Heading>Error</Alert.Heading>
+              <p>{errorMsg}</p>
+            </Alert>
+            <p>Weet u zeker dat u een xml wilt verwijderen?</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+              Cancel
+            </Button>
+            <Button
+                variant="danger"
+                onClick={() => projectIdToDelete && handleDelete(projectIdToDelete)}>
+              Delete
+            </Button>
+          </Modal.Footer>
         </Modal>
       </div>
     </>
