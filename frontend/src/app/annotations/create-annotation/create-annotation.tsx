@@ -442,10 +442,10 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
 
             <div className={`${css.buttonsRight}`}>
                 <button className={`${css.save}`} onClick={handleSave}>
-                    <BsFillFloppy2Fill size={20} /> Opslaan
+                    Opslaan
                 </button>
                 <button className={`${css.cancel}`} onClick={handleClose}>
-                    <BsX size={20} /> Annuleer
+                    Annuleer
                 </button>
             </div>
         </>
