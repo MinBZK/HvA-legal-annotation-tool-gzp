@@ -4,7 +4,7 @@ import {Term} from "@/app/models/term";
 
 export interface Annotation {
     id: number,
-    text: string,
+    text: string | undefined,
     selectedWord: string,
     lawClass: LawClass | undefined,
     project: Project

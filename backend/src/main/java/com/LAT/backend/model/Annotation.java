@@ -1,10 +1,7 @@
 package com.LAT.backend.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-
-import java.util.List;
 
 @Entity
 public class Annotation {
