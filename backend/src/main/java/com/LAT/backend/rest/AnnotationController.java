@@ -55,7 +55,6 @@ public class AnnotationController {
     // Endpoint to get all annotations for a specific project
     // Chi Yu
     @GetMapping("/project/{projectId}")
-    @JsonView(Views.Extended.class)
     public List<Annotation> getAnnotationsByProjectId(@PathVariable Integer projectId) {
         return annotationRepository.findByProjectId(projectId);
     }
@@ -148,7 +147,6 @@ public class AnnotationController {
     }
 
     @GetMapping("/{id}")
-    @JsonView(Views.Extended.class)
     public ResponseEntity<?> getAnnotationById(@PathVariable Integer id) {
         try {
             Optional<Annotation> annotation = annotationRepository.findById(id);
