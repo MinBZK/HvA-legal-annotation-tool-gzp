@@ -3,8 +3,6 @@ package com.LAT.backend.model;
 import com.LAT.backend.views.Views;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
-import org.springframework.context.annotation.Lazy;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -16,7 +14,6 @@ public class Project {
     private Long id;
 
     @Column(nullable = false, columnDefinition = "LONGTEXT")
-    @Lazy
     @JsonView(Views.Extended.class)
     private String xml_content;
 

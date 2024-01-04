@@ -35,9 +35,9 @@ public class Annotation {
     @JoinColumn(name = "lawClass_id")
     private LawClass lawClass;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "project_id")
+    @JsonIgnoreProperties({"annotations", "xml_content"})
     private Project project;
 
     @JsonIgnoreProperties({"annotations"})

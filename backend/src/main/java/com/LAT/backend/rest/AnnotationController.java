@@ -19,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaBuilder;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -160,7 +159,6 @@ public class AnnotationController {
     }
 
     @GetMapping("/children/{id}")
-    @JsonView(Views.Basic.class)
     public Iterable<Annotation> getChildAnnotationsOfParentById(@PathVariable Integer id) {
         return annotationRepository.getAnnotationsFromParentIdJPQL(id);
     }
