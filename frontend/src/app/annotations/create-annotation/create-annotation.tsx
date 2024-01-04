@@ -41,7 +41,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
         lawClass: undefined,
         project: {id: 0},
         startOffset: 0,
-        term: { definition: "", reference: "" }
+        term: Term || undefined
     } as Annotation);
     const [showModal, setShowModal] = useState(false);
 
@@ -141,13 +141,14 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
     };
 
     const saveAnnotationToBackend = async () => {
+        console.log(annotation?.term?.definition)
         const backendAnnotation = {
             id: null,
             selectedWord: annotation?.selectedWord,
             text: annotation?.text,
-            lawClass: {name: annotation?.lawClass},
-            project: {id: projectId},
-            term: { definition: annotation?.term?.definition|| undefined, reference: annotation?.selectedWord},
+            lawClass: { name: annotation?.lawClass },
+            project: { id: projectId },
+            ...(annotation?.term?.definition && { term: { definition: annotation.term.definition, reference: annotation?.selectedWord } }),
         };
         try {
             const response = await fetch('http://localhost:8000/api/annotations/project', {
@@ -216,7 +217,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
         setLawClassError(false);
         const annotationId = await saveAnnotationToBackend();
         if (annotationId && annotation?.selectedWord && typeof annotation.startOffset === 'number') {
-            annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset, annotation.term.definition);
+            annotateSelectedText(annotation.selectedWord, annotationId, annotation.startOffset);
             await addAnnotationTagsToXml();
 
             // Trigger the callback to re-render LoadXML
@@ -234,9 +235,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
      * @param selectedText
      * @param annotationId
      * @param startOffset
-     * @param definition
      */
-    const annotateSelectedText = (selectedText: string, annotationId: number, startOffset: number, definition: string) => {
+    const annotateSelectedText = (selectedText: string, annotationId: number, startOffset: number) => {
         if (originalXML) {
             let currentOffset = 0;
             let annotationAdded = false;
