@@ -26,6 +26,8 @@ export default function Home() {
   const [maxXmlCount, setMaxXmlCount] = useState(0);
   const [currentXmlCount, setCurrentXmlCount] = useState(0);
 
+  const [reloadXml, setReloadXml] = useState(false);
+
   // Wrapper function to handle close and show of upload modal
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -47,7 +49,7 @@ export default function Home() {
     fetchProjects();
     fetchMaxXmlCount();
     fetchProjectCounts();
-  }, []);
+  }, [reloadXml]);
 
   useEffect(() => {
     if (currentXmlCount >= 40) {
@@ -78,6 +80,10 @@ export default function Home() {
     } finally {
       setLoading(false); // Set loading to false regardless of success or failure
     }
+  };
+
+  const handleReloadPage = () => {
+    setReloadXml((prev) => !prev);
   };
 
   // Handle XML Upload
@@ -137,6 +143,10 @@ export default function Home() {
       if (response.ok) {
         const result = await response.json();
         console.log(result);
+
+        // close modal after success delete xml
+        setShowDeleteModal(false);
+        handleReloadPage();
       } else {
         console.error('Failed to delete xml');
       }
@@ -238,6 +248,7 @@ export default function Home() {
               Cancel
             </Button>
             <Button
+                type='submit'
                 variant="danger"
                 onClick={() => projectIdToDelete && handleDelete(projectIdToDelete)}>
               Delete
