@@ -112,30 +112,6 @@ export default function Home() {
                     setArticlePieces(arrArticle)
                     setArticleChecked(arrArticleBools)
 
-                    // const citeertitelElement = xmlDoc.querySelector('citeertitel');
-                    //
-                    // if (citeertitelElement && citeertitelElement.childNodes.length > 0) {
-                    //     const firstChildNode = citeertitelElement.childNodes[0];
-                    //
-                    //     if (firstChildNode && firstChildNode.nodeValue !== null) {
-                    //         const title = firstChildNode.nodeValue.trim();
-                    //         // const response = await uploadXML(event.target.result, title);
-                    //         //
-                    //         // // Check the status of the response
-                    //         // if (response.status == 201) {
-                    //         //   setShow(false);
-                    //         // } else {
-                    //         //   setErrorMsg("Er is iets fout gegaan bij het uploaden");
-                    //         //   setShowError(true);
-                    //         // }
-                    //     } else {
-                    //         setErrorMsg("De XML bevat geen citeertitel");
-                    //         setShowError(true);
-                    //     }
-                    // } else {
-                    //     setErrorMsg("De XML bevat geen citeertitel");
-                    //     setShowError(true);
-                    // }
                 }
             };
         }
@@ -176,9 +152,11 @@ export default function Home() {
     }
 
     const checkHandler = (index: number) => {
-        const currentList = articleChecked;
-        currentList[index] = !currentList[index]
-        setArticleChecked(currentList)
+        setArticleChecked(prevState => {
+            const newList = [...articleChecked];
+            newList[index] = !newList[index]
+            return newList
+        })
     }
 
     const collectSelectedArticles = () => {
@@ -203,6 +181,10 @@ export default function Home() {
         console.warn(selectedArticlesIds)
     }, [selectedArticlesIds]);
 
+    useEffect(() => {
+        console.error(articleChecked)
+    }, [articleChecked]);
+
 
     return (
         <>
@@ -216,7 +198,7 @@ export default function Home() {
             {articlePieces && articlePieces.map((value: any, index) => (
                 <div key={index} style={{display: "inline-block"}}>
                     <input type={"checkbox"} checked={articleChecked[index]}
-                           onChange={event => checkHandler(index)
+                           onChange={() => checkHandler(index)
                     }/>
                     <label dangerouslySetInnerHTML={{__html: value.innerHTML}}/>
                 </div>
