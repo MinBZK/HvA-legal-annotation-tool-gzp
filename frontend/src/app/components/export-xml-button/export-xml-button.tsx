@@ -28,7 +28,7 @@ const ExportXMLButton: React.FC<ExportXMLButtonProps> = ({ xmlData }) => {
         URL.revokeObjectURL(url);
     };
 
-    return <button className="exportButton" onClick={handleExport}> <BsDownload/> Export XML</button>;
+    return <button className="exportButton" onClick={handleExport}> <BsDownload/> XML exporteren</button>;
 };
 
 export default ExportXMLButton;
