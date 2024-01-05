@@ -65,8 +65,13 @@ export default function Home() {
   };
 
   const fetchProjectCounts = async () => {
-    const counts = await getProjectCounts();
-    setCurrentXmlCount(counts.currentCount);
+    try {
+      const counts = await getProjectCounts();
+      setCurrentXmlCount(counts.currentCount);
+    } catch (error) {
+      console.error('Error fetching project counts:', error);
+      setShowProjectError(true);
+    }
   };
 
   const fetchProjects = async () => {
@@ -82,7 +87,7 @@ export default function Home() {
     }
   };
 
-  const handleReloadPage = () => {
+  const handleReload = () => {
     setReloadXml((prev) => !prev);
   };
 
@@ -117,6 +122,8 @@ export default function Home() {
                 setErrorMsg("Er is iets fout gegaan bij het uploaden");
                 setShowError(true);
               }
+              // amount of xmls reloads whenever there is one added or deleted
+              handleReload();
             } else {
               setErrorMsg("De XML bevat geen citeertitel");
               setShowError(true);
@@ -146,7 +153,8 @@ export default function Home() {
 
         // close modal after success delete xml
         setShowDeleteModal(false);
-        handleReloadPage();
+        // auto reload when xml is deleted
+        handleReload();
       } else {
         console.error('Failed to delete xml');
       }
@@ -232,6 +240,7 @@ export default function Home() {
           </Modal.Body>
         </Modal>
 
+        {/*modal for delete xml*/}
         <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
           <Modal.Header closeButton>
             <Modal.Title>Verwijder xml</Modal.Title>
