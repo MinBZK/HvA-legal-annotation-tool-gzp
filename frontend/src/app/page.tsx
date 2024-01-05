@@ -118,37 +118,38 @@ export default function Home() {
     };
 
     const startUpload = async (list: string[]) => {
-        const citeertitelElement = xmlDoc.querySelector('citeertitel');
-
-        if (citeertitelElement && citeertitelElement.childNodes.length > 0) {
-            const firstChildNode = citeertitelElement.childNodes[0];
-
-            if (firstChildNode && firstChildNode.nodeValue !== null) {
-                const title = firstChildNode.nodeValue.trim();
-                // const selectedArticles = selectedArticlesIds.join(', ');
-                const selectedArticles = list.join(', ');
-
-                console.warn(selectedArticles)
-
-                const response = await uploadXML(eventTargetResult, title, selectedArticles);
-
-
-
-                // Check the status of the response
-                if (response.status == 201) {
-                  setShow(false);
-                } else {
-                  setErrorMsg("Er is iets fout gegaan bij het uploaden");
-                  setShowError(true);
-                }
-            } else {
-                setErrorMsg("De XML bevat geen citeertitel");
-                setShowError(true);
-            }
-        } else {
-            setErrorMsg("De XML bevat geen citeertitel");
-            setShowError(true);
-        }
+        console.log("Yes")
+        // const citeertitelElement = xmlDoc.querySelector('citeertitel');
+        //
+        // if (citeertitelElement && citeertitelElement.childNodes.length > 0) {
+        //     const firstChildNode = citeertitelElement.childNodes[0];
+        //
+        //     if (firstChildNode && firstChildNode.nodeValue !== null) {
+        //         const title = firstChildNode.nodeValue.trim();
+        //         // const selectedArticles = selectedArticlesIds.join(', ');
+        //         const selectedArticles = list.join(', ');
+        //
+        //         console.warn(selectedArticles)
+        //
+        //         const response = await uploadXML(eventTargetResult, title, selectedArticles);
+        //
+        //
+        //
+        //         // Check the status of the response
+        //         if (response.status == 201) {
+        //           setShow(false);
+        //         } else {
+        //           setErrorMsg("Er is iets fout gegaan bij het uploaden");
+        //           setShowError(true);
+        //         }
+        //     } else {
+        //         setErrorMsg("De XML bevat geen citeertitel");
+        //         setShowError(true);
+        //     }
+        // } else {
+        //     setErrorMsg("De XML bevat geen citeertitel");
+        //     setShowError(true);
+        // }
     }
 
     const checkHandler = (index: number) => {
@@ -176,6 +177,10 @@ export default function Home() {
         }
 
     }
+    const disableCheck: () => boolean = () => {
+        return articleChecked.includes(true);
+    };
+
 
     useEffect(() => {
         console.warn(selectedArticlesIds)
@@ -190,7 +195,7 @@ export default function Home() {
         <>
             {articlePieces &&
                 <Button style={{padding: '2rem', background: 'gray', position: 'sticky', top: '0'}}
-                        // disabled={selectedArticlesIds.length == 0}
+                        disabled={!disableCheck}
                         onClick={event => collectSelectedArticles()}
                 >Upload Selected Articles</Button>
             }
