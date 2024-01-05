@@ -64,7 +64,77 @@ const AnnotationPage = () => {
         router.push('/');
     };
 
-  return (
+    /**
+     * Delete the <annotation> tags with the given id from the XML and update the XML in the database.
+     *
+     * @param annotationId The id of the annotation to delete
+     */
+    const handleAnnotationDeleted = async (annotationId: number) => {
+        // Get the XML content
+        let xml = projectData?.xml_content
+
+        if (xml == null || projectData == null) return;
+
+        // Convert the XML string to a DOM object
+        let parser = new DOMParser();
+        let xmlDoc = parser.parseFromString(xml, "text/xml");
+
+        // Get the annotation with the given id
+        let annotation = xmlDoc.getElementById(annotationId.toString());
+
+        if (annotation == null) return;
+
+        // Remove the annotation tags by replacing them with the innerHTML
+        annotation.replaceWith(annotation.innerHTML);
+
+        // Convert the DOM object back to a string
+        xml = new XMLSerializer().serializeToString(xmlDoc);
+        projectData.xml_content = xml;
+
+        // Reload the XML
+        setReloadXML((prev) => !prev);
+
+        // Update the XML in the database
+        await updateXML(annotationId);
+    }
+
+    /**
+     * Update the XML in the database after removing an annotation
+     *
+     * @param annotationId The id of the annotation to remove
+     */
+    const updateXML = async (annotationId: number) => {
+        if (projectData == null) return;
+
+        try {
+            // Remove the annotation from the projectData to prevent it from being saved again
+            projectData.annotations = projectData.annotations.filter((annotation) => annotation.id !== annotationId);
+
+            // Create a copy of Project to avoid mutating the original object
+            const updatedProject = {
+                ...projectData,
+            };
+
+            const response = await fetch('http://localhost:8000/api/saveXml', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedProject)
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update XML');
+            }
+
+            console.log('XML updated successfully');
+        } catch (error) {
+            console.error('Error updating XML:', error);
+        }
+    }
+
+
+    return (
     <>
       <nav className="navbar">
         {<div className="navbar-title">Legal Annotation Tool</div>}
@@ -85,7 +155,7 @@ const AnnotationPage = () => {
                 />
             ) : (
                 // Render AnnotationView when text is not selected
-                <AnnotationView/>
+                <AnnotationView onAnnotationDelete={handleAnnotationDeleted}/>
             )}
         </section>
       </main>
