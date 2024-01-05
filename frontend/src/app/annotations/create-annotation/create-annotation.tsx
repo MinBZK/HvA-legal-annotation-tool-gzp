@@ -535,6 +535,12 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
 
                         {showSubAnnotationForm && (
                             <>
+                                {/* Close button for the Sub-Annotation Form */}
+                                <div style={{ textAlign: 'right' }}>
+                                    <Button variant="outline-secondary" onClick={() => setShowSubAnnotationForm(false)} style={{ marginBottom: '10px' }}>
+                                        X
+                                    </Button>
+                                </div>
                                 <Form.Group>
                                     <Form.Label>Label</Form.Label>
                                     <Form.Control
