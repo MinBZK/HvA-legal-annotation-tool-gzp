@@ -31,8 +31,12 @@ test_frontend:
     - nvm use 18.7
     - cd frontend
     - npm install
-    - nohup npm run dev &            # Start de server op de achtergrond
-    - sleep 10                       # Wacht even om de server tijd te geven om te starten
+    - |
+      nohup npm run dev & # Start the server in the background
+      until curl --output /dev/null --silent --head --fail http://localhost:3000; do
+        printf '.'
+        sleep 1
+      done # Check meerdere malen of de server draait. Print een dot voor elke keer dat de server niet gereed is.
     - npm run test                   # Voer Cypress tests uit
 
 # Backend jobs for Spring Boot

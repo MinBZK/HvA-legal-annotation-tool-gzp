@@ -20,8 +20,7 @@ export default function Home() {
   const [showMaxXmlWarning, setShowMaxXmlWarning] = useState(false);
 
 
-
-  const [maxXmlCount, setMaxXmlCount] = useState(0);
+  const [maxXmlCount, setMaxXmlCount] = useState(40);
   const [currentXmlCount, setCurrentXmlCount] = useState(0);
 
   // Wrapper function to handle close and show of upload modal
@@ -38,18 +37,28 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (currentXmlCount >= 40) {
+    if (currentXmlCount >= maxXmlCount) {
       setShowMaxXmlWarning(true);
     } else {
       setShowMaxXmlWarning(false);
     }
-  }, [currentXmlCount]);
-
+  }, [currentXmlCount, maxXmlCount]);
 
 
   const fetchMaxXmlCount = async () => {
-    const maxCount = await getMaxXmlCount();
-    setMaxXmlCount(maxCount);
+    try {
+      const response = await fetch('http://localhost:8000/api/maxXmlCount');
+      console.log(response)
+      if (response.ok) {
+        const maxCount = await response.json();
+        setMaxXmlCount(maxCount);
+      } else {
+        console.error('Response not ok', response);
+        throw new Error(`Network response was not ok: ${response.statusText}`);
+      }
+    } catch (error) {
+      console.error('Error fetching max XML count:', error);
+    }
   };
 
   const fetchProjectCounts = async () => {
@@ -128,7 +137,7 @@ export default function Home() {
             <h2 className="doc-text">Documenten</h2>
             <p className='xml-minmax'>{currentXmlCount}/{maxXmlCount} XML&apos;s beschikbaar</p>
             <Alert show={showMaxXmlWarning} variant="warning">
-              U heeft het maximale aantal van 40 XML&apos;s bereikt. Verwijder eerst een XML voordat u verder gaat.
+              U heeft het maximale aantal van {maxXmlCount} XML&apos;s bereikt. Verwijder eerst een XML voordat u verder gaat.
             </Alert>
             <button
               className="import-button"
