@@ -428,152 +428,164 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
     };
 
     return (
-        <>
-            <div>
-                <p id="annoteren">Annoteren</p>
-                {lawClassError && (
-                    <Alert variant="danger">
-                        <Alert.Heading>Error</Alert.Heading>
-                        <p>Selecteer alstublieft een juridische klasse.</p>
-                    </Alert>
-                )}
-        <>
-            <div>
-                <p id="annoteren" >Annoteren</p>
-                {lawClassError && (
-                    <Alert variant="danger">
-                        <Alert.Heading>Error</Alert.Heading>
-                        <p>Selecteer alstublieft een juridische klasse.</p>
-                    </Alert>
-                )}
+        <div>
+            <p id="annoteren">Annoteren</p>
+            {lawClassError && (
+                <Alert variant="danger">
+                    <Alert.Heading>Error</Alert.Heading>
+                    <p>Selecteer alstublieft een juridische klasse.</p>
+                </Alert>
+            )}
 
-                <Form className="annotationInfo">
-                    <Form.Group controlId="selectedText">
-                        <Form.Label><b>Geselecteerde tekst</b></Form.Label>
-                        <Form.Control type="text" readOnly value={annotation?.selectedWord} />
-                    </Form.Group>
+            <Form className="annotationInfo">
+                <Form.Group controlId="selectedText">
+                    <Form.Label><b>Geselecteerde tekst</b></Form.Label>
+                    <Form.Control type="text" readOnly value={annotation?.selectedWord} />
+                </Form.Group>
 
-                    <Form.Group controlId="exampleForm.ControlSelect1">
-                        <Form.Label><b>Wet vorm</b></Form.Label>
-                        <Dropdown>
-                            <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic" style={{
-                                color: 'black',
-                                backgroundColor: annotation?.lawClass ? (classes.find(law => law.name === annotation.lawClass?.toString()) || {}).color || ''
-                                    : '',
-                            }}>
-                                {annotation?.lawClass ? <>{annotation.lawClass}</> : <>Selecteer</>}
-                            </Dropdown.Toggle>
+                <Form.Group controlId="exampleForm.ControlSelect1">
+                    <Form.Label><b>Wet vorm</b></Form.Label>
+                    <Dropdown>
+                        <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic"
+                                         style={{
+                                             color: 'black',
+                                             backgroundColor: annotation?.lawClass
+                                                 ? (classes.find(law => law.name === annotation.lawClass?.toString()) || {}).color || ''
+                                                 : '',
+                                         }}>
+                            {annotation?.lawClass ? <>{annotation.lawClass}</> : <>Selecteer</>}
+                        </Dropdown.Toggle>
 
-                            <Dropdown.Menu className="dropdown">
-                                {classes.map((law, index) => (
-                                    <Dropdown.Item
-                                        key={index}
-                                        onClick={() => handleSelectLaw(law.name)}
-                                        active={annotation?.lawClass && law.name === annotation.lawClass.toString()}
-                                        style={{ backgroundColor: law.color, color: 'black' }}
-                                    >
-                                        {law.name}
-                                    </Dropdown.Item>
-                                ))}
-                            </Dropdown.Menu>
-                        </Dropdown>
-                    </Form.Group>
-
-                    <Form.Group controlId="exampleForm.ControlInput1">
-                        <Form.Label className="padding"><b>Notitie</b></Form.Label>
-                        <Form.Control className={"text-input"} as="textarea" type="text"
-                            placeholder="Type hier uw notitie..." value={annotation?.text}
-                            onChange={(e) => handleNote(e.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="exampleForm.ControlInput2">
-                        <Form.Label><b>Begrip</b></Form.Label>
-                        <Dropdown>
-                            <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic" style={{ color: 'black' }}>
-                                {annotation?.term?.definition ? <>{annotation.term.definition}</> : <>
-                                    Selecteer</>}
-                            </Dropdown.Toggle>
-
-                            <Dropdown.Menu className="dropdown">
-                                {terms.map((term, index) => (
-                                    <Dropdown.Item
-                                        key={index}
-                                        onClick={() => handleTerm(term)}
-                                        active={annotation?.term.definition === term.definition}
-                                        style={{color: 'black' }}>
-                                        {term.definition}
-                                    </Dropdown.Item>
-                                ))}
-                                <Dropdown.Item onClick={() => setShowModal(true)}>Add New Term</Dropdown.Item>
-                            </Dropdown.Menu>
-                        </Dropdown>
-
-                        {/* Render de relaties als knoppen */}
-                        <div>
-                            {relations.map(relation => (
-                                <Button key={relation.id} variant="secondary" className="m-1" onClick={() => {
-                                    setParentAnnotationId(annotation?.id); // Set the current annotation ID as the parent
-                                    handleShowSubAnnotationForm(); // Show the sub-annotation form
-                                }}>
-                                    + {relation.description}
-                                </Button>
+                        <Dropdown.Menu className="dropdown">
+                            {classes.map((law, index) => (
+                                <Dropdown.Item
+                                    key={index}
+                                    onClick={() => handleSelectLaw(law.name)}
+                                    active={annotation?.lawClass && law.name === annotation.lawClass.toString()}
+                                    style={{ backgroundColor: law.color, color: 'black' }}>
+                                    {law.name}
+                                </Dropdown.Item>
                             ))}
-                            {showSubAnnotationForm && (
-                                <>
-                                    <Form.Group>
-                                        <Form.Label>Label</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            value={subAnnotationDetails.label}
-                                            onChange={(e) => handleSubAnnotationDetailChange('label', e.target.value)}
-                                        />
-                                    </Form.Group>
-                                    <Form.Group>
-                                        <Form.Label>Notitie</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            value={subAnnotationDetails.note}
-                                            onChange={(e) => handleSubAnnotationDetailChange('note', e.target.value)}
-                                        />
-                                    </Form.Group>
-                                    <Form.Group>
-                                        <Form.Label>Begrip</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            value={subAnnotationDetails.term}
-                                            onChange={(e) => handleSubAnnotationDetailChange('term', e.target.value)}
-                                        />
-                                    </Form.Group>
-                                </>
-                            )}
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </Form.Group>
 
+                <Form.Group controlId="exampleForm.ControlInput1">
+                    <Form.Label className="padding"><b>Notitie</b></Form.Label>
+                    <Form.Control className={"text-input"} as="textarea" type="text"
+                                  placeholder="Type hier uw notitie..." value={annotation?.text}
+                                  onChange={(e) => handleNote(e.target.value)} />
+                </Form.Group>
 
+                <Form.Group controlId="exampleForm.ControlInput2">
+                    <Form.Label><b>Begrip</b></Form.Label>
+                    <Dropdown>
+                        <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic" style={{ color: 'black' }}>
+                            {annotation?.term?.definition ? <>{annotation.term.definition}</> : <>Selecteer</>}
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu className="dropdown">
+                            {terms.map((term, index) => (
+                                <Dropdown.Item
+                                    key={index}
+                                    onClick={() => handleTerm(term)}
+                                    active={annotation?.term.definition === term.definition}
+                                    style={{color: 'black' }}>
+                                    {term.definition}
+                                </Dropdown.Item>
+                            ))}
+                            <Dropdown.Item onClick={() => setShowModal(true)}>Add New Term</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+
+                    {/* Render de relaties als knoppen */}
+                    <div>
+                        <Form.Label><b>Relaties</b></Form.Label>
+                        <br />
+
+                        {/* Verplicht Relations */}
+                        <div className='relation-buttons'>
+                            <p>Verplicht</p>
+                            {relations.map(relation => (
+                                relation.cardinality.split("_")[0] === "V" && (
+                                    <Button key={relation.id} variant="secondary" className="me-1 text-dark" onClick={() => {
+                                        setParentAnnotationId(annotation?.id); // Set the current annotation ID as the parent
+                                        handleShowSubAnnotationForm(); // Show the sub-annotation form
+                                    }}>
+                                        + {relation.description}
+                                    </Button>
+                                )
+                            ))}
                         </div>
 
-                        <Modal show={showModal} onHide={() => setShowModal(false)}>
-                            <Modal.Header closeButton>
-                                <Modal.Title>Add New Term</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Enter new term"
-                                    value={newTerm.definition}
-                                    onChange={(e) => setNewTerm({ ...newTerm, definition: e.target.value, reference: annotation?.selectedWord })}
-                                />
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <Button variant="secondary" onClick={() => setShowModal(false)}>
-                                    Cancel
-                                </Button>
-                                <Button variant="primary" onClick={handleAddTerm}>
-                                    Add Term
-                                </Button>
-                            </Modal.Footer>
-                        </Modal>
-                    </Form.Group>
-                </Form>
-            </div>
+                        {/* Optioneel Relations */}
+                        <div className='relation-buttons'>
+                            <p>Optioneel</p>
+                            {relations.map(relation => (
+                                relation.cardinality.split("_")[0] === "NV" && (
+                                    <Button key={relation.id} variant="secondary" className="me-1 text-dark" onClick={() => {
+                                        setParentAnnotationId(annotation?.id); // Set the current annotation ID as the parent
+                                        handleShowSubAnnotationForm(); // Show the sub-annotation form
+                                    }}>
+                                        + {relation.description}
+                                    </Button>
+                                )
+                            ))}
+                        </div>
+
+                        {showSubAnnotationForm && (
+                            <>
+                                <Form.Group>
+                                    <Form.Label>Label</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        value={subAnnotationDetails.label}
+                                        onChange={(e) => handleSubAnnotationDetailChange('label', e.target.value)}
+                                    />
+                                </Form.Group>
+                                <Form.Group>
+                                    <Form.Label>Notitie</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        value={subAnnotationDetails.note}
+                                        onChange={(e) => handleSubAnnotationDetailChange('note', e.target.value)}
+                                    />
+                                </Form.Group>
+                                <Form.Group>
+                                    <Form.Label>Begrip</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        value={subAnnotationDetails.term}
+                                        onChange={(e) => handleSubAnnotationDetailChange('term', e.target.value)}
+                                    />
+                                </Form.Group>
+                            </>
+                        )}
+                    </div>
+
+                    <Modal show={showModal} onHide={() => setShowModal(false)}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Add New Term</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Form.Control
+                                type="text"
+                                placeholder="Enter new term"
+                                value={newTerm.definition}
+                                onChange={(e) => setNewTerm({ ...newTerm, definition: e.target.value, reference: annotation?.selectedWord })}
+                            />
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={() => setShowModal(false)}>
+                                Cancel
+                            </Button>
+                            <Button variant="primary" onClick={handleAddTerm}>
+                                Add Term
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+                </Form.Group>
+            </Form>
 
             <div className={`${css.buttonsRight}`}>
                 <button className={`${css.save}`} onClick={handleSave}>
@@ -583,8 +595,9 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
                     <BsX size={20} /> Annuleer
                 </button>
             </div>
-        </>
+        </div>
     );
+
 }
 
 export default CreateAnnotation;
