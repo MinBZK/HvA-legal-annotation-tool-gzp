@@ -9,21 +9,25 @@ type ExportXMLButtonProps = {
 };
 
 const ExportXMLButton: React.FC<ExportXMLButtonProps> = ({ xmlData }) => {
+    /**
+     * Export the XML-data to a file by creating a temporary link and clicking it.
+     */
     const handleExport = () => {
-        // Maak een blob van de XML-data
+        // Convert the XML-data to a blob
         const blob = new Blob([xmlData], { type: 'text/xml' });
 
-        // Maak een URL voor de blob
+        // Create a URL for the blob
         const url = URL.createObjectURL(blob);
 
-        // Maak een tijdelijke link om de download te starten
+        // Make a temporary link that can be clicked to download the file and click it
         const link = document.createElement('a');
         link.href = url;
+        // TODO: Make the filename dynamic
         link.download = 'exported_file.xml';
         document.body.appendChild(link);
         link.click();
 
-        // Verwijder de link en geef de URL vrij
+        // Remove the link and revoke the URL
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
     };
