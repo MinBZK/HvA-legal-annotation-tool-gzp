@@ -1,12 +1,16 @@
 "use client"; // This is a client component 👈🏽
 
-import React, { useEffect, useState } from "react";
+import React, {FC, useEffect, useState } from "react";
 import AnnotatedRow from "@/app/annotation-view/annotated-row/annotated-row";
 import { Annotation } from "@/app/models/annotation";
 import css from "./annotation-view.module.css";
 import Image from "next/image"
 
-const AnnotationView = () => {
+interface AnnotationViewProps {
+    onAnnotationDelete: (annotationId: number) => void;
+}
+
+const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete}) => {
     const [annotations, setAnnotations] = useState<Annotation[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -68,9 +72,16 @@ const AnnotationView = () => {
         }
     };
 
-
+    /**
+     * Delete an annotation
+     * This is done by sending a DELETE request to the API, removing the <annotation> tags from the xml and saving the
+     * updated XML without the tags.
+     *
+     * @param id database id of the annotation
+     */
     const handleDelete = async (id: number) => {
         try {
+            // Remove the annotation from the database
             const response = await fetch(
                 `http://localhost:8000/api/annotations/deleteannotation/${id}`,
                 {
@@ -79,7 +90,9 @@ const AnnotationView = () => {
             );
 
             if (response.ok) {
-                // alert("Annotatie succesvol verwijderd");
+                // If everything went well, remove the annotation tags from the XML
+                onAnnotationDelete(id)
+
                 // get the project id
                 const searchParams = new URLSearchParams(window.location.search);
                 const projectId = parseInt(searchParams.get("id") as string);
