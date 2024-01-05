@@ -1,44 +1,62 @@
 "use client"; // This is a client component 👈🏽
 
 import React, {FC, useEffect, useState} from "react";
-import {FaChevronDown} from "react-icons/fa";
-import {FaChevronUp} from "react-icons/fa";
-import {FaEdit} from "react-icons/fa";
+import {FaChevronDown, FaChevronUp, FaEdit} from "react-icons/fa";
 import css from "./annotated-row.module.css";
-import {Button, Form, Modal} from "react-bootstrap";
+import {Button, Dropdown, Form, Modal} from "react-bootstrap";
 import {Annotation} from "@/app/models/annotation";
+import {Term} from "@/app/models/term";
 
-interface AnnotatationProps {
-    annotation: Annotation
-    handleEdit: (annotation: Annotation, id: number) => void
-    handleDelete: (id: number) => void
+interface AnnotationProps {
+    annotation: Annotation;
+    handleEdit: (annotation: Annotation, id: number) => void;
+    handleDelete: (id: number) => void;
 }
 
-const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDelete}) => {
+const AnnotatedRow: FC<AnnotationProps> = ({annotation, handleEdit, handleDelete}) => {
 
     const [open, setOpen] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [editLabelText, setEditLabelText] = useState(''); // text being edited
-    const [editNoteText, setEditNoteText] = useState(''); // text being edited
+    const [editNoteText, setEditNoteText] = useState<string | undefined>(''); // text being edited
+    const [editTermText, setEditTermText] = useState<string | undefined>('');
+
     const [updatedAnnotation, setUpdatedAnnotation] = useState<Annotation>(annotation);
+
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
 
+    const [terms, setTerms] = useState<Term[]>([]); // New state to store the laws
+    const [newTerm, setNewTerm] = useState<Term>({
+        id:0,
+        definition:"",
+        reference: ""
+    } as Term);
+
+    const [showModal, setShowModal] = useState(false);
 
     const checkValues = () => {
-        // check is input aren't empty (label and notitie)
-        if (editLabelText.length != 0 && editNoteText.length != 0) {
-            setIsConfirmModalOpen(!isConfirmModalOpen)
+        if (editLabelText.length !== 0) {
+            setIsConfirmModalOpen(!isConfirmModalOpen);
 
-            updatedAnnotation.selectedWord = editLabelText
-            updatedAnnotation.text = editNoteText
+            updatedAnnotation.selectedWord = editLabelText;
 
-            setIsEditing(false)
-            handleEdit(updatedAnnotation, annotation.id)
+            // Check if editNoteText is not null before assigning
+            if (editNoteText != null) {
+                updatedAnnotation.text = editNoteText;
+            }
+
+            if (updatedAnnotation.term && editTermText != null) {
+                // Assuming `editTermText` is a string
+                updatedAnnotation.term.definition = editTermText;
+            }
+
+            setIsEditing(false);
+            handleEdit(updatedAnnotation, annotation.id);
         } else {
-            alert("Velden zijn leeg, vul deze in!")
+            alert("Velden zijn leeg, vul deze in!");
         }
-    }
+    };
 
 
     // Delete annotation with id
@@ -48,19 +66,50 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
         handleDelete(annotation.id)
     }
 
+    const handleAddTerm = async () => {
+        try {
+            await setEditTermText(newTerm.definition);
+            fetchTerms(annotation.selectedWord)
+            setShowModal(false);
+            setNewTerm({
+                ...newTerm,
+                definition: "",
+                reference: annotation?.selectedWord
+            });
+        } catch (error) {
+            console.error('Error saving annotation:', error);
+            return null;
+        }
+    };
+
+    const fetchTerms = (reference: any) => {
+        console.log(reference)
+        fetch(`http://localhost:8000/api/terms/${encodeURIComponent(reference)}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch terms');
+                }
+                return response.json();
+            })
+            .then(data => setTerms(data))
+            .catch(error => console.error('Error fetching terms:', error));
+    }
+
     // Update UI when annotation changes
     useEffect(() => {
         setEditLabelText(annotation.selectedWord)
         setEditNoteText(annotation.text)
-    }, []);
+        setEditTermText(annotation?.term?.definition)
+        fetchTerms(annotation.selectedWord)
+    }, [annotation.selectedWord, annotation.text, annotation.term?.definition]);
 
     return (
         // Dropdown rechtsbetrekking
         <div>
-            <div className={css.annotationTitle} style={{background: annotation.lawClass.color}} onClick={() => {``
+            <div className={css.annotationTitle} style={{background: annotation.lawClass?.color}} onClick={() => {``
                 setOpen(!open)
             }}>
-                <h5 className={css.annotationName}>{annotation.lawClass.name}</h5>
+                <h5 className={css.annotationName}>{annotation.lawClass?.name}</h5>
                 {open ? (
                     <FaChevronDown className={css.align}/>
                 ) : (
@@ -111,13 +160,70 @@ const AnnotatedRow: FC<AnnotatationProps> = ({annotation, handleEdit, handleDele
                     </div>
                     <div className={css.row}>
                         <h4 className={`${css.leftCol} ${css.annotationName}`}>Begrip</h4>
-                        <h4 className={`${css.rightCol} ${css.annotationName}`}>{}</h4>
+                        {isEditing ? (
+                            <Form.Group controlId="exampleForm.ControlInput2">
+                                <Dropdown>
+                                    <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic">
+                                        {editTermText ? editTermText : <>
+                                            Selecteer</>}
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu className="dropdown">
+                                        <Dropdown.Item
+                                            onClick={() => setEditTermText("")}
+                                            active={!editTermText}  // Highlight if no term is selected
+                                            style={{ color: 'black' }}
+                                        >
+                                            Selecteer niets
+                                        </Dropdown.Item>
+                                        {terms.map((term, index) => (
+                                            <Dropdown.Item
+                                                key={index}
+                                                onClick={() => setEditTermText(term.definition)}
+                                                active={editTermText === term.definition}
+                                                style={{ color: 'black' }}
+                                            >
+                                                {term.definition}
+                                            </Dropdown.Item>
+                                        ))}
+                                        <Dropdown.Item onClick={() => setShowModal(true)}>Add New Term</Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                                <Modal show={showModal} onHide={() => setShowModal(false)}>
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>Add New Term</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Enter new term"
+                                            value={newTerm.definition}
+                                            onChange={(e) => setNewTerm({
+                                                ...newTerm,
+                                                definition: e.target.value,
+                                                reference: annotation?.selectedWord
+                                            })}
+                                        />
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                        <Button variant="secondary" onClick={() => setShowModal(false)}>
+                                            Cancel
+                                        </Button>
+                                        <Button variant="primary" onClick={handleAddTerm}>
+                                            Add Term
+                                        </Button>
+                                    </Modal.Footer>
+                                </Modal>
+                            </Form.Group>
+                        ) : (
+                            <h4 className={`${css.rightCol} ${css.annotationName}`}>{annotation.term?.definition}</h4>
+                        )}
                     </div>
 
                     {isEditing &&
                         <div className={`${css.buttonsRight}`}>
                             <button className={`${css.save}`} onClick={() => setIsConfirmModalOpen(true)}>Opslaan</button>
-                            <button className={`${css.cancel}`} onClick={() => setIsEditing(false)}>Annureer</button>
+                            <button className={`${css.cancel}`} onClick={() => setIsEditing(false)}>Annuleer</button>
                             <button className={`${css.delete}`} onClick={() => setIsDeleteModalOpen(true)}>Verwijderen</button>
                         </div>
                     }

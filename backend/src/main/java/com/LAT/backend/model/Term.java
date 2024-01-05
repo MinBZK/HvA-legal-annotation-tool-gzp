@@ -2,6 +2,8 @@ package com.LAT.backend.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Term {
     @Id
@@ -13,6 +15,9 @@ public class Term {
 
     @Column(nullable = false)
     private String definition;
+
+    @OneToMany(mappedBy = "term", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Annotation> annotations;
 
     public Long getId() {
         return id;
@@ -32,5 +37,13 @@ public class Term {
 
     public void setDefinition(String definition) {
         this.definition = definition;
+    }
+
+    public List<Annotation> getAnnotations() {
+        return annotations;
+    }
+
+    public void setAnnotations(List<Annotation> annotations) {
+        this.annotations = annotations;
     }
 }

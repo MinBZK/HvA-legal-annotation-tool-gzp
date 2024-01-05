@@ -47,7 +47,7 @@ html:has(.left-column) {
 }
 
 
-.left-column {
+.left-column, .right-column {
   border-right: 1px solid lightgray;
   padding: 40px 30px;
 }

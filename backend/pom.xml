@@ -50,6 +50,16 @@
         <artifactId>javax.persistence-api</artifactId>
         <version>2.2</version>
     </dependency>
+		<dependency>
+			<groupId>io.github.cdimascio</groupId>
+			<artifactId>java-dotenv</artifactId>
+			<version>5.2.0</version> <!-- Check for the latest version on GitHub -->
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.33</version>
+		</dependency>
 	</dependencies>
 
 	<build>

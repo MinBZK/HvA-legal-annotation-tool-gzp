@@ -14,15 +14,16 @@ const AnnotationPage = () => {
     const [isTextSelected, setIsTextSelected] = useState(false);
     const [selectedText, setSelectedText] = useState("");
     const [startOffset, setStartOffset] = useState(0);
+    const [reloadXML, setReloadXML] = useState(false);
 
     // Get id from url
     const searchParams = useSearchParams();
-    let id: number = 2;
+    let id: number = 0;
 
     if (searchParams != null) {
         const param = searchParams.get('id');
-        id = param != null ? parseInt(param) : 2;
-        if (isNaN(id)) id = 2;
+        id = param != null ? parseInt(param) : 0;
+        if (isNaN(id)) id = 0;
     }
 
     useEffect(() => {
@@ -37,7 +38,7 @@ const AnnotationPage = () => {
         };
 
         fetchData();
-    }, [id]);
+    }, [id, reloadXML]);
 
     const handleTextSelection = (text: string, offset: number) => {
         setIsTextSelected(true);
@@ -50,6 +51,10 @@ const AnnotationPage = () => {
         setSelectedText("");
         setStartOffset(0);
     }
+
+    const handleAnnotationSaved = () => {
+        setReloadXML((prev) => !prev);
+    };
 
   return (
     <>
@@ -64,7 +69,8 @@ const AnnotationPage = () => {
         <section className="right-column">
             {isTextSelected ? (
                 // Render Create annotation when text is selected
-                <CreateAnnotation selectedText={selectedText} startOffset={startOffset} onClose={handleCloseCreate}/>
+                <CreateAnnotation selectedText={selectedText} startOffset={startOffset} onClose={handleCloseCreate} onAnnotationSaved={handleAnnotationSaved} // Pass the callback
+                />
             ) : (
                 // Render AnnotationView when text is not selected
                 <AnnotationView/>
