@@ -141,6 +141,15 @@ body {
   background: currentColor;
 }
 
+button.info {
+  border-radius: 16px;
+  border: 1px solid #1fceea !important;
+  background: rgba(23,162,184,1.000);
+  font-size: 12px;
+  color: #000 !important;
+  transition: .2s;
+}
+
 button.success {
   border-radius: 16px;
   border: 1px solid #3A9B38 !important;

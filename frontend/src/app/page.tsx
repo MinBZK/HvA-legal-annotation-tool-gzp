@@ -163,10 +163,12 @@ export default function Home() {
 
                 // Check the status of the response
                 if (response.status == 201) {
-                  setShow(false);
+                    setShow(false);
+                    fetchProjects();
+                    fetchProjectCounts()
                 } else {
-                  setErrorMsg("Er is iets fout gegaan bij het uploaden");
-                  setShowError(true);
+                    setErrorMsg("Er is iets fout gegaan bij het uploaden");
+                    setShowError(true);
                 }
             } else {
                 setErrorMsg("De XML bevat geen citeertitel");
@@ -186,20 +188,25 @@ export default function Home() {
         })
     }
 
-    const collectSelectedArticles = () => {
-        const list: string[] = [];
+    const collectSelectedArticles = (isSelectedAll?: boolean) => {
+        if (isSelectedAll) {
+            startUpload([])
+            handleClose()
+        } else {
+            const list: string[] = [];
 
-        for (let i = 0; i < articlePieces.length; i++) {
-            if (articleChecked[i]) {
-                list.push(articlePieces[i].id)
+            for (let i = 0; i < articlePieces.length; i++) {
+                if (articleChecked[i]) {
+                    list.push(articlePieces[i].id)
+                }
             }
-        }
 
-        if (list.length > 0) {
-            setSelectedArticleIds(list)
-            setTimeout(() => {
-                startUpload(list)
-            }, 1000);
+            if (list.length > 0) {
+                setSelectedArticleIds(list)
+                setTimeout(() => {
+                    startUpload(list)
+                }, 1000);
+            }
         }
 
     }
@@ -292,31 +299,31 @@ export default function Home() {
                                 ))}
 
                                 <Button className='success float-end mt-3' disabled={!disableCheck()} onClick={() => {
-                                    setOnArticlesShow(false)
+                                    // setOnArticlesShow(false)
                                     collectSelectedArticles()
                                 }}>
                                     Continue
                                 </Button>
 
-                                <Button className='success float-end mt-3'  onClick={() => {
-                                    setOnArticlesShow(false)
-                                    collectSelectedArticles()
+                                <Button className='info float-end m-2 mt-3' onClick={() => {
+                                    // setOnArticlesShow(false)
+                                    collectSelectedArticles(true)
                                 }}>
                                     Select all
                                 </Button>
 
 
                             </>
-                                //     {articlePieces && articlePieces.map((value: any, index) => (
-                                //         <div key={index}>
-                                //             <input type={"checkbox"} checked={articleChecked[index]}
-                                //                    onChange={() => checkHandler(index)
-                                //                    }/>
-                                //             <p>Artikel test: {index}</p>
-                                //             {/*<label dangerouslySetInnerHTML={{__html: value.label}}/>*/}
-                                //         </div>
-                                //     ))
-                                // }
+                            //     {articlePieces && articlePieces.map((value: any, index) => (
+                            //         <div key={index}>
+                            //             <input type={"checkbox"} checked={articleChecked[index]}
+                            //                    onChange={() => checkHandler(index)
+                            //                    }/>
+                            //             <p>Artikel test: {index}</p>
+                            //             {/*<label dangerouslySetInnerHTML={{__html: value.label}}/>*/}
+                            //         </div>
+                            //     ))
+                            // }
 
                             //         <Button type='submit' className='success float-end mt-3' onClick={() => {setOnArticlesShow(false)
                             //     }}>
