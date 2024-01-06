@@ -1,6 +1,6 @@
 // POST METHODS
 
-export async function uploadXML(xmlContent: String, title: String, selectedArticles: string) {
+export async function uploadXML(xmlContent: String, title: String, selectedArticles: any) {
     const response = await fetch(`http://localhost:8000/api/saveXml`, {
         method: 'POST',
         headers: {

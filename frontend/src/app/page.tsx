@@ -161,7 +161,13 @@ export default function Home() {
 
             if (firstChildNode && firstChildNode.nodeValue !== null) {
                 const title = firstChildNode.nodeValue.trim();
-                const selectedArticles = list.join(', ');
+                let selectedArticles: any = null
+
+
+                if (list.length > 0) {
+                    selectedArticles = list.join(', ');
+                }
+                console.warn(selectedArticles)
 
                 const response = await uploadXML(eventTargetResult, title, selectedArticles);
 
@@ -297,12 +303,10 @@ export default function Home() {
           </ul>
 
         </main>
-
-
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
                         {onArticlesShow ? (
-                            <Modal.Title>Select Articles</Modal.Title>
+                            <Modal.Title>Selecteer artikelen</Modal.Title>
                         ) : (
                             <Modal.Title>Upload bestand</Modal.Title>
                         )
@@ -312,12 +316,16 @@ export default function Home() {
                         {onArticlesShow ? (
                             <>
                                 {articlePieces && articlePieces.map((value, index) => (
-                                    <div key={index}>
+                                    <div key={index} className={"m-1"}>
                                         <label className={"d-flex align-content-center"}>
                                             <input type={"checkbox"} checked={articleChecked[index]}
                                                    onChange={() => checkHandler(index)}
                                             />
-                                            {value.getAttribute('label')}
+                                            <p className={"m-1"}>
+                                                {value.getAttribute('label')}
+                                                &nbsp;
+                                                {value.getElementsByTagName("kop")[0]?.getElementsByTagName("titel")[0]?.textContent}
+                                            </p>
                                         </label>
 
 
@@ -327,13 +335,13 @@ export default function Home() {
                                 <Button className='success float-end mt-3' disabled={!disableCheck()} onClick={() => {
                                     collectSelectedArticles()
                                 }}>
-                                    Continue
+                                    Bevestig selectie
                                 </Button>
 
                                 <Button className='info float-end m-2 mt-3' onClick={() => {
                                     collectSelectedArticles(true)
                                 }}>
-                                    Select all
+                                    Selecteer alles
                                 </Button>
 
 
@@ -359,7 +367,7 @@ export default function Home() {
                                             setOnArticlesShow(true)
                                         }
                                     }}>
-                                        Continue
+                                        Verder
                                     </Button>
                                 </Form>
                             </>
