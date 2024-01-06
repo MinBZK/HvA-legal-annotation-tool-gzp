@@ -25,6 +25,7 @@ export default function Home() {
     const [xmlDoc, setXmlDoc] = useState<any>();
     const [eventTargetResult, setEventTargetResult] = useState<any>();
 
+    const [onArticlesShow, setOnArticlesShow] = useState<boolean>(false);
     const [articlePieces, setArticlePieces] = useState<any[]>([]);
     const [articleChecked, setArticleChecked] = useState<boolean[]>([]);
     const [selectedArticlesIds, setSelectedArticleIds] = useState<string[]>([]);
@@ -76,7 +77,6 @@ export default function Home() {
 
     // Handle XML Upload
     const handleXmlUpload = async () => {
-        handleClose()
         // Check if file input reference is not null and has a non-empty value
         if (fileInputRef.current != null && fileInputRef.current["value"] != "") {
             const reader = new FileReader();
@@ -92,64 +92,90 @@ export default function Home() {
                     setEventTargetResult(event.target.result)
                     setXmlDoc(parser.parseFromString(event.target.result, 'application/xml'));
 
-                    const listArticles = xmlDoc.querySelectorAll("artikel")
-                    console.warn("tesrt", listArticles)
-                    console.warn("tesrt", listArticles[1])
-                    console.warn("tesrt", listArticles[1].id)
-
-                    // check if children exist
-                    if (listArticles == null || listArticles.length == 0) {
-                        alert("no articles in xml")
-                    }
-
-                    const arrArticle: any[] = []
-                    const arrArticleBools: boolean[] = []
-                    for (let i = 0; i < listArticles.length; i++) {
-                        arrArticle.push(listArticles.item(i))
-                        arrArticleBools.push(false)
-                    }
-
-                    setArticlePieces(arrArticle)
-                    setArticleChecked(arrArticleBools)
-
+                    // const listArticles = xmlDoc.querySelectorAll("artikel")
+                    // console.warn("tesrt", listArticles)
+                    // console.warn("tesrt", listArticles[1])
+                    // console.warn("tesrt", listArticles[1]["id"])
+                    // console.warn("tesrt", listArticles[1].id)
+                    //
+                    // // check if children exist
+                    // if (listArticles == null || listArticles.length == 0) {
+                    //     alert("no articles in xml")
+                    // }
+                    //
+                    // const arrArticle: any[] = []
+                    // const arrArticleBools: boolean[] = []
+                    // for (let i = 0; i < listArticles.length; i++) {
+                    //     arrArticle.push(listArticles.item(i))
+                    //     arrArticleBools.push(false)
+                    // }
+                    //
+                    // setArticlePieces(arrArticle)
+                    // setArticleChecked(arrArticleBools)
                 }
             };
         }
     };
 
+    useEffect(() => {
+
+
+        if (xmlDoc != null) {
+            const listArticles = xmlDoc.querySelectorAll("artikel")
+            console.warn("tesrt", listArticles)
+            console.warn("tesrt", listArticles[1])
+            console.warn("tesrt", listArticles[1].getAttribute('label'))
+            console.warn("tesrt", listArticles[1].id)
+
+            // check if children exist
+            if (listArticles == null || listArticles.length == 0) {
+                alert("no articles in xml")
+            }
+
+            const arrArticle: any[] = []
+            const arrArticleBools: boolean[] = []
+            for (let i = 0; i < listArticles.length; i++) {
+                arrArticle.push(listArticles.item(i))
+                arrArticleBools.push(false)
+            }
+
+            setArticlePieces(arrArticle)
+            setArticleChecked(arrArticleBools)
+        }
+    }, [xmlDoc]);
+
     const startUpload = async (list: string[]) => {
         console.log("Yes")
-        // const citeertitelElement = xmlDoc.querySelector('citeertitel');
-        //
-        // if (citeertitelElement && citeertitelElement.childNodes.length > 0) {
-        //     const firstChildNode = citeertitelElement.childNodes[0];
-        //
-        //     if (firstChildNode && firstChildNode.nodeValue !== null) {
-        //         const title = firstChildNode.nodeValue.trim();
-        //         // const selectedArticles = selectedArticlesIds.join(', ');
-        //         const selectedArticles = list.join(', ');
-        //
-        //         console.warn(selectedArticles)
-        //
-        //         const response = await uploadXML(eventTargetResult, title, selectedArticles);
-        //
-        //
-        //
-        //         // Check the status of the response
-        //         if (response.status == 201) {
-        //           setShow(false);
-        //         } else {
-        //           setErrorMsg("Er is iets fout gegaan bij het uploaden");
-        //           setShowError(true);
-        //         }
-        //     } else {
-        //         setErrorMsg("De XML bevat geen citeertitel");
-        //         setShowError(true);
-        //     }
-        // } else {
-        //     setErrorMsg("De XML bevat geen citeertitel");
-        //     setShowError(true);
-        // }
+        console.log(xmlDoc)
+        const citeertitelElement = xmlDoc.querySelector('citeertitel');
+
+        if (citeertitelElement && citeertitelElement.childNodes.length > 0) {
+            const firstChildNode = citeertitelElement.childNodes[0];
+
+            if (firstChildNode && firstChildNode.nodeValue !== null) {
+                const title = firstChildNode.nodeValue.trim();
+                // const selectedArticles = selectedArticlesIds.join(', ');
+                const selectedArticles = list.join(', ');
+
+                console.warn(selectedArticles)
+
+                const response = await uploadXML(eventTargetResult, title, selectedArticles);
+
+                // Check the status of the response
+                if (response.status == 201) {
+                  setShow(false);
+                } else {
+                  setErrorMsg("Er is iets fout gegaan bij het uploaden");
+                  setShowError(true);
+                }
+            } else {
+                setErrorMsg("De XML bevat geen citeertitel");
+                setShowError(true);
+            }
+        } else {
+            setErrorMsg("De XML bevat geen citeertitel");
+            setShowError(true);
+        }
     }
 
     const checkHandler = (index: number) => {
@@ -193,23 +219,6 @@ export default function Home() {
 
     return (
         <>
-            {articlePieces &&
-                <Button style={{padding: '2rem', background: 'gray', position: 'sticky', top: '0'}}
-                        disabled={!disableCheck}
-                        onClick={event => collectSelectedArticles()}
-                >Upload Selected Articles</Button>
-            }
-
-            {articlePieces && articlePieces.map((value: any, index) => (
-                <div key={index} style={{display: "inline-block"}}>
-                    <input type={"checkbox"} checked={articleChecked[index]}
-                           onChange={() => checkHandler(index)
-                    }/>
-                    <label dangerouslySetInnerHTML={{__html: value.innerHTML}}/>
-                </div>
-            ))
-            }
-
             <div>
                 <nav className="navbar">
                     {<div className="navbar-title">Legal Annotation Tool</div>}
@@ -259,25 +268,87 @@ export default function Home() {
 
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Upload bestand</Modal.Title>
+                        {onArticlesShow ? (
+                            <Modal.Title>Select Articles</Modal.Title>
+                        ) : (
+                            <Modal.Title>Upload bestand</Modal.Title>
+                        )
+                        }
                     </Modal.Header>
                     <Modal.Body>
-                        <Alert show={showError} variant="danger" dismissible>
-                            <Alert.Heading>Error</Alert.Heading>
-                            <p>
-                                {errorMsg}
-                            </p>
-                        </Alert>
-                        <Form action={handleXmlUpload}>
-                            <input
-                                type="file"
-                                accept="text/xml"
-                                ref={fileInputRef}
-                            />
-                            <Button type='submit' className='success float-end mt-3'>
-                                Continue
-                            </Button>
-                        </Form>
+                        {onArticlesShow ? (
+                            <>
+                                {articlePieces && articlePieces.map((value, index) => (
+                                    <div key={index}>
+                                        <label className={"d-flex align-content-center"}>
+                                            <input type={"checkbox"} checked={articleChecked[index]}
+                                                   onChange={() => checkHandler(index)}
+                                            />
+                                            {value.getAttribute('label')}
+                                        </label>
+
+
+                                    </div>
+                                ))}
+
+                                <Button className='success float-end mt-3' disabled={!disableCheck()} onClick={() => {
+                                    setOnArticlesShow(false)
+                                    collectSelectedArticles()
+                                }}>
+                                    Continue
+                                </Button>
+
+                                <Button className='success float-end mt-3'  onClick={() => {
+                                    setOnArticlesShow(false)
+                                    collectSelectedArticles()
+                                }}>
+                                    Select all
+                                </Button>
+
+
+                            </>
+                                //     {articlePieces && articlePieces.map((value: any, index) => (
+                                //         <div key={index}>
+                                //             <input type={"checkbox"} checked={articleChecked[index]}
+                                //                    onChange={() => checkHandler(index)
+                                //                    }/>
+                                //             <p>Artikel test: {index}</p>
+                                //             {/*<label dangerouslySetInnerHTML={{__html: value.label}}/>*/}
+                                //         </div>
+                                //     ))
+                                // }
+
+                            //         <Button type='submit' className='success float-end mt-3' onClick={() => {setOnArticlesShow(false)
+                            //     }}>
+                            //     confim
+                            // </Button>
+
+                        ) : (
+                            <>
+                                <Alert show={showError} variant="danger" dismissible>
+                                    <Alert.Heading>Error</Alert.Heading>
+                                    <p>
+                                        {errorMsg}
+                                    </p>
+                                </Alert>
+                                <Form action={handleXmlUpload}>
+                                    <input
+                                        type="file"
+                                        accept="text/xml"
+                                        ref={fileInputRef}
+                                    />
+                                    <Button type='submit' className='success float-end mt-3' onClick={() => {
+                                        if (articlePieces != null) {
+                                            handleXmlUpload()
+                                            setOnArticlesShow(true)
+                                        }
+                                    }}>
+                                        Continue
+                                    </Button>
+                                </Form>
+                            </>
+                        )
+                        }
                     </Modal.Body>
                 </Modal>
             </div>
