@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { Project } from "../../models/project";
 import '../../static/annotations.css'
 import './xml.css'
+import ExportXMLButton from "@/app/components/export-xml-button/export-xml-button";
 
 interface XMLProps {
   project: Project;
@@ -39,6 +40,7 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection }) => {
         const response = await fetch(`http://localhost:8000/api/annotations/${id}`);
         if (response.ok) {
           const annotationData = await response.json();
+
           newAnnotationStyles[`${id}`] = annotationData?.lawClass.color;
         } else {
           console.error('Failed to fetch annotation data');
@@ -118,6 +120,8 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection }) => {
         {renderStyles()}
       </style>
       <>
+        <ExportXMLButton xmlData={project.xml_content} />
+
         <p className="xml-content" onMouseUp={handleShow} dangerouslySetInnerHTML={{ __html: renderXML && renderXMLContent() }} />
       </>
     </>

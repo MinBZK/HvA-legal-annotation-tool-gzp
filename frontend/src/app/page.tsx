@@ -1,13 +1,14 @@
 'use client'
-import {FiTrash2} from 'react-icons/fi';
+import { FiTrash2 } from 'react-icons/fi';
 import './static/index.css';
-import {Modal, Button, Form, Alert} from 'react-bootstrap';
-import React, {useEffect, useRef, useState} from 'react';
+import { Modal, Button, Form, Alert } from 'react-bootstrap';
+import React, { useEffect, useRef, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {getMaxXmlCount, getProjectCounts, getProjects, uploadXML} from './services/project'
-import {Project} from "./models/project";
-import {BsDownload} from "react-icons/bs";
+import { getMaxXmlCount, getProjectCounts, getProjects, uploadXML } from './services/project'
+import { Project } from "./models/project";
+import { BsDownload } from "react-icons/bs";
 import Link from 'next/link';
+import {Annotation} from "@/app/models/annotation";
 
 export default function Home() {
 
@@ -19,7 +20,10 @@ export default function Home() {
     const [loading, setLoading] = useState(false);
     const [showMaxXmlWarning, setShowMaxXmlWarning] = useState(false);
 
-    const [maxXmlCount, setMaxXmlCount] = useState(0);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [projectIdToDelete, setProjectIdToDelete] = useState<number | null>(null);
+
+    const [maxXmlCount, setMaxXmlCount] = useState(40);
     const [currentXmlCount, setCurrentXmlCount] = useState(0);
     const [xmlDoc, setXmlDoc] = useState<any>();
     const [eventTargetResult, setEventTargetResult] = useState<any>();
@@ -29,37 +33,66 @@ export default function Home() {
     const [articleChecked, setArticleChecked] = useState<boolean[]>([]);
     const [selectedArticlesIds, setSelectedArticleIds] = useState<string[]>([]);
 
+    const [reloadXml, setReloadXml] = useState(false);
+
     // Wrapper function to handle close and show of upload modal
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const fileInputRef = useRef(null);
 
-    useEffect(() => {
-        // Fetch the list of projects when the component mounts
-        fetchProjects();
-        fetchMaxXmlCount();
-        fetchProjectCounts();
-    }, []);
+  const handleShowDeleteModal = (projectId: number) => {
+    setProjectIdToDelete(projectId);
+    setShowDeleteModal(true);
+  };
 
-    useEffect(() => {
-        if (currentXmlCount >= 40) {
-            setShowMaxXmlWarning(true);
-        } else {
-            setShowMaxXmlWarning(false);
-        }
-    }, [currentXmlCount]);
+  const handleCloseDeleteModal = () => {
+    setProjectIdToDelete(null);
+    setShowDeleteModal(false);
+  };
+
+  const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    // Fetch the list of projects when the component mounts
+    fetchProjects();
+    fetchMaxXmlCount();
+    fetchProjectCounts();
+  }, [reloadXml]);
+
+  useEffect(() => {
+    if (currentXmlCount >= maxXmlCount) {
+      setShowMaxXmlWarning(true);
+    } else {
+      setShowMaxXmlWarning(false);
+    }
+  }, [currentXmlCount, maxXmlCount]);
 
 
-    const fetchMaxXmlCount = async () => {
-        const maxCount = await getMaxXmlCount();
+  const fetchMaxXmlCount = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/api/maxXmlCount');
+      console.log(response)
+      if (response.ok) {
+        const maxCount = await response.json();
         setMaxXmlCount(maxCount);
-    };
+      } else {
+        console.error('Response not ok', response);
+        throw new Error(`Network response was not ok: ${response.statusText}`);
+      }
+    } catch (error) {
+      console.error('Error fetching max XML count:', error);
+    }
+  };
 
-    const fetchProjectCounts = async () => {
-        const counts = await getProjectCounts();
-        setCurrentXmlCount(counts.currentCount);
-    };
+  const fetchProjectCounts = async () => {
+    try {
+      const counts = await getProjectCounts();
+      setCurrentXmlCount(counts.currentCount);
+    } catch (error) {
+      console.error('Error fetching project counts:', error);
+      setShowProjectError(true);
+    }
+  };
 
     const fetchProjects = async () => {
         try {
@@ -74,14 +107,18 @@ export default function Home() {
         }
     };
 
-    // Handle XML Upload
-    const handleXmlUpload = async () => {
-        // Check if file input reference is not null and has a non-empty value
-        if (fileInputRef.current != null && fileInputRef.current["value"] != "") {
-            const reader = new FileReader();
+  const handleReload = () => {
+    setReloadXml((prev) => !prev);
+  };
 
-            // Read the content of the first file in the file input
-            reader.readAsText(fileInputRef.current["files"][0]);
+  // Handle XML Upload
+  const handleXmlUpload = async () => {
+    // Check if file input reference is not null and has a non-empty value
+    if (fileInputRef.current != null && fileInputRef.current["value"] != "") {
+      const reader = new FileReader();
+
+      // Read the content of the first file in the file input
+      reader.readAsText(fileInputRef.current["files"][0]);
 
             // Handle the 'onload' event when the file reading is complete
             reader.onload = async (event) => {
@@ -128,20 +165,21 @@ export default function Home() {
 
                 const response = await uploadXML(eventTargetResult, title, selectedArticles);
 
-                // Check the status of the response
-                if (response.status == 201) {
-                    setShow(false);
-                    fetchProjects();
-                    fetchProjectCounts()
-                } else {
-                    setErrorMsg("Er is iets fout gegaan bij het uploaden");
-                    setShowError(true);
-                }
-            } else {
-                setErrorMsg("De XML bevat geen citeertitel");
+              // Check the status of the response
+              if (response.status == 201) {
+                  await fetchProjects();
+                  await fetchProjectCounts()
+                  setShow(false);
+              } else {
+                setErrorMsg("Er is iets fout gegaan bij het uploaden");
                 setShowError(true);
+              }
+              handleReload()
+            } else {
+              setErrorMsg("De XML bevat geen citeertitel");
+              setShowError(true);
             }
-        } else {
+          } else {
             setErrorMsg("De XML bevat geen citeertitel");
             setShowError(true);
         }
@@ -177,57 +215,88 @@ export default function Home() {
         }
 
     }
+
+    const handleDelete = async (id: number) => {
+        try {
+            const response = await fetch(`http://localhost:8000/api/project/${id}/delete`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(id)
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log(result);
+
+                // close modal after success delete xml
+                setShowDeleteModal(false);
+                // auto reload when xml is deleted
+                handleReload();
+            } else {
+                console.error('Failed to delete xml');
+            }
+        } catch (error) {
+            console.error('Error deleting xml', error);
+        }
+    };
+
     const disableCheck: () => boolean = () => {
         return articleChecked.includes(true);
     };
 
-    return (
-        <>
-            <div>
-                <nav className="navbar">
-                    {<div className="navbar-title">Legal Annotation Tool</div>}
-                </nav>
-            </div>
-            <div className="container-md container-sm">
-                <main className="main-content">
-                    <div className="d-flex justify-content-between align-items-center mb-3">
-                        <h2 className="doc-text">Documenten</h2>
-                        <p className='xml-minmax'>{currentXmlCount}/{maxXmlCount} XML's beschikbaar</p>
-                        <Alert show={showMaxXmlWarning} variant="warning">
-                            U heeft het maximale aantal van 40 XML's bereikt. Verwijder eerst een XML voordat u verder
-                            gaat.
-                        </Alert>
-                        <button
-                            className="import-button"
-                            onClick={handleShow}>
-                            <BsDownload className="download-icon" size={20}/>
-                            <span>Importeer XML</span>
-                        </button>
-                    </div>
+  return (
+    <>
+      <div>
+        <nav className="navbar">
+          {<div className="navbar-title">Legal Annotation Tool</div>}
+        </nav>
+      </div>
+      <div className="container-md container-sm">
+        <main className="main-content">
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <h2 className="doc-text">Documenten</h2>
+            <p className='xml-minmax'>{currentXmlCount}/{maxXmlCount} XML&apos;s beschikbaar</p>
+            <Alert show={showMaxXmlWarning} variant="warning">
+              U heeft het maximale aantal van {maxXmlCount} XML&apos;s bereikt. Verwijder eerst een XML voordat u verder gaat.
+            </Alert>
+            <button
+              className="import-button"
+              onClick={handleShow}>
+              <BsDownload className="download-icon" size={20} />
+              <span>Importeer XML</span>
+            </button>
+          </div>
 
-                    {loading && <p className="loading-message">Loading...</p>}
+          {loading && <p className="loading-message">Loading...</p>}
 
-                    <Alert show={showProjectError} variant="danger" dismissible>
-                        <Alert.Heading>Error</Alert.Heading>
-                        <p>Something went wrong</p>
-                    </Alert>
+          <Alert show={showProjectError} variant="danger" dismissible>
+            <Alert.Heading>Error</Alert.Heading>
+            <p>Something went wrong</p>
+          </Alert>
 
-                    <ul className="document-list">
-                        {projects && projects.map((project) => (
-                            <li key={project.id} className="document-item">
-                                <div className="document-info">
-                                    <span className="document-title">{project.title}</span>
-                                </div>
-                                <div className="actions">
-                                    <Link href={{pathname: '/annotations', query: {id: project.id}}} passHref>
-                                        <button className="open-button">Open project</button>
-                                    </Link>
-                                    <button className='delete-button'><FiTrash2 className="delete-icon"/></button>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                </main>
+          <ul className="document-list">
+            {projects && projects.map((project) => (
+              <li key={project.id} className="document-item">
+                <div className="document-info">
+                  <span className="document-title">{project.title}</span>
+                </div>
+                <div className="actions">
+                  <Link href={{ pathname: '/annotations', query: { id: project.id } }} passHref>
+                    <button className="open-button">Open project</button>
+                  </Link>
+                  <button
+                      className='delete-button'
+                      onClick={() => handleShowDeleteModal(project.id)}>
+                    <FiTrash2 className="delete-icon" />
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+
+        </main>
 
 
                 <Modal show={show} onHide={handleClose}>
@@ -298,6 +367,32 @@ export default function Home() {
                         }
                     </Modal.Body>
                 </Modal>
+
+
+          {/*modal for delete xml*/}
+          <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
+              <Modal.Header closeButton>
+                  <Modal.Title>Verwijder xml</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                  <Alert show={showError} variant="danger" dismissible>
+                      <Alert.Heading>Error</Alert.Heading>
+                      <p>{errorMsg}</p>
+                  </Alert>
+                  <p>Weet u zeker dat u een xml wilt verwijderen?</p>
+              </Modal.Body>
+              <Modal.Footer>
+                  <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                      Cancel
+                  </Button>
+                  <Button
+                      type='submit'
+                      variant="danger"
+                      onClick={() => projectIdToDelete && handleDelete(projectIdToDelete)}>
+                      Delete
+                  </Button>
+              </Modal.Footer>
+          </Modal>
             </div>
         </>
     );
