@@ -36,7 +36,10 @@ export default function Home() {
     const [reloadXml, setReloadXml] = useState(false);
 
     // Wrapper function to handle close and show of upload modal
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        setShow(false);
+        setOnArticlesShow(false);
+    };
     const handleShow = () => setShow(true);
 
 
