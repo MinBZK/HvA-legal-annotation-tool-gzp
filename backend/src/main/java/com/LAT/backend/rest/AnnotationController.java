@@ -72,8 +72,9 @@ public class AnnotationController {
                 .orElseThrow(() -> new LawClassNotFoundException("Annotation class not found"));
 
             Term term = annotation.getTerm();
-            if (term == null) {
-                term = new Term();
+            if (term != null && term.getDefinition() != null) {
+                termRepository.save(term);
+                annotation.setTerm(term);
             }
 
             if (term.getDefinition() == null) {
@@ -89,7 +90,6 @@ public class AnnotationController {
 
             annotation.setProject(project);
             annotation.setLawClass(lawClass);
-            annotation.setTerm(term);
 
         // Handle the parent annotation if it's passed
         if (annotation.getParentAnnotation() != null) {

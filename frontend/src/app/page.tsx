@@ -8,6 +8,7 @@ import { getMaxXmlCount, getProjectCounts, getProjects, uploadXML } from './serv
 import { Project } from "./models/project";
 import { BsDownload } from "react-icons/bs";
 import Link from 'next/link';
+import {Annotation} from "@/app/models/annotation";
 
 export default function Home() {
 
@@ -19,13 +20,27 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [showMaxXmlWarning, setShowMaxXmlWarning] = useState(false);
 
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [projectIdToDelete, setProjectIdToDelete] = useState<number | null>(null);
 
   const [maxXmlCount, setMaxXmlCount] = useState(40);
   const [currentXmlCount, setCurrentXmlCount] = useState(0);
 
+  const [reloadXml, setReloadXml] = useState(false);
+
   // Wrapper function to handle close and show of upload modal
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const handleShowDeleteModal = (projectId: number) => {
+    setProjectIdToDelete(projectId);
+    setShowDeleteModal(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setProjectIdToDelete(null);
+    setShowDeleteModal(false);
+  };
 
   const fileInputRef = useRef(null);
 
@@ -34,7 +49,7 @@ export default function Home() {
     fetchProjects();
     fetchMaxXmlCount();
     fetchProjectCounts();
-  }, []);
+  }, [reloadXml]);
 
   useEffect(() => {
     if (currentXmlCount >= maxXmlCount) {
@@ -62,8 +77,13 @@ export default function Home() {
   };
 
   const fetchProjectCounts = async () => {
-    const counts = await getProjectCounts();
-    setCurrentXmlCount(counts.currentCount);
+    try {
+      const counts = await getProjectCounts();
+      setCurrentXmlCount(counts.currentCount);
+    } catch (error) {
+      console.error('Error fetching project counts:', error);
+      setShowProjectError(true);
+    }
   };
 
   const fetchProjects = async () => {
@@ -77,6 +97,10 @@ export default function Home() {
     } finally {
       setLoading(false); // Set loading to false regardless of success or failure
     }
+  };
+
+  const handleReload = () => {
+    setReloadXml((prev) => !prev);
   };
 
   // Handle XML Upload
@@ -104,11 +128,14 @@ export default function Home() {
 
               // Check the status of the response
               if (response.status == 201) {
+                await fetchProjects();
                 setShow(false);
               } else {
                 setErrorMsg("Er is iets fout gegaan bij het uploaden");
                 setShowError(true);
               }
+              // amount of xmls reloads whenever there is one added or deleted
+              handleReload();
             } else {
               setErrorMsg("De XML bevat geen citeertitel");
               setShowError(true);
@@ -122,6 +149,31 @@ export default function Home() {
     }
   };
 
+  const handleDelete = async (id: number) => {
+    try {
+      const response = await fetch(`http://localhost:8000/api/project/${id}/delete`, {
+          method: "DELETE",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify(id)
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log(result);
+
+        // close modal after success delete xml
+        setShowDeleteModal(false);
+        // auto reload when xml is deleted
+        handleReload();
+      } else {
+        console.error('Failed to delete xml');
+      }
+    } catch (error) {
+      console.error('Error deleting xml', error);
+    }
+  };
 
 
   return (
@@ -164,7 +216,11 @@ export default function Home() {
                   <Link href={{ pathname: '/annotations', query: { id: project.id } }} passHref>
                     <button className="open-button">Open project</button>
                   </Link>
-                  <button className='delete-button'><FiTrash2 className="delete-icon" /></button>
+                  <button
+                      className='delete-button'
+                      onClick={() => handleShowDeleteModal(project.id)}>
+                    <FiTrash2 className="delete-icon" />
+                  </button>
                 </div>
               </li>
             ))}
@@ -194,6 +250,31 @@ export default function Home() {
               </Button>
             </Form>
           </Modal.Body>
+        </Modal>
+
+        {/*modal for delete xml*/}
+        <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Verwijder xml</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Alert show={showError} variant="danger" dismissible>
+              <Alert.Heading>Error</Alert.Heading>
+              <p>{errorMsg}</p>
+            </Alert>
+            <p>Weet u zeker dat u een xml wilt verwijderen?</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+              Cancel
+            </Button>
+            <Button
+                type='submit'
+                variant="danger"
+                onClick={() => projectIdToDelete && handleDelete(projectIdToDelete)}>
+              Delete
+            </Button>
+          </Modal.Footer>
         </Modal>
       </div>
     </>

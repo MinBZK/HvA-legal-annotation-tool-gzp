@@ -8,14 +8,12 @@ import com.LAT.backend.repository.ProjectRepository;
 import com.LAT.backend.views.Views;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -71,5 +69,14 @@ public class ProjectController {
         return ResponseEntity.ok(counts);
     }
 
+    @DeleteMapping("project/{id}/delete")
+    public ResponseEntity<Project> deleteItem(@PathVariable Long id) {
+        Project projectToDelete = projectRepository.findById(id)
+                .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
+
+        projectRepository.delete(projectToDelete);
+
+        return ResponseEntity.ok(projectToDelete);
+    }
 }
 

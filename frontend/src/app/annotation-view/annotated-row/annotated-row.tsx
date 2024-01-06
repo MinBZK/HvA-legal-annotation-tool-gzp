@@ -46,9 +46,12 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
                 updatedAnnotation.text = editNoteText;
             }
 
-            if (updatedAnnotation.term && editTermText != null) {
-                // Assuming `editTermText` is a string
-                updatedAnnotation.term.definition = editTermText;
+            if (editTermText != null) {
+                updatedAnnotation.term = {
+                    id: updatedAnnotation.term ? updatedAnnotation.term.id : 0,
+                    definition: editTermText,
+                    reference: editLabelText,
+                };
             }
 
             setIsEditing(false);
@@ -69,13 +72,13 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
     const handleAddTerm = async () => {
         try {
             await setEditTermText(newTerm.definition);
+            updatedAnnotation.term = {
+                id: 0,
+                definition: newTerm.definition,
+                reference: annotation.selectedWord,
+            };
             fetchTerms(annotation.selectedWord)
             setShowModal(false);
-            setNewTerm({
-                ...newTerm,
-                definition: "",
-                reference: annotation?.selectedWord
-            });
         } catch (error) {
             console.error('Error saving annotation:', error);
             return null;

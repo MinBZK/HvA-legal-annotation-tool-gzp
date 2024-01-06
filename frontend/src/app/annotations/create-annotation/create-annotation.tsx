@@ -252,7 +252,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
      * Updates the XML content with new annotation tags based on the users selection.
      * Sends the updated XML content to the backend server to be saved.
      */
-    const addAnnotationTagsToXml = async () => {
+    const updateXMLInDatabase = async () => {
         try {
             // Create a copy of Project to avoid mutating the original object
             const updatedProject = {
@@ -364,9 +364,11 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
                 }
             });
 
+            // If everything succeeded, update the XML content of the original project
             if (annotationAdded) {
-                // Convert the XML DOM back to a string
+                // Convert the XML DOM back to a string that can be stored in the database
                 let serializedXML = new XMLSerializer().serializeToString(originalXML);
+
                 // Replace the escaped annotation tags with the original tags
                 project.xml_content = serializedXML.replace(/&lt;annotation id="([0-9]+)"&gt;/g, `<annotation id="$1">`)
                     .replace(/&lt;\/annotation&gt;/g, '</annotation>');
