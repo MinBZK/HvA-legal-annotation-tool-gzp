@@ -15,8 +15,13 @@ const AnnotationPage = () => {
 
     const [projectData, setProjectData] = useState<Project | null>(null);
     const [isTextSelected, setIsTextSelected] = useState(false);
-    const [selectedText, setSelectedText] = useState("");
-    const [startOffset, setStartOffset] = useState(0);
+    const [selectedText1, setSelectedText1] = useState("");
+    const [startOffset1, setStartOffset1] = useState(0);
+
+    const [selectedText2, setSelectedText2] = useState("");
+    const [startOffset2, setStartOffset2] = useState(0);
+
+    const [activeSelection, setActiveSelection] = useState(1);
     const [reloadXML, setReloadXML] = useState(false);
     const router = useRouter();
 
@@ -45,15 +50,27 @@ const AnnotationPage = () => {
     }, [id, reloadXML]);
 
     const handleTextSelection = (text: string, offset: number) => {
+        if (activeSelection === 1) {
+            setSelectedText1(text);
+            setStartOffset1(offset);
+        } else if (activeSelection === 2) {
+            setSelectedText2(text);
+            setStartOffset2(offset);
+        }
+
+        // Toggle between active selections
+        // setActiveSelection(activeSelection === 1 ? 2 : 1);
+
         setIsTextSelected(true);
-        setSelectedText(text);
-        setStartOffset(offset)
     };
 
     const handleCloseCreate = () => {
         setIsTextSelected(false);
-        setSelectedText("");
-        setStartOffset(0);
+        setSelectedText1("");
+        setStartOffset1(0);
+        setSelectedText2("");
+        setStartOffset2(0);
+        setActiveSelection(1); // Reset to the first selection
     }
 
     const handleAnnotationSaved = () => {
@@ -62,6 +79,10 @@ const AnnotationPage = () => {
 
     const handleGoBack = () => {
         router.push('/');
+    };
+
+    const handleToggleActiveSelection = () => {
+        setActiveSelection((prevActiveSelection) => (prevActiveSelection === 1 ? 2 : 1));
     };
 
     /**
@@ -151,7 +172,13 @@ const AnnotationPage = () => {
         <section className="right-column">
             {isTextSelected ? (
                 // Render Create annotation when text is selected
-                <CreateAnnotation selectedText={selectedText} startOffset={startOffset} onClose={handleCloseCreate} onAnnotationSaved={handleAnnotationSaved} // Pass the callback
+                <CreateAnnotation selectedText1={selectedText1}
+                                  selectedText2={selectedText2}
+                                  startOffset1={startOffset1}
+                                  startOffset2={startOffset2}
+                                  activeSelection={activeSelection}
+                                  onToggleActiveSelection={handleToggleActiveSelection}
+                                  onClose={handleCloseCreate} onAnnotationSaved={handleAnnotationSaved} // Pass the callback
                 />
             ) : (
                 // Render AnnotationView when text is not selected
