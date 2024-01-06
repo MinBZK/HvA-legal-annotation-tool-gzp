@@ -19,7 +19,6 @@ export default function Home() {
     const [loading, setLoading] = useState(false);
     const [showMaxXmlWarning, setShowMaxXmlWarning] = useState(false);
 
-
     const [maxXmlCount, setMaxXmlCount] = useState(0);
     const [currentXmlCount, setCurrentXmlCount] = useState(0);
     const [xmlDoc, setXmlDoc] = useState<any>();
@@ -91,41 +90,14 @@ export default function Home() {
                     const parser = new DOMParser();
                     setEventTargetResult(event.target.result)
                     setXmlDoc(parser.parseFromString(event.target.result, 'application/xml'));
-
-                    // const listArticles = xmlDoc.querySelectorAll("artikel")
-                    // console.warn("tesrt", listArticles)
-                    // console.warn("tesrt", listArticles[1])
-                    // console.warn("tesrt", listArticles[1]["id"])
-                    // console.warn("tesrt", listArticles[1].id)
-                    //
-                    // // check if children exist
-                    // if (listArticles == null || listArticles.length == 0) {
-                    //     alert("no articles in xml")
-                    // }
-                    //
-                    // const arrArticle: any[] = []
-                    // const arrArticleBools: boolean[] = []
-                    // for (let i = 0; i < listArticles.length; i++) {
-                    //     arrArticle.push(listArticles.item(i))
-                    //     arrArticleBools.push(false)
-                    // }
-                    //
-                    // setArticlePieces(arrArticle)
-                    // setArticleChecked(arrArticleBools)
                 }
             };
         }
     };
 
     useEffect(() => {
-
-
         if (xmlDoc != null) {
             const listArticles = xmlDoc.querySelectorAll("artikel")
-            console.warn("tesrt", listArticles)
-            console.warn("tesrt", listArticles[1])
-            console.warn("tesrt", listArticles[1].getAttribute('label'))
-            console.warn("tesrt", listArticles[1].id)
 
             // check if children exist
             if (listArticles == null || listArticles.length == 0) {
@@ -145,8 +117,6 @@ export default function Home() {
     }, [xmlDoc]);
 
     const startUpload = async (list: string[]) => {
-        console.log("Yes")
-        console.log(xmlDoc)
         const citeertitelElement = xmlDoc.querySelector('citeertitel');
 
         if (citeertitelElement && citeertitelElement.childNodes.length > 0) {
@@ -154,10 +124,7 @@ export default function Home() {
 
             if (firstChildNode && firstChildNode.nodeValue !== null) {
                 const title = firstChildNode.nodeValue.trim();
-                // const selectedArticles = selectedArticlesIds.join(', ');
                 const selectedArticles = list.join(', ');
-
-                console.warn(selectedArticles)
 
                 const response = await uploadXML(eventTargetResult, title, selectedArticles);
 
@@ -213,16 +180,6 @@ export default function Home() {
     const disableCheck: () => boolean = () => {
         return articleChecked.includes(true);
     };
-
-
-    useEffect(() => {
-        console.warn(selectedArticlesIds)
-    }, [selectedArticlesIds]);
-
-    useEffect(() => {
-        console.error(articleChecked)
-    }, [articleChecked]);
-
 
     return (
         <>
@@ -299,14 +256,12 @@ export default function Home() {
                                 ))}
 
                                 <Button className='success float-end mt-3' disabled={!disableCheck()} onClick={() => {
-                                    // setOnArticlesShow(false)
                                     collectSelectedArticles()
                                 }}>
                                     Continue
                                 </Button>
 
                                 <Button className='info float-end m-2 mt-3' onClick={() => {
-                                    // setOnArticlesShow(false)
                                     collectSelectedArticles(true)
                                 }}>
                                     Select all
@@ -314,21 +269,6 @@ export default function Home() {
 
 
                             </>
-                            //     {articlePieces && articlePieces.map((value: any, index) => (
-                            //         <div key={index}>
-                            //             <input type={"checkbox"} checked={articleChecked[index]}
-                            //                    onChange={() => checkHandler(index)
-                            //                    }/>
-                            //             <p>Artikel test: {index}</p>
-                            //             {/*<label dangerouslySetInnerHTML={{__html: value.label}}/>*/}
-                            //         </div>
-                            //     ))
-                            // }
-
-                            //         <Button type='submit' className='success float-end mt-3' onClick={() => {setOnArticlesShow(false)
-                            //     }}>
-                            //     confim
-                            // </Button>
 
                         ) : (
                             <>
