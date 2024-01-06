@@ -315,9 +315,16 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
             }
 
             // Ensure all properties are defined before calling annotateSelectedText
-            if (annotation.selectedWord && annotation.startOffset !== undefined && annotation.term?.definition) {
+            console.log(annotation.selectedWord, annotation.startOffset, annotation.term?.definition)
+            if (mainAnnotationId && annotation?.selectedWord && typeof annotation.startOffset === 'number') {
                 annotateSelectedText(annotation.selectedWord, mainAnnotationId, annotation.startOffset, annotation.term.definition);
-                await addAnnotationTagsToXml();
+                await updateXMLInDatabase();
+
+                // Trigger the callback to re-render LoadXML
+                if (onAnnotationSaved) {
+                    onAnnotationSaved();
+                }
+
             } else {
                 console.error('Annotation properties are not properly defined');
             }
