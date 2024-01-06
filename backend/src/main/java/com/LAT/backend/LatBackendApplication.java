@@ -24,4 +24,7 @@ public class LatBackendApplication {
 		System.setProperty("DB_USER", Objects.requireNonNull(dotenv.get("DB_USER")));
 		System.setProperty("DB_PASS", Objects.requireNonNull(dotenv.get("DB_PASS")));
 	}
+
+
+
 }

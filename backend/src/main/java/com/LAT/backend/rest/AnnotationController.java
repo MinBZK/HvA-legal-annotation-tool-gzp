@@ -6,15 +6,15 @@ import com.LAT.backend.model.Annotation;
 import com.LAT.backend.model.LawClass;
 import com.LAT.backend.model.Project;
 import com.LAT.backend.model.Term;
-import com.LAT.backend.repository.AnnotationRepository;
-import com.LAT.backend.repository.LawClassRepository;
-import com.LAT.backend.repository.ProjectRepository;
-import com.LAT.backend.repository.TermRepository;
+import com.LAT.backend.repository.*;
+import com.LAT.backend.views.Views;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -24,7 +24,7 @@ import javax.persistence.EntityNotFoundException;
 @RestController
 @RequestMapping("/api/annotations")
 public class AnnotationController {
-    
+
     @Autowired
     private AnnotationRepository annotationRepository;
 
@@ -38,6 +38,7 @@ public class AnnotationController {
     private TermRepository termRepository;
 
     @GetMapping("/")
+    @JsonView(Views.Extended.class)
     public ResponseEntity<?> getAllAnnotations() {
         try {
             Iterable<Annotation> annotations = annotationRepository.findAll();
@@ -49,6 +50,7 @@ public class AnnotationController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching annotations");
         }
     }
+
     // Endpoint to get all annotations for a specific project
     // Chi Yu
     @GetMapping("/project/{projectId}")
@@ -60,34 +62,64 @@ public class AnnotationController {
     // Hanna
     @PostMapping("/project")
     public ResponseEntity<Annotation> createAnnotation(@RequestBody Annotation annotation) {
-        int index = 0;
 //        try {
-            // Validate if the project exists
-            Project project = projectRepository.findById(annotation.getProject().getId())
-                    .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
+        // Validate if the project exists
+        Project project = projectRepository.findById(annotation.getProject().getId())
+                .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
 
-            // Validate if the annotation class exists
-            LawClass lawClass = lawClassRepository.findByName(annotation.getLawClass().getName())
-                    .orElseThrow(() -> new LawClassNotFoundException("Annotation class not found"));
+        // Validate if the annotation class exists
+        LawClass lawClass = lawClassRepository.findByName(annotation.getLawClass().getName())
+                .orElseThrow(() -> new LawClassNotFoundException("Annotation class not found"));
 
             Term term = annotation.getTerm();
+            if (term == null) {
+                term = new Term();
+            }
+
+            if (term.getDefinition() == null) {
+                term.setDefinition("");
+            }
             term.setReference(annotation.getSelectedWord());
 
-            termRepository.save(term);
+        termRepository.save(term);
+
+            if (annotation.getText() == null) {
+                annotation.setText("");
+            }
 
             annotation.setProject(project);
             annotation.setLawClass(lawClass);
             annotation.setTerm(term);
 
-            // Save the annotation to the repository
-            Annotation savedAnnotation = annotationRepository.save(annotation);
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedAnnotation);
+        // Handle the parent annotation if it's passed
+        if (annotation.getParentAnnotation() != null) {
+            int parentAnnotationId = annotation.getParentAnnotation().getId();
+            Annotation parentAnnotation = annotationRepository.findById(parentAnnotationId)
+                    .orElseThrow(() -> new EntityNotFoundException("Parent annotation not found with id: " + parentAnnotationId));
+            annotation.setParentAnnotation(parentAnnotation);
+        }
+
+        // Save the annotation to the repository
+        Annotation savedAnnotation = annotationRepository.save(annotation);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedAnnotation);
 //        } catch (ProjectNotFoundException | LawClassNotFoundException e) {
 //            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 //        } catch (Exception e) {
 //            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 //        }
     }
+
+    @GetMapping("/sub/{parentId}")
+    public ResponseEntity<List<Annotation>> getSubAnnotationsByParentId(@PathVariable Integer parentId) {
+        Optional<Annotation> parentAnnotation = annotationRepository.findById(parentId);
+        if (!parentAnnotation.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<Annotation> subAnnotations = annotationRepository.findByParentAnnotation(parentAnnotation.get());
+        return ResponseEntity.ok(subAnnotations);
+    }
+
 
 
     @DeleteMapping("/deleteannotation/{id}")
@@ -111,7 +143,6 @@ public class AnnotationController {
         annotation.setLawClass(annotationDetails.getLawClass());
         annotation.setProject(annotationDetails.getProject());
 
-        // TODO
         if (annotationDetails.getTerm() != null && annotationDetails.getTerm().getId() != null) {
             Term termDetails = annotationDetails.getTerm();
             Term term = termRepository.findById(termDetails.getId())
@@ -121,7 +152,6 @@ public class AnnotationController {
                 term = new Term();
             }
 
-            // Set the new values from termDetails
             term.setReference(termDetails.getReference());
             term.setDefinition(termDetails.getDefinition());
 
@@ -146,5 +176,10 @@ public class AnnotationController {
             // Return an error response
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching annotation");
         }
+    }
+
+    @GetMapping("/children/{id}")
+    public Iterable<Annotation> getChildAnnotationsOfParentById(@PathVariable Integer id) {
+        return annotationRepository.getAnnotationsFromParentIdJPQL(id);
     }
 }

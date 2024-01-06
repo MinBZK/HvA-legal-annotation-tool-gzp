@@ -1,8 +1,8 @@
 package com.LAT.backend.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.LAT.backend.views.Views;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -10,14 +10,19 @@ import java.util.Objects;
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(Views.Basic.class)
     private Long id;
+
     @Column(nullable = false, columnDefinition = "LONGTEXT")
+    @JsonView(Views.Extended.class)
     private String xml_content;
 
     @Column(nullable = false)
+    @JsonView(Views.Basic.class)
     private String title;
 
     private String selectedArticles;
+    @JsonView(Views.Extended.class)
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Annotation> annotations;
 

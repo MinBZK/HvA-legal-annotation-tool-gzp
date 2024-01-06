@@ -5,6 +5,8 @@ import com.LAT.backend.model.ApplicationProperty;
 import com.LAT.backend.model.Project;
 import com.LAT.backend.repository.ApplicationPropertyRepository;
 import com.LAT.backend.repository.ProjectRepository;
+import com.LAT.backend.views.Views;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,7 @@ public class ProjectController {
     private ApplicationPropertyRepository applicationPropertyRepository;
 
     @GetMapping("/projects")
+    @JsonView(Views.Basic.class)
     public Iterable<Project> getAllProjects() {
         return projectRepository.findAll();
     }

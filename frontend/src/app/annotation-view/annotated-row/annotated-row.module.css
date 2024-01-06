@@ -104,3 +104,9 @@
     display: flex;
     justify-content: end;
 }
+
+.childAnnotation {
+    width: min-content;
+    padding: 5px;
+    border-radius: 8px;
+}
