@@ -15,13 +15,21 @@ import { getChildAnnotationsFromParentId } from '@/app/services/annotation';
 
 
 interface PopupProps {
-    selectedText: string;
-    startOffset: number;
+    selectedText1,
+    selectedText2,
+    startOffset1,
+    startOffset2,
+    activeSelection,
+    onToggleActiveSelection: () => void;
     onClose: () => void; // Callback to indicate closing
     onAnnotationSaved: () => void; // Callback to indicate closing
 }
 
-const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, onAnnotationSaved }) => {
+const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
+                                              selectedText2,
+                                              startOffset1,
+                                              startOffset2, activeSelection,
+                                              onToggleActiveSelection, onClose, onAnnotationSaved }) => {
 
     const [projectId, setProjectId] = useState<number>(0);
     const [classes, setClasses] = useState<LawClass[]>([]); // New state to store the laws
@@ -31,14 +39,29 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
     const [parentAnnotationId, setParentAnnotationId] = useState(null);
     const [showSubAnnotationForm, setShowSubAnnotationForm] = useState(false);
     const [subAnnotations, setSubAnnotations] = useState([]);
-    const [subAnnotationDetails, setSubAnnotationDetails] = useState({
-        label: '',
-        note: '',
-        term: '',
-    });
+    // const [subAnnotationDetails, setSubAnnotationDetails] = useState({
+    //     label: '',
+    //     note: '',
+    //     term: '',
+    // });
 
+    const [subAnnotationDetails, setSubAnnotationDetails] = useState<Annotation>({
+        id: 0,
+        text: "",
+        selectedWord: "",
+        lawClass: undefined,
+        project: { id: 0 },
+        startOffset: 0,
+        term: { definition: "", reference: "" }
+    } as Annotation);
 
     const [newTerm, setNewTerm] = useState<Term>({
+        id: 0,
+        definition: "",
+        reference: ""
+    } as Term);
+
+    const [subNewTerm, setSubNewTerm] = useState<Term>({
         id: 0,
         definition: "",
         reference: ""
@@ -59,13 +82,15 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
         term: { definition: "", reference: "" }
     } as Annotation);
     const [showModal, setShowModal] = useState(false);
+    const [showSubModal, setSubShowModal] = useState(false);
 
     useEffect(() => {
         fetchId();
         fetchClasses();
-        handleSelectedText(selectedText, startOffset);
-        fetchTerms(selectedText);
-    }, [selectedText, startOffset]);
+        handleSelectedText(selectedText1, startOffset1);
+        handleSelectedText2(selectedText2, startOffset2);
+        fetchTerms(selectedText1);
+    }, [selectedText1, startOffset1, selectedText2, startOffset2]);
 
 
     const fetchId = async () => {
@@ -102,6 +127,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
     // visibility van de sub annotation form
     const handleShowSubAnnotationForm = () => {
         setShowSubAnnotationForm(true);
+        onToggleActiveSelection();
     };
 
 
@@ -119,8 +145,23 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
         }));
     };
 
+    const handleSubTerm = (term: any) => {
+        setSubAnnotationDetails((prevAnnotation) => ({
+            ...(prevAnnotation as Annotation),
+            term: term,
+        }));
+    };
+
     const handleSelectedText = (text: string, startOffset: number) => {
         setAnnotation((prevAnnotation) => ({
+            ...(prevAnnotation as Annotation),
+            selectedWord: text,
+            startOffset: startOffset,
+        }));
+    };
+
+    const handleSelectedText2 = (text: string, startOffset: number) => {
+        setSubAnnotationDetails((prevAnnotation) => ({
             ...(prevAnnotation as Annotation),
             selectedWord: text,
             startOffset: startOffset,
@@ -155,7 +196,17 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
     const handleAddTerm = async () => {
         try {
             await handleTerm(newTerm);
-            setShowModal(false);
+            setShowModal(false)
+        } catch (error) {
+            console.error('Error saving annotation:', error);
+            return null;
+        }
+    };
+
+    const handleAddSubTerm = async () => {
+        try {
+            await handleSubTerm(subNewTerm);
+            setSubShowModal(false)
         } catch (error) {
             console.error('Error saving annotation:', error);
             return null;
@@ -167,19 +218,16 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
         onClose();
     };
 
-
-
-    const saveAnnotationToBackend = async () => {
-        const backendAnnotation = {
-            id: null,
-            selectedWord: annotation?.selectedWord,
-            text: annotation?.text,
-            lawClass: {name: annotation?.lawClass},
-            project: {id: projectId},
-            term: { definition: annotation?.term.definition|| undefined, reference: annotation?.selectedWord},
-            parentAnnotation: parentAnnotationId ? { id: parentAnnotationId } : null,
-
-        };
+    const saveAnnotationToBackend = async (backendAnnotation: any) => {
+        // const backendAnnotation = {
+        //     id: null,
+        //     selectedWord: annotation?.selectedWord,
+        //     text: annotation?.text,
+        //     lawClass: {name: annotation?.lawClass},
+        //     project: {id: projectId},
+        //     term: { definition: annotation?.term.definition|| undefined, reference: annotation?.selectedWord},
+        //     parentAnnotation: parentAnnotationId ? { id: parentAnnotationId } : null,
+        // };
         if (parentAnnotationId) {
             // After saving a sub-annotation, refresh the list of sub-annotations
             fetchSubAnnotations(parentAnnotationId);
@@ -289,35 +337,53 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
         }
         setLawClassError(false);
 
-        const mainAnnotation = {
-            ...annotation,
-            // Other annotation properties as needed
-        };
-
         // Save the main annotation
-        const mainAnnotationId = await saveAnnotationToBackend();
-        if (mainAnnotationId) {
-            // If sub-annotation details are filled and the form is visible
-            if (showSubAnnotationForm && subAnnotationDetails.label && subAnnotationDetails.note && subAnnotationDetails.term) {
-                setAnnotation(prevAnnotation => ({
-                    ...prevAnnotation,
-                    label: subAnnotationDetails.label,
-                    note: subAnnotationDetails.note,
-                    term: subAnnotationDetails.term,
-                    parentAnnotation: { id: mainAnnotationId }
-                }));
+        const mainAnnotationId = await saveAnnotationToBackend({
+            id: null,
+            selectedWord: annotation?.selectedWord,
+            text: annotation?.text,
+            lawClass: {name: annotation?.lawClass},
+            project: {id: projectId},
+            term: { definition: annotation?.term.definition|| undefined, reference: annotation?.selectedWord},
+            parentAnnotation: parentAnnotationId ? { id: parentAnnotationId } : null,
+        });
 
-                // Save the sub-annotation
-                const subAnnotationSaved = await saveAnnotationToBackend();
-                if (!subAnnotationSaved) {
-                    console.error('Failed to save sub-annotation');
-                }
+        console.log(annotation.selectedWord, annotation.startOffset, annotation.term?.definition)
+        if (annotation?.selectedWord && typeof annotation.startOffset === 'number') {
+            annotateSelectedText(annotation.selectedWord, mainAnnotationId, annotation.startOffset, annotation.term.definition);
+            await updateXMLInDatabase();
+            // Trigger the callback to re-render LoadXML
+            if (onAnnotationSaved) {
+                onAnnotationSaved();
             }
 
-            // Ensure all properties are defined before calling annotateSelectedText
-            console.log(annotation.selectedWord, annotation.startOffset, annotation.term?.definition)
-            if (mainAnnotationId && annotation?.selectedWord && typeof annotation.startOffset === 'number') {
-                annotateSelectedText(annotation.selectedWord, mainAnnotationId, annotation.startOffset, annotation.term.definition);
+        } else {
+            console.error('Annotation properties are not properly defined');
+        }
+
+        await updateXMLInDatabase();
+
+        if (showSubAnnotationForm) {
+            // Save the sub-annotation
+            const subAnnotationId = await saveAnnotationToBackend({
+                id: null,
+                selectedWord: subAnnotationDetails?.selectedWord,
+                text: subAnnotationDetails?.text,
+                lawClass: {name: subAnnotationDetails?.lawClass.name},
+                project: {id: projectId},
+                term: {
+                    definition: subAnnotationDetails?.term.definition || undefined,
+                    reference: subAnnotationDetails?.selectedWord
+                },
+                parentAnnotation: parentAnnotationId ? {id: parentAnnotationId} : null,
+            });
+
+            if (!subAnnotationId) {
+                console.error('Failed to save sub-annotation');
+            }
+
+            if (subAnnotationDetails?.selectedWord && typeof subAnnotationDetails.startOffset === 'number') {
+                annotateSelectedText(subAnnotationDetails.selectedWord, subAnnotationId, subAnnotationDetails.startOffset, subAnnotationDetails.term.definition);
                 await updateXMLInDatabase();
 
                 // Trigger the callback to re-render LoadXML
@@ -328,10 +394,17 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
             } else {
                 console.error('Annotation properties are not properly defined');
             }
-            handleClose();
-        } else {
-            console.error('Failed to retrieve main annotation ID');
+
+            await updateXMLInDatabase();
+
+            // Trigger the callback to re-render LoadXML
+            if (onAnnotationSaved) {
+                onAnnotationSaved();
+            }
+
         }
+        handleClose();
+
     };
 
 
@@ -412,6 +485,25 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
             console.error("Error fetching relations:", error);
         }
     };
+
+    const handleSelectSubLaw = async(lawClassId: number) => {
+        console.log(lawClassId)
+        try {
+            const response = await fetch(`http://localhost:8000/api/lawclasses/${lawClassId}`);
+            if (response.ok) {
+                const fetchedLawclass = await response.json();
+                console.log(fetchedLawclass)
+                setSubAnnotationDetails((prevAnnotation) => ({
+                    ...(prevAnnotation as Annotation),
+                    lawClass: fetchedLawclass,
+                }));
+            } else {
+                console.error("Error fetching relations");
+            }
+        } catch (error) {
+            console.error("Error fetching relations:", error);
+        }
+    }
 
     // Function to handle adding sub-annotations
     const handleAddSubAnnotation = () => {
@@ -503,9 +595,31 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
                                     {term.definition}
                                 </Dropdown.Item>
                             ))}
-                            <Dropdown.Item onClick={() => setShowModal(true)}>Add New Term</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setShowModal(true)}>Voeg nieuw begrip toe</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
+
+                    <Modal show={showModal} onHide={() => setShowModal(false)}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Voeg nieuw begrip toe</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Form.Control
+                                type="text"
+                                placeholder="Vul begrip in"
+                                value={newTerm.definition}
+                                onChange={(e) => setNewTerm({ ...newTerm, definition: e.target.value, reference: annotation?.selectedWord })}
+                            />
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={() => setShowModal(false)}>
+                                Annuleer
+                            </Button>
+                            <Button variant="primary" onClick={handleAddTerm}>
+                                Voeg begrip toe
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
 
                     {/* Render de relaties als knoppen */}
                     <div>
@@ -520,6 +634,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
                                     <Button key={relation.id} variant="secondary" className="me-1 text-dark" onClick={() => {
                                         setParentAnnotationId(annotation?.id); // Set the current annotation ID as the parent
                                         handleShowSubAnnotationForm(); // Show the sub-annotation form
+                                        // setSelectWordForSubAnnotation(true)
+                                        handleSelectSubLaw(relation.subClass.id)
                                     }}>
                                         + {relation.description}
                                     </Button>
@@ -535,6 +651,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
                                     <Button key={relation.id} variant="secondary" className="me-1 text-dark" onClick={() => {
                                         setParentAnnotationId(annotation?.id); // Set the current annotation ID as the parent
                                         handleShowSubAnnotationForm(); // Show the sub-annotation form
+                                        // setSelectWordForSubAnnotation(true)
+                                        handleSelectSubLaw(relation.subClass.id)
                                     }}>
                                         + {relation.description}
                                     </Button>
@@ -545,57 +663,75 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText, startOffset, onClose, 
                         {showSubAnnotationForm && (
                             <>
                                 {/* Close button for the Sub-Annotation Form */}
-                                <div style={{ textAlign: 'right' }}>
-                                    <Button variant="outline-secondary" onClick={() => setShowSubAnnotationForm(false)} style={{ marginBottom: '10px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <Form.Label style={{ textAlign: 'left',  fontSize: '20px',
+                                        display: 'block',
+                                        marginBottom: '10px',
+                                        fontWeight: 'bold',
+                                        color: '#154273'}}>Juridische subklasse: {subAnnotationDetails.lawClass?.name}</Form.Label>
+                                    <Button style={{marginBottom: '10px' }} variant="outline-secondary" onClick={() => setShowSubAnnotationForm(false)} >
                                         X
                                     </Button>
                                 </div>
                                 <Form.Group>
                                     <Form.Label>Label</Form.Label>
                                     <Form.Control
-                                        type="text"
-                                        value={subAnnotationDetails.label}
-                                        onChange={(e) => handleSubAnnotationDetailChange('label', e.target.value)}
+                                        type="text" readOnly
+                                        value={subAnnotationDetails.selectedWord}
+                                        onChange={(e) => handleSubAnnotationDetailChange('selectedWord', e.target.value)}
                                     />
                                 </Form.Group>
                                 <Form.Group>
                                     <Form.Label>Notitie</Form.Label>
                                     <Form.Control
                                         type="text"
-                                        value={subAnnotationDetails.note}
-                                        onChange={(e) => handleSubAnnotationDetailChange('note', e.target.value)}
+                                        value={subAnnotationDetails.text}
+                                        onChange={(e) => handleSubAnnotationDetailChange('text', e.target.value)}
                                     />
                                 </Form.Group>
                                 <Form.Group>
-                                    <Form.Label>Begrip</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        value={subAnnotationDetails.term}
-                                        onChange={(e) => handleSubAnnotationDetailChange('term', e.target.value)}
-                                    />
+                                    <Form.Label><b>Begrip</b></Form.Label>
+                                    <Dropdown>
+                                        <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic" style={{ color: 'black' }}>
+                                            {subAnnotationDetails?.term?.definition ? <>{subAnnotationDetails.term.definition}</> : <>Selecteer</>}
+                                        </Dropdown.Toggle>
+
+                                        <Dropdown.Menu className="dropdown">
+                                            {terms.map((term, index) => (
+                                                <Dropdown.Item
+                                                    key={index}
+                                                    onClick={() => handleTerm(term)}
+                                                    active={subAnnotationDetails?.term.definition === term.definition}
+                                                    style={{color: 'black' }}>
+                                                    {term.definition}
+                                                </Dropdown.Item>
+                                            ))}
+                                            <Dropdown.Item onClick={() => setSubShowModal(true)}>Voeg nieuw begrip toe</Dropdown.Item>
+                                        </Dropdown.Menu>
+                                    </Dropdown>
                                 </Form.Group>
                             </>
                         )}
                     </div>
 
-                    <Modal show={showModal} onHide={() => setShowModal(false)}>
+                    <Modal show={showSubModal} onHide={() => setSubShowModal(false)}>
                         <Modal.Header closeButton>
-                            <Modal.Title>Add New Term</Modal.Title>
+                            <Modal.Title>Voeg nieuw begrip toe</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             <Form.Control
                                 type="text"
-                                placeholder="Enter new term"
-                                value={newTerm.definition}
-                                onChange={(e) => setNewTerm({ ...newTerm, definition: e.target.value, reference: annotation?.selectedWord })}
+                                placeholder="Vul begrip in"
+                                value={subNewTerm.definition}
+                                onChange={(e) => setSubNewTerm({ ...subNewTerm, definition: e.target.value, reference: subAnnotationDetails?.selectedWord })}
                             />
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button variant="secondary" onClick={() => setShowModal(false)}>
-                                Cancel
+                            <Button variant="secondary" onClick={() => setSubShowModal(false)}>
+                                Annuleer
                             </Button>
-                            <Button variant="primary" onClick={handleAddTerm}>
-                                Add Term
+                            <Button variant="primary" onClick={handleAddSubTerm}>
+                                Voeg begrip toe
                             </Button>
                         </Modal.Footer>
                     </Modal>
