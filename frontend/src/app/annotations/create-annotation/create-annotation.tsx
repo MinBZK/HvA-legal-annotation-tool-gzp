@@ -363,22 +363,26 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
 
         await updateXMLInDatabase();
 
-        // Save the sub-annotation
-        const subAnnotationId = await saveAnnotationToBackend({
-            id: null,
-            selectedWord: subAnnotationDetails?.selectedWord,
-            text: subAnnotationDetails?.text,
-            lawClass: {name: subAnnotationDetails?.lawClass.name},
-            project: {id: projectId},
-            term: { definition: subAnnotationDetails?.term.definition|| undefined, reference: subAnnotationDetails?.selectedWord},
-            parentAnnotation: parentAnnotationId ? { id: parentAnnotationId } : null,
-        });
+        if (showSubAnnotationForm) {
+            // Save the sub-annotation
+            const subAnnotationId = await saveAnnotationToBackend({
+                id: null,
+                selectedWord: subAnnotationDetails?.selectedWord,
+                text: subAnnotationDetails?.text,
+                lawClass: {name: subAnnotationDetails?.lawClass.name},
+                project: {id: projectId},
+                term: {
+                    definition: subAnnotationDetails?.term.definition || undefined,
+                    reference: subAnnotationDetails?.selectedWord
+                },
+                parentAnnotation: parentAnnotationId ? {id: parentAnnotationId} : null,
+            });
 
-        if (!subAnnotationId) {
-            console.error('Failed to save sub-annotation');
-        }
+            if (!subAnnotationId) {
+                console.error('Failed to save sub-annotation');
+            }
 
-        if (subAnnotationDetails?.selectedWord && typeof subAnnotationDetails.startOffset === 'number') {
+            if (subAnnotationDetails?.selectedWord && typeof subAnnotationDetails.startOffset === 'number') {
                 annotateSelectedText(subAnnotationDetails.selectedWord, subAnnotationId, subAnnotationDetails.startOffset, subAnnotationDetails.term.definition);
                 await updateXMLInDatabase();
 
@@ -387,17 +391,18 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                     onAnnotationSaved();
                 }
 
-        } else {
+            } else {
                 console.error('Annotation properties are not properly defined');
+            }
+
+            await updateXMLInDatabase();
+
+            // Trigger the callback to re-render LoadXML
+            if (onAnnotationSaved) {
+                onAnnotationSaved();
+            }
+
         }
-
-        await updateXMLInDatabase();
-
-        // Trigger the callback to re-render LoadXML
-        if (onAnnotationSaved) {
-            onAnnotationSaved();
-        }
-
         handleClose();
 
     };
@@ -590,28 +595,28 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                                     {term.definition}
                                 </Dropdown.Item>
                             ))}
-                            <Dropdown.Item onClick={() => setShowModal(true)}>Add New Term</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setShowModal(true)}>Voeg nieuw begrip toe</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
 
                     <Modal show={showModal} onHide={() => setShowModal(false)}>
                         <Modal.Header closeButton>
-                            <Modal.Title>Add New Term</Modal.Title>
+                            <Modal.Title>Voeg nieuw begrip toe</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             <Form.Control
                                 type="text"
-                                placeholder="Enter new term"
+                                placeholder="Vul begrip in"
                                 value={newTerm.definition}
                                 onChange={(e) => setNewTerm({ ...newTerm, definition: e.target.value, reference: annotation?.selectedWord })}
                             />
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={() => setShowModal(false)}>
-                                Cancel
+                                Annuleer
                             </Button>
                             <Button variant="primary" onClick={handleAddTerm}>
-                                Add Term
+                                Voeg begrip toe
                             </Button>
                         </Modal.Footer>
                     </Modal>
@@ -658,9 +663,13 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                         {showSubAnnotationForm && (
                             <>
                                 {/* Close button for the Sub-Annotation Form */}
-                                <div style={{ textAlign: 'right' }}>
-                                    <Form.Label><b>{subAnnotationDetails.lawClass?.name}</b></Form.Label>
-                                    <Button variant="outline-secondary" onClick={() => setShowSubAnnotationForm(false)} style={{ marginBottom: '10px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <Form.Label style={{ textAlign: 'left',  fontSize: '20px',
+                                        display: 'block',
+                                        marginBottom: '10px',
+                                        fontWeight: 'bold',
+                                        color: '#154273'}}>Juridische subklasse: {subAnnotationDetails.lawClass?.name}</Form.Label>
+                                    <Button style={{marginBottom: '10px' }} variant="outline-secondary" onClick={() => setShowSubAnnotationForm(false)} >
                                         X
                                     </Button>
                                 </div>
@@ -697,7 +706,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                                                     {term.definition}
                                                 </Dropdown.Item>
                                             ))}
-                                            <Dropdown.Item onClick={() => setSubShowModal(true)}>Add New Term</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => setSubShowModal(true)}>Voeg nieuw begrip toe</Dropdown.Item>
                                         </Dropdown.Menu>
                                     </Dropdown>
                                 </Form.Group>
@@ -707,22 +716,22 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
 
                     <Modal show={showSubModal} onHide={() => setSubShowModal(false)}>
                         <Modal.Header closeButton>
-                            <Modal.Title>Add New Term</Modal.Title>
+                            <Modal.Title>Voeg nieuw begrip toe</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             <Form.Control
                                 type="text"
-                                placeholder="Enter new term"
+                                placeholder="Vul begrip in"
                                 value={subNewTerm.definition}
                                 onChange={(e) => setSubNewTerm({ ...subNewTerm, definition: e.target.value, reference: subAnnotationDetails?.selectedWord })}
                             />
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={() => setSubShowModal(false)}>
-                                Cancel
+                                Annuleer
                             </Button>
                             <Button variant="primary" onClick={handleAddSubTerm}>
-                                Add Term
+                                Voeg begrip toe
                             </Button>
                         </Modal.Footer>
                     </Modal>
