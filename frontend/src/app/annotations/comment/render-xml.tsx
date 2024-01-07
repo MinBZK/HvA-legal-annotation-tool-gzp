@@ -98,7 +98,7 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection }) => {
         }
       }
     } else {
-      xml.getElementsByTagName('bwb-inputbestand')[0].classList.add('show-all')
+      xml.getElementsByTagName('bwb-wijzigingen')[0].classList.add('show-all')
     }
 
     return xml.documentElement.innerHTML;

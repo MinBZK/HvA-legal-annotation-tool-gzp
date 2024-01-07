@@ -80,6 +80,6 @@ artikel.show, hoofdstuk:has(artikel.show), paragraaf:has(artikel.show) {
     display: block;
 }
 
-bwb-inputbestand.show-all artikel, bwb-inputbestand.show-all hoofdstuk, bwb-inputbestand.show-all paragraaf {
+bwb-wijzigingen.show-all artikel, bwb-wijzigingen.show-all hoofdstuk, bwb-wijzigingen.show-all paragraaf {
     display: block;
 }
