@@ -62,7 +62,8 @@ export default function SelectUserButton() {
     const handleNewUser = async () => {
         if (newUser.name && newUser.role) {
             if (await createUser(newUser)) {
-                setUsers([...users, newUser]);
+                const allUsers = await getUsers();
+                setUsers(allUsers);
                 setShowUserSelectModal(true);
                 setShowNewUserModal(false);
             }
@@ -116,7 +117,7 @@ export default function SelectUserButton() {
                         <Form.Select onChange={(e) => {
                             setNewUser({ ...newUser, role: e.target.value })
                         }}>
-                            <option disabled>Selecteer een role</option>
+                            <option disabled selected>Selecteer een role</option>
                             {roles.map((role, index) => (
                                 <option key={index} >{role}</option>
                             ))}

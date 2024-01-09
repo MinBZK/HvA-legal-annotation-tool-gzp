@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 @Entity
 public class User {
 
-    public enum Role {Admin, User};
+    public enum Role {JanVanDeStraat, Admin, Jurist};
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
