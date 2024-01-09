@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './select-user-button.css';
 import { FaUserCog } from 'react-icons/fa';
 import { Form, Modal } from 'react-bootstrap';
-import { createUser, deleteUser, getRoles, getUsers } from '@/app/services/user';
+import { createUser, deleteUser, getRoles, getUsers, getSelectedUser, setSelectedUser, subscribe, unsubscribe } from '@/app/services/user';
 import { User } from '../../models/user';
 import { FiTrash2 } from 'react-icons/fi';
 
@@ -17,9 +17,25 @@ export default function SelectUserButton() {
         name: "",
         role: ""
     });
-    const [selectedUser, setSelectedUser] = useState<Number>();
+    const [activeUserId, setActiveUserId] = useState<number>();
 
     useEffect(() => {
+        // Subscribe to changes in the selected user
+        const handleUserChange = (user: User) => {
+            // Handle the change in the component
+            setActiveUserId(user.id);
+        };
+
+        subscribe(handleUserChange);
+
+        // Unsubscribe when the component unmounts
+        return () => {
+            unsubscribe(handleUserChange);
+        };
+    }, []);
+
+    useEffect(() => {
+
         const fetchUsers = async () => {
             try {
                 const allUsers = await getUsers();
@@ -30,7 +46,7 @@ export default function SelectUserButton() {
                 } else {
                     setUsers(allUsers);
                 }
-                
+
                 if (localStorage.getItem('user') == "undefined" || localStorage.getItem('user') == null) {
                     handleSelectUser(allUsers[0]);
                 } else {
@@ -38,7 +54,7 @@ export default function SelectUserButton() {
                     if (userJson !== null) {
                         const user = JSON.parse(userJson);
                         if (user && typeof user === 'object' && 'id' in user) {
-                            setSelectedUser(user.id);
+                            setSelectedUser(user);
                         } else {
                             // Handle the case where 'user' doesn't have the expected structure
                             console.error('Invalid user data in localStorage');
@@ -83,7 +99,7 @@ export default function SelectUserButton() {
             const userJson = localStorage.getItem('user');
             if (userJson !== null) {
                 const user = JSON.parse(userJson);
-                
+
                 if (user.id == id && users.length > 1) {
                     handleSelectUser(users[0]);
                 } else if (user.id == id) {
@@ -95,7 +111,7 @@ export default function SelectUserButton() {
 
     const handleSelectUser = (user: User) => {
         localStorage.setItem("user", JSON.stringify(user));
-        setSelectedUser(user.id);
+        setSelectedUser(user);
     }
 
     if (users && roles) {
@@ -110,7 +126,7 @@ export default function SelectUserButton() {
                 <Modal.Body>
                     {users.map((user) => (
                         <div className='user-select mb-1' key={user.id}><div><span>{user.role}</span><span>{user.name}</span></div>
-                            <div><button onClick={() => { handleSelectUser(user) }}>{selectedUser == user.id ? "Geselecteerd" : "Selecteer"}</button><button className='ms-2 delete-button' onClick={() => { handleDelete(user.id) }}><FiTrash2 /></button></div>
+                            <div><button onClick={() => { handleSelectUser(user) }}>{activeUserId == user.id ? "Geselecteerd" : "Selecteer"}</button><button className='ms-2 delete-button' onClick={() => { handleDelete(user.id) }}><FiTrash2 /></button></div>
                         </div>
                     ))}
                 </Modal.Body>

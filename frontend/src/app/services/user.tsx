@@ -1,7 +1,36 @@
-// POST METHODS
-
 import { User } from "../models/user";
 
+type Callback = (user: User) => void;
+
+let selectedUser: User;
+let subscribers: Callback[] = [];
+
+const setSelectedUser = (user: User) => {
+    selectedUser = user;
+    notifySubscribers();
+};
+
+const getSelectedUser = () => {
+    return selectedUser;
+};
+
+const subscribe = (callback: Callback) => {
+    subscribers.push(callback);
+};
+
+const unsubscribe = (callback: Callback) => {
+    subscribers = subscribers.filter(subscriber => subscriber !== callback);
+};
+
+const notifySubscribers = () => {
+    subscribers.forEach(subscriber => {
+        if (typeof subscriber === 'function') {
+            subscriber(selectedUser);
+        }
+    });
+};
+
+export { setSelectedUser, getSelectedUser, subscribe, unsubscribe };
 export async function getUsers() {
     try {
         const response = await fetch(`http://localhost:8000/api/users`, {

@@ -9,6 +9,8 @@ import { Project } from "./models/project";
 import { BsDownload } from "react-icons/bs";
 import Link from 'next/link';
 import Navigation from './components/navigation/navigation';
+import { getSelectedUser, getUser, subscribe, unsubscribe } from './services/user';
+import { User } from './models/user';
 
 export default function Home() {
 
@@ -34,6 +36,22 @@ export default function Home() {
   const [selectedArticlesIds, setSelectedArticleIds] = useState<string[]>([]);
 
   const [reloadXml, setReloadXml] = useState(false);
+  const [activeUserRole, setActiveUserRole] = useState<string>();
+
+  useEffect(() => {
+    // Subscribe to changes in the selected user
+    const handleUserChange = (user: User) => {
+      // Handle the change in the component
+      setActiveUserRole(user.role);
+    };
+
+    subscribe(handleUserChange);
+
+    // Unsubscribe when the component unmounts
+    return () => {
+      unsubscribe(handleUserChange);
+    };
+  }, []);
 
   // Wrapper function to handle close and show of upload modal
   const handleClose = () => {
@@ -41,7 +59,6 @@ export default function Home() {
     setOnArticlesShow(false);
   };
   const handleShow = () => setShow(true);
-
 
   const handleShowDeleteModal = (projectId: number) => {
     setProjectIdToDelete(projectId);
@@ -74,7 +91,6 @@ export default function Home() {
   const fetchMaxXmlCount = async () => {
     try {
       const response = await fetch('http://localhost:8000/api/maxXmlCount');
-      console.log(response)
       if (response.ok) {
         const maxCount = await response.json();
         setMaxXmlCount(maxCount);
@@ -237,7 +253,6 @@ export default function Home() {
 
       if (response.ok) {
         const result = await response.json();
-        console.log(result);
 
         // close modal after success delete xml
         setShowDeleteModal(false);
@@ -266,12 +281,15 @@ export default function Home() {
             <Alert show={showMaxXmlWarning} variant="warning">
               U heeft het maximale aantal van {maxXmlCount} XML&apos;s bereikt. Verwijder eerst een XML voordat u verder gaat.
             </Alert>
-            <button
-              className="import-button"
-              onClick={handleShow}>
-              <BsDownload className="download-icon" size={20} />
-              <span>Importeer XML</span>
-            </button>
+            {
+              activeUserRole == "Admin" || activeUserRole == "Jurist" ? <button
+                className="import-button"
+                onClick={handleShow}>
+                <BsDownload className="download-icon" size={20} />
+                <span>Importeer XML</span>
+              </button> : <div></div>
+            }
+
           </div>
 
           {loading && <p className="loading-message">Loading...</p>}
@@ -291,11 +309,13 @@ export default function Home() {
                   <Link href={{ pathname: '/annotations', query: { id: project.id } }} passHref>
                     <button className="open-button">Open project</button>
                   </Link>
-                  <button
-                    className='delete-button'
-                    onClick={() => handleShowDeleteModal(project.id)}>
-                    <FiTrash2 className="delete-icon" />
-                  </button>
+                  {
+                    activeUserRole == "Admin" ? <button
+                      className='delete-button'
+                      onClick={() => handleShowDeleteModal(project.id)}>
+                      <FiTrash2 className="delete-icon" />
+                    </button> : ""
+                  }
                 </div>
               </li>
             ))}
