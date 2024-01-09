@@ -10,6 +10,7 @@ import CreateAnnotation from "./create-annotation/create-annotation";
 import {useRouter} from "next/navigation";
 import {Button} from "react-bootstrap";
 import { BsArrowLeft } from 'react-icons/bs';
+import {act} from "react-dom/test-utils";
 
 const AnnotationPage = () => {
 
@@ -50,6 +51,7 @@ const AnnotationPage = () => {
     }, [id, reloadXML]);
 
     const handleTextSelection = (text: string, offset: number) => {
+        console.log(activeSelection)
         if (activeSelection === 1) {
             setSelectedText1(text);
             setStartOffset1(offset);
@@ -57,10 +59,6 @@ const AnnotationPage = () => {
             setSelectedText2(text);
             setStartOffset2(offset);
         }
-
-        // Toggle between active selections
-        // setActiveSelection(activeSelection === 1 ? 2 : 1);
-
         setIsTextSelected(true);
     };
 
@@ -81,8 +79,10 @@ const AnnotationPage = () => {
         router.push('/');
     };
 
-    const handleToggleActiveSelection = () => {
-        setActiveSelection((prevActiveSelection) => (prevActiveSelection === 1 ? 2 : 1));
+    const handleSetActiveSelection = (selection: number) => {
+        console.log("Setting Active Selection:", selection);
+        setActiveSelection(selection);
+        console.log(activeSelection)
     };
 
     /**
@@ -176,8 +176,7 @@ const AnnotationPage = () => {
                                   selectedText2={selectedText2}
                                   startOffset1={startOffset1}
                                   startOffset2={startOffset2}
-                                  activeSelection={activeSelection}
-                                  onToggleActiveSelection={handleToggleActiveSelection}
+                                  onSetActiveSelection={handleSetActiveSelection}
                                   onClose={handleCloseCreate} onAnnotationSaved={handleAnnotationSaved} // Pass the callback
                 />
             ) : (
