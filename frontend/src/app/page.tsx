@@ -270,12 +270,20 @@ export default function Home() {
             <Alert show={showMaxXmlWarning} variant="warning">
               U heeft het maximale aantal van {maxXmlCount} XML&apos;s bereikt. Verwijder eerst een XML voordat u verder gaat.
             </Alert>
-            <button
-              className="import-button"
-              onClick={handleShow}>
-              <BsDownload className="download-icon" size={20} />
-              <span>Importeer XML</span>
-            </button>
+              <div style={{display: "inline-block"}}>
+
+                  <Link href={{ pathname: '/terms' }} >
+                      <button className="import-button d-inline-block">
+                          Begrippen
+                      </button>
+                  </Link>
+                  <button
+                      className="import-button d-inline-block"
+                      onClick={handleShow}>
+                      <BsDownload className="download-icon" size={20} />
+                      <span>Importeer XML</span>
+                  </button>
+              </div>
           </div>
 
           {loading && <p className="loading-message">Loading...</p>}
