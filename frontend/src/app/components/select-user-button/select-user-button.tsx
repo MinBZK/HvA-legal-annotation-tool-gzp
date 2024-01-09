@@ -23,13 +23,25 @@ export default function SelectUserButton() {
         const fetchUsers = async () => {
             try {
                 const allUsers = await getUsers();
-                setUsers(allUsers);      
-                          
-                
+                setUsers(allUsers);
+
+
                 if (localStorage.getItem('user') == "undefined") {
                     handleSelectUser(allUsers[0]);
-                } else {                    
-                    setSelectedUser(JSON.parse(localStorage.getItem('user')).id)
+                } else {
+                    const userJson = localStorage.getItem('user');
+                    if (userJson !== null) {
+                        const user = JSON.parse(userJson);
+                        if (user && typeof user === 'object' && 'id' in user) {
+                            setSelectedUser(user.id);
+                        } else {
+                            // Handle the case where 'user' doesn't have the expected structure
+                            console.error('Invalid user data in localStorage');
+                        }
+                    } else {
+                        // Handle the case where 'user' is null
+                        console.error('No user data in localStorage');
+                    }
                 }
                 const allRoles = await getRoles();
                 setRoles(allRoles);
