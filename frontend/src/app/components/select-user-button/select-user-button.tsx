@@ -17,12 +17,20 @@ export default function SelectUserButton() {
         "name": "",
         "role": ""
     });
+    const [selectedUser, setSelectedUser] = useState<Number>();
 
     useEffect(() => {
         const fetchUsers = async () => {
             try {
                 const allUsers = await getUsers();
-                setUsers(allUsers);
+                setUsers(allUsers);      
+                          
+                
+                if (localStorage.getItem('user') == "undefined") {
+                    handleSelectUser(allUsers[0]);
+                } else {                    
+                    setSelectedUser(JSON.parse(localStorage.getItem('user')).id)
+                }
                 const allRoles = await getRoles();
                 setRoles(allRoles);
             } catch (error) {
@@ -55,6 +63,11 @@ export default function SelectUserButton() {
         }
     }
 
+    const handleSelectUser = (user: User) => {
+        localStorage.setItem("user", JSON.stringify(user));
+        setSelectedUser(user.id);
+    }
+
     if (users && roles) {
         return <>
             <button className='select-user' onClick={() => { setShowUserSelectModal(true) }}>
@@ -66,7 +79,9 @@ export default function SelectUserButton() {
                 </Modal.Header>
                 <Modal.Body>
                     {users.map((user) => (
-                        <div className='user-select mb-1' key={user.id}><div><span>{user.role}</span><span>{user.name}</span></div><div><button>Selecteer</button><button className='ms-2 delete-button' onClick={() => { handleDelete(user.id) }}><FiTrash2 /></button></div></div>
+                        <div className='user-select mb-1' key={user.id}><div><span>{user.role}</span><span>{user.name}</span></div>
+                            <div><button onClick={() => { handleSelectUser(user) }}>{selectedUser == user.id ? "Geselecteerd" : "Selecteer"}</button><button className='ms-2 delete-button' onClick={() => { handleDelete(user.id) }}><FiTrash2 /></button></div>
+                        </div>
                     ))}
                 </Modal.Body>
                 <Modal.Footer>
@@ -89,7 +104,7 @@ export default function SelectUserButton() {
                         <Form.Select onChange={(e) => {
                             setNewUser({ ...newUser, role: e.target.value })
                         }}>
-                            <option disabled selected>Selecteer een role</option>
+                            <option disabled>Selecteer een role</option>
                             {roles.map((role, index) => (
                                 <option key={index} >{role}</option>
                             ))}
