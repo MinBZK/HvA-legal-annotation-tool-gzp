@@ -1,11 +1,13 @@
 "use client"; // This is a client component 👈🏽
 
-import React, { FC, useEffect, useState } from "react";
-import { FaChevronDown, FaChevronUp, FaEdit } from "react-icons/fa";
+import React, {FC, useEffect, useState} from "react";
+import {FaChevronDown, FaChevronUp, FaEdit} from "react-icons/fa";
 import css from "./annotated-row.module.css";
-import { Button, Dropdown, Form, Modal } from "react-bootstrap";
-import { Annotation } from "@/app/models/annotation";
-import { Term } from "@/app/models/term";
+import {Button, Dropdown, Form, Modal} from "react-bootstrap";
+import {Annotation} from "@/app/models/annotation";
+import {Term} from "@/app/models/term";
+import {LawClass} from "@/app/models/lawclass";
+import {Relation} from "@/app/models/relation";
 
 interface AnnotationProps {
     annotation: Annotation;
@@ -25,6 +27,9 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
 
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+
+    const [classes, setClasses] = useState<LawClass[]>([]); // New state to store the laws
+    const [editLawClass, setEditLawClass] = useState<string | null>(null);
 
     const [terms, setTerms] = useState<Term[]>([]); // New state to store the laws
     const [newTerm, setNewTerm] = useState<Term>({
@@ -54,13 +59,16 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
                 };
             }
 
+            if(editLawClass != null) {
+                updatedAnnotation.lawClass = classes.find(lawClass => lawClass.name === editLawClass);
+            }
+
             setIsEditing(false);
             handleEdit(updatedAnnotation, annotation.id);
         } else {
             alert("Velden zijn leeg, vul deze in!");
         }
     };
-
 
     // Delete annotation with id
     const checkDelete = () => {
@@ -85,6 +93,35 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
         }
     };
 
+    const handleSelectLaw = async (lawClassName: any) => {
+        const selectedLawClass = classes.find(lawClass => lawClass.name === lawClassName);
+
+        if (selectedLawClass) {
+            setEditLawClass(lawClassName ?? null);
+        }
+        if (isEditing) {
+            setUpdatedAnnotation((prevAnnotation) => ({
+                ...(prevAnnotation as Annotation),
+                lawClass: lawClassName,
+            }));
+        }
+    };
+
+    const fetchClasses = async () => {
+        try {
+            const response = await fetch("http://localhost:8000/api/classes");
+            if (response.ok) {
+                const fetchedClasses = await response.json();
+                console.log("Fetched Law Classes:", fetchedClasses);
+                setClasses(fetchedClasses);
+            } else {
+                console.error("Error fetching law classes");
+            }
+        } catch (error) {
+            console.error("Error fetching law classes:", error);
+        }
+    };
+
     const fetchTerms = (reference: any) => {
         console.log(reference)
         fetch(`http://localhost:8000/api/terms/${encodeURIComponent(reference)}`)
@@ -103,8 +140,10 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
         setEditLabelText(annotation.selectedWord)
         setEditNoteText(annotation.text)
         setEditTermText(annotation?.term?.definition)
+        setEditLawClass(annotation.lawClass?.name ?? null);
         fetchTerms(annotation.selectedWord)
-    }, [annotation.selectedWord, annotation.text, annotation.term?.definition]);
+        fetchClasses();
+    }, [annotation.selectedWord, annotation.text, annotation.term?.definition, annotation.lawClass]);
 
     return (
         // Dropdown rechtsbetrekking
@@ -126,10 +165,45 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
 
                     <div className={css.iconRow}>
                         <FaEdit className={css.iconCol} id={"iconEdit"}
-                            style={isEditing ? ({ display: "none" }) : ({ display: "block" })}
-                            onClick={() => setIsEditing(true)} />
+                                style={isEditing ? ({display: "none"}) : ({display: "block"})}
+                                onClick={() => setIsEditing(true)}/>
                     </div>
 
+
+                    <div className={css.row}>
+                        <h4 className={`${css.leftCol} ${css.annotationName}`}>Wetvorm</h4>
+                        {isEditing ? (
+                            <Dropdown>
+                                <Dropdown.Toggle
+                                    className="dropdown" variant="secondary" id="dropdown-basic"
+                                    style={{
+                                        color: 'black',
+                                        backgroundColor: editLawClass
+                                            ? classes.find(law => law.name === editLawClass)?.color || ''
+                                            : '',
+                                    }}
+                                >
+                                    {editLawClass ? <>{editLawClass}</> : <>Selecteer</>}
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu className="dropdown">
+                                    {classes.map((law, index) => (
+                                        <Dropdown.Item
+                                            key={index}
+                                            onClick={() => handleSelectLaw(law.name)}
+                                            active={editLawClass === law.name}
+                                            style={{ backgroundColor: law.color, color: 'black' }}
+                                        >
+                                            {law.name}
+                                        </Dropdown.Item>
+                                    ))}
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        ) : (
+                            <h4 className={`${css.rightCol} ${css.annotationName}`}>{annotation?.lawClass?.name}</h4>
+                        )}
+
+                    </div>
 
                     <div className={css.row}>
                         <h4 className={`${css.leftCol} ${css.annotationName}`}>Label</h4>
@@ -176,7 +250,7 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
                                         <Dropdown.Item
                                             onClick={() => setEditTermText("")}
                                             active={!editTermText}  // Highlight if no term is selected
-                                            style={{ color: 'black' }}
+                                            style={{color: 'black'}}
                                         >
                                             Selecteer niets
                                         </Dropdown.Item>
@@ -185,7 +259,7 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
                                                 key={index}
                                                 onClick={() => setEditTermText(term.definition)}
                                                 active={editTermText === term.definition}
-                                                style={{ color: 'black' }}
+                                                style={{color: 'black'}}
                                             >
                                                 {term.definition}
                                             </Dropdown.Item>
@@ -226,23 +300,28 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
 
                     {
                         annotation.parentAnnotation != null ? <div className={css.row}>
-                            <h4 className={`${css.leftCol} ${css.annotationName}`}>Onderdeel van</h4>
-                            <h4 className={`${css.rightCol} ${css.annotationName} ${css.childAnnotation}`} style={{ background: annotation.parentAnnotation.lawClass?.color }}>{annotation.parentAnnotation.selectedWord}</h4>
-                        </div>
+                                <h4 className={`${css.leftCol} ${css.annotationName}`}>Onderdeel van</h4>
+                                <h4 className={`${css.rightCol} ${css.annotationName} ${css.childAnnotation}`}
+                                    style={{background: annotation.parentAnnotation.lawClass?.color}}>{annotation.parentAnnotation.selectedWord}</h4>
+                            </div>
                             : ""
                     }
 
                     {isEditing &&
                         <div className={`${css.buttonsRight}`}>
-                            <button className={`${css.save}`} onClick={() => setIsConfirmModalOpen(true)}>Opslaan</button>
+                            <button className={`${css.save}`} onClick={() => setIsConfirmModalOpen(true)}>Opslaan
+                            </button>
                             <button className={`${css.cancel}`} onClick={() => setIsEditing(false)}>Annuleer</button>
-                            <button className={`${css.delete}`} onClick={() => setIsDeleteModalOpen(true)}>Verwijderen</button>
+                            <button className={`${css.delete}`} onClick={() => setIsDeleteModalOpen(true)}>Verwijderen
+                            </button>
                         </div>
                     }
                 </div>
             }
 
-            <Modal show={isConfirmModalOpen} onHide={() => { setIsConfirmModalOpen(!isConfirmModalOpen) }}>
+            <Modal show={isConfirmModalOpen} onHide={() => {
+                setIsConfirmModalOpen(!isConfirmModalOpen)
+            }}>
                 <Modal.Header closeButton>
                     <Modal.Title>Wil je deze annotatie bijwerken?</Modal.Title>
                 </Modal.Header>
@@ -251,7 +330,9 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
                 </Modal.Body>
             </Modal>
 
-            <Modal show={isDeleteModalOpen} onHide={() => { setIsDeleteModalOpen(!isDeleteModalOpen) }}>
+            <Modal show={isDeleteModalOpen} onHide={() => {
+                setIsDeleteModalOpen(!isDeleteModalOpen)
+            }}>
                 <Modal.Header closeButton>
                     <Modal.Title>Wil je deze annotatie verwijderen?</Modal.Title>
                 </Modal.Header>
