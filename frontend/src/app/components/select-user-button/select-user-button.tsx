@@ -13,9 +13,9 @@ export default function SelectUserButton() {
     const [users, setUsers] = useState<User[]>([]);
     const [roles, setRoles] = useState<String[]>();
     const [newUser, setNewUser] = useState<User>({
-        "id": 0,
-        "name": "",
-        "role": ""
+        id: 0,
+        name: "",
+        role: ""
     });
     const [selectedUser, setSelectedUser] = useState<Number>();
 
@@ -23,10 +23,15 @@ export default function SelectUserButton() {
         const fetchUsers = async () => {
             try {
                 const allUsers = await getUsers();
-                setUsers(allUsers);
 
-
-                if (localStorage.getItem('user') == "undefined") {
+                if (allUsers.length == 0) {
+                    await handleNewUser({ id: 0, name: "Admin", role: "Admin" });
+                    setShowUserSelectModal(false);
+                } else {
+                    setUsers(allUsers);
+                }
+                
+                if (localStorage.getItem('user') == "undefined" || localStorage.getItem('user') == null) {
                     handleSelectUser(allUsers[0]);
                 } else {
                     const userJson = localStorage.getItem('user');
@@ -59,9 +64,11 @@ export default function SelectUserButton() {
         setShowNewUserModal(true);
     }
 
-    const handleNewUser = async () => {
-        if (newUser.name && newUser.role) {
-            if (await createUser(newUser)) {
+    const handleNewUser = async (insertedNewUser: User | undefined = undefined) => {
+        const user = insertedNewUser != undefined ? insertedNewUser : newUser;
+
+        if (user.name && user.role) {
+            if (await createUser(user)) {
                 const allUsers = await getUsers();
                 setUsers(allUsers);
                 setShowUserSelectModal(true);
@@ -73,6 +80,16 @@ export default function SelectUserButton() {
     const handleDelete = async (id: number) => {
         if (await deleteUser(id)) {
             setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
+            const userJson = localStorage.getItem('user');
+            if (userJson !== null) {
+                const user = JSON.parse(userJson);
+                
+                if (user.id == id && users.length > 1) {
+                    handleSelectUser(users[0]);
+                } else if (user.id == id) {
+                    localStorage.removeItem('user');
+                }
+            }
         }
     }
 
@@ -125,7 +142,7 @@ export default function SelectUserButton() {
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
-                    <button className='create-user' onClick={handleNewUser}>Opslaan</button>
+                    <button className='create-user' onClick={() => { handleNewUser() }}>Opslaan</button>
                 </Modal.Footer>
             </Modal>
         </>;
