@@ -2,11 +2,6 @@ html:has(.left-column) {
   overflow: hidden;
 }
 
-.navbar {
-  background-color: #007BC0;
-  height: 50px;
-}
-
 #annoteren {
   font-size: 20px;
   display: block;
@@ -19,13 +14,6 @@ html:has(.left-column) {
   display: flex;
   gap: 20px;
   padding: 20px;
-}
-
-.navbar-title {
-  color: #fff;
-  padding-left: 10px;
-  font-weight: bold;
-  font-size: 22px;
 }
 
 .dropdown {

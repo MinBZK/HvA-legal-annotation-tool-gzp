@@ -10,18 +10,6 @@
   font-size: 24px;
   color: #333;
 }
-.navbar {
-  background-color: #007BC0;
-  height: 50px;
-  font-size: 22px;
-}
-
-.navbar-title {
-  color: #fff;
-  padding-left: 10px;
-  font-weight: bold;
-  font-size: 22px;
-}
 
 .doc-text {
   color: #154270 !important;
