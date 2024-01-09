@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/users")
-public class userController {
+public class UserController {
     @Autowired
     private UserRepository userRepository;
 
@@ -40,9 +40,14 @@ public class userController {
     }
 
     @PostMapping("")
-    @JsonView(Views.Basic.class)
     public ResponseEntity<String> addUser(@RequestBody User user) {
         userRepository.save(user);
         return new ResponseEntity<>("User saved successfully", HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long userId) {
+        userRepository.deleteById(userId);
+        return new ResponseEntity<>("User deleted successfully", HttpStatus.CREATED);
     }
 }

@@ -8,7 +8,7 @@ import { getMaxXmlCount, getProjectCounts, getProjects, uploadXML } from './serv
 import { Project } from "./models/project";
 import { BsDownload } from "react-icons/bs";
 import Link from 'next/link';
-import Navigation from '../app/components/navbar/navbar';
+import Navigation from './components/navigation/navigation';
 
 export default function Home() {
 

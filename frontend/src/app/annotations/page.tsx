@@ -10,7 +10,7 @@ import CreateAnnotation from "./create-annotation/create-annotation";
 import { useRouter } from "next/navigation";
 import { Button } from "react-bootstrap";
 import { BsArrowLeft } from 'react-icons/bs';
-import Navigation from '../components/navbar/navbar';
+import Navigation from '../components/navigation/navigation';
 
 const AnnotationPage = () => {
 
