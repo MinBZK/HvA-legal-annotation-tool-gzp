@@ -6,6 +6,7 @@ import com.LAT.backend.repository.UserRepository;
 import com.LAT.backend.views.Views;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,5 +37,12 @@ public class userController {
     @JsonView(Views.Basic.class)
     public User.Role[] getRoles() {
         return User.Role.values();
+    }
+
+    @PostMapping("")
+    @JsonView(Views.Basic.class)
+    public ResponseEntity<String> addUser(@RequestBody User user) {
+        userRepository.save(user);
+        return new ResponseEntity<>("User saved successfully", HttpStatus.CREATED);
     }
 }
