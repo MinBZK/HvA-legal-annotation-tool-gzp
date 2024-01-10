@@ -1,16 +1,55 @@
 "use client"; // This is a client component 👈🏽
 
-import {useEffect} from "react";
+import React, {useEffect, useState} from "react";
+import {Term} from "@/app/models/term";
+import '../static/terms.css';
+
 
 const TermsPage = () => {
+    const [terms, setTerms] = useState<Term[]>()
 
     useEffect(() => {
-
+        fetchTerms()
     }, [])
+
+    const fetchTerms = async () => {
+        try {
+            const response = await fetch('http://localhost:8000/api/terms');
+            console.log(response.body)
+            if (response.ok) {
+                const theterms = await response.json();
+                console.log(theterms)
+                setTerms(theterms)
+            } else {
+                console.error('Response not ok', response);
+                throw new Error(`Network response was not ok: ${response.statusText}`);
+            }
+        } catch (error) {
+
+        }
+    }
 
     return (
         <>
-            <h4>Terms </h4>
+            <nav className="navbar">
+                <div className="navbar-title">Legal Annotation Tool</div>
+            </nav>
+
+            <div className={"d-flex justify-content-center"}>
+                <h2 className={"doc-text m-3"}>Begrippen</h2>
+            </div>
+
+            {terms && terms.map((value, index) =>
+                <div key={index}>
+                    <div className={"term-block"}>
+                        <h5>"{value.definition}" staat in &nbsp;
+                            <span style={{textDecoration: "underline"}}>"{value.annotations[0].project.title}"</span>
+                        </h5>
+                        <h5 className={"reference"}>Refereert naar "{value.reference}"</h5>
+                    </div>
+
+                </div>
+            )}
         </>
     )
 }

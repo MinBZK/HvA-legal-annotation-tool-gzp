@@ -1,0 +1,31 @@
+.navbar {
+    background-color: #007BC0;
+    height: 50px;
+}
+
+.navbar-title {
+    color: #fff;
+    padding-left: 10px;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.doc-text {
+    color: #154270 !important;
+    font-size: 22px !important;
+    font-weight: bold;
+}
+
+.reference {
+    text-indent: 30px;
+}
+
+.term-block {
+    color: #444444;
+    margin: 10px;
+    padding: 15px;
+    background: #FBFBFB;
+    border: 1px solid #ebebeb;
+    border-radius: 10px;
+
+}
