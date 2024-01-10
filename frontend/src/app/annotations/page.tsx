@@ -155,6 +155,38 @@ const AnnotationPage = () => {
         }
     }
 
+    /**
+     * Extract all annotation tags from the XML, loop trough them and perform the api calls to fetch them all.
+     */
+    const retrieveAnnotations = async () => {
+        let xmlDoc = projectData?.xml_content
+        if (xmlDoc == null) return;
+
+        // Convert the XML string to a DOM object
+        let parser = new DOMParser();
+        let xmlDom = parser.parseFromString(xmlDoc, "text/xml");
+
+        const annotations = xmlDom.getElementsByTagName('annotation');
+        let temporaryAnnotations = [];
+
+        // Loop trough the annotations and display the id
+        // @ts-ignore
+        for (let annotation of annotations) {
+            const id = annotation.getAttribute('id');
+            if (id) {
+                console.log('hallo ik ben een uil')
+                const response = await fetch(`http://localhost:8000/api/annotations/${id}`);
+                if (response.ok) {
+                    const annotationData = await response.json();
+                    temporaryAnnotations.push(annotationData);
+                } else {
+                    console.error('Failed to fetch annotation data');
+                }
+            }
+        }
+
+        return temporaryAnnotations;
+    }
 
     return (
         <>
@@ -181,7 +213,7 @@ const AnnotationPage = () => {
                         />
                     ) : (
                         // Render AnnotationView when text is not selected
-                        <AnnotationView onAnnotationDelete={handleAnnotationDeleted} />
+                        <AnnotationView onAnnotationDelete={handleAnnotationDeleted} retrieveAnnotations={retrieveAnnotations} />
                     )}
                 </section>
             </main>

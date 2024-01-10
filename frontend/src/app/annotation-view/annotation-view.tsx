@@ -8,27 +8,33 @@ import Image from "next/image"
 
 interface AnnotationViewProps {
     onAnnotationDelete: (annotationId: number) => void;
+    retrieveAnnotations: () => Promise<Annotation[] | undefined>;
 }
 
-const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete}) => {
+const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAnnotations}) => {
     const [annotations, setAnnotations] = useState<Annotation[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const fetchAnnotations = async (projectId: any) => {
-        try {
-            const response = await fetch(
-                `http://localhost:8000/api/annotations/project/${projectId}`
-            );
+        // try {
+        //     const response = await fetch(
+        //         `http://localhost:8000/api/annotations/project/${projectId}`
+        //     );
+        //
+        //     if (response.ok) {
+        //         const data = await response.json();
+        //         setAnnotations(data);
+        //     } else {
+        //         console.error("Error fetching annotations");
+        //     }
+        // } catch (error) {
+        //     console.error("Error fetching annotations:", error);
+        // }
+        let annotations = await retrieveAnnotations();
 
-            if (response.ok) {
-                const data = await response.json();
-                setAnnotations(data);
-            } else {
-                console.error("Error fetching annotations");
-            }
-        } catch (error) {
-            console.error("Error fetching annotations:", error);
-        }
+        // S2345: Argument of type Annotation[] | undefined is not assignable to parameter of type SetStateAction<Annotation[]>
+        // @ts-ignore
+        setAnnotations(annotations);
     };
 
     useEffect(() => {
