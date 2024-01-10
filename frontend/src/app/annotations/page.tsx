@@ -160,7 +160,7 @@ const AnnotationPage = () => {
      */
     const retrieveAnnotations = async () => {
         let xmlDoc = projectData?.xml_content
-        if (xmlDoc == null) return;
+        if (!xmlDoc) return []; // Return an empty array if xmlDoc is null
 
         // Convert the XML string to a DOM object
         let parser = new DOMParser();
@@ -170,11 +170,9 @@ const AnnotationPage = () => {
         let temporaryAnnotations = [];
 
         // Loop trough the annotations and display the id
-        // @ts-ignore
         for (let annotation of annotations) {
             const id = annotation.getAttribute('id');
             if (id) {
-                console.log('hallo ik ben een uil')
                 const response = await fetch(`http://localhost:8000/api/annotations/${id}`);
                 if (response.ok) {
                     const annotationData = await response.json();

@@ -8,14 +8,16 @@ import Image from "next/image"
 
 interface AnnotationViewProps {
     onAnnotationDelete: (annotationId: number) => void;
-    retrieveAnnotations: () => Promise<Annotation[] | undefined>;
+    retrieveAnnotations: () => Promise<Annotation[]>;
+    isProjectDataLoaded: boolean;
+
 }
 
-const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAnnotations}) => {
+const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAnnotations, isProjectDataLoaded }) => {
     const [annotations, setAnnotations] = useState<Annotation[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const fetchAnnotations = async (projectId: any) => {
+    const fetchAnnotations = async () => {
         // try {
         //     const response = await fetch(
         //         `http://localhost:8000/api/annotations/project/${projectId}`
@@ -30,20 +32,24 @@ const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAn
         // } catch (error) {
         //     console.error("Error fetching annotations:", error);
         // }
-        let annotations = await retrieveAnnotations();
 
-        // S2345: Argument of type Annotation[] | undefined is not assignable to parameter of type SetStateAction<Annotation[]>
-        // @ts-ignore
-        setAnnotations(annotations);
+        let annotations = await retrieveAnnotations();
+        if (annotations) {
+            setAnnotations(annotations);
+        } else {
+            // Handle the undefined case - either do nothing or set to an empty array
+            // setAnnotations([]);
+            console.error("Geen annotaties opgehaald");
+        }
     };
 
     useEffect(() => {
         const fetchIdAndAnnotations = async () => {
             try {
-                const searchParams = new URLSearchParams(window.location.search);
-                const projectId = parseInt(searchParams.get("id") as string) || 2;
+                // Voer fetchAnnotations uit wanneer de data geladen is
+                fetchAnnotations();
 
-                await fetchAnnotations(projectId);
+
             } catch (error) {
                 console.error("Error fetching annotations:", error);
             }
@@ -68,7 +74,7 @@ const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAn
 
             if (response.ok) {
                 alert("Annotatie succesvol bijgewerkt");
-                fetchAnnotations(annotationDetails.project.id); // Refetch annotations
+                fetchAnnotations(); // Refetch annotations
             } else {
                 alert("Fout annotatie bijwerken");
             }
@@ -99,10 +105,7 @@ const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAn
                 // If everything went well, remove the annotation tags from the XML
                 onAnnotationDelete(id)
 
-                // get the project id
-                const searchParams = new URLSearchParams(window.location.search);
-                const projectId = parseInt(searchParams.get("id") as string);
-                fetchAnnotations(projectId); // Refetch annotations to update the list
+                fetchAnnotations(); // Refetch annotations to update the list
             } else {
                 alert("Fout annotatie verwijderen");
             }
