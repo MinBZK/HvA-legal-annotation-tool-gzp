@@ -15,6 +15,7 @@ import Navigation from '../components/navigation/navigation';
 const AnnotationPage = () => {
 
     const [projectData, setProjectData] = useState<Project | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
     const [isTextSelected, setIsTextSelected] = useState(false);
     const [selectedText1, setSelectedText1] = useState("");
     const [startOffset1, setStartOffset1] = useState(0);
@@ -39,11 +40,14 @@ const AnnotationPage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                setIsLoading(true)
                 const data = await getProjectById(id) as Project;
                 setProjectData(data);
             } catch (error) {
                 // Handle error
                 console.error('Error fetching project data:', error);
+            } finally {
+                setIsLoading(false);
             }
         };
 
@@ -169,7 +173,8 @@ const AnnotationPage = () => {
         const annotations = xmlDom.getElementsByTagName('annotation');
         let temporaryAnnotations = [];
 
-        // Loop trough the annotations and display the id
+        // Loop through the annotations and display the id
+        // @ts-ignore
         for (let annotation of annotations) {
             const id = annotation.getAttribute('id');
             if (id) {
@@ -211,7 +216,11 @@ const AnnotationPage = () => {
                         />
                     ) : (
                         // Render AnnotationView when text is not selected
-                        <AnnotationView onAnnotationDelete={handleAnnotationDeleted} retrieveAnnotations={retrieveAnnotations} />
+                        <AnnotationView
+                            onAnnotationDelete={handleAnnotationDeleted}
+                            retrieveAnnotations={retrieveAnnotations}
+                            isLoading={isLoading}
+                        />
                     )}
                 </section>
             </main>

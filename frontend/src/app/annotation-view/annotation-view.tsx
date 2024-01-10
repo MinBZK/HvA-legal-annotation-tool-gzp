@@ -5,57 +5,37 @@ import AnnotatedRow from "@/app/annotation-view/annotated-row/annotated-row";
 import { Annotation } from "@/app/models/annotation";
 import css from "./annotation-view.module.css";
 import Image from "next/image"
+import {Project} from "@/app/models/project";
 
 interface AnnotationViewProps {
     onAnnotationDelete: (annotationId: number) => void;
     retrieveAnnotations: () => Promise<Annotation[]>;
-    isProjectDataLoaded: boolean;
-
+    isLoading: boolean;
 }
 
-const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAnnotations, isProjectDataLoaded }) => {
+const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAnnotations, isLoading}) => {
     const [annotations, setAnnotations] = useState<Annotation[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const fetchAnnotations = async () => {
-        // try {
-        //     const response = await fetch(
-        //         `http://localhost:8000/api/annotations/project/${projectId}`
-        //     );
-        //
-        //     if (response.ok) {
-        //         const data = await response.json();
-        //         setAnnotations(data);
-        //     } else {
-        //         console.error("Error fetching annotations");
-        //     }
-        // } catch (error) {
-        //     console.error("Error fetching annotations:", error);
-        // }
-
         let annotations = await retrieveAnnotations();
+
         if (annotations) {
             setAnnotations(annotations);
         } else {
-            // Handle the undefined case - either do nothing or set to an empty array
-            // setAnnotations([]);
             console.error("Geen annotaties opgehaald");
         }
     };
 
     useEffect(() => {
-        const fetchIdAndAnnotations = async () => {
-            try {
-                // Voer fetchAnnotations uit wanneer de data geladen is
-                fetchAnnotations();
-
-
-            } catch (error) {
-                console.error("Error fetching annotations:", error);
+        (async () => {
+            console.log("isLoading", isLoading)
+            if (!isLoading) {
+                await fetchAnnotations();
             }
-        };
-        fetchIdAndAnnotations();
-    }, []); // The empty dependency array ensures that this effect runs only once, similar to componentDidMount
+        })();
+        // The isLoading dependency is used to make sure the annotations are only fetched once the project data is loaded
+    }, [isLoading]);
 
     // Update the handleEdit function to include a term parameter
     const handleEdit = async (annotationDetails: Annotation, id: number) => {
