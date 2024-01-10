@@ -120,7 +120,7 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection }) => {
         {renderStyles()}
       </style>
       <>
-        <ExportXMLButton xmlData={project.xml_content} />
+        <ExportXMLButton xmlData={project.xml_content} projectTitle={project.title} />
 
         <p className="xml-content" onMouseUp={handleShow} dangerouslySetInnerHTML={{ __html: renderXML && renderXMLContent() }} />
       </>
