@@ -13,19 +13,18 @@ const TermsPage = () => {
     }, [])
 
     const fetchTerms = async () => {
+        // fetching the terms
         try {
             const response = await fetch('http://localhost:8000/api/terms');
-            console.log(response.body)
+
             if (response.ok) {
-                const theterms = await response.json();
-                console.log(theterms)
-                setTerms(theterms)
+                setTerms(await response.json());
             } else {
                 console.error('Response not ok', response);
                 throw new Error(`Network response was not ok: ${response.statusText}`);
             }
         } catch (error) {
-
+            console.error('Error fetching max XML count:', error);
         }
     }
 
