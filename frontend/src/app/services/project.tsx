@@ -1,7 +1,7 @@
 // POST METHODS
 
 export async function uploadXML(xmlContent: String, title: String, selectedArticles: any) {
-    const response = await fetch(`http://localhost:8000/api/saveXml`, {
+    const response = await fetch(`${process.env.API_URL}/saveXml`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -19,7 +19,7 @@ export async function uploadXML(xmlContent: String, title: String, selectedArtic
 // GET METHODS
 
 export async function getProjects() {
-    const response = await fetch(`http://localhost:8000/api/projects`, {
+    const response = await fetch(`${process.env.API_URL}/projects`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -30,7 +30,7 @@ export async function getProjects() {
 }
 
 export async function getProjectById(id: number) {
-    const response = await fetch(`http://localhost:8000/api/project/${id}`, {
+    const response = await fetch(`${process.env.API_URL}/project/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ export async function getProjectById(id: number) {
 }
 
 export async function getMaxXmlCount() {
-    const response = await fetch(`http://localhost:8000/api/maxXmlCount`, {
+    const response = await fetch(`${process.env.API_URL}/maxXmlCount`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ export async function getMaxXmlCount() {
 }
 
 export async function getProjectCounts() {
-    const response = await fetch(`http://localhost:8000/api/projectCounts`, {
+    const response = await fetch(`${process.env.API_URL}/projectCounts`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

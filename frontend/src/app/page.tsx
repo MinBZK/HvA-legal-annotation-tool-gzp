@@ -90,7 +90,7 @@ export default function Home() {
 
   const fetchMaxXmlCount = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/maxXmlCount');
+      const response = await fetch(`${process.env.API_URL}/maxXmlCount`);
       if (response.ok) {
         const maxCount = await response.json();
         setMaxXmlCount(maxCount);
@@ -117,6 +117,7 @@ export default function Home() {
     try {
       setLoading(true); // Set loading to true when starting the fetch
       const projectsData = await getProjects();
+      
       setProjects(projectsData);
     } catch (error) {
       console.error('Error fetching projects:', error);
@@ -243,7 +244,7 @@ export default function Home() {
 
   const handleDelete = async (id: number) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/project/${id}/delete`, {
+      const response = await fetch(`${process.env.API_URL}/project/${id}/delete`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

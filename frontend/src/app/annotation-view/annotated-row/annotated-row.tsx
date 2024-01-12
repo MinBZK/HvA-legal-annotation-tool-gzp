@@ -87,7 +87,7 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
 
     const fetchTerms = (reference: any) => {
         console.log(reference)
-        fetch(`http://localhost:8000/api/terms/${encodeURIComponent(reference)}`)
+        fetch(`${process.env.API_URL}/terms/${encodeURIComponent(reference)}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch terms');

@@ -137,7 +137,7 @@ const AnnotationPage = () => {
                 ...projectData,
             };
 
-            const response = await fetch('http://localhost:8000/api/saveXml', {
+            const response = await fetch('${process.env.API_URL}/saveXml', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
