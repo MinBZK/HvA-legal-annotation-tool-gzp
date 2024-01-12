@@ -6,6 +6,7 @@ import {BsDownload} from "react-icons/bs";
 
 type ExportXMLButtonProps = {
     xmlData: string; // De XML-data die geëxporteerd moet worden
+    projectTitle: string;
 };
 
 const ExportXMLButton: React.FC<ExportXMLButtonProps> = ({ xmlData, projectTitle }) => {

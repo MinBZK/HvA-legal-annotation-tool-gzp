@@ -8,13 +8,12 @@ type articleSelectionModalProps = {
     xmlArticles: HTMLElement[];
     handleArticleSelect: any;
     cancelArticleSelect: any;
+    prevSelectedArticles: boolean[];
 };
 
-const ArticleSelectionModal: React.FC<articleSelectionModalProps> = ({ xmlArticles, handleArticleSelect, cancelArticleSelect }) => {
+const ArticleSelectionModal: React.FC<articleSelectionModalProps> = ({ xmlArticles, handleArticleSelect, cancelArticleSelect, prevSelectedArticles = [] }) => {
 
-    const [selectedArticlesIds, setSelectedArticleIds] = useState<string[]>([]);
-    const [articleChecked, setArticleChecked] = useState<boolean[]>([]);
-
+    const [articleChecked, setArticleChecked] = useState<boolean[]>(prevSelectedArticles);
 
     const collectSelectedArticles = (isSelectedAll?: boolean) => {
         if (isSelectedAll) {
@@ -29,7 +28,6 @@ const ArticleSelectionModal: React.FC<articleSelectionModalProps> = ({ xmlArticl
             }
 
             if (list.length > 0) {
-                setSelectedArticleIds(list)
                 setTimeout(() => {
                     handleArticleSelect(list);
                 }, 1000);
