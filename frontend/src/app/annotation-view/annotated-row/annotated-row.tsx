@@ -8,6 +8,7 @@ import {Annotation} from "@/app/models/annotation";
 import {Term} from "@/app/models/term";
 import {LawClass} from "@/app/models/lawclass";
 import {Relation} from "@/app/models/relation";
+// import fetchTerms from "@/app/annotations/create-annotation/create-annotation"
 
 interface AnnotationProps {
     annotation: Annotation;
@@ -93,26 +94,11 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
         }
     };
 
-    const handleSelectLaw = async (lawClassName: any) => {
-        const selectedLawClass = classes.find(lawClass => lawClass.name === lawClassName);
-
-        if (selectedLawClass) {
-            setEditLawClass(lawClassName ?? null);
-        }
-        if (isEditing) {
-            setUpdatedAnnotation((prevAnnotation) => ({
-                ...(prevAnnotation as Annotation),
-                lawClass: lawClassName,
-            }));
-        }
-    };
-
     const fetchClasses = async () => {
         try {
             const response = await fetch("http://localhost:8000/api/classes");
             if (response.ok) {
                 const fetchedClasses = await response.json();
-                console.log("Fetched Law Classes:", fetchedClasses);
                 setClasses(fetchedClasses);
             } else {
                 console.error("Error fetching law classes");
@@ -123,7 +109,6 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
     };
 
     const fetchTerms = (reference: any) => {
-        console.log(reference)
         fetch(`http://localhost:8000/api/terms/${encodeURIComponent(reference)}`)
             .then(response => {
                 if (!response.ok) {
@@ -135,14 +120,136 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
             .catch(error => console.error('Error fetching terms:', error));
     }
 
+    const handleSelectLaw = async (lawClassName: any) => {
+        const selectedLawClass = classes.find((lawClass) => lawClass.name === lawClassName);
+
+        if (selectedLawClass) {
+            setEditLawClass(lawClassName ?? null);
+        }
+
+        if (isEditing) {
+            try {
+                // Fetch existing subannotations for the annotation's current law class
+                const existingSubannotationsResponse = await fetch(`http://localhost:8000/api/annotations/subannotations/${annotation.id}`);
+
+                if (existingSubannotationsResponse.ok) {
+                    const existingSubannotations = await existingSubannotationsResponse.json();
+
+                    // Update or delete existing subannotations
+                    const outdatedSubannotationsIds: number[] = []; // Store IDs of outdated subannotations
+
+                    for (const subannotation of existingSubannotations) {
+                        const updatedSubannotation = { ...subannotation, lawClassId: selectedLawClass?.id };
+                        const updateSubannotationResponse = await fetch(
+                            `http://localhost:8000/api/annotations/subannotations/${subannotation.id}`,
+                            {
+                                method: 'PUT',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify(updatedSubannotation),
+                            }
+                        );
+
+                        if (!updateSubannotationResponse.ok) {
+                            console.error(
+                                'Failed to update subannotation:',
+                                updateSubannotationResponse.status,
+                                updateSubannotationResponse.statusText
+                            );
+                        } else {
+                            // Store ID of updated subannotation
+                            outdatedSubannotationsIds.push(subannotation.id);
+                        }
+                    }
+
+                    // Update the annotation state after changing the law class
+                    const updatedAnnotationState = {
+                        ...annotation,
+                        lawClass: selectedLawClass, // Update the law class
+                    };
+                    setUpdatedAnnotation(updatedAnnotationState);
+
+                    // Declare and initialize newSubannotations
+                    const newSubannotations: Annotation[] = []; // Replace this with the logic to generate new subannotations
+
+                    // If there are new subannotations for the updated law class, create them
+                    for (const newSubannotation of newSubannotations) {
+                        const createSubannotationResponse = await fetch(
+                            `http://localhost:8000/api/annotations/subannotations`,
+                            {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    ...newSubannotation,
+                                    annotationId: annotation.id,
+                                    lawClassId: selectedLawClass?.id,
+                                }),
+                            }
+                        );
+
+                        if (!createSubannotationResponse.ok) {
+                            console.error(
+                                'Failed to create new subannotation:',
+                                createSubannotationResponse.status,
+                                createSubannotationResponse.statusText
+                            );
+                        }
+                    }
+
+                    // Delete outdated subannotations (related to the old law class)
+                    for (const outdatedSubannotationId of outdatedSubannotationsIds) {
+                        const deleteSubannotationResponse = await fetch(
+                            `http://localhost:8000/api/annotations/subannotations/${outdatedSubannotationId}`,
+                            {
+                                method: 'DELETE',
+                            }
+                        );
+
+                        if (!deleteSubannotationResponse.ok) {
+                            console.error(
+                                'Failed to delete outdated subannotation:',
+                                deleteSubannotationResponse.status,
+                                deleteSubannotationResponse.statusText
+                            );
+                        }
+                    }
+                    setOpen(true);
+                } else {
+                    console.error(
+                        'Failed to fetch existing subannotations:',
+                        existingSubannotationsResponse.status,
+                        existingSubannotationsResponse.statusText
+                    );
+                }
+            } catch (error) {
+                console.error('Error updating subannotations:', error);
+            }
+        }
+    };
+
+    useEffect(() => {
+        fetchClasses();
+    }, []);
+
+    useEffect(() => {
+        if (annotation.selectedWord) {
+            fetchTerms(annotation.selectedWord);
+        }
+    }, [annotation.selectedWord]);
+
+
     // Update UI when annotation changes
     useEffect(() => {
         setEditLabelText(annotation.selectedWord)
         setEditNoteText(annotation.text)
         setEditTermText(annotation?.term?.definition)
         setEditLawClass(annotation.lawClass?.name ?? null);
-        fetchTerms(annotation.selectedWord)
-        fetchClasses();
+        setUpdatedAnnotation(annotation);
+        // fetchTerms(annotation.selectedWord)
+        // fetchClasses();
     }, [annotation.selectedWord, annotation.text, annotation.term?.definition, annotation.lawClass]);
 
     return (
@@ -169,7 +276,7 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
                                 onClick={() => setIsEditing(true)}/>
                     </div>
 
-
+                    {/*law class dropdown*/}
                     <div className={css.row}>
                         <h4 className={`${css.leftCol} ${css.annotationName}`}>Wetvorm</h4>
                         {isEditing ? (
