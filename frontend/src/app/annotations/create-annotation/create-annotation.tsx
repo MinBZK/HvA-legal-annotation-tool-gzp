@@ -181,7 +181,6 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
     };
 
     const fetchTerms = (reference: any) => {
-        console.log(reference)
         fetch(`http://localhost:8000/api/terms/${encodeURIComponent(reference)}`)
             .then(response => {
             if (!response.ok) {

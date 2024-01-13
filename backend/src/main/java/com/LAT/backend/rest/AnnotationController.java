@@ -182,16 +182,4 @@ public class AnnotationController {
     public Iterable<Annotation> getChildAnnotationsOfParentById(@PathVariable Integer id) {
         return annotationRepository.getAnnotationsFromParentIdJPQL(id);
     }
-
-    @GetMapping("/subannotations/{annotationId}")
-    public ResponseEntity<List<Annotation>> getSubAnnotationsByAnnotationId(@PathVariable Integer annotationId) {
-        Optional<Annotation> annotation = annotationRepository.findById(annotationId);
-        if (!annotation.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        List<Annotation> subAnnotations = annotationRepository.findByParentAnnotation(annotation.get());
-        return ResponseEntity.ok(subAnnotations);
-    }
-
 }

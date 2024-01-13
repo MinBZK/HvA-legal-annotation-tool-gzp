@@ -10,5 +10,6 @@ export interface Annotation {
     project: Project
     startOffset?: number,
     term: Term | undefined,
-    parentAnnotation: Annotation
+    parentAnnotation: Annotation,
+    subAnnotation: Annotation[];
 }
