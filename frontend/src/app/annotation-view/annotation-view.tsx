@@ -33,7 +33,6 @@ const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAn
 
     useEffect(() => {
         (async () => {
-            console.log("isLoading", isLoading)
             if (!isLoading) {
                 await fetchAnnotations();
             }
