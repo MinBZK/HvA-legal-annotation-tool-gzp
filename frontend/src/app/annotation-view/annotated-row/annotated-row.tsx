@@ -129,38 +129,52 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
 
         if (selectedLawClass) {
             try {
-                // Fetch subannotations voor de huidige annotatie (ouder)
+                const lawClassId = selectedLawClass.id;
                 const subAnnotationsResponse = await fetch(`http://localhost:8000/api/annotations/children/${annotation.id}`);
+
                 if (subAnnotationsResponse.ok) {
                     const childAnnotations = await subAnnotationsResponse.json();
+                    console.log("childAnnotations:", childAnnotations);
 
-                    // Voer je logica uit als er resultaten zijn voor getChildAnnotationsOfParentById
+                    setEditLawClass(lawClassName ?? null);
+
                     if (childAnnotations.length > 0) {
                         console.log("Resultaten gevonden bij getChildAnnotationsOfParentById:", childAnnotations);
 
-                        // Loop door de resultaten en verwijder de subannotations van de huidige lawclass
                         for (const childAnnotation of childAnnotations) {
-                            const deleteChildAnnotationResponse = await fetch(
-                                `http://localhost:8000/api/annotations/deleteannotation/${childAnnotation.id}`,
-                                {
-                                    method: 'DELETE',
-                                }
-                            );
+                            console.log("2");
 
-                            if (!deleteChildAnnotationResponse.ok) {
-                                console.error(
-                                    'Failed to delete child annotation:',
-                                    deleteChildAnnotationResponse.status,
-                                    deleteChildAnnotationResponse.statusText
+                            if (childAnnotation.lawClassId === lawClassId) {
+                                const indexToDelete = subannotations.findIndex(sub => sub.id === childAnnotation.id);
+                                console.log("3");
+
+                                if (indexToDelete !== -1) {
+                                    setSubannotations(prevSubannotations => {
+                                        const updatedSubannotations = [...prevSubannotations];
+                                        updatedSubannotations.splice(indexToDelete, 1);
+                                        return updatedSubannotations;
+                                    });
+                                }
+
+                                const deleteChildAnnotationResponse = await fetch(
+                                    `http://localhost:8000/api/annotations/deleteannotation/${childAnnotation.id}`,
+                                    {
+                                        method: 'DELETE',
+                                    }
                                 );
+
+                                if (!deleteChildAnnotationResponse.ok) {
+                                    console.error(
+                                        'Failed to delete child annotation:',
+                                        deleteChildAnnotationResponse.status,
+                                        deleteChildAnnotationResponse.statusText
+                                    );
+                                }
                             }
                         }
                     } else {
                         console.log("Geen resultaten gevonden bij getChildAnnotationsOfParentById");
                     }
-
-                    // Nu kun je de lawclass naam wijzigen
-                    setEditLawClass(lawClassName ?? null);
                 } else {
                     console.error(
                         'Failed to fetch subannotations:',
@@ -173,6 +187,11 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
             }
         }
     };
+
+
+
+
+
 
 
     // useEffect(() => {
@@ -195,7 +214,7 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
         setUpdatedAnnotation(annotation);
         fetchTerms(annotation.selectedWord)
         fetchClasses();
-        handleSelectLaw(annotation.lawClass?.name);
+        // handleSelectLaw(annotation.lawClass?.name);
     }, [annotation.selectedWord, annotation.text, annotation.term?.definition, annotation.lawClass]);
 
     return (
