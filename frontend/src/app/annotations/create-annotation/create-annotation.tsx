@@ -75,6 +75,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
     const [showSubModal, setSubShowModal] = useState(false);
     const [mainAnnotationSaved, setMainAnnotationSaved] = useState(null);
     const [existingChildren, setExistingChildren] = useState<number[]>([]);
+    const [showWarningModal, setShowWarningModal] = useState(false);
+    const [showInputWarningModal, setShowInputWarningModal] = useState(false);
 
     useEffect(() => {
         fetchId();
@@ -220,7 +222,22 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
     };
 
     const handleFinish = () => {
+        const mandatoryRelations = relations.filter(relation => relation.cardinality.split("_")[0] === "V");
+
+        const areAllMandatoryRelationshipsMade = mandatoryRelations.every(relation => {
+            console.log(relation)
+            console.log(existingChildren)
+            console.log(existingChildren.includes(relation.subClass.id))
+            return existingChildren.includes(relation.subClass.id);
+        });
+
+        if (!areAllMandatoryRelationshipsMade) {
+            setShowWarningModal(true);
+            return;
+        }
+
         setLawClassError(false);
+        setExistingChildren([]);
         onClose();
     }
 
@@ -290,14 +307,11 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
         }
         setLawClassError(false);
 
-        await fetchExistingChildren(annotation);
-
         // Save or retrieve the main annotation
         let mainAnnotation: null;
 
         if (mainAnnotationSaved) {
             mainAnnotation = mainAnnotationSaved;
-            // await fetchExistingChildren(mainAnnotationSaved);
         } else {
             mainAnnotation = await saveAnnotationToBackend({
                 id: null,
@@ -311,14 +325,13 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
             if (mainAnnotation) {
                 // Set mainAnnotationSaved to avoid saving it again
                 setMainAnnotationSaved(mainAnnotation);
-                // await fetchExistingChildren(mainAnnotation);
             } else {
                 console.error('Failed to save main annotation');
                 return;
             }
         }
         // console.log(annotation.selectedWord, annotation.startOffset, annotation.term?.definition)
-        if (annotation?.selectedWord && typeof annotation.startOffset === 'number' && !mainAnnotation) {
+        if (annotation?.selectedWord && typeof annotation.startOffset === 'number') {
             annotateSelectedText(annotation.selectedWord, mainAnnotation.id, annotation.startOffset, annotation.term.definition);
             await updateXMLInDatabase();
             // Trigger the callback to re-render LoadXML
@@ -365,6 +378,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
             }
 
         }
+        await fetchExistingChildren(mainAnnotation);
+
         handleClose();
 
     };
@@ -476,23 +491,29 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
     };
 
     const fetchExistingChildren = async (mainAnnotation: any) => {
-        // if (mainAnnotationSaved) {
-            try {
-                const response = await fetch(`http://localhost:8000/api/annotations/children/${mainAnnotation.id}`);
-                if (response.ok) {
-                    const children = await response.json();
-                    console.log(children)
-                    // Check if any child has the same law class ID as the sub-law class ID
-                    const existingChildrenIds = children.map((child) => child.lawClass.id);
-                    await setExistingChildren(existingChildrenIds);
-                } else {
-                    console.error("Error fetching subs");
-                }
-            } catch (error) {
-                console.error("Error fetching subs:", error);
+        try {
+            const response = await fetch(`http://localhost:8000/api/annotations/children/${mainAnnotation.id}`);
+            if (response.ok) {
+                const children = await response.json();
+                // Check if any child has the same law class ID as the sub-law class ID
+                const existingChildrenIds = children.map((child) => child.lawClass.id);
+                await setExistingChildren(existingChildrenIds);
+            } else {
+                console.error("Error fetching subs");
             }
-        // }
-        // return false;
+        } catch (error) {
+            console.error("Error fetching subs:", error);
+        }
+    }
+
+    const checkInputFields = () => {
+        console.warn(subAnnotationDetails)
+        if (subAnnotationDetails.lawClass || subAnnotationDetails.selectedWord != "" || subAnnotationDetails.text != "") {
+            // Show an alert, warning, or handle the validation error accordingly
+            setShowInputWarningModal(true);
+            return;
+        }
+        onClose();
     }
 
     return (
@@ -596,18 +617,22 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                         {/* Verplicht Relations */}
                         <div className='relation-buttons'>
                             <p>Verplicht</p>
-                            {relations.map(relation => (
-                                relation.cardinality.split("_")[0] === "V" && (
-                                    <Button key={relation.id} style={{
-                                        backgroundColor: existingChildren.includes(relation.subClass.id) ? 'green' : 'grey',
-                                    }} className="me-1 text-dark" onClick={() => {
-                                        handleShowSubAnnotationForm(); // Show the sub-annotation form
-                                        handleSelectSubLaw(relation.subClass.id)
+                            {relations.map(relation => {
+                                const isExisting = existingChildren.includes(relation.subClass.id);
+                                const buttonStyle = {backgroundColor: isExisting ? 'primary' : 'secondary'};
+
+                                return relation.cardinality.split("_")[0] === "V" && (
+                                    <Button key={relation.id}
+                                            // style={buttonStyle}
+                                            className={`me-1 text-dark ${buttonStyle.backgroundColor}`}
+                                            onClick={() => {
+                                                handleShowSubAnnotationForm(); // Show the sub-annotation form
+                                                handleSelectSubLaw(relation.subClass.id)
                                     }}>
                                         + {relation.description}
                                     </Button>
-                                )
-                            ))}
+                                );
+                            })}
                         </div>
 
                         {/* Optioneel Relations */}
@@ -634,7 +659,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                                         marginBottom: '10px',
                                         fontWeight: 'bold',
                                         color: '#154273'}}>Juridische subklasse: {subAnnotationDetails.lawClass?.name}</Form.Label>
-                                    <Button style={{marginBottom: '10px' }} variant="outline-secondary" onClick={() => {setShowSubAnnotationForm(false); onSetActiveSelection(1); handleSelectedText2("", 0)}} >
+                                    <Button style={{marginBottom: '10px' }} variant="outline-secondary" onClick={() => {setShowSubAnnotationForm(false); onSetActiveSelection(1); handleSelectedText2("", 0); handleClose()}} >
                                         X
                                     </Button>
                                 </div>
@@ -714,6 +739,40 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                     <BsFillFloppy2Fill size={20} /> Afronden
                 </button>
             </div>
+
+            <Modal show={showWarningModal} onHide={() => setShowWarningModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>U heeft niet alle verplichte relaties gelegd</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Weet u zeker dat u de annotaties wil opslaan zonder alle verplichte relaties te leggen?
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowWarningModal(false)}>
+                        Annuleer
+                    </Button>
+                    <Button variant="primary" onClick={() => {setShowWarningModal(false); checkInputFields()}}>
+                        Ja
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal show={showInputWarningModal} onHide={() => setShowInputWarningModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>U heeft nog ingevulde velden</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Weet u zeker dat u wil afronden zonder de ingevulde velden op te slaan?
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowInputWarningModal(false)}>
+                        Annuleer
+                    </Button>
+                    <Button variant="primary" onClick={() => {setShowInputWarningModal(false); handleClose(); onClose();}}>
+                        Ja
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 
