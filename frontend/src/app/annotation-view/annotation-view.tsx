@@ -21,6 +21,10 @@ const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAn
         let annotations = await retrieveAnnotations();
 
         if (annotations) {
+            // Filter out null annotations
+            annotations = annotations.filter(annotation => annotation != null);
+
+
             setAnnotations(annotations);
         } else {
             console.error("Geen annotaties opgehaald");
@@ -85,7 +89,7 @@ const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAn
                 // If everything went well, remove the annotation tags from the XML
                 onAnnotationDelete(id)
 
-                fetchAnnotations(); // Refetch annotations to update the list
+                await fetchAnnotations(); // Refetch annotations to update the list
             } else {
                 alert("Fout annotatie verwijderen");
             }
