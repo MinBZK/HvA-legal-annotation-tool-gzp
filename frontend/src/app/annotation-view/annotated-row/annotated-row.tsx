@@ -125,55 +125,73 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
     }
 
     const handleSelectLaw = async (lawClassName: any) => {
-        const selectedLawClass = classes.find((lawClass) => lawClass.name === lawClassName);
+        try {
+            const selectedLawClass = classes.find((lawClass) => lawClass.name === lawClassName);
 
-        if (selectedLawClass) {
-            try {
+            if (selectedLawClass) {
                 const lawClassId = selectedLawClass.id;
+
+                // Fetch subannotations
                 const subAnnotationsResponse = await fetch(`http://localhost:8000/api/annotations/children/${annotation.id}`);
 
                 if (subAnnotationsResponse.ok) {
                     const childAnnotations = await subAnnotationsResponse.json();
-                    console.log("childAnnotations:", childAnnotations);
-
+                    // TODO
+                    console.log("childAnnotations" + childAnnotations);
                     setEditLawClass(lawClassName ?? null);
 
                     if (childAnnotations.length > 0) {
-                        console.log("Resultaten gevonden bij getChildAnnotationsOfParentById:", childAnnotations);
+                        const annotationsToDelete = childAnnotations.filter((childAnnotation: any) => childAnnotation.lawClassId !== lawClassId);
 
-                        for (const childAnnotation of childAnnotations) {
-                            console.log("2");
+                        // Check subclasses from new class
+                        const subclasses = await fetchSubclasses(selectedLawClass);
 
-                            if (childAnnotation.lawClassId === lawClassId) {
-                                const indexToDelete = subannotations.findIndex(sub => sub.id === childAnnotation.id);
-                                console.log("3");
+                        // Only the belonging annotations stay with the belonging lawclasses
+                        const annotationsToDeleteWithoutSubclasses = annotationsToDelete.filter((childAnnotation: any) => {
+                            const childLawClass = classes.find((lawClass) => lawClass.id === childAnnotation.lawClassId);
+                            const childLawClassName = childLawClass?.name;
 
-                                if (indexToDelete !== -1) {
-                                    setSubannotations(prevSubannotations => {
-                                        const updatedSubannotations = [...prevSubannotations];
-                                        updatedSubannotations.splice(indexToDelete, 1);
-                                        return updatedSubannotations;
-                                    });
-                                }
+                            if (!subclasses.includes(childLawClassName)) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        });
 
-                                const deleteChildAnnotationResponse = await fetch(
-                                    `http://localhost:8000/api/annotations/deleteannotation/${childAnnotation.id}`,
-                                    {
-                                        method: 'DELETE',
-                                    }
-                                );
+                        // Loop through and delete annotations
+                        for (const childAnnotation of annotationsToDeleteWithoutSubclasses) {
+                            const indexToDelete = subannotations.findIndex((sub) => sub.id === childAnnotation.id);
 
-                                if (!deleteChildAnnotationResponse.ok) {
-                                    console.error(
-                                        'Failed to delete child annotation:',
-                                        deleteChildAnnotationResponse.status,
-                                        deleteChildAnnotationResponse.statusText
+                            if (indexToDelete !== -1) {
+                                setSubannotations((prevSubannotations) => {
+                                    const updatedSubannotations = [...prevSubannotations];
+                                    updatedSubannotations.splice(indexToDelete, 1);
+                                    return updatedSubannotations;
+                                });
+
+                                // Delete child annotation
+                                try {
+                                    const deleteChildAnnotationResponse = await fetch(
+                                        `http://localhost:8000/api/annotations/deleteannotation/${childAnnotation.id}`,
+                                        {
+                                            method: 'DELETE',
+                                        }
                                     );
+
+                                    if (!deleteChildAnnotationResponse.ok) {
+                                        console.error(
+                                            'Failed to delete child annotation:',
+                                            deleteChildAnnotationResponse.status,
+                                            deleteChildAnnotationResponse.statusText
+                                        );
+                                    }
+                                } catch (error) {
+                                    console.error('Error deleting child annotation:', error);
                                 }
                             }
                         }
                     } else {
-                        console.log("Geen resultaten gevonden bij getChildAnnotationsOfParentById");
+                        console.log("No child annotations found.");
                     }
                 } else {
                     console.error(
@@ -182,28 +200,22 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
                         subAnnotationsResponse.statusText
                     );
                 }
-            } catch (error) {
-                console.error('Error updating subannotations:', error);
             }
+        } catch (error) {
+            console.error('Error updating subannotations:', error);
         }
     };
 
-
-
-
-
-
-
-    // useEffect(() => {
-    //     fetchClasses();
-    // }, []);
-    //
-    // useEffect(() => {
-    //     if (annotation.selectedWord) {
-    //         fetchTerms(annotation.selectedWord);
-    //     }
-    // }, [annotation.selectedWord]);
-
+    const fetchSubclasses = async (lawClass: LawClass) => {
+        const response = await fetch(`http://localhost:8000/api/classes/relations/${lawClass.id}`);
+        if (response.ok) {
+            const subclasses = await response.json();
+            return subclasses.map((subclass: any) => subclass.name);
+        } else {
+            console.error("Error fetching subclasses:", response.status, response.statusText);
+            return [];
+        }
+    };
 
     // Update UI when annotation changes
     useEffect(() => {
@@ -211,10 +223,10 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
         setEditNoteText(annotation.text)
         setEditTermText(annotation?.term?.definition)
         setEditLawClass(annotation.lawClass?.name ?? null);
-        setUpdatedAnnotation(annotation);
+        // setUpdatedAnnotation(annotation);
         fetchTerms(annotation.selectedWord)
         fetchClasses();
-        // handleSelectLaw(annotation.lawClass?.name);
+        // handleSelectLaw(annotation);
     }, [annotation.selectedWord, annotation.text, annotation.term?.definition, annotation.lawClass]);
 
     return (

@@ -96,7 +96,6 @@ const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete}) => {
                 // get the project id
                 const searchParams = new URLSearchParams(window.location.search);
                 const projectId = parseInt(searchParams.get("id") as string);
-                setAnnotations(prevAnnotations => prevAnnotations.filter(annotation => annotation.id !== id));
 
                 fetchAnnotations(projectId); // Refetch annotations to update the list
             } else {
