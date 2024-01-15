@@ -17,7 +17,7 @@ interface AnnotationProps {
     relations?: Relation[]; // Add this line
 }
 
-const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelete, relations }) => {
+const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelete}) => {
 
     const [open, setOpen] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -33,6 +33,8 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
     const [classes, setClasses] = useState<LawClass[]>([]); // New state to store the laws
     const [editLawClass, setEditLawClass] = useState<string | null>(null);
     const [subannotations, setSubannotations] = useState<Annotation[]>([]);
+
+    // const [relations, setRelations] = useState<Relation>(null);
 
     const [terms, setTerms] = useState<Term[]>([]); // New state to store the laws
     const [newTerm, setNewTerm] = useState<Term>({
@@ -126,84 +128,44 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
         const selectedLawClass = classes.find((lawClass) => lawClass.name === lawClassName);
 
         if (selectedLawClass) {
-            setEditLawClass(lawClassName ?? null);
-
-            // check of de geselecteerde wetklasse subwetten heeft
-            const hasSubLaws = relations?.some((relation: any) => relation.mainLawClass.id === selectedLawClass.id);
-
             try {
-                // fetch existing subannotations for the annotation's current law class
-                const existingSubAnnotationsResponse = await fetch(`http://localhost:8000/api/annotations/project/${annotation.id}`);
+                // Fetch subannotations voor de huidige annotatie (ouder)
+                const subAnnotationsResponse = await fetch(`http://localhost:8000/api/annotations/children/${annotation.id}`);
+                if (subAnnotationsResponse.ok) {
+                    const childAnnotations = await subAnnotationsResponse.json();
 
-                if (existingSubAnnotationsResponse.ok) {
-                    const existingSubAnnotations = await existingSubAnnotationsResponse.json();
+                    // Voer je logica uit als er resultaten zijn voor getChildAnnotationsOfParentById
+                    if (childAnnotations.length > 0) {
+                        console.log("Resultaten gevonden bij getChildAnnotationsOfParentById:", childAnnotations);
 
-                    const outdatedSubAnnotationsIds: number[] = []; // store IDs of outdated subannotations
-
-                    for (const subannotation of existingSubAnnotations) {
-                        const updatedSubannotation = {
-                            ...subannotation,
-                            lawClassId: selectedLawClass?.id
-                        };
-                        const updateSubannotationResponse = await fetch(
-                            `http://localhost:8000/api/annotations/updateannotation/${subannotation.id}`,
-                            {
-                                method: 'PUT',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify(updatedSubannotation),
-                            }
-                        );
-
-                        if (!updateSubannotationResponse.ok) {
-                            console.error(
-                                'Failed to update subannotation:',
-                                updateSubannotationResponse.status,
-                                updateSubannotationResponse.statusText
+                        // Loop door de resultaten en verwijder de subannotations van de huidige lawclass
+                        for (const childAnnotation of childAnnotations) {
+                            const deleteChildAnnotationResponse = await fetch(
+                                `http://localhost:8000/api/annotations/deleteannotation/${childAnnotation.id}`,
+                                {
+                                    method: 'DELETE',
+                                }
                             );
-                        } else {
-                            // Store ID of updated subannotation
-                            outdatedSubAnnotationsIds.push(subannotation.id);
-                        }
-                    }
 
-                    // update the annotation state after changing the law class
-                    const updatedAnnotationState = {
-                        ...annotation,
-                        lawClass: selectedLawClass,
-                    };
-
-                    // als de geselecteerde wetklasse geen subwetten heeft, verwijder dan de annotaties van subwetten
-                    if (selectedLawClass && !hasSubLaws) {
-                        updatedAnnotationState.subAnnotation = []; // Update de naam van de array van subannotations
-                    }
-
-                    setUpdatedAnnotation(updatedAnnotationState);
-
-                    // delete outdated subannotations (related to the old law class)
-                    for (const outdatedSubAnnotationId of outdatedSubAnnotationsIds) {
-                        const deleteSubAnnotationResponse = await fetch(
-                            `http://localhost:8000/api/annotations/deleteannotation/${outdatedSubAnnotationId}`,
-                            {
-                                method: 'DELETE',
+                            if (!deleteChildAnnotationResponse.ok) {
+                                console.error(
+                                    'Failed to delete child annotation:',
+                                    deleteChildAnnotationResponse.status,
+                                    deleteChildAnnotationResponse.statusText
+                                );
                             }
-                        );
-
-                        if (!deleteSubAnnotationResponse.ok) {
-                            console.error(
-                                'Failed to delete outdated subannotation:',
-                                deleteSubAnnotationResponse.status,
-                                deleteSubAnnotationResponse.statusText
-                            );
                         }
+                    } else {
+                        console.log("Geen resultaten gevonden bij getChildAnnotationsOfParentById");
                     }
 
+                    // Nu kun je de lawclass naam wijzigen
+                    setEditLawClass(lawClassName ?? null);
                 } else {
                     console.error(
-                        'Failed to fetch existing subannotations:',
-                        existingSubAnnotationsResponse.status,
-                        existingSubAnnotationsResponse.statusText
+                        'Failed to fetch subannotations:',
+                        subAnnotationsResponse.status,
+                        subAnnotationsResponse.statusText
                     );
                 }
             } catch (error) {
@@ -212,15 +174,16 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
         }
     };
 
-    useEffect(() => {
-        fetchClasses();
-    }, []);
 
-    useEffect(() => {
-        if (annotation.selectedWord) {
-            fetchTerms(annotation.selectedWord);
-        }
-    }, [annotation.selectedWord]);
+    // useEffect(() => {
+    //     fetchClasses();
+    // }, []);
+    //
+    // useEffect(() => {
+    //     if (annotation.selectedWord) {
+    //         fetchTerms(annotation.selectedWord);
+    //     }
+    // }, [annotation.selectedWord]);
 
 
     // Update UI when annotation changes
@@ -230,8 +193,9 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
         setEditTermText(annotation?.term?.definition)
         setEditLawClass(annotation.lawClass?.name ?? null);
         setUpdatedAnnotation(annotation);
-        // fetchTerms(annotation.selectedWord)
-        // fetchClasses();
+        fetchTerms(annotation.selectedWord)
+        fetchClasses();
+        handleSelectLaw(annotation.lawClass?.name);
     }, [annotation.selectedWord, annotation.text, annotation.term?.definition, annotation.lawClass]);
 
     return (
