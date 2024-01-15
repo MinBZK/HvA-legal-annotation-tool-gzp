@@ -41,8 +41,9 @@ const TermsPage = () => {
             {terms && terms.map((value, index) =>
                 <div key={index}>
                     <div className={"term-block"}>
-                        <h5>"{value.definition}" staat in &nbsp;
-                            <span style={{textDecoration: "underline"}}>"{value.annotations[0].project.title}"</span>
+                        <h5>"{value.definition}"
+                            {/*staat in &nbsp;*/}
+                            {/*<span style={{textDecoration: "underline"}}>"{value.annotations[0].project.title}"</span>*/}
                         </h5>
                         <h5 className={"reference"}>Refereert naar "{value.reference}"</h5>
                     </div>
