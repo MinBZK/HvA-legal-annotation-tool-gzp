@@ -53,7 +53,7 @@ lid {
     display: block;
 }
 
-lidnr + al {
+lidnr+al {
     margin: 0 0 1em 3.5em;
     width: calc(100% - 3.5em);
     display: inline;
@@ -64,7 +64,7 @@ lidnr {
     display: inline-block;
 }
 
-li > :first-child {
+li> :first-child {
     margin-left: 1em;
 }
 
@@ -82,4 +82,22 @@ artikel.show, hoofdstuk:has(artikel.show), paragraaf:has(artikel.show) {
 
 bwb-wijzigingen.show-all artikel, bwb-wijzigingen.show-all hoofdstuk, bwb-wijzigingen.show-all paragraaf {
     display: block;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.back-button, .change-selection {
+    font-size: 16px !important;
+    cursor: pointer;
+    margin: 0 !important;
+    padding: 0 10px;
+    border-radius: 20px !important;
+    transition: .2s;
+    color: #000 !important;
+    background: #EBEBEB !important;
+    border: 1px solid #B1B1B1 !important;
 }

@@ -33,7 +33,7 @@ const notifySubscribers = () => {
 export { setSelectedUser, getSelectedUser, subscribe, unsubscribe };
 export async function getUsers() {
     try {
-        const response = await fetch(`http://localhost:8000/api/users`, {
+        const response = await fetch(`${process.env.API_URL}/users`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ export async function getUsers() {
 }
 
 export async function getUser(id: Number) {
-    const response = await fetch(`http://localhost:8000/api/users/${id}`, {
+    const response = await fetch(`${process.env.API_URL}/users/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ export async function getUser(id: Number) {
 }
 
 export async function getRoles() {
-    const response = await fetch(`http://localhost:8000/api/users/roles`, {
+    const response = await fetch(`${process.env.API_URL}/users/roles`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ export async function getRoles() {
 }
 
 export async function createUser(user: User) {
-    const response = await fetch(`http://localhost:8000/api/users`, {
+    const response = await fetch(`${process.env.API_URL}/users`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ export async function createUser(user: User) {
 }
 
 export async function deleteUser(id: Number) {
-    const response = await fetch(`http://localhost:8000/api/users/${id}`, {
+    const response = await fetch(`${process.env.API_URL}/users/${id}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',

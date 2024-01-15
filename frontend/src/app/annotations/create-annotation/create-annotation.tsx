@@ -11,8 +11,6 @@ import "./create-annotation.css"
 import css from "../../annotation-view/annotated-row/annotated-row.module.css"
 import { Term } from "@/app/models/term";
 import { Relation } from "@/app/models/relation";
-import { getChildAnnotationsFromParentId } from '@/app/services/annotation';
-
 
 interface PopupProps {
     selectedText1,
@@ -169,7 +167,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
     };
 
     const fetchClasses = () => {
-        fetch('http://localhost:8000/api/classes')
+        fetch(`${process.env.API_URL}/classes`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch laws');
@@ -182,7 +180,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
 
     const fetchTerms = (reference: any) => {
         console.log(reference)
-        fetch(`http://localhost:8000/api/terms/${encodeURIComponent(reference)}`)
+        fetch(`${process.env.API_URL}/terms/${encodeURIComponent(reference)}`)
             .then(response => {
             if (!response.ok) {
                 throw new Error('Failed to fetch terms');
@@ -236,7 +234,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
             setSubAnnotations([]);
         }
         try {
-            const response = await fetch('http://localhost:8000/api/annotations/project', {
+            const response = await fetch(`${process.env.API_URL}/annotations/project`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -278,7 +276,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
     // Function to fetch sub-annotations for the current annotation (if it's a parent)
     const fetchSubAnnotations = async (parentId: number) => {
         try {
-            const response = await fetch(`http://localhost:8000/api/annotations/sub/${parentId}`);
+            const response = await fetch(`${process.env.API_URL}/annotations/sub/${parentId}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch sub-annotations');
             }
@@ -307,7 +305,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                 ...project,
             };
 
-            const response = await fetch('http://localhost:8000/api/saveXml', {
+            const response = await fetch(`${process.env.API_URL}/saveXml`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -474,7 +472,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
 
     const fetchRelationsForLawClass = async (lawClassId: number) => {
         try {
-            const response = await fetch(`http://localhost:8000/api/relations/${lawClassId}`);
+            const response = await fetch(`${process.env.API_URL}/relations/${lawClassId}`);
             if (response.ok) {
                 const fetchedRelations = await response.json();
                 setRelations(fetchedRelations);
@@ -489,7 +487,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
     const handleSelectSubLaw = async(lawClassId: number) => {
         console.log(lawClassId)
         try {
-            const response = await fetch(`http://localhost:8000/api/lawclasses/${lawClassId}`);
+            const response = await fetch(`${process.env.API_URL}/lawclasses/${lawClassId}`);
             if (response.ok) {
                 const fetchedLawclass = await response.json();
                 console.log(fetchedLawclass)

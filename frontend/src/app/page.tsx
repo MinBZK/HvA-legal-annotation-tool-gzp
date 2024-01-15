@@ -11,6 +11,7 @@ import Link from 'next/link';
 import Navigation from './components/navigation/navigation';
 import { getSelectedUser, getUser, subscribe, unsubscribe } from './services/user';
 import { User } from './models/user';
+import ArticleSelectionModal from './components/article-selection-modal/article-selection-modal';
 
 export default function Home() {
 
@@ -29,11 +30,10 @@ export default function Home() {
   const [currentXmlCount, setCurrentXmlCount] = useState(0);
   const [xmlDoc, setXmlDoc] = useState<any>();
   const [eventTargetResult, setEventTargetResult] = useState<any>();
+  const [articlePiecesLoaded, setArticlePiecesLoaded] = useState(false);
 
   const [onArticlesShow, setOnArticlesShow] = useState<boolean>(false);
   const [articlePieces, setArticlePieces] = useState<any[]>([]);
-  const [articleChecked, setArticleChecked] = useState<boolean[]>([]);
-  const [selectedArticlesIds, setSelectedArticleIds] = useState<string[]>([]);
 
   const [reloadXml, setReloadXml] = useState(false);
   const [activeUserRole, setActiveUserRole] = useState<string>();
@@ -57,6 +57,7 @@ export default function Home() {
   const handleClose = () => {
     setShow(false);
     setOnArticlesShow(false);
+    setArticlePiecesLoaded(false);
   };
   const handleShow = () => setShow(true);
 
@@ -167,8 +168,8 @@ export default function Home() {
         arrArticleBools.push(false)
       }
 
-      setArticlePieces(arrArticle)
-      setArticleChecked(arrArticleBools)
+      setArticlePieces(arrArticle);
+      setArticlePiecesLoaded(true);
     }
   }, [xmlDoc]);
 
@@ -210,37 +211,6 @@ export default function Home() {
     }
   }
 
-  const checkHandler = (index: number) => {
-    setArticleChecked(prevState => {
-      const newList = [...articleChecked];
-      newList[index] = !newList[index]
-      return newList
-    })
-  }
-
-  const collectSelectedArticles = (isSelectedAll?: boolean) => {
-    if (isSelectedAll) {
-      startUpload([])
-      handleClose()
-    } else {
-      const list: string[] = [];
-
-      for (let i = 0; i < articlePieces.length; i++) {
-        if (articleChecked[i]) {
-          list.push(articlePieces[i].id)
-        }
-      }
-
-      if (list.length > 0) {
-        setSelectedArticleIds(list)
-        setTimeout(() => {
-          startUpload(list)
-        }, 1000);
-      }
-    }
-
-  }
-
   const handleDelete = async (id: number) => {
     try {
       const response = await fetch(`http://localhost:8000/api/project/${id}/delete`, {
@@ -266,9 +236,16 @@ export default function Home() {
     }
   };
 
-  const disableCheck: () => boolean = () => {
-    return articleChecked.includes(true);
+  const handleArticleSelect = (value: string[]) => {
+    startUpload(value);
+    handleClose();
   };
+
+  const cancelArticleSelect = (value: Boolean) => {
+    setOnArticlesShow(false);
+    setArticlePieces([]);
+    setArticlePiecesLoaded(false);
+  }
 
   return (
     <>
@@ -324,48 +301,13 @@ export default function Home() {
         </main>
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
-            {onArticlesShow ? (
-              <Modal.Title>Selecteer artikelen</Modal.Title>
-            ) : (
-              <Modal.Title>Upload bestand</Modal.Title>
-            )
-            }
+            <Modal.Title>Upload bestand</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             {onArticlesShow ? (
               <>
-                {articlePieces && articlePieces.map((value, index) => (
-                  <div key={index} className={"m-1"}>
-                    <label className={"d-flex align-content-center"}>
-                      <input type={"checkbox"} checked={articleChecked[index]}
-                        onChange={() => checkHandler(index)}
-                      />
-                      <p className={"m-1"}>
-                        {value.getAttribute('label')}
-                        &nbsp;
-                        {value.getElementsByTagName("kop")[0]?.getElementsByTagName("titel")[0]?.textContent}
-                      </p>
-                    </label>
-
-
-                  </div>
-                ))}
-
-                <Button className='success float-end mt-3' disabled={!disableCheck()} onClick={() => {
-                  collectSelectedArticles()
-                }}>
-                  Bevestig selectie
-                </Button>
-
-                <Button className='info float-end m-2 mt-3' onClick={() => {
-                  collectSelectedArticles(true)
-                }}>
-                  Selecteer alles
-                </Button>
-
-
+                <ArticleSelectionModal xmlArticles={articlePieces} handleArticleSelect={handleArticleSelect} cancelArticleSelect={cancelArticleSelect} selectedArticles={[]}></ArticleSelectionModal>
               </>
-
             ) : (
               <>
                 <Alert show={showError} variant="danger" dismissible>
@@ -379,11 +321,11 @@ export default function Home() {
                     type="file"
                     accept="text/xml"
                     ref={fileInputRef}
+                    onChange={handleXmlUpload}
                   />
-                  <Button type='submit' className='success float-end mt-3' onClick={() => {
-                    if (articlePieces != null) {
-                      handleXmlUpload()
-                      setOnArticlesShow(true)
+                  <Button type='submit' className='save float-end mt-3' disabled={!articlePiecesLoaded} onClick={() => {
+                    if (articlePieces.length != 0) {
+                      setOnArticlesShow(true);
                     }
                   }}>
                     Verder

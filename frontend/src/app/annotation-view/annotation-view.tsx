@@ -17,13 +17,15 @@ const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAn
     const [annotations, setAnnotations] = useState<Annotation[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    /**
+     * Calls the retrieveAnnotations function to fetch the annotations from the database and sets the annotations state
+     */
     const fetchAnnotations = async () => {
         let annotations = await retrieveAnnotations();
 
         if (annotations) {
             // Filter out null annotations
             annotations = annotations.filter(annotation => annotation != null);
-
 
             setAnnotations(annotations);
         } else {
@@ -45,7 +47,7 @@ const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAn
         console.log(annotationDetails)
         try {
             const response = await fetch(
-                `http://localhost:8000/api/annotations/updateannotation/${id}`,
+                `${process.env.API_URL}/annotations/updateannotation/${id}`,
                 {
                     method: "PUT",
                     headers: {
@@ -78,7 +80,7 @@ const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAn
         try {
             // Remove the annotation from the database
             const response = await fetch(
-                `http://localhost:8000/api/annotations/deleteannotation/${id}`,
+                `${process.env.API_URL}/annotations/deleteannotation/${id}`,
                 {
                     method: "DELETE",
                 }

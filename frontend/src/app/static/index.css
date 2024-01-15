@@ -129,24 +129,6 @@ body {
   background: currentColor;
 }
 
-button.info {
-  border-radius: 16px;
-  border: 1px solid #1fceea !important;
-  background: rgba(23,162,184,1.000);
-  font-size: 12px;
-  color: #000 !important;
-  transition: .2s;
-}
-
-button.success {
-  border-radius: 16px;
-  border: 1px solid #3A9B38 !important;
-  background: rgba(76, 167, 74, 0.42);
-  font-size: 12px;
-  color: #000 !important;
-  transition: .2s;
-}
-
 button.success:hover {
   background-color: rgba(76, 167, 74, 0.62);
 }
@@ -156,4 +138,30 @@ button.success:hover {
   padding: 5px 10px;
   border-radius: 4px;
   margin-bottom: 0;
+}
+
+.save, .cancel, .delete {
+  font-size: 16px !important;
+  cursor: pointer;
+  margin-left: 10px;
+  padding: 0 10px;
+  border-radius: 20px !important;
+  transition: .2s;
+  color: #000 !important;
+}
+
+
+button.save {
+  background: #4CA74A41 !important;
+  border: 1px solid #3A9B38 !important;
+}
+
+button.cancel {
+  background: #F2E78661 !important;
+  border: 1px solid #C0B44F !important;
+}
+
+button.delete {
+  background: #FACACA !important;
+  border: 1px solid #CA5858 !important;
 }
