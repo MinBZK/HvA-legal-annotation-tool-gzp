@@ -2,7 +2,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { FC, useEffect, useState } from 'react';
 import { Alert, Button, Dropdown, Form, Modal } from 'react-bootstrap';
-import { BsFillFloppy2Fill, BsFillTrashFill, BsX } from "react-icons/bs";
+import { BsFillFloppy2Fill, BsX } from "react-icons/bs";
 import { Annotation } from "../../models/annotation";
 import { LawClass } from "../../models/lawclass";
 import { getProjectById } from "../../services/project";
@@ -342,7 +342,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
             text: annotation?.text,
             lawClass: {name: annotation?.lawClass},
             project: {id: projectId},
-            term: { definition: annotation?.term.definition|| undefined, reference: annotation?.selectedWord},
+            term: { definition: annotation?.term.definition || null, reference: annotation?.selectedWord},
             parentAnnotation: parentAnnotationId ? { id: parentAnnotationId } : null,
         });
 
@@ -370,7 +370,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                 lawClass: {name: subAnnotationDetails?.lawClass.name},
                 project: {id: projectId},
                 term: {
-                    definition: subAnnotationDetails?.term.definition || undefined,
+                    definition: subAnnotationDetails?.term.definition || null,
                     reference: subAnnotationDetails?.selectedWord
                 },
                 parentAnnotation: parentAnnotationId ? {id: parentAnnotationId} : null,
