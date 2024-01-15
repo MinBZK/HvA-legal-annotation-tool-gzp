@@ -6,9 +6,10 @@ import {BsDownload} from "react-icons/bs";
 
 type ExportXMLButtonProps = {
     xmlData: string; // De XML-data die geëxporteerd moet worden
+    projectTitle: string;
 };
 
-const ExportXMLButton: React.FC<ExportXMLButtonProps> = ({ xmlData }) => {
+const ExportXMLButton: React.FC<ExportXMLButtonProps> = ({ xmlData, projectTitle }) => {
     /**
      * Export the XML-data to a file by creating a temporary link and clicking it.
      */
@@ -19,11 +20,13 @@ const ExportXMLButton: React.FC<ExportXMLButtonProps> = ({ xmlData }) => {
         // Create a URL for the blob
         const url = URL.createObjectURL(blob);
 
+        // Format the current date
+        const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+
         // Make a temporary link that can be clicked to download the file and click it
         const link = document.createElement('a');
         link.href = url;
-        // TODO: Make the filename dynamic
-        link.download = 'exported_file.xml';
+        link.download = `${projectTitle}_${currentDate}.xml`;
         document.body.appendChild(link);
         link.click();
 

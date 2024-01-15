@@ -48,3 +48,4 @@ backend/src/main/resources/.env
 /node_modules/fs/README.md
 
 .env
+!.env.local
