@@ -2,10 +2,7 @@ package com.LAT.backend.rest;
 
 import com.LAT.backend.exceptions.LawClassNotFoundException;
 import com.LAT.backend.exceptions.ProjectNotFoundException;
-import com.LAT.backend.model.Annotation;
-import com.LAT.backend.model.LawClass;
-import com.LAT.backend.model.Project;
-import com.LAT.backend.model.Term;
+import com.LAT.backend.model.*;
 import com.LAT.backend.repository.*;
 import com.LAT.backend.views.Views;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -36,6 +33,9 @@ public class AnnotationController {
 
     @Autowired
     private TermRepository termRepository;
+
+    @Autowired
+    private RelationRepository relationRepository;
 
     @GetMapping("/")
     @JsonView(Views.Extended.class)
@@ -71,19 +71,25 @@ public class AnnotationController {
         LawClass lawClass = lawClassRepository.findByName(annotation.getLawClass().getName())
                 .orElseThrow(() -> new LawClassNotFoundException("Annotation class not found"));
 
-            Term term = annotation.getTerm();
+        if (annotation.getRelation() != null) {
+            int relationId = annotation.getRelation().getId();
+            Relation relation = relationRepository.findById(relationId)
+                    .orElseThrow(() -> new EntityNotFoundException("Parent annotation not found with id: " + relationId));
+            annotation.setRelation(relation);
+        }
 
-            if (term != null) {
-                if (term.getDefinition() != null) {
-                    Term savedTerm = termRepository.save(term);
-                    annotation.setTerm(savedTerm);
-                } else {
-                    annotation.setTerm(null);
-                }
+        Term term = annotation.getTerm();
+
+        if (term != null) {
+            if (term.getDefinition() != null) {
+                Term savedTerm = termRepository.save(term);
+                annotation.setTerm(savedTerm);
+            } else {
+                annotation.setTerm(null);
             }
-
-            annotation.setProject(project);
-            annotation.setLawClass(lawClass);
+        }
+        annotation.setProject(project);
+        annotation.setLawClass(lawClass);
 
         // Handle the parent annotation if it's passed
         if (annotation.getParentAnnotation() != null) {

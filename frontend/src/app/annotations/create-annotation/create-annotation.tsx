@@ -41,7 +41,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
         project: { id: 0 },
         startOffset: 0,
         term: { definition: "", reference: "" },
-        parentAnnotation: null
+        parentAnnotation: null,
+        relation: null
     } as Annotation);
 
     const [newTerm, setNewTerm] = useState<Term>({
@@ -69,7 +70,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
         project: { id: 0 },
         startOffset: 0,
         term: { definition: "", reference: "" },
-        parentAnnotation: null
+        parentAnnotation: null,
+        relation: null
     } as Annotation);
     const [showModal, setShowModal] = useState(false);
     const [showSubModal, setSubShowModal] = useState(false);
@@ -215,7 +217,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
             project: { id: 0 },
             startOffset: 0,
             term: { definition: "", reference: "" },
-            parentAnnotation: null
+            parentAnnotation: null,
+            relation: null
         } as Annotation);
     };
 
@@ -225,11 +228,11 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
         const areAllMandatoryRelationshipsMade = mandatoryRelations.every(relation => {
             console.log(relation)
             console.log(existingChildren)
-            console.log(existingChildren.includes(relation.subClass.id))
-            return existingChildren.includes(relation.subClass.id);
+            console.log(existingChildren.includes(relation.id))
+            return existingChildren.includes(relation.id);
         });
 
-        if (!areAllMandatoryRelationshipsMade || existingChildren.length < mandatoryRelations.length) {
+        if (!areAllMandatoryRelationshipsMade) {
             setShowWarningModal(true);
             return;
         }
@@ -318,6 +321,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                 project: {id: projectId},
                 term: {definition: annotation?.term.definition || null, reference: annotation?.selectedWord},
                 parentAnnotation: null,
+                relation: null
             });
             if (mainAnnotation) {
                 // Set mainAnnotationSaved to avoid saving it again
@@ -353,6 +357,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                     reference: subAnnotationDetails?.selectedWord
                 },
                 parentAnnotation: mainAnnotation,
+                relation: subAnnotationDetails.relation
             });
 
             if (!subAnnotation) {
@@ -491,7 +496,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
             if (response.ok) {
                 const children = await response.json();
                 // Check if any child has the same law class ID as the sub-law class ID
-                const existingChildrenIds = children.map((child) => child.lawClass.id);
+                const existingChildrenIds = children.map((child) => child.relation.id);
                 await setExistingChildren(existingChildrenIds);
             } else {
                 console.error("Error fetching subs");
@@ -621,7 +626,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                         <div className='relation-buttons'>
                             <p>Verplicht</p>
                             {relations.map(relation => {
-                                const isExisting = existingChildren.includes(relation.subClass.id);
+                                const isExisting = existingChildren.includes(relation.id);
                                 const buttonStyle = {backgroundColor: isExisting ? 'primary' : 'secondary'};
 
                                 return relation.cardinality.split("_")[0] === "V" && (
@@ -630,7 +635,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                                             className={`me-1 text-dark ${buttonStyle.backgroundColor}`}
                                             onClick={() => {
                                                 handleShowSubAnnotationForm(); // Show the sub-annotation form
-                                                handleSelectSubLaw(relation.subClass.id)
+                                                handleSelectSubLaw(relation.subClass.id);
+                                                handleSubAnnotationDetailChange('relation', relation)
                                     }}>
                                         + {relation.description}
                                     </Button>
@@ -642,7 +648,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                         <div className='relation-buttons'>
                             <p>Optioneel</p>
                             {relations.map(relation => {
-                                const isExisting = existingChildren.includes(relation.subClass.id);
+                                const isExisting = existingChildren.includes(relation.id);
                                 const buttonStyle = {backgroundColor: isExisting ? 'primary' : 'secondary'};
 
                                 return relation.cardinality.split("_")[0] === "NV" && (
@@ -651,6 +657,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                                             onClick={() => {
                                                 handleShowSubAnnotationForm(); // Show the sub-annotation form
                                                 handleSelectSubLaw(relation.subClass.id)
+                                                handleSubAnnotationDetailChange('relation', relation)
                                             }}>
                                         + {relation.description}
                                     </Button>

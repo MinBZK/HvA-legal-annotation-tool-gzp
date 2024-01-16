@@ -45,6 +45,11 @@ public class Annotation {
     @JoinColumn(name = "term_id")
     private Term term;
 
+    @JsonIgnoreProperties({"annotations", "subClass", "mainClass"})
+    @ManyToOne
+    @JoinColumn(name = "relation_id")
+    private Relation relation;
+
     public void setLawClass(LawClass lawClass) {
         this.lawClass = lawClass;
     }
@@ -91,5 +96,13 @@ public class Annotation {
 
     public void setTerm(Term term) {
         this.term = term;
+    }
+
+    public Relation getRelation() {
+        return relation;
+    }
+
+    public void setRelation(Relation relation) {
+        this.relation = relation;
     }
 }
