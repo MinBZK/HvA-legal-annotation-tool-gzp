@@ -118,12 +118,17 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
                 setOpen(!open)
             }}>
                 <h5 className={css.annotationName}>{annotation.lawClass?.name}</h5>
-                {open ? (
-                    <FaChevronDown className={css.align} />
-                ) : (
-                    <FaChevronUp />
-                )}
-            </div>
+
+                <span>
+                    <p className={css.annotationDate}>{new Date(annotation.created_at).toLocaleString()}</p>
+                    {open ? (
+                        <FaChevronDown className={css.align}/>
+                    ) : (
+                        <FaChevronUp/>
+                    )}
+                </span>
+
+        </div>
 
             {open &&
                 <div className={css.annotationInfo}>
