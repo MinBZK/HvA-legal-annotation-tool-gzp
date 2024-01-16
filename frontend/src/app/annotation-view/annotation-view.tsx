@@ -123,7 +123,7 @@ const AnnotationView: FC<AnnotationViewProps> = ({ onAnnotationDelete }) => {
 
             if (response.ok) {
                 // If everything went well, remove the annotation tags from the XML
-                onAnnotationDelete(id)
+                onAnnotationDelete(id);
 
                 // get the project id
                 const searchParams = new URLSearchParams(window.location.search);

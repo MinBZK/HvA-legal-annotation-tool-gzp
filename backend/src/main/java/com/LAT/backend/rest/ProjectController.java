@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -40,11 +41,13 @@ public class ProjectController {
         return ResponseEntity.ok(project);
     }
 
+    @Transactional
     @PostMapping("/saveXml")
     public ResponseEntity<String> addProject(@RequestBody Project project) {
         projectRepository.save(project);
         return new ResponseEntity<>("Project saved successfully", HttpStatus.CREATED);
     }
+
 
     @GetMapping("/maxXmlCount")
     public ResponseEntity<Integer> getMaxXmlCount() {

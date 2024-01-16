@@ -1,6 +1,7 @@
 package com.LAT.backend.model;
 
 import com.LAT.backend.views.Views;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -16,7 +17,8 @@ public class Annotation {
     private String selectedWord;
     @JsonView(Views.Basic.class)
     private String text;
-    @ManyToOne
+
+    @ManyToOne(cascade = CascadeType.ALL) // or CascadeType.REMOVE
     @JoinColumn(name = "parent_annotation_id", nullable = true)
     @JsonView(Views.Extended.class)
     private Annotation parentAnnotation;
@@ -29,13 +31,13 @@ public class Annotation {
         this.parentAnnotation = parentAnnotation;
     }
 
-
-    @JsonIgnoreProperties({"annotations"})
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "lawClass_id")
+    @JsonIgnoreProperties({"annotations"})
     private LawClass lawClass;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "project_id")
     @JsonIgnoreProperties({"annotations", "xml_content"})
     private Project project;

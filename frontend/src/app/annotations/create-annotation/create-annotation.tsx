@@ -346,10 +346,10 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                 id: null,
                 selectedWord: subAnnotationDetails?.selectedWord,
                 text: subAnnotationDetails?.text,
-                lawClass: {name: subAnnotationDetails?.lawClass.name},
+                lawClass: {name: subAnnotationDetails?.lawClass?.name},
                 project: {id: projectId},
                 term: {
-                    definition: subAnnotationDetails?.term.definition || null,
+                    definition: subAnnotationDetails?.term?.definition || null,
                     reference: subAnnotationDetails?.selectedWord
                 },
                 parentAnnotation: mainAnnotation,
@@ -491,7 +491,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
             if (response.ok) {
                 const children = await response.json();
                 // Check if any child has the same law class ID as the sub-law class ID
-                const existingChildrenIds = children.map((child) => child.lawClass.id);
+                const existingChildrenIds = children.map((child: any) => child.lawClass?.id); // Add null check here
                 await setExistingChildren(existingChildrenIds);
             } else {
                 console.error("Error fetching subs");
@@ -499,7 +499,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
         } catch (error) {
             console.error("Error fetching subs:", error);
         }
-    }
+    };
 
     const checkInputFields = () => {
         console.warn(subAnnotationDetails)
