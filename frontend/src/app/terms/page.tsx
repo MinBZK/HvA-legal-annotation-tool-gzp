@@ -3,14 +3,22 @@
 import React, {useEffect, useState} from "react";
 import {Term} from "@/app/models/term";
 import '../static/terms.css';
+import {BsArrowLeft} from "react-icons/bs";
+import {useRouter} from "next/navigation";
 
 
 const TermsPage = () => {
     const [terms, setTerms] = useState<Term[]>()
+    const router = useRouter();
 
     useEffect(() => {
         fetchTerms()
     }, [])
+
+    const handleGoBack = () => {
+        router.push('/');
+    };
+
 
     const fetchTerms = async () => {
         // fetching the terms
@@ -33,6 +41,11 @@ const TermsPage = () => {
             <nav className="navbar">
                 <div className="navbar-title">Legal Annotation Tool</div>
             </nav>
+
+            <button className="back-button"
+                    onClick={handleGoBack}>
+                <BsArrowLeft className="icon" /> Terug
+            </button>
 
             <div className={"d-flex justify-content-center"}>
                 <h2 className={"doc-text m-3"}>Begrippen</h2>

@@ -16,8 +16,12 @@
     font-weight: bold;
 }
 
+.back-button {
+    margin: 0.5rem;
+}
+
 .reference {
-    text-indent: 30px;
+    text-indent: 10px;
 }
 
 .term-block {
