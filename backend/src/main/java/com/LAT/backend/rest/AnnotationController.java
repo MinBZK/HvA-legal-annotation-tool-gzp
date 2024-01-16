@@ -1,10 +1,8 @@
 package com.LAT.backend.rest;
 
 import com.LAT.backend.exceptions.LawClassNotFoundException;
-import com.LAT.backend.exceptions.ProjectNotFoundException;
 import com.LAT.backend.model.Annotation;
 import com.LAT.backend.model.LawClass;
-import com.LAT.backend.model.Project;
 import com.LAT.backend.model.Term;
 import com.LAT.backend.repository.*;
 import com.LAT.backend.views.Views;
@@ -29,9 +27,6 @@ public class AnnotationController {
     private AnnotationRepository annotationRepository;
 
     @Autowired
-    private ProjectRepository projectRepository;
-
-    @Autowired
     private LawClassRepository lawClassRepository;
 
     @Autowired
@@ -51,21 +46,11 @@ public class AnnotationController {
         }
     }
 
-    // Endpoint to get all annotations for a specific project
-    // Chi Yu
-    @GetMapping("/project/{projectId}")
-    public List<Annotation> getAnnotationsByProjectId(@PathVariable Integer projectId) {
-        return annotationRepository.findByProjectId(projectId);
-    }
-
     // Endpoint to create a new annotation for a specific project
     // Hanna
-    @PostMapping("/project")
+    @PostMapping("/")
     public ResponseEntity<Annotation> createAnnotation(@RequestBody Annotation annotation) {
 //        try {
-        // Validate if the project exists
-        Project project = projectRepository.findById(annotation.getProject().getId())
-                .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
 
         // Validate if the annotation class exists
         LawClass lawClass = lawClassRepository.findByName(annotation.getLawClass().getName())
@@ -82,7 +67,6 @@ public class AnnotationController {
                 }
             }
 
-            annotation.setProject(project);
             annotation.setLawClass(lawClass);
 
         // Handle the parent annotation if it's passed
@@ -96,11 +80,6 @@ public class AnnotationController {
         // Save the annotation to the repository
         Annotation savedAnnotation = annotationRepository.save(annotation);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedAnnotation);
-//        } catch (ProjectNotFoundException | LawClassNotFoundException e) {
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-//        }
     }
 
     @GetMapping("/sub/{parentId}")
@@ -135,7 +114,6 @@ public class AnnotationController {
         annotation.setText(annotationDetails.getText());
         annotation.setSelectedWord(annotationDetails.getSelectedWord());
         annotation.setLawClass(annotationDetails.getLawClass());
-        annotation.setProject(annotationDetails.getProject());
 
         Term term = annotationDetails.getTerm();
 
