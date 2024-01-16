@@ -11,6 +11,7 @@ import {useRouter} from "next/navigation";
 import {Button} from "react-bootstrap";
 import { BsArrowLeft } from 'react-icons/bs';
 import {act} from "react-dom/test-utils";
+import Navigation from '../components/navigation/navigation';
 
 const AnnotationPage = () => {
 
@@ -136,7 +137,7 @@ const AnnotationPage = () => {
                 ...projectData,
             };
 
-            const response = await fetch('http://localhost:8000/api/saveXml', {
+            const response = await fetch('${process.env.API_URL}/saveXml', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -157,10 +158,8 @@ const AnnotationPage = () => {
 
     return (
     <>
-      <nav className="navbar">
-        {<div className="navbar-title">Legal Annotation Tool</div>}
-      </nav>
-      <main className='d-flex'>
+        <Navigation></Navigation>
+        <main className='d-flex'>
         <section className="left-column">
             <Button variant="light" className="back-button p-2 m-1"
                     onClick={handleGoBack}>

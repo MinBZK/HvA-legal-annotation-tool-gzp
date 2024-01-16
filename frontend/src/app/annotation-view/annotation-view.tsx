@@ -17,7 +17,7 @@ const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete}) => {
     const fetchAnnotations = async (projectId: any) => {
         try {
             const response = await fetch(
-                `http://localhost:8000/api/annotations/project/${projectId}`
+                `${process.env.API_URL}/annotations/project/${projectId}`
             );
 
             if (response.ok) {
@@ -50,7 +50,7 @@ const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete}) => {
         console.log(annotationDetails)
         try {
             const response = await fetch(
-                `http://localhost:8000/api/annotations/updateannotation/${id}`,
+                `${process.env.API_URL}/annotations/updateannotation/${id}`,
                 {
                     method: "PUT",
                     headers: {
@@ -83,7 +83,7 @@ const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete}) => {
         try {
             // Remove the annotation from the database
             const response = await fetch(
-                `http://localhost:8000/api/annotations/deleteannotation/${id}`,
+                `${process.env.API_URL}/annotations/deleteannotation/${id}`,
                 {
                     method: "DELETE",
                 }
