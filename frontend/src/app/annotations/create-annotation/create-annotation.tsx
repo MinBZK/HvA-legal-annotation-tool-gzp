@@ -344,6 +344,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
             project: {id: projectId},
             term: { definition: annotation?.term.definition || null, reference: annotation?.selectedWord},
             parentAnnotation: parentAnnotationId ? { id: parentAnnotationId } : null,
+            created_at: Date.now()
         });
 
         console.log(annotation.selectedWord, annotation.startOffset, annotation.term?.definition)
@@ -374,6 +375,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                     reference: subAnnotationDetails?.selectedWord
                 },
                 parentAnnotation: parentAnnotationId ? {id: parentAnnotationId} : null,
+                created_at: Date.now()
             });
 
             if (!subAnnotationId) {

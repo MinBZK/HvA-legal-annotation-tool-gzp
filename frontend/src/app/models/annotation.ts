@@ -1,6 +1,7 @@
 import { LawClass } from "@/app/models/lawclass";
 import { Project } from "@/app/models/project";
 import { Term } from "@/app/models/term";
+import {User} from "@/app/models/user";
 
 export interface Annotation {
     id: number,
@@ -11,4 +12,6 @@ export interface Annotation {
     startOffset?: number,
     term: Term | null,
     parentAnnotation: Annotation
+
+    created_at: number,
 }
