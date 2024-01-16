@@ -141,3 +141,15 @@ button#dropdown-basic.dropdown.dropdown-toggle.btn.btn-secondary {
 .relation-buttons:not(:has(button)) {
     display: none;
 }
+
+.primary {
+    color: #000;
+    background-color: #4CA74A41; /* Change this to your desired green color */
+    border-color: #4CA74A41;
+}
+
+.secondary {
+    color: #000;
+    background-color: #e9ecef; /* Change this to your desired grey color */
+    border-color: #e9ecef;
+}

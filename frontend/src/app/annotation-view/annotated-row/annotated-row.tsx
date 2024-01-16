@@ -19,7 +19,7 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [editLabelText, setEditLabelText] = useState(''); // text being edited
     const [editNoteText, setEditNoteText] = useState<string | undefined>(''); // text being edited
-    const [editTermText, setEditTermText] = useState<string | undefined>('');
+    const [editTerm, setEditTerm] = useState<Term | null>();
 
     const [updatedAnnotation, setUpdatedAnnotation] = useState<Annotation>(annotation);
 
@@ -46,12 +46,15 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
                 updatedAnnotation.text = editNoteText;
             }
 
-            if (editTermText != null) {
+            if (editTerm?.definition != null) {
                 updatedAnnotation.term = {
-                    id: updatedAnnotation.term ? updatedAnnotation.term.id : 0,
-                    definition: editTermText,
+                    id: editTerm.id,
+                    definition: editTerm.definition,
                     reference: editLabelText,
+                    annotations: []
                 };
+            } else {
+                updatedAnnotation.term = null;
             }
 
             setIsEditing(false);
@@ -71,11 +74,12 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
 
     const handleAddTerm = async () => {
         try {
-            await setEditTermText(newTerm.definition);
+            await setEditTerm(newTerm);
             updatedAnnotation.term = {
-                id: 0,
+                id: newTerm.id,
                 definition: newTerm.definition,
                 reference: annotation.selectedWord,
+                annotations: []
             };
             fetchTerms(annotation.selectedWord)
             setShowModal(false);
@@ -102,7 +106,7 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
     useEffect(() => {
         setEditLabelText(annotation.selectedWord)
         setEditNoteText(annotation.text)
-        setEditTermText(annotation?.term?.definition)
+        setEditTerm(annotation?.term)
         fetchTerms(annotation.selectedWord)
     }, [annotation.selectedWord, annotation.text, annotation.term?.definition]);
 
@@ -168,14 +172,16 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
                             <Form.Group controlId="exampleForm.ControlInput2">
                                 <Dropdown>
                                     <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic">
-                                        {editTermText ? editTermText : <>
+                                        {editTerm?.definition ? editTerm.definition : <>
                                             Selecteer</>}
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu className="dropdown">
                                         <Dropdown.Item
-                                            onClick={() => setEditTermText("")}
-                                            active={!editTermText}  // Highlight if no term is selected
+                                            onClick={() => {
+                                                setEditTerm(null)
+                                            }}
+                                            active={!editTerm}  // Highlight if no term is selected
                                             style={{ color: 'black' }}
                                         >
                                             Selecteer niets
@@ -183,8 +189,8 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
                                         {terms.map((term, index) => (
                                             <Dropdown.Item
                                                 key={index}
-                                                onClick={() => setEditTermText(term.definition)}
-                                                active={editTermText === term.definition}
+                                                onClick={() => setEditTerm(term)}
+                                                active={editTerm?.definition === term.definition}
                                                 style={{ color: 'black' }}
                                             >
                                                 {term.definition}
