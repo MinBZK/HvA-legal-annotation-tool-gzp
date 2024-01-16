@@ -90,7 +90,6 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
     };
 
     const fetchTerms = (reference: any) => {
-        console.log(reference)
         fetch(`${process.env.API_URL}/terms/${encodeURIComponent(reference)}`)
             .then(response => {
                 if (!response.ok) {
