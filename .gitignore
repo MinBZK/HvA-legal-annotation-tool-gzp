@@ -49,3 +49,5 @@ backend/src/main/resources/.env
 
 .env
 !.env.local
+
+mysql-data/*
