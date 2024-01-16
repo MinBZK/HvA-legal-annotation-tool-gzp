@@ -288,7 +288,6 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
             }
 
             console.log('XML updated successfully');
-            // handleClose();
         } catch (error) {
             console.error('Error updating XML:', error);
         }
@@ -317,7 +316,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                 text: annotation?.text,
                 lawClass: {name: annotation?.lawClass},
                 project: {id: projectId},
-                term: {definition: annotation?.term.definition || undefined, reference: annotation?.selectedWord},
+                term: {definition: annotation?.term.definition || null, reference: annotation?.selectedWord},
                 parentAnnotation: null,
             });
             if (mainAnnotation) {
@@ -350,7 +349,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                 lawClass: {name: subAnnotationDetails?.lawClass.name},
                 project: {id: projectId},
                 term: {
-                    definition: subAnnotationDetails?.term.definition || undefined,
+                    definition: subAnnotationDetails?.term.definition || null,
                     reference: subAnnotationDetails?.selectedWord
                 },
                 parentAnnotation: mainAnnotation,

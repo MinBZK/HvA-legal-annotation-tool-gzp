@@ -258,14 +258,21 @@ export default function Home() {
             <Alert show={showMaxXmlWarning} variant="warning">
               U heeft het maximale aantal van {maxXmlCount} XML&apos;s bereikt. Verwijder eerst een XML voordat u verder gaat.
             </Alert>
-            {
-              activeUserRole == "Admin" || activeUserRole == "Jurist" ? <button
-                className="import-button"
-                onClick={handleShow}>
-                <BsDownload className="download-icon" size={20} />
-                <span>Importeer XML</span>
-              </button> : <div></div>
-            }
+            <Link href={{pathname: '/terms'}}>
+              <button className="import-button d-inline-block">
+                Begrippen
+              </button>
+            </Link>
+              {
+                  activeUserRole == "Admin" || activeUserRole == "Jurist" ?
+                      <button
+                          className="import-button"
+                          onClick={handleShow}>
+                        <BsDownload className="download-icon" size={20}/>
+                        <span>Importeer XML</span>
+                      </button>
+                      : <></>
+              }
 
           </div>
 
