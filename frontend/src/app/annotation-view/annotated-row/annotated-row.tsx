@@ -1,12 +1,12 @@
 "use client"; // This is a client component 👈🏽
 
-import React, {FC, useEffect, useState} from "react";
-import {FaChevronDown, FaChevronUp, FaEdit} from "react-icons/fa";
+import React, { FC, useEffect, useState } from "react";
+import { FaChevronDown, FaChevronUp, FaEdit } from "react-icons/fa";
 import css from "./annotated-row.module.css";
-import {Button, Dropdown, Form, Modal} from "react-bootstrap";
-import {Annotation} from "@/app/models/annotation";
-import {Term} from "@/app/models/term";
-import {LawClass} from "@/app/models/lawclass";
+import { Button, Dropdown, Form, Modal } from "react-bootstrap";
+import { Annotation } from "@/app/models/annotation";
+import { Term } from "@/app/models/term";
+import { LawClass } from "@/app/models/lawclass";
 import { Relation } from "@/app/models/relation";
 
 
@@ -14,16 +14,16 @@ interface AnnotationProps {
     annotation: Annotation;
     handleEdit: (annotation: Annotation, id: number) => void;
     handleDelete: (id: number) => void;
+    open: boolean;
     relations?: Relation[]; // Add this line
 }
 
-const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelete}) => {
+const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelete, open }) => {
 
-    const [open, setOpen] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [editLabelText, setEditLabelText] = useState(''); // text being edited
     const [editNoteText, setEditNoteText] = useState<string | undefined>(''); // text being edited
-    const [editTermText, setEditTermText] = useState<string | undefined>('');
+    const [editTerm, setEditTerm] = useState<Term | null>();
 
     const [updatedAnnotation, setUpdatedAnnotation] = useState<Annotation>(annotation);
 
@@ -56,12 +56,15 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
                 updatedAnnotation.text = editNoteText;
             }
 
-            if (editTermText != null) {
+            if (editTerm?.definition != null) {
                 updatedAnnotation.term = {
-                    id: updatedAnnotation.term ? updatedAnnotation.term.id : 0,
-                    definition: editTermText,
+                    id: editTerm.id,
+                    definition: editTerm.definition,
                     reference: editLabelText,
+                    annotations: []
                 };
+            } else {
+                updatedAnnotation.term = null;
             }
 
             if(editLawClass != null) {
@@ -84,11 +87,12 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
 
     const handleAddTerm = async () => {
         try {
-            await setEditTermText(newTerm.definition);
+            await setEditTerm(newTerm);
             updatedAnnotation.term = {
-                id: 0,
+                id: newTerm.id,
                 definition: newTerm.definition,
                 reference: annotation.selectedWord,
+                annotations: []
             };
             fetchTerms(annotation.selectedWord)
             setShowModal(false);
@@ -113,7 +117,7 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
     };
 
     const fetchTerms = (reference: any) => {
-        fetch(`http://localhost:8000/api/terms/${encodeURIComponent(reference)}`)
+        fetch(`${process.env.API_URL}/terms/${encodeURIComponent(reference)}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch terms');
@@ -126,70 +130,73 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
 
     const handleSelectLaw = async (lawClassName: any) => {
         try {
+            // find lawclass in array
             const selectedLawClass = classes.find((lawClass) => lawClass.name === lawClassName);
 
             if (selectedLawClass) {
                 const lawClassId = selectedLawClass.id;
 
-                // Fetch subannotations
+                // fetch subannotations
                 const subAnnotationsResponse = await fetch(`http://localhost:8000/api/annotations/children/${annotation.id}`);
 
                 if (subAnnotationsResponse.ok) {
                     const childAnnotations = await subAnnotationsResponse.json();
-                    // TODO
-                    console.log("childAnnotations" + childAnnotations);
+                    console.log("childAnnotations", childAnnotations);
                     setEditLawClass(lawClassName ?? null);
 
                     if (childAnnotations.length > 0) {
-                        const annotationsToDelete = childAnnotations.filter((childAnnotation: any) => childAnnotation.lawClassId !== lawClassId);
-
-                        // Check subclasses from new class
+                        // check subclasses from new class
                         const subclasses = await fetchSubclasses(selectedLawClass);
 
-                        // Only the belonging annotations stay with the belonging lawclasses
-                        const annotationsToDeleteWithoutSubclasses = annotationsToDelete.filter((childAnnotation: any) => {
-                            const childLawClass = classes.find((lawClass) => lawClass.id === childAnnotation.lawClassId);
-                            const childLawClassName = childLawClass?.name;
+                        // Get the IDs of subannotations to be deleted
+                        const annotationsToDelete = childAnnotations
+                            .filter((childAnnotation: any) => childAnnotation.lawClassId !== lawClassId)
+                            .map((childAnnotation: any) => childAnnotation.id);
 
-                            if (!subclasses.includes(childLawClassName)) {
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        });
-
-                        // Loop through and delete annotations
-                        for (const childAnnotation of annotationsToDeleteWithoutSubclasses) {
-                            const indexToDelete = subannotations.findIndex((sub) => sub.id === childAnnotation.id);
-
-                            if (indexToDelete !== -1) {
-                                setSubannotations((prevSubannotations) => {
-                                    const updatedSubannotations = [...prevSubannotations];
-                                    updatedSubannotations.splice(indexToDelete, 1);
-                                    return updatedSubannotations;
-                                });
-
-                                // Delete child annotation
+                        // Delete subannotations
+                        await Promise.all(
+                            annotationsToDelete.map(async (annotationId: any) => {
                                 try {
-                                    const deleteChildAnnotationResponse = await fetch(
-                                        `http://localhost:8000/api/annotations/deleteannotation/${childAnnotation.id}`,
+                                    const deleteAnnotationResponse = await fetch(
+                                        `http://localhost:8000/api/annotations/deleteannotation/${annotationId}`,
                                         {
                                             method: 'DELETE',
                                         }
                                     );
 
-                                    if (!deleteChildAnnotationResponse.ok) {
+                                    if (!deleteAnnotationResponse.ok) {
                                         console.error(
                                             'Failed to delete child annotation:',
-                                            deleteChildAnnotationResponse.status,
-                                            deleteChildAnnotationResponse.statusText
+                                            deleteAnnotationResponse.status,
+                                            deleteAnnotationResponse.statusText
                                         );
                                     }
                                 } catch (error) {
                                     console.error('Error deleting child annotation:', error);
                                 }
+                            })
+                        );
+
+                        // Now, update the law class for the remaining subannotations
+                        const updatedSubAnnotations = childAnnotations.map((childAnnotation: any) => {
+                            const childLawClass = classes.find((lawClass) => lawClass.id === childAnnotation.lawClassId);
+                            const childLawClassName = childLawClass?.name;
+
+                            if (!subclasses.includes(childLawClassName)) {
+                                // Law class doesn't belong to the new class, set it to null
+                                childAnnotation.lawClass = null;
+                            } else {
+                                // Law class belongs to the new class, update it
+                                childAnnotation.lawClass = selectedLawClass;
                             }
-                        }
+
+                            return childAnnotation;
+                        });
+
+                        // update the updated subannotations
+                        setSubannotations(updatedSubAnnotations);
+
+                        console.log("Updated subannotations:", updatedSubAnnotations);
                     } else {
                         console.log("No child annotations found.");
                     }
@@ -206,13 +213,20 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
         }
     };
 
+
+
     const fetchSubclasses = async (lawClass: LawClass) => {
-        const response = await fetch(`http://localhost:8000/api/classes/relations/${lawClass.id}`);
-        if (response.ok) {
-            const subclasses = await response.json();
-            return subclasses.map((subclass: any) => subclass.name);
-        } else {
-            console.error("Error fetching subclasses:", response.status, response.statusText);
+        try {
+            const response = await fetch(`http://localhost:8000/api/relations/${lawClass.id}`);
+            if (response.ok) {
+                const subclasses = await response.json();
+                return subclasses.map((subclass: any) => subclass.name);
+            } else {
+                console.error("Error fetching subclasses:", response.status, response.statusText);
+                return [];
+            }
+        } catch (error) {
+            console.error("Error in fetchSubclasses:", error);
             return [];
         }
     };
@@ -221,36 +235,21 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
     useEffect(() => {
         setEditLabelText(annotation.selectedWord)
         setEditNoteText(annotation.text)
-        setEditTermText(annotation?.term?.definition)
-        setEditLawClass(annotation.lawClass?.name ?? null);
-        // setUpdatedAnnotation(annotation);
+        setEditTerm(annotation?.term)
         fetchTerms(annotation.selectedWord)
         fetchClasses();
-        // handleSelectLaw(annotation);
     }, [annotation.selectedWord, annotation.text, annotation.term?.definition, annotation.lawClass]);
 
     return (
         // Dropdown rechtsbetrekking
         <div>
-            <div className={css.annotationTitle} style={{ background: annotation.lawClass?.color }} onClick={() => {
-                ``
-                setOpen(!open)
-            }}>
-                <h5 className={css.annotationName}>{annotation.lawClass?.name}</h5>
-                {open ? (
-                    <FaChevronDown className={css.align} />
-                ) : (
-                    <FaChevronUp />
-                )}
-            </div>
-
             {open &&
-                <div className={css.annotationInfo}>
+                <div className={`${css.annotationInfo} ${isEditing ? css.editing : ''}`}>
 
                     <div className={css.iconRow}>
                         <FaEdit className={css.iconCol} id={"iconEdit"}
-                                style={isEditing ? ({display: "none"}) : ({display: "block"})}
-                                onClick={() => setIsEditing(true)}/>
+                            style={isEditing ? ({ display: "none" }) : ({ display: "block" })}
+                            onClick={() => setIsEditing(true)} />
                     </div>
 
                     {/*law class dropdown*/}
@@ -326,24 +325,26 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
                             <Form.Group controlId="exampleForm.ControlInput2">
                                 <Dropdown>
                                     <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic">
-                                        {editTermText ? editTermText : <>
+                                        {editTerm?.definition ? editTerm.definition : <>
                                             Selecteer</>}
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu className="dropdown">
                                         <Dropdown.Item
-                                            onClick={() => setEditTermText("")}
-                                            active={!editTermText}  // Highlight if no term is selected
-                                            style={{color: 'black'}}
+                                            onClick={() => {
+                                                setEditTerm(null)
+                                            }}
+                                            active={!editTerm}  // Highlight if no term is selected
+                                            style={{ color: 'black' }}
                                         >
                                             Selecteer niets
                                         </Dropdown.Item>
                                         {terms.map((term, index) => (
                                             <Dropdown.Item
                                                 key={index}
-                                                onClick={() => setEditTermText(term.definition)}
-                                                active={editTermText === term.definition}
-                                                style={{color: 'black'}}
+                                                onClick={() => setEditTerm(term)}
+                                                active={editTerm?.definition === term.definition}
+                                                style={{ color: 'black' }}
                                             >
                                                 {term.definition}
                                             </Dropdown.Item>
@@ -384,28 +385,23 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
 
                     {
                         annotation.parentAnnotation != null ? <div className={css.row}>
-                                <h4 className={`${css.leftCol} ${css.annotationName}`}>Onderdeel van</h4>
-                                <h4 className={`${css.rightCol} ${css.annotationName} ${css.childAnnotation}`}
-                                    style={{background: annotation.parentAnnotation.lawClass?.color}}>{annotation.parentAnnotation.selectedWord}</h4>
-                            </div>
+                            <h4 className={`${css.leftCol} ${css.annotationName}`}>Onderdeel van</h4>
+                            <h4 className={`${css.rightCol} ${css.annotationName} ${css.childAnnotation}`} style={{ background: annotation.parentAnnotation.lawClass?.color }}>{annotation.parentAnnotation.selectedWord}</h4>
+                        </div>
                             : ""
                     }
 
                     {isEditing &&
                         <div className={`${css.buttonsRight}`}>
-                            <button className={`${css.save}`} onClick={() => setIsConfirmModalOpen(true)}>Opslaan
-                            </button>
+                            <button className={`${css.save}`} onClick={() => setIsConfirmModalOpen(true)}>Opslaan</button>
                             <button className={`${css.cancel}`} onClick={() => setIsEditing(false)}>Annuleer</button>
-                            <button className={`${css.delete}`} onClick={() => setIsDeleteModalOpen(true)}>Verwijderen
-                            </button>
+                            <button className={`${css.delete}`} onClick={() => setIsDeleteModalOpen(true)}>Verwijderen</button>
                         </div>
                     }
                 </div>
             }
 
-            <Modal show={isConfirmModalOpen} onHide={() => {
-                setIsConfirmModalOpen(!isConfirmModalOpen)
-            }}>
+            <Modal show={isConfirmModalOpen} onHide={() => { setIsConfirmModalOpen(!isConfirmModalOpen) }}>
                 <Modal.Header closeButton>
                     <Modal.Title>Wil je deze annotatie bijwerken?</Modal.Title>
                 </Modal.Header>
@@ -414,9 +410,7 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
                 </Modal.Body>
             </Modal>
 
-            <Modal show={isDeleteModalOpen} onHide={() => {
-                setIsDeleteModalOpen(!isDeleteModalOpen)
-            }}>
+            <Modal show={isDeleteModalOpen} onHide={() => { setIsDeleteModalOpen(!isDeleteModalOpen) }}>
                 <Modal.Header closeButton>
                     <Modal.Title>Wil je deze annotatie verwijderen?</Modal.Title>
                 </Modal.Header>

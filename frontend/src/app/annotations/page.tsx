@@ -8,8 +8,7 @@ import {useEffect, useState} from "react";
 import LoadXML from "./comment/render-xml";
 import CreateAnnotation from "./create-annotation/create-annotation";
 import {useRouter} from "next/navigation";
-import {Button} from "react-bootstrap";
-import { BsArrowLeft } from 'react-icons/bs';
+import Navigation from '../components/navigation/navigation';
 
 const AnnotationPage = () => {
 
@@ -23,7 +22,6 @@ const AnnotationPage = () => {
 
     const [activeSelection, setActiveSelection] = useState(1);
     const [reloadXML, setReloadXML] = useState(false);
-    const router = useRouter();
 
     // Get id from url
     const searchParams = useSearchParams();
@@ -50,6 +48,7 @@ const AnnotationPage = () => {
     }, [id, reloadXML]);
 
     const handleTextSelection = (text: string, offset: number) => {
+        console.log(activeSelection)
         if (activeSelection === 1) {
             setSelectedText1(text);
             setStartOffset1(offset);
@@ -57,10 +56,6 @@ const AnnotationPage = () => {
             setSelectedText2(text);
             setStartOffset2(offset);
         }
-
-        // Toggle between active selections
-        // setActiveSelection(activeSelection === 1 ? 2 : 1);
-
         setIsTextSelected(true);
     };
 
@@ -77,12 +72,10 @@ const AnnotationPage = () => {
         setReloadXML((prev) => !prev);
     };
 
-    const handleGoBack = () => {
-        router.push('/');
-    };
-
-    const handleToggleActiveSelection = () => {
-        setActiveSelection((prevActiveSelection) => (prevActiveSelection === 1 ? 2 : 1));
+    const handleSetActiveSelection = (selection: number) => {
+        console.log("Setting Active Selection:", selection);
+        setActiveSelection(selection);
+        console.log(activeSelection)
     };
 
     /**
@@ -136,7 +129,7 @@ const AnnotationPage = () => {
                 ...projectData,
             };
 
-            const response = await fetch('http://localhost:8000/api/saveXml', {
+            const response = await fetch('${process.env.API_URL}/saveXml', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -157,15 +150,9 @@ const AnnotationPage = () => {
 
     return (
     <>
-      <nav className="navbar">
-        {<div className="navbar-title">Legal Annotation Tool</div>}
-      </nav>
-      <main className='d-flex'>
+        <Navigation></Navigation>
+        <main className='d-flex'>
         <section className="left-column">
-            <Button variant="light" className="back-button p-2 m-1"
-                    onClick={handleGoBack}>
-                <BsArrowLeft size={23} className="icon" /> Terug
-            </Button>
             {projectData && <LoadXML project={projectData}  onTextSelection={handleTextSelection}
             />}
         </section>
@@ -176,8 +163,7 @@ const AnnotationPage = () => {
                                   selectedText2={selectedText2}
                                   startOffset1={startOffset1}
                                   startOffset2={startOffset2}
-                                  activeSelection={activeSelection}
-                                  onToggleActiveSelection={handleToggleActiveSelection}
+                                  onSetActiveSelection={handleSetActiveSelection}
                                   onClose={handleCloseCreate} onAnnotationSaved={handleAnnotationSaved} // Pass the callback
                 />
             ) : (

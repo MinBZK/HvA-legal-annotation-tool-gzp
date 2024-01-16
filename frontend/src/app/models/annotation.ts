@@ -9,7 +9,6 @@ export interface Annotation {
     lawClass: LawClass | undefined,
     project: Project
     startOffset?: number,
-    term: Term | undefined,
-    parentAnnotation: Annotation,
-    subAnnotation: Annotation[];
+    term: Term | null,
+    parentAnnotation: Annotation
 }

@@ -1,20 +1,15 @@
 /* src/app/components/export/ExportXMLButton.module.css */
 
 .exportButton {
-    background-color: #f0e68c;
-    color: black;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+    font-size: 16px !important;
     cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.exportButton:hover {
-    background-color: #e6db74;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+    margin-left: 10px;
+    padding: 0 10px;
+    border-radius: 20px !important;
+    transition: .2s;
+    color: #000 !important;
+    background: #F2E78661 !important;
+    border: 1px solid #C0B44F !important;
 }
 
 BsDownload {

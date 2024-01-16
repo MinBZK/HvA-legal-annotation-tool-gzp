@@ -124,33 +124,6 @@ button#dropdown-basic.dropdown.dropdown-toggle.btn.btn-secondary {
     box-shadow: 0 4px 1px 0 rgba(0, 0, 0, 0.2), 0 0px 12px 0 rgba(0, 0, 0, 0.19);
 }
 
-.save, .cancel, .delete {
-    font-size: 16px;
-    cursor: pointer;
-    margin-left: 10px;
-    padding: 0 10px;
-    border-radius: 20px;
-    transition: .2s;
-}
-
-.save {
-    color: #000;
-    background: #4CA74A41;
-    border: 1px solid #3A9B38;
-}
-
-.cancel {
-    color: #000;
-    background: #F2E78661;
-    border: 1px solid #C0B44F;
-}
-
-.delete {
-    color: #000;
-    background: #FACACA;
-    border: 1px solid #CA5858;
-}
-
 .buttonsRight {
     display: flex;
     justify-content: end;
@@ -167,4 +140,16 @@ button#dropdown-basic.dropdown.dropdown-toggle.btn.btn-secondary {
 
 .relation-buttons:not(:has(button)) {
     display: none;
+}
+
+.primary {
+    color: #000;
+    background-color: #4CA74A41; /* Change this to your desired green color */
+    border-color: #4CA74A41;
+}
+
+.secondary {
+    color: #000;
+    background-color: #e9ecef; /* Change this to your desired grey color */
+    border-color: #e9ecef;
 }

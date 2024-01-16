@@ -1,0 +1,33 @@
+.modal.full-screen .modal-content {
+    height: 90vh;
+    overflow: auto;
+}
+
+.modal.full-screen .modal-body {
+    overflow: auto;
+}
+
+.modal .articles {
+    padding: 5px 10px;
+    border: 1px solid lightgray;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.modal .articles:has(input:checked) {
+    background-color: rgb(236 236 236);
+}
+
+.modal .articles .article-holder {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+}
+
+.modal .articles .article-holder div:nth-child(1) {
+    font-size: 14px;
+    margin: 2px 10px;
+    min-width: max-content;
+}

@@ -1,8 +1,14 @@
+"use client";
 import React, { FC, useEffect, useState } from 'react';
 import { Project } from "../../models/project";
 import '../../static/annotations.css'
 import './xml.css'
 import ExportXMLButton from "@/app/components/export-xml-button/export-xml-button";
+import { BsArrowLeft } from 'react-icons/bs';
+import { useRouter } from "next/navigation";
+import { PiListChecksLight } from "react-icons/pi";
+import ArticleSelectionModal from '@/app/components/article-selection-modal/article-selection-modal';
+import { uploadXML } from '@/app/services/project';
 
 interface XMLProps {
   project: Project;
@@ -10,8 +16,12 @@ interface XMLProps {
 }
 
 const LoadXML: FC<XMLProps> = ({ project, onTextSelection }) => {
+  const router = useRouter();
   const [renderXML, setRenderXML] = useState(false);
   const [annotationStyles, setAnnotationStyles] = useState({});
+  const [articles, setArticles] = useState<HTMLElement[]>([]);
+  const [selectedArticles, setSelectedArticles] = useState<boolean[]>([]);
+  const [showSelectArticlesModal, setShowSelectArticlesModal] = useState<boolean>(false);
 
   useEffect(() => {
     // Convert the XML string to a readable DOM object
@@ -37,7 +47,7 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection }) => {
     for (let annotation of annotations) {
       const id = annotation.getAttribute('id');
       if (id) {
-        const response = await fetch(`http://localhost:8000/api/annotations/${id}`);
+        const response = await fetch(`${process.env.API_URL}/annotations/${id}`);
         if (response.ok) {
           const annotationData = await response.json();
 
@@ -113,6 +123,51 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection }) => {
     return count;
   }
 
+  const handleGoBack = () => {
+    router.push('/');
+  };
+
+  const handleSelection = () => {
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(project.xml_content, "application/xml");
+    if (xml != null) {
+      const listArticles = xml.querySelectorAll("artikel")
+
+      // check if children exist
+      if (listArticles == null || listArticles.length == 0) {
+        alert("no articles in xml")
+      }
+
+      const arrArticle: any[] = []
+      const arrArticleBools: boolean[] = []
+      for (let i = 0; i < listArticles.length; i++) {
+        arrArticle.push(listArticles.item(i));
+        
+        if (project.selectedArticles != "" && project.selectedArticles != null && project.selectedArticles.split(", ").includes(listArticles.item(i).id)) {
+          arrArticleBools.push(true);
+        } else {
+          arrArticleBools.push(false);
+        }
+      }
+      setArticles(arrArticle);
+      setSelectedArticles(arrArticleBools);
+      setShowSelectArticlesModal(true);
+    }
+  }
+
+  const handleArticleSelect = async (value: string[]) => {
+    let selectedArticles = "";
+    if (value.length > 0) {
+      selectedArticles = value.join(", ");
+    }
+    project.selectedArticles = selectedArticles;
+    await uploadXML(project.xml_content, project.title, selectedArticles, project.id);
+    setShowSelectArticlesModal(false);
+  };
+
+  const cancelArticleSelect = (value: Boolean) => {
+    setShowSelectArticlesModal(false);
+  }
 
   return (
     <>
@@ -120,7 +175,25 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection }) => {
         {renderStyles()}
       </style>
       <>
-        <ExportXMLButton xmlData={project.xml_content} />
+        {
+          showSelectArticlesModal ?
+            <ArticleSelectionModal xmlArticles={articles} handleArticleSelect={handleArticleSelect} cancelArticleSelect={cancelArticleSelect} prevSelectedArticles={selectedArticles} ></ArticleSelectionModal>
+            : ""
+        }
+
+        <div className='action-buttons'>
+          <button className="back-button"
+            onClick={handleGoBack}>
+            <BsArrowLeft className="icon" /> Terug
+          </button>
+          <div>
+            <button className="change-selection"
+              onClick={handleSelection}>
+              <PiListChecksLight className="icon" /> Wijzig selectie
+            </button>
+            <ExportXMLButton xmlData={project.xml_content} projectTitle={project.title} />
+          </div>
+        </div>
 
         <p className="xml-content" onMouseUp={handleShow} dangerouslySetInnerHTML={{ __html: renderXML && renderXMLContent() }} />
       </>
