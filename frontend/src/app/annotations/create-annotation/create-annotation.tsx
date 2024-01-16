@@ -2,7 +2,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {FC, useEffect, useState} from 'react';
 import {Alert, Button, Dropdown, Form, Modal} from 'react-bootstrap';
-import {BsFillFloppy2Fill, BsX} from "react-icons/bs";
+import {BsFillFloppy2Fill, BsX, BsCheck2Square} from "react-icons/bs";
 import {Annotation} from "../../models/annotation";
 import {LawClass} from "../../models/lawclass";
 import {getProjectById} from "../../services/project";
@@ -207,8 +207,6 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
     };
 
     const handleClose = () => {
-        // setLawClassError(false);
-        // onClose();
         setSubAnnotationDetails({
             id: 0,
             text: "",
@@ -342,8 +340,6 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
         } else {
             console.error('Annotation properties are not properly defined');
         }
-
-        // await updateXMLInDatabase();
 
         if (showSubAnnotationForm) {
             // Save the sub-annotation
@@ -513,6 +509,14 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
             setShowInputWarningModal(true);
             return;
         }
+        if (!showSubAnnotationForm) {
+            if (annotation.lawClass || annotation.selectedWord != "" || annotation.text != "") {
+                // Show an alert, warning, or handle the validation error accordingly
+                setShowInputWarningModal(true);
+                return;
+            }
+        }
+
         onClose();
     }
 
@@ -638,16 +642,21 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                         {/* Optioneel Relations */}
                         <div className='relation-buttons'>
                             <p>Optioneel</p>
-                            {relations.map(relation => (
-                                relation.cardinality.split("_")[0] === "NV" && (
-                                    <Button key={relation.id} variant="secondary" className="me-1 text-dark" onClick={() => {
-                                        handleShowSubAnnotationForm(); // Show the sub-annotation form
-                                        handleSelectSubLaw(relation.subClass.id)
-                                    }}>
+                            {relations.map(relation => {
+                                const isExisting = existingChildren.includes(relation.subClass.id);
+                                const buttonStyle = {backgroundColor: isExisting ? 'primary' : 'secondary'};
+
+                                return relation.cardinality.split("_")[0] === "NV" && (
+                                    <Button key={relation.id}
+                                            className={`me-1 text-dark ${buttonStyle.backgroundColor}`}
+                                            onClick={() => {
+                                                handleShowSubAnnotationForm(); // Show the sub-annotation form
+                                                handleSelectSubLaw(relation.subClass.id)
+                                            }}>
                                         + {relation.description}
                                     </Button>
                                 )
-                            ))}
+                            })}
                         </div>
 
                         {showSubAnnotationForm && (
@@ -736,7 +745,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                     <BsX size={20} /> Annuleer
                 </button>
                 <button className={`${css.save}`} onClick={handleFinish}>
-                    <BsFillFloppy2Fill size={20} /> Afronden
+                    <BsCheck2Square size={20} /> Afronden
                 </button>
             </div>
 
