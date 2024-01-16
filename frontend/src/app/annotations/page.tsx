@@ -125,15 +125,12 @@ const AnnotationPage = () => {
         if (projectData == null) return;
 
         try {
-            // Remove the annotation from the projectData to prevent it from being saved again
-            projectData.annotations = projectData.annotations.filter((annotation) => annotation.id !== annotationId);
-
             // Create a copy of Project to avoid mutating the original object
             const updatedProject = {
                 ...projectData,
             };
 
-            const response = await fetch('${process.env.API_URL}/saveXml', {
+            const response = await fetch(`${process.env.API_URL}/saveXml`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

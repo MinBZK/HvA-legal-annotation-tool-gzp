@@ -241,7 +241,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
 
     const saveAnnotationToBackend = async (backendAnnotation: any) => {
         try {
-            const response = await fetch(`${process.env.API_URL}/annotations/project`, {
+            const response = await fetch(`${process.env.API_URL}/annotations/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
