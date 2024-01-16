@@ -45,6 +45,17 @@ public class Annotation {
     @JoinColumn(name = "term_id")
     private Term term;
 
+    @JsonIgnoreProperties({"annotations"})
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User created_by;
+
+    @JsonView(Views.Basic.class)
+    private Long created_at;
+
+    @JsonView(Views.Basic.class)
+    private Long updated_at;
+
     public void setLawClass(LawClass lawClass) {
         this.lawClass = lawClass;
     }
