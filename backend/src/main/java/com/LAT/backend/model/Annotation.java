@@ -45,16 +45,16 @@ public class Annotation {
     @JoinColumn(name = "term_id")
     private Term term;
 
-    @JsonIgnoreProperties({"annotations"})
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User created_by;
+//    @JsonIgnoreProperties({"annotations"})
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private User created_by;
 
     @JsonView(Views.Basic.class)
-    private Long created_at;
+    private long created_at;
 
-    @JsonView(Views.Basic.class)
-    private Long updated_at;
+//    @JsonView(Views.Basic.class)
+//    private long updated_at;
 
     public void setLawClass(LawClass lawClass) {
         this.lawClass = lawClass;
@@ -102,5 +102,13 @@ public class Annotation {
 
     public void setTerm(Term term) {
         this.term = term;
+    }
+
+    public long getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(long created_at) {
+        this.created_at = created_at;
     }
 }

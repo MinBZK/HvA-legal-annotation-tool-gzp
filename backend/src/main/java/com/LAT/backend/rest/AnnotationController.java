@@ -62,6 +62,7 @@ public class AnnotationController {
     // Hanna
     @PostMapping("/project")
     public ResponseEntity<Annotation> createAnnotation(@RequestBody Annotation annotation) {
+
 //        try {
         // Validate if the project exists
         Project project = projectRepository.findById(annotation.getProject().getId())
