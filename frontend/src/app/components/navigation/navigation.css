@@ -13,4 +13,24 @@
 
 .buttons {
     padding: 0 10px;
+    display: flex;
+    align-items: center;
+}
+
+.term-button {
+    font-size: 14px;
+    color: #000;
+    cursor: pointer;
+    margin-left: 10px;
+    padding: 7px 10px;
+    border-radius: 5px;
+    transition: .2s;
+    border: none;
+    background: #3d9acf;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.term-button:hover {
+    background-color: rgb(87, 163, 207);
 }
