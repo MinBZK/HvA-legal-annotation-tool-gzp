@@ -231,7 +231,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
             return existingChildren.includes(relation.subClass.id);
         });
 
-        if (!areAllMandatoryRelationshipsMade) {
+        if (!areAllMandatoryRelationshipsMade || existingChildren.length < mandatoryRelations.length) {
             setShowWarningModal(true);
             return;
         }
