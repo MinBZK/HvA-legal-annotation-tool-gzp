@@ -1,11 +1,12 @@
 "use client"; // This is a client component 👈🏽
 
-import React, {FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import AnnotatedRow from "@/app/annotation-view/annotated-row/annotated-row";
 import { Annotation } from "@/app/models/annotation";
 import css from "./annotation-view.module.css";
 import Image from "next/image"
-import {Project} from "@/app/models/project";
+import { LawClass } from "../models/lawclass";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 interface AnnotationViewProps {
     onAnnotationDelete: (annotationId: number) => void;
@@ -13,9 +14,13 @@ interface AnnotationViewProps {
     isLoading: boolean;
 }
 
+type GroupedAnnotations = { lawClass: LawClass; annotations: Annotation[]; open: boolean }[];
+
 const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAnnotations, isLoading}) => {
+
     const [annotations, setAnnotations] = useState<Annotation[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [groupedAnnotations, setGroupedAnnotations] = useState<GroupedAnnotations>([]);
 
     /**
      * Calls the retrieveAnnotations function to fetch the annotations from the database and sets the annotations state
@@ -28,10 +33,34 @@ const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAn
             annotations = annotations.filter(annotation => annotation != null);
 
             setAnnotations(annotations);
+            setGroupedAnnotations(groupAnnotationsByLawClass(annotations));
         } else {
             console.error("Geen annotaties opgehaald");
         }
     };
+
+    const groupAnnotationsByLawClass = (annotations: Annotation[]): GroupedAnnotations => {
+        const groupedAnnotations: GroupedAnnotations = [];
+
+        annotations.forEach(annotation => {
+            if (annotation.lawClass) {
+                const lawClassName = annotation.lawClass.name;
+
+                const existingGroup = groupedAnnotations.find(group => group.lawClass.name === lawClassName);
+
+                if (existingGroup) {
+                    existingGroup.annotations.push(annotation);
+                } else {
+                    groupedAnnotations.push({
+                        lawClass: annotation.lawClass,
+                        annotations: [annotation],
+                        open: false
+                    });
+                }
+            }
+        });
+        return groupedAnnotations
+    }
 
     useEffect(() => {
         (async () => {
@@ -134,17 +163,34 @@ const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAn
                 </div>
             )}
 
+
             <div className={"annolist p-3 mb-5 bg-white"}>
-                {annotations &&
-                annotations.map((value, index) => (
-                    <div className={css.annotatedRow} key={index}>
-                        <AnnotatedRow
-                            annotation={value}
-                            handleEdit={handleEdit}
-                            handleDelete={handleDelete}
-                        />
-                    </div>
-                ))}
+                {annotations && 
+                    groupedAnnotations.map((value, index) => (
+                        <div className={css.annotatedRow} key={index}>
+                            <div className={css.annotationTitle} style={{ background: value.lawClass?.color }} onClick={() => {
+                                const updatedGroupedAnnotations = [...groupedAnnotations];
+                                updatedGroupedAnnotations[index].open = !updatedGroupedAnnotations[index].open;
+                                setGroupedAnnotations(updatedGroupedAnnotations);
+                            }}>
+                                <h5 className={css.annotationName}>{value.lawClass?.name}</h5>
+                                {value.open ? (
+                                    <FaChevronDown className={css.align} />
+                                ) : (
+                                    <FaChevronUp />
+                                )}
+                            </div>
+                            {value.annotations.map((annotation, subIndex) => (
+                                <AnnotatedRow
+                                    key={subIndex}
+                                    annotation={annotation}
+                                    handleEdit={handleEdit}
+                                    handleDelete={handleDelete}
+                                    open={value.open}
+                                />
+                            ))}
+                        </div>
+                    ))}
             </div>
         </div>
     );

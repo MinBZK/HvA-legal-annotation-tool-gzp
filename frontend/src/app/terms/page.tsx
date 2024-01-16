@@ -5,6 +5,7 @@ import {Term} from "@/app/models/term";
 import '../static/terms.css';
 import {BsArrowLeft} from "react-icons/bs";
 import {useRouter} from "next/navigation";
+import Navigation from "../components/navigation/navigation";
 
 
 const TermsPage = () => {
@@ -38,9 +39,7 @@ const TermsPage = () => {
 
     return (
         <>
-            <nav className="navbar">
-                <div className="navbar-title">Legal Annotation Tool</div>
-            </nav>
+            <Navigation></Navigation>
 
             <button className="back-button"
                     onClick={handleGoBack}>
