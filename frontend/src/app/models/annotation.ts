@@ -11,8 +11,9 @@ export interface Annotation {
     project: Project
     startOffset?: number,
     term: Term | null,
-    parentAnnotation: Annotation
+    parentAnnotation: Annotation,
 
     created_at: number,
-    created_by: User
+    created_by: User,
+    updated_at: number,
 }

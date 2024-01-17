@@ -47,6 +47,7 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
             setIsConfirmModalOpen(!isConfirmModalOpen);
 
             updatedAnnotation.selectedWord = editLabelText;
+            updatedAnnotation.updated_at = Date.now();
 
             // Check if editNoteText is not null before assigning
             if (editNoteText != null) {
@@ -139,14 +140,9 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
 
                 <span>
                     <p className={css.annotationDate}>
-                        aangemaakt op {new Date(annotation.created_at).toLocaleDateString()}
-                        &nbsp;door {currentUser.name}
+                        {annotation.updated_at ? 'veranderd' : 'aangemaakt'} op {new Date(annotation.updated_at || annotation.created_at).toLocaleDateString()} door {annotation.created_by?.name}
                     </p>
-                    {open ? (
-                        <FaChevronDown className={css.align}/>
-                    ) : (
-                        <FaChevronUp/>
-                    )}
+                    {open ? <FaChevronDown className={css.align}/> : <FaChevronUp/>}
                 </span>
 
         </div>
