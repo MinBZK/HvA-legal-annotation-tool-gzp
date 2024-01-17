@@ -143,6 +143,7 @@ public class AnnotationController {
         annotation.setSelectedWord(annotationDetails.getSelectedWord());
         annotation.setLawClass(annotationDetails.getLawClass());
         annotation.setProject(annotationDetails.getProject());
+        annotation.setUpdated_at(annotationDetails.getUpdated_at());
 
         Term term = annotationDetails.getTerm();
 

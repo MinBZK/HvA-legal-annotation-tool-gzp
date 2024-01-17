@@ -52,10 +52,10 @@ public class Annotation {
     private User created_by;
 
     @JsonView(Views.Basic.class)
-    private long created_at;
+    private Long created_at;
 
-//    @JsonView(Views.Basic.class)
-//    private long updated_at;
+    @JsonView(Views.Basic.class)
+    private Long updated_at;
 
     public void setLawClass(LawClass lawClass) {
         this.lawClass = lawClass;
@@ -136,4 +136,11 @@ public class Annotation {
         this.created_by = created_by;
     }
 
+    public Long getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(Long updated_at) {
+        this.updated_at = updated_at;
+    }
 }
