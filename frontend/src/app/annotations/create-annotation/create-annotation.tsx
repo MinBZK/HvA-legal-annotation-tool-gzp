@@ -13,10 +13,10 @@ import {Term} from "@/app/models/term";
 import {Relation} from "@/app/models/relation";
 
 interface PopupProps {
-    selectedText1,
-    selectedText2,
-    startOffset1,
-    startOffset2,
+    selectedText1 : any,
+    selectedText2 : any,
+    startOffset1 : any,
+    startOffset2 : any,
     onSetActiveSelection: (selection:number) => void;
     onClose: () => void; // Callback to indicate closing
     onAnnotationSaved: () => void; // Callback to indicate closing
@@ -38,11 +38,11 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
         text: "",
         selectedWord: "",
         lawClass: undefined,
-        project: { id: 0 },
+        project: {id: 0},
         startOffset: 0,
-        term: { definition: "", reference: "" },
+        term: {definition: "", reference: ""},
         parentAnnotation: null
-    } as Annotation);
+    } as unknown as Annotation);
 
     const [newTerm, setNewTerm] = useState<Term>({
         id: 0,
@@ -66,11 +66,11 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
         text: "",
         selectedWord: "",
         lawClass: undefined,
-        project: { id: 0 },
+        project: {id: 0},
         startOffset: 0,
-        term: { definition: "", reference: "" },
+        term: {definition: "", reference: ""},
         parentAnnotation: null
-    } as Annotation);
+    } as unknown as Annotation);
     const [showModal, setShowModal] = useState(false);
     const [showSubModal, setSubShowModal] = useState(false);
     const [mainAnnotationSaved, setMainAnnotationSaved] = useState(null);
@@ -225,8 +225,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
         const areAllMandatoryRelationshipsMade = mandatoryRelations.every(relation => {
             console.log(relation)
             console.log(existingChildren)
-            console.log(existingChildren.includes(relation.subClass.id))
-            return existingChildren.includes(relation.subClass.id);
+            console.log(existingChildren.includes(relation.subLawClass.id))
+            return existingChildren.includes(relation.subLawClass.id);
         });
 
         if (!areAllMandatoryRelationshipsMade || existingChildren.length < mandatoryRelations.length) {
@@ -305,7 +305,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
         setLawClassError(false);
 
         // Save or retrieve the main annotation
-        let mainAnnotation: null;
+        let mainAnnotation;
 
         if (mainAnnotationSaved) {
             mainAnnotation = mainAnnotationSaved;
@@ -316,7 +316,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                 text: annotation?.text,
                 lawClass: {name: annotation?.lawClass},
                 project: {id: projectId},
-                term: {definition: annotation?.term.definition || null, reference: annotation?.selectedWord},
+                term: {definition: annotation?.term?.definition || null, reference: annotation?.selectedWord},
                 parentAnnotation: null,
             });
             if (mainAnnotation) {
@@ -329,7 +329,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
         }
         // console.log(annotation.selectedWord, annotation.startOffset, annotation.term?.definition)
         if (annotation?.selectedWord && typeof annotation.startOffset === 'number') {
-            annotateSelectedText(annotation.selectedWord, mainAnnotation.id, annotation.startOffset, annotation.term.definition);
+            annotateSelectedText(annotation.selectedWord, mainAnnotation.id, annotation.startOffset);
             await updateXMLInDatabase();
             // Trigger the callback to re-render LoadXML
             if (onAnnotationSaved) {
@@ -360,7 +360,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
             }
 
             if (subAnnotationDetails?.selectedWord && typeof subAnnotationDetails.startOffset === 'number') {
-                annotateSelectedText(subAnnotationDetails.selectedWord, subAnnotation.id, subAnnotationDetails.startOffset, subAnnotationDetails.term.definition);
+                annotateSelectedText(subAnnotationDetails.selectedWord, subAnnotation?.id, subAnnotationDetails.startOffset);
                 await updateXMLInDatabase();
 
                 // Trigger the callback to re-render LoadXML
@@ -388,7 +388,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
      * @param startOffset
      * @param definition
      */
-    const annotateSelectedText = (selectedText: string, annotationId: number, startOffset: number, definition: string) => {
+    const annotateSelectedText = (selectedText: string, annotationId: number, startOffset: number) => {
         if (originalXML) {
             let currentOffset = 0;
             let annotationAdded = false;
@@ -478,7 +478,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
     }
 
     // This function updates the state of the subAnnotationDetails when the user types in the form
-    const handleSubAnnotationDetailChange = (field, value) => {
+    const handleSubAnnotationDetailChange = (field: any, value: any) => {
         setSubAnnotationDetails(prevDetails => ({
             ...prevDetails,
             [field]: value
@@ -491,7 +491,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
             if (response.ok) {
                 const children = await response.json();
                 // Check if any child has the same law class ID as the sub-law class ID
-                const existingChildrenIds = children.map((child: any) => child.lawClass?.id); // Add null check here
+                const existingChildrenIds = children.map((child: any) => child.lawClass?.id);
                 await setExistingChildren(existingChildrenIds);
             } else {
                 console.error("Error fetching subs");
@@ -581,7 +581,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                                 <Dropdown.Item
                                     key={index}
                                     onClick={() => handleTerm(term)}
-                                    active={annotation?.term.definition === term.definition}
+                                    active={annotation?.term?.definition === term.definition}
                                     style={{color: 'black' }}>
                                     {term.definition}
                                 </Dropdown.Item>
@@ -621,7 +621,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                         <div className='relation-buttons'>
                             <p>Verplicht</p>
                             {relations.map(relation => {
-                                const isExisting = existingChildren.includes(relation.subClass.id);
+                                const isExisting = existingChildren.includes(relation.subLawClass.id);
                                 const buttonStyle = {backgroundColor: isExisting ? 'primary' : 'secondary'};
 
                                 return relation.cardinality.split("_")[0] === "V" && (
@@ -630,7 +630,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                                             className={`me-1 text-dark ${buttonStyle.backgroundColor}`}
                                             onClick={() => {
                                                 handleShowSubAnnotationForm(); // Show the sub-annotation form
-                                                handleSelectSubLaw(relation.subClass.id)
+                                                handleSelectSubLaw(relation.subLawClass.id)
                                     }}>
                                         + {relation.description}
                                     </Button>
@@ -642,7 +642,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                         <div className='relation-buttons'>
                             <p>Optioneel</p>
                             {relations.map(relation => {
-                                const isExisting = existingChildren.includes(relation.subClass.id);
+                                const isExisting = existingChildren.includes(relation.subLawClass.id);
                                 const buttonStyle = {backgroundColor: isExisting ? 'primary' : 'secondary'};
 
                                 return relation.cardinality.split("_")[0] === "NV" && (
@@ -650,7 +650,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                                             className={`me-1 text-dark ${buttonStyle.backgroundColor}`}
                                             onClick={() => {
                                                 handleShowSubAnnotationForm(); // Show the sub-annotation form
-                                                handleSelectSubLaw(relation.subClass.id)
+                                                handleSelectSubLaw(relation.subLawClass.id)
                                             }}>
                                         + {relation.description}
                                     </Button>
@@ -699,7 +699,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                                                 <Dropdown.Item
                                                     key={index}
                                                     onClick={() => handleTerm(term)}
-                                                    active={subAnnotationDetails?.term.definition === term.definition}
+                                                    active={subAnnotationDetails?.term?.definition === term.definition}
                                                     style={{color: 'black' }}>
                                                     {term.definition}
                                                 </Dropdown.Item>

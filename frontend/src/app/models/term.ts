@@ -2,7 +2,7 @@ import { Annotation } from "./annotation";
 
 export interface Term {
     id: number,
-    definition: string,
+    definition: string | undefined,
     reference: string,
     annotations: Annotation[]
 }

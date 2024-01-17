@@ -1,7 +1,6 @@
 export interface LawClass {
     id: number;
     name: string;
-    hasSublaws?: boolean;
     // Voeg eventuele extra eigenschappen toe die u nodig heeft
 }
 

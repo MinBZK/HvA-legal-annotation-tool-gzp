@@ -18,8 +18,7 @@ public class LawClass {
 
     private String color;
 
-    @JsonBackReference
-    @OneToMany(mappedBy = "lawClass", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy= "lawClass")
     private List<Annotation> annotations;
 
     @OneToMany(mappedBy = "mainLawClass")
@@ -64,7 +63,7 @@ public class LawClass {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof LawClass lawClass)) return false;
-        return Objects.equals(getId(), lawClass.getId());
+        return Objects.equals(getName(), lawClass.getName());
     }
 
 }

@@ -9,7 +9,6 @@ import com.LAT.backend.model.Term;
 import com.LAT.backend.repository.*;
 import com.LAT.backend.views.Views;
 import com.fasterxml.jackson.annotation.JsonView;
-import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,9 +36,6 @@ public class AnnotationController {
 
     @Autowired
     private TermRepository termRepository;
-
-    @Autowired
-    private EntityManager entityManager;
 
     @GetMapping("/")
     @JsonView(Views.Extended.class)
@@ -118,39 +114,18 @@ public class AnnotationController {
         return ResponseEntity.ok(subAnnotations);
     }
 
+
+
     @DeleteMapping("/deleteannotation/{id}")
     public ResponseEntity<String> deleteAnnotation(@PathVariable Integer id) {
         try {
-            // Find the annotation by id
-            Optional<Annotation> annotationOptional = annotationRepository.findById(id);
-
-            if (annotationOptional.isPresent()) {
-                Annotation annotation = annotationOptional.get();
-
-                // Delete child annotations first
-                annotationRepository.deleteByParentAnnotationId(id);
-
-                // Delete associated term
-                Term term = annotation.getTerm();
-                if (term != null) {
-                    termRepository.delete(term);
-                }
-
-                // Finally, delete the original annotation
-                annotationRepository.deleteById(id);
-
-                return new ResponseEntity<>("Annotation and its children deleted successfully", HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("Annotation not found", HttpStatus.NOT_FOUND);
-            }
+            annotationRepository.deleteById(id);
+            return new ResponseEntity<>("Annotation deleted successfully", HttpStatus.OK);
         } catch (Exception e) {
             System.out.println("Error deleting annotation: " + e.getMessage());
             return new ResponseEntity<>("Error deleting annotation", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
-
 
     @PutMapping("/updateannotation/{id}")
     public Annotation updateAnnotation(@PathVariable Integer id, @RequestBody Annotation annotationDetails) {

@@ -308,7 +308,7 @@ export default function Home() {
           <Modal.Body>
             {onArticlesShow ? (
               <>
-                <ArticleSelectionModal xmlArticles={articlePieces} handleArticleSelect={handleArticleSelect} cancelArticleSelect={cancelArticleSelect} selectedArticles={[]}></ArticleSelectionModal>
+                <ArticleSelectionModal xmlArticles={articlePieces} handleArticleSelect={handleArticleSelect} cancelArticleSelect={cancelArticleSelect} prevSelectedArticles={[]}></ArticleSelectionModal>
               </>
             ) : (
               <>

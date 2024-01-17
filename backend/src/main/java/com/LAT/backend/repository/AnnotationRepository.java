@@ -1,10 +1,8 @@
 package com.LAT.backend.repository;
 
 import com.LAT.backend.model.Annotation;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
@@ -22,8 +20,4 @@ public interface AnnotationRepository extends CrudRepository<Annotation, Integer
 
     @Query("SELECT a FROM Annotation a WHERE a.parentAnnotation.id = :parentId")
     List<Annotation> getAnnotationsFromParentIdJPQL(Integer parentId);
-
-    @Modifying
-    @Query("DELETE FROM Annotation a WHERE a.parentAnnotation.id = :parentId")
-    void deleteByParentAnnotationId(Integer parentId);
 }
