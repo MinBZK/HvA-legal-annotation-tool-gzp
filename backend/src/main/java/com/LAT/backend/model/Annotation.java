@@ -1,14 +1,13 @@
 package com.LAT.backend.model;
 
 import com.LAT.backend.views.Views;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Annotation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,13 +17,13 @@ public class Annotation {
     private String selectedWord;
     @JsonView(Views.Basic.class)
     private String text;
+
     @ManyToOne
-    @JoinColumn(name = "parent_annotation_id", nullable = true)
-    @JsonView(Views.Extended.class)
+    @JoinColumn(name = "parent_annotation_id")
     private Annotation parentAnnotation;
 
-    @OneToMany(mappedBy = "parentAnnotation", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
+    @OneToMany(mappedBy = "parentAnnotation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Annotation> childAnnotations;
 
     public Annotation getParentAnnotation() {
@@ -34,7 +33,6 @@ public class Annotation {
     public void setParentAnnotation(Annotation parentAnnotation) {
         this.parentAnnotation = parentAnnotation;
     }
-
 
     @JsonIgnoreProperties({"annotations"})
     @ManyToOne
@@ -50,6 +48,11 @@ public class Annotation {
     @ManyToOne
     @JoinColumn(name = "term_id")
     private Term term;
+
+    @JsonIgnoreProperties({"annotations", "subClass", "mainClass"})
+    @ManyToOne
+    @JoinColumn(name = "relation_id")
+    private Relation relation;
 
     public void setLawClass(LawClass lawClass) {
         this.lawClass = lawClass;
@@ -101,5 +104,13 @@ public class Annotation {
 
     public void setTerm(Term term) {
         this.term = term;
+    }
+
+    public Relation getRelation() {
+        return relation;
+    }
+
+    public void setRelation(Relation relation) {
+        this.relation = relation;
     }
 }

@@ -2,6 +2,8 @@ package com.LAT.backend.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Relation {
 
@@ -24,6 +26,13 @@ public class Relation {
     private Cardinality cardinality;
     @Column(nullable = false)
     private String description;
+
+    @OneToMany(mappedBy= "relation", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Annotation> annotations;
+
+    public List<Annotation> getAnnotations() {
+        return annotations;
+    }
 
     public int getId() {
         return id;
