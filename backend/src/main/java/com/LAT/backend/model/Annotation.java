@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Annotation {
     @Id
@@ -20,6 +22,10 @@ public class Annotation {
     @JoinColumn(name = "parent_annotation_id", nullable = true)
     @JsonView(Views.Extended.class)
     private Annotation parentAnnotation;
+
+    @OneToMany(mappedBy = "parentAnnotation", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Annotation> childAnnotations;
 
     public Annotation getParentAnnotation() {
         return parentAnnotation;
@@ -71,6 +77,10 @@ public class Annotation {
 
     public String getText() {
         return text;
+    }
+
+    public List<Annotation> getChildAnnotations() {
+        return childAnnotations;
     }
 
     public void setText(String text) {

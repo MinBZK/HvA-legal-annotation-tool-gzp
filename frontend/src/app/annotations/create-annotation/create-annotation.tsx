@@ -621,7 +621,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                         <div className='relation-buttons'>
                             <p>Verplicht</p>
                             {relations.map(relation => {
-                                const isExisting = existingChildren.includes(relation.subLawClass.id);
+                                const isExisting = existingChildren.includes(relation.subLawClass?.id);
                                 const buttonStyle = {backgroundColor: isExisting ? 'primary' : 'secondary'};
 
                                 return relation.cardinality.split("_")[0] === "V" && (
@@ -630,7 +630,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                                             className={`me-1 text-dark ${buttonStyle.backgroundColor}`}
                                             onClick={() => {
                                                 handleShowSubAnnotationForm(); // Show the sub-annotation form
-                                                handleSelectSubLaw(relation.subLawClass.id)
+                                                handleSelectSubLaw(relation.subLawClass?.id)
                                     }}>
                                         + {relation.description}
                                     </Button>
@@ -642,7 +642,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                         <div className='relation-buttons'>
                             <p>Optioneel</p>
                             {relations.map(relation => {
-                                const isExisting = existingChildren.includes(relation.subLawClass.id);
+                                const isExisting = existingChildren.includes(relation.subLawClass?.id);
                                 const buttonStyle = {backgroundColor: isExisting ? 'primary' : 'secondary'};
 
                                 return relation.cardinality.split("_")[0] === "NV" && (
@@ -650,7 +650,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                                             className={`me-1 text-dark ${buttonStyle.backgroundColor}`}
                                             onClick={() => {
                                                 handleShowSubAnnotationForm(); // Show the sub-annotation form
-                                                handleSelectSubLaw(relation.subLawClass.id)
+                                                handleSelectSubLaw(relation.subLawClass?.id)
                                             }}>
                                         + {relation.description}
                                     </Button>
