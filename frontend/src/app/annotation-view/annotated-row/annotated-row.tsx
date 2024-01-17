@@ -240,13 +240,11 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
                     </div>
 
                     {!isEditing &&
-                    <span>
-                        <p className={css.annotationDate}>
-                            {annotation.updated_at ? 'veranderd' : 'aangemaakt'} op
-                            {new Date(annotation.updated_at ? annotation.updated_at : annotation.created_at).toLocaleString()}
-                            door {annotation.updated_at ? annotation.updated_by.name : annotation.created_by.name}
-                        </p>
-                    </span>
+                        <span>
+                            <p className={css.annotationDate}>
+                                {annotation.updated_at ? 'veranderd' : 'aangemaakt'} op {new Date(annotation.updated_at ? annotation.updated_at : annotation.created_at).toLocaleString()} door {annotation.updated_at ? annotation.updated_by.name : annotation.created_by.name}
+                            </p>
+                        </span>
                     }
 
                     {
