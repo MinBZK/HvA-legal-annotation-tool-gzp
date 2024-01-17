@@ -2,10 +2,8 @@ package com.LAT.backend.rest;
 
 import com.LAT.backend.exceptions.LawClassNotFoundException;
 import com.LAT.backend.exceptions.ProjectNotFoundException;
-import com.LAT.backend.model.Annotation;
-import com.LAT.backend.model.LawClass;
-import com.LAT.backend.model.Project;
-import com.LAT.backend.model.Term;
+import com.LAT.backend.exceptions.UserNotFoundException;
+import com.LAT.backend.model.*;
 import com.LAT.backend.repository.*;
 import com.LAT.backend.views.Views;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -36,6 +34,9 @@ public class AnnotationController {
 
     @Autowired
     private TermRepository termRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("/")
     @JsonView(Views.Extended.class)
@@ -72,7 +73,11 @@ public class AnnotationController {
         LawClass lawClass = lawClassRepository.findByName(annotation.getLawClass().getName())
                 .orElseThrow(() -> new LawClassNotFoundException("Annotation class not found"));
 
-            Term term = annotation.getTerm();
+        // Validate if the annotation user exists
+        User user = userRepository.findById(annotation.getCreated_by().getId())
+                        .orElseThrow(() -> new UserNotFoundException("User annotation not found!"));
+
+        Term term = annotation.getTerm();
 
             if (term != null) {
                 if (term.getDefinition() != null) {
@@ -85,6 +90,7 @@ public class AnnotationController {
 
             annotation.setProject(project);
             annotation.setLawClass(lawClass);
+            annotation.setCreated_by(user);
 
         // Handle the parent annotation if it's passed
         if (annotation.getParentAnnotation() != null) {
