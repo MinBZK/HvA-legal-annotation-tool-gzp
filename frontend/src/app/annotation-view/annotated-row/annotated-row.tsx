@@ -50,6 +50,7 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
 
             updatedAnnotation.selectedWord = editLabelText;
             updatedAnnotation.updated_at = Date.now();
+            updatedAnnotation.updated_by = currentUser
 
             // Check if editNoteText is not null before assigning
             if (editNoteText != null) {
@@ -237,6 +238,16 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
                             <h4 className={`${css.rightCol} ${css.annotationName}`}>{annotation.term?.definition}</h4>
                         )}
                     </div>
+
+                    {!isEditing &&
+                    <span>
+                        <p className={css.annotationDate}>
+                            {annotation.updated_at ? 'veranderd' : 'aangemaakt'} op
+                            {new Date(annotation.updated_at ? annotation.updated_at : annotation.created_at).toLocaleString()}
+                            door {annotation.updated_at ? annotation.updated_by.name : annotation.created_by.name}
+                        </p>
+                    </span>
+                    }
 
                     {
                         annotation.parentAnnotation != null ? <div className={css.row}>

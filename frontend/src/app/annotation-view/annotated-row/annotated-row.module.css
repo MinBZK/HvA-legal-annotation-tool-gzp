@@ -37,7 +37,7 @@
 .annotationInfo {
     background-color: #FBFBFB;
     border-radius: 0.75rem;
-    padding: 20px 0;
+    padding: 20px 0 10px;
     border: 1px solid #ebebeb;
     position: relative;
     margin-bottom: 5px;
@@ -73,9 +73,9 @@
 }
 
 .annotationDate {
-    display: inline-flex;
     font-size: 9.5px;
     margin: 0 0.75rem;
+    text-align: end;
 }
 
 

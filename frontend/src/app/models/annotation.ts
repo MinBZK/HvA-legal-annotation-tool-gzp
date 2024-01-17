@@ -16,4 +16,5 @@ export interface Annotation {
     created_at: number,
     created_by: User,
     updated_at: number,
+    updated_by: User,
 }
