@@ -29,16 +29,10 @@ public class Annotation {
         this.parentAnnotation = parentAnnotation;
     }
 
-
     @JsonIgnoreProperties({"annotations"})
     @ManyToOne
     @JoinColumn(name = "lawClass_id")
     private LawClass lawClass;
-
-    @ManyToOne
-    @JoinColumn(name = "project_id")
-    @JsonIgnoreProperties({"annotations", "xml_content"})
-    private Project project;
 
     @JsonIgnoreProperties({"annotations"})
     @ManyToOne
@@ -65,13 +59,6 @@ public class Annotation {
         return lawClass;
     }
 
-    public Project getProject() {
-        return project;
-    }
-
-    public void setProject(Project project) {
-        this.project = project;
-    }
 
     public int getId() {
         return id;

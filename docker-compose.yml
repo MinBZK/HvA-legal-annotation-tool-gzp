@@ -1,0 +1,29 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - API_URL=http://localhost:8000/api
+  database:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: lat
+      MYSQL_DATABASE: lat
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+    environment:
+      - DB_URL=jdbc:mysql://database:3306/lat
+      - DB_USER=root
+      - DB_PASS=lat

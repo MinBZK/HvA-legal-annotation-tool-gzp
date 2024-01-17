@@ -7,16 +7,18 @@ import { Button, Dropdown, Form, Modal } from "react-bootstrap";
 import { Annotation } from "@/app/models/annotation";
 import { Term } from "@/app/models/term";
 import {User} from "@/app/models/user";
+import { LawClass } from "@/app/models/lawclass";
 
 interface AnnotationProps {
     annotation: Annotation;
     handleEdit: (annotation: Annotation, id: number) => void;
     handleDelete: (id: number) => void;
+    open: boolean;
 }
 
-const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelete }) => {
+const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelete, open }) => {
+    console.log();
 
-    const [open, setOpen] = useState<boolean>(false);
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [editLabelText, setEditLabelText] = useState(''); // text being edited
     const [editNoteText, setEditNoteText] = useState<string | undefined>(''); // text being edited
@@ -98,7 +100,6 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
     };
 
     const fetchTerms = (reference: any) => {
-        console.log(reference)
         fetch(`${process.env.API_URL}/terms/${encodeURIComponent(reference)}`)
             .then(response => {
                 if (!response.ok) {
@@ -132,23 +133,8 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
     return (
         // Dropdown rechtsbetrekking
         <div>
-            <div className={css.annotationTitle} style={{ background: annotation.lawClass?.color }} onClick={() => {
-                ``
-                setOpen(!open)
-            }}>
-                <h5 className={css.annotationName}>{annotation.lawClass?.name}</h5>
-
-                <span>
-                    <p className={css.annotationDate}>
-                        {annotation.updated_at ? 'veranderd' : 'aangemaakt'} op {new Date(annotation.updated_at || annotation.created_at).toLocaleDateString()} door {annotation.created_by?.name}
-                    </p>
-                    {open ? <FaChevronDown className={css.align}/> : <FaChevronUp/>}
-                </span>
-
-        </div>
-
             {open &&
-                <div className={css.annotationInfo}>
+                <div className={`${css.annotationInfo} ${isEditing ? css.editing : ''}`}>
 
                     <div className={css.iconRow}>
                         <FaEdit className={css.iconCol} id={"iconEdit"}

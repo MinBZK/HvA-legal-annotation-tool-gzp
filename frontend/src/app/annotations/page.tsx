@@ -7,12 +7,14 @@ import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from "react";
 import LoadXML from "./comment/render-xml";
 import CreateAnnotation from "./create-annotation/create-annotation";
+import {useRouter} from "next/navigation";
 import Navigation from '../components/navigation/navigation';
 import {User} from "@/app/models/user";
 
 const AnnotationPage = () => {
 
     const [projectData, setProjectData] = useState<Project | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
     const [isTextSelected, setIsTextSelected] = useState(false);
     const [selectedText1, setSelectedText1] = useState("");
     const [startOffset1, setStartOffset1] = useState(0);
@@ -48,11 +50,14 @@ const AnnotationPage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                setIsLoading(true)
                 const data = await getProjectById(id) as Project;
                 setProjectData(data);
             } catch (error) {
                 // Handle error
                 console.error('Error fetching project data:', error);
+            } finally {
+                setIsLoading(false);
             }
         };
 
@@ -60,6 +65,7 @@ const AnnotationPage = () => {
     }, [id, reloadXML]);
 
     const handleTextSelection = (text: string, offset: number) => {
+        console.log(activeSelection)
         if (activeSelection === 1) {
             setSelectedText1(text);
             setStartOffset1(offset);
@@ -67,10 +73,6 @@ const AnnotationPage = () => {
             setSelectedText2(text);
             setStartOffset2(offset);
         }
-
-        // Toggle between active selections
-        // setActiveSelection(activeSelection === 1 ? 2 : 1);
-
         setIsTextSelected(true);
     };
 
@@ -87,8 +89,10 @@ const AnnotationPage = () => {
         setReloadXML((prev) => !prev);
     };
 
-    const handleToggleActiveSelection = () => {
-        setActiveSelection((prevActiveSelection) => (prevActiveSelection === 1 ? 2 : 1));
+    const handleSetActiveSelection = (selection: number) => {
+        console.log("Setting Active Selection:", selection);
+        setActiveSelection(selection);
+        console.log(activeSelection)
     };
 
     /**
@@ -134,15 +138,12 @@ const AnnotationPage = () => {
         if (projectData == null) return;
 
         try {
-            // Remove the annotation from the projectData to prevent it from being saved again
-            projectData.annotations = projectData.annotations.filter((annotation) => annotation.id !== annotationId);
-
             // Create a copy of Project to avoid mutating the original object
             const updatedProject = {
                 ...projectData,
             };
 
-            const response = await fetch('${process.env.API_URL}/saveXml', {
+            const response = await fetch(`${process.env.API_URL}/saveXml`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -160,6 +161,37 @@ const AnnotationPage = () => {
         }
     }
 
+    /**
+     * Extract all annotation tags from the XML, loop trough them and perform the api calls to fetch them all.
+     */
+    const retrieveAnnotations = async () => {
+        let xmlDoc = projectData?.xml_content
+        if (!xmlDoc) return []; // Return an empty array if xmlDoc is null
+
+        // Convert the XML string to a DOM object
+        let parser = new DOMParser();
+        let xmlDom = parser.parseFromString(xmlDoc, "text/xml");
+
+        const annotations = xmlDom.getElementsByTagName('annotation');
+        let temporaryAnnotations = [];
+
+        // Loop through the annotations and display the id
+        // @ts-ignore
+        for (let annotation of annotations) {
+            const id = annotation.getAttribute('id');
+            if (id) {
+                const response = await fetch(`http://localhost:8000/api/annotations/${id}`);
+                if (response.ok) {
+                    const annotationData = await response.json();
+                    temporaryAnnotations.push(annotationData);
+                } else {
+                    console.error('Failed to fetch annotation data');
+                }
+            }
+        }
+
+        return temporaryAnnotations;
+    }
 
     return (
         <>
@@ -176,14 +208,16 @@ const AnnotationPage = () => {
                             selectedText2={selectedText2}
                             startOffset1={startOffset1}
                             startOffset2={startOffset2}
-                            activeSelection={activeSelection}
-                            onToggleActiveSelection={handleToggleActiveSelection}
+                            onSetActiveSelection={handleSetActiveSelection}
                             onClose={handleCloseCreate} onAnnotationSaved={handleAnnotationSaved} // Pass the callback
                             currentUser={currentUser}
                         />
                     ) : (
                         // Render AnnotationView when text is not selected
-                        <AnnotationView onAnnotationDelete={handleAnnotationDeleted} />
+                        <AnnotationView onAnnotationDelete={handleAnnotationDeleted}
+                                        retrieveAnnotations={retrieveAnnotations}
+                                        isLoading={isLoading}
+                        />
                     )}
                 </section>
             </main>

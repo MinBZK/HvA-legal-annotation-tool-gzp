@@ -40,6 +40,12 @@
     padding: 20px 0;
     border: 1px solid #ebebeb;
     position: relative;
+    margin-bottom: 5px;
+}
+
+.annotationInfo.editing {
+    background-color: #f4f4f4;
+    border: 1px dashed #b4b4b4;
 }
 
 .leftCol {
