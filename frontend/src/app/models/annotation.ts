@@ -14,4 +14,5 @@ export interface Annotation {
     parentAnnotation: Annotation
 
     created_at: number,
+    created_by: User
 }

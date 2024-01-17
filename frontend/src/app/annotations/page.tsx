@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import LoadXML from "./comment/render-xml";
 import CreateAnnotation from "./create-annotation/create-annotation";
 import Navigation from '../components/navigation/navigation';
+import {User} from "@/app/models/user";
 
 const AnnotationPage = () => {
 
@@ -21,6 +22,9 @@ const AnnotationPage = () => {
 
     const [activeSelection, setActiveSelection] = useState(1);
     const [reloadXML, setReloadXML] = useState(false);
+    const [currentUser, setCurrentUser] = useState<User>(
+        {name: "", id: -1, role: ""}
+    );
 
     // Get id from url
     const searchParams = useSearchParams();
@@ -31,6 +35,15 @@ const AnnotationPage = () => {
         id = param != null ? parseInt(param) : 0;
         if (isNaN(id)) id = 0;
     }
+
+    useEffect(() => {
+        const localString = localStorage.getItem("user")
+
+        if (localString != null) {
+            const localUser = JSON.parse(localString)
+            setCurrentUser(localUser)
+        }
+    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -166,6 +179,7 @@ const AnnotationPage = () => {
                             activeSelection={activeSelection}
                             onToggleActiveSelection={handleToggleActiveSelection}
                             onClose={handleCloseCreate} onAnnotationSaved={handleAnnotationSaved} // Pass the callback
+                            currentUser={currentUser}
                         />
                     ) : (
                         // Render AnnotationView when text is not selected

@@ -6,6 +6,7 @@ import css from "./annotated-row.module.css";
 import { Button, Dropdown, Form, Modal } from "react-bootstrap";
 import { Annotation } from "@/app/models/annotation";
 import { Term } from "@/app/models/term";
+import {User} from "@/app/models/user";
 
 interface AnnotationProps {
     annotation: Annotation;
@@ -34,6 +35,12 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
     } as Term);
 
     const [showModal, setShowModal] = useState(false);
+    const [currentUser, setCurrentUser] = useState<User>({
+            id: 0,
+            name: "",
+            role: ""
+        }
+    );
 
     const checkValues = () => {
         if (editLabelText.length !== 0) {
@@ -110,6 +117,17 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
         fetchTerms(annotation.selectedWord)
     }, [annotation.selectedWord, annotation.text, annotation.term?.definition]);
 
+    // Set user on first render with localstorage
+    useEffect(() => {
+
+        const localString = localStorage.getItem("user")
+
+        if (localString != null) {
+            const localUser = JSON.parse(localString)
+            setCurrentUser(localUser)
+        }
+    }, []);
+
     return (
         // Dropdown rechtsbetrekking
         <div>
@@ -120,7 +138,10 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
                 <h5 className={css.annotationName}>{annotation.lawClass?.name}</h5>
 
                 <span>
-                    <p className={css.annotationDate}>{new Date(annotation.created_at).toLocaleString()}</p>
+                    <p className={css.annotationDate}>
+                        aangemaakt op {new Date(annotation.created_at).toLocaleDateString()}
+                        &nbsp;door {currentUser.name}
+                    </p>
                     {open ? (
                         <FaChevronDown className={css.align}/>
                     ) : (

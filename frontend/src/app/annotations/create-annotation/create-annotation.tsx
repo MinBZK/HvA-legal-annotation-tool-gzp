@@ -11,6 +11,7 @@ import "./create-annotation.css"
 import css from "../../annotation-view/annotated-row/annotated-row.module.css"
 import { Term } from "@/app/models/term";
 import { Relation } from "@/app/models/relation";
+import {User} from "@/app/models/user";
 
 interface PopupProps {
     selectedText1,
@@ -21,13 +22,16 @@ interface PopupProps {
     onToggleActiveSelection: () => void;
     onClose: () => void; // Callback to indicate closing
     onAnnotationSaved: () => void; // Callback to indicate closing
+    currentUser: User
 }
 
 const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                                               selectedText2,
                                               startOffset1,
                                               startOffset2, activeSelection,
-                                              onToggleActiveSelection, onClose, onAnnotationSaved }) => {
+                                              onToggleActiveSelection, onClose, onAnnotationSaved,
+                                              currentUser
+                                          }) => {
 
     const [projectId, setProjectId] = useState<number>(0);
     const [classes, setClasses] = useState<LawClass[]>([]); // New state to store the laws
@@ -344,7 +348,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
             project: {id: projectId},
             term: { definition: annotation?.term.definition || null, reference: annotation?.selectedWord},
             parentAnnotation: parentAnnotationId ? { id: parentAnnotationId } : null,
-            created_at: Date.now()
+            created_at: Date.now(),
+            created_by: currentUser
         });
 
         console.log(annotation.selectedWord, annotation.startOffset, annotation.term?.definition)
@@ -375,7 +380,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                     reference: subAnnotationDetails?.selectedWord
                 },
                 parentAnnotation: parentAnnotationId ? {id: parentAnnotationId} : null,
-                created_at: Date.now()
+                created_at: Date.now(),
+                created_by: currentUser
             });
 
             if (!subAnnotationId) {
