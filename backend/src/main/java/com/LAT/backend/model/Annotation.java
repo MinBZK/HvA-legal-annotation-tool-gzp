@@ -108,7 +108,6 @@ public class Annotation {
                 ", text='" + text + '\'' +
                 ", parentAnnotation=" + parentAnnotation +
                 ", lawClass=" + lawClass +
-                ", project=" + project +
                 ", term=" + term +
                 ", created_by=" + created_by +
                 ", created_at=" + created_at +

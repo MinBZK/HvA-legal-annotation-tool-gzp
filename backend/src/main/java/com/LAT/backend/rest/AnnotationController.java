@@ -5,6 +5,7 @@ import com.LAT.backend.exceptions.UserNotFoundException;
 import com.LAT.backend.model.Annotation;
 import com.LAT.backend.model.LawClass;
 import com.LAT.backend.model.Term;
+import com.LAT.backend.model.User;
 import com.LAT.backend.repository.*;
 import com.LAT.backend.views.Views;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -123,7 +124,6 @@ public class AnnotationController {
         annotation.setText(annotationDetails.getText());
         annotation.setSelectedWord(annotationDetails.getSelectedWord());
         annotation.setLawClass(annotationDetails.getLawClass());
-        annotation.setProject(annotationDetails.getProject());
         annotation.setUpdated_at(annotationDetails.getUpdated_at());
 
         Term term = annotationDetails.getTerm();
