@@ -51,6 +51,11 @@ public class Annotation {
     @JsonView(Views.Basic.class)
     private Long updated_at;
 
+    @JsonIgnoreProperties({"annotations"})
+    @ManyToOne
+    @JoinColumn(name = "user_updated_by")
+    private User updated_by;
+
     public void setLawClass(LawClass lawClass) {
         this.lawClass = lawClass;
     }
@@ -128,5 +133,13 @@ public class Annotation {
 
     public void setUpdated_at(Long updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public User getUpdated_by() {
+        return updated_by;
+    }
+
+    public void setUpdated_by(User updated_by) {
+        this.updated_by = updated_by;
     }
 }

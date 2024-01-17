@@ -125,6 +125,7 @@ public class AnnotationController {
         annotation.setSelectedWord(annotationDetails.getSelectedWord());
         annotation.setLawClass(annotationDetails.getLawClass());
         annotation.setUpdated_at(annotationDetails.getUpdated_at());
+        annotation.setUpdated_by(annotationDetails.getUpdated_by());
 
         Term term = annotationDetails.getTerm();
 
