@@ -36,6 +36,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
     const [terms, setTerms] = useState<Term[]>([]); // New state to store the laws
     const [relations, setRelations] = useState<Relation[]>([]); // State voor het opslaan van relaties
     const [showSubAnnotationForm, setShowSubAnnotationForm] = useState(false);
+    const [parentAnnotationTagsExists, setParentAnnotationTagsExists] = useState(false)
     const [subAnnotationDetails, setSubAnnotationDetails] = useState<Annotation>({
         id: 0,
         text: "",
@@ -177,7 +178,6 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
     };
 
     const fetchTerms = (reference: any) => {
-        console.log(reference)
         fetch(`${process.env.API_URL}/terms/${encodeURIComponent(reference)}`)
             .then(response => {
             if (!response.ok) {
@@ -226,9 +226,6 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
         const mandatoryRelations = relations.filter(relation => relation.cardinality.split("_")[0] === "V");
 
         const areAllMandatoryRelationshipsMade = mandatoryRelations.every(relation => {
-            console.log(relation)
-            console.log(existingChildren)
-            console.log(existingChildren.includes(relation.subClass.id))
             return existingChildren.includes(relation.subClass.id);
         });
 
@@ -236,6 +233,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
             setShowWarningModal(true);
             return;
         }
+
+        setParentAnnotationTagsExists(false)
 
         setLawClassError(false);
         setExistingChildren([]);
@@ -252,13 +251,11 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                 body: JSON.stringify(backendAnnotation),
             });
 
-            console.log(JSON.stringify(backendAnnotation));
 
             if (!response.ok) {
                 throw new Error('Failed to save annotation');
             }
             const responseData = await response.json();
-            console.log('Annotation saved successfully');
 
             return responseData;
         } catch (error) {
@@ -333,17 +330,21 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
             }
         }
 
-        // console.log(annotation.selectedWord, annotation.startOffset, annotation.term?.definition)
-        if (annotation?.selectedWord && typeof annotation.startOffset === 'number') {
-            annotateSelectedText(annotation.selectedWord, mainAnnotation.id, annotation.startOffset, annotation.term.definition);
-            await updateXMLInDatabase();
-            // Trigger the callback to re-render LoadXML
-            if (onAnnotationSaved) {
-                onAnnotationSaved();
-            }
+        if(!parentAnnotationTagsExists) {
+            // console.log(annotation.selectedWord, annotation.startOffset, annotation.term?.definition)
+            if (annotation?.selectedWord && typeof annotation.startOffset === 'number') {
+                annotateSelectedText(annotation.selectedWord, mainAnnotation.id, annotation.startOffset, annotation.term.definition);
+                await updateXMLInDatabase();
 
-        } else {
-            console.error('Annotation properties are not properly defined');
+                setParentAnnotationTagsExists(true)
+                // Trigger the callback to re-render LoadXML
+                if (onAnnotationSaved) {
+                    onAnnotationSaved();
+                }
+
+            } else {
+                console.error('Annotation properties are not properly defined');
+            }
         }
 
         if (showSubAnnotationForm) {

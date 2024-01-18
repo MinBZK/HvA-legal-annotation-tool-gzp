@@ -71,7 +71,6 @@ const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAn
 
     // Update the handleEdit function to include a term parameter
     const handleEdit = async (annotationDetails: Annotation, id: number) => {
-        console.log(annotationDetails)
         try {
             const response = await fetch(
                 `${process.env.API_URL}/annotations/updateannotation/${id}`,
