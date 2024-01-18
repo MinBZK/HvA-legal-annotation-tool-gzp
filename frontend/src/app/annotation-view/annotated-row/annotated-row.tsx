@@ -6,8 +6,9 @@ import css from "./annotated-row.module.css";
 import { Button, Dropdown, Form, Modal } from "react-bootstrap";
 import { Annotation } from "@/app/models/annotation";
 import { Term } from "@/app/models/term";
-import {User} from "@/app/models/user";
+import { User } from "@/app/models/user";
 import { LawClass } from "@/app/models/lawclass";
+import { subscribe, unsubscribe } from "@/app/services/user";
 
 interface AnnotationProps {
     annotation: Annotation;
@@ -37,11 +38,26 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
 
     const [showModal, setShowModal] = useState(false);
     const [currentUser, setCurrentUser] = useState<User>({
-            id: 0,
-            name: "",
-            role: ""
-        }
+        id: 0,
+        name: "",
+        role: ""
+    }
     );
+
+    useEffect(() => {
+        // Subscribe to changes in the selected user
+        const handleUserChange = (user: User) => {
+            // Handle the change in the component
+            setCurrentUser(user);
+        };
+
+        subscribe(handleUserChange);
+
+        // Unsubscribe when the component unmounts
+        return () => {
+            unsubscribe(handleUserChange);
+        };
+    }, []);
 
     const checkValues = () => {
         if (editLabelText.length !== 0) {
@@ -238,20 +254,20 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
                         )}
                     </div>
 
-                    {!isEditing &&
-                        <span>
-                            <p className={css.annotationDate}>
-                                {annotation.updated_at ? 'veranderd' : 'aangemaakt'} op {new Date(annotation.updated_at ? annotation.updated_at : annotation.created_at).toLocaleString()} door {annotation.updated_at ? annotation.updated_by.name : annotation.created_by.name}
-                            </p>
-                        </span>
-                    }
-
                     {
                         annotation.parentAnnotation != null ? <div className={css.row}>
                             <h4 className={`${css.leftCol} ${css.annotationName}`}>Onderdeel van</h4>
                             <h4 className={`${css.rightCol} ${css.annotationName} ${css.childAnnotation}`} style={{ background: annotation.parentAnnotation.lawClass?.color }}>{annotation.parentAnnotation.selectedWord}</h4>
                         </div>
                             : ""
+                    }
+
+                    {!isEditing &&
+                        <span>
+                            <p className={css.annotationDate}>
+                                {annotation.updated_at ? 'veranderd' : 'aangemaakt'} op {new Date(annotation.updated_at ? annotation.updated_at : annotation.created_at).toLocaleString()} door {annotation.updated_at ? annotation.updated_by.name : annotation.created_by.name}
+                            </p>
+                        </span>
                     }
 
                     {isEditing &&
