@@ -1,12 +1,13 @@
 "use client"; // This is a client component 👈🏽
 
-import React, { FC, useEffect, useState } from "react";
+import React, {FC, useEffect, useState} from "react";
 import AnnotatedRow from "@/app/annotation-view/annotated-row/annotated-row";
-import { Annotation } from "@/app/models/annotation";
+import {Annotation} from "@/app/models/annotation";
 import css from "./annotation-view.module.css";
 import Image from "next/image"
-import { LawClass } from "../models/lawclass";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import {LawClass} from "../models/lawclass";
+import {FaChevronDown, FaChevronUp} from "react-icons/fa";
+import {createHrefFromUrl} from "next/dist/client/components/router-reducer/create-href-from-url";
 
 interface AnnotationViewProps {
     onAnnotationDelete: (annotationId: number) => void;
@@ -19,6 +20,7 @@ const AnnotationView: FC<AnnotationViewProps> = ({ onAnnotationDelete }) => {
     const [annotations, setAnnotations] = useState<Annotation[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [groupedAnnotations, setGroupedAnnotations] = useState<GroupedAnnotations>([]);
+    const [childrenAnnotations, setChildrenAnnotations] = useState<Annotation[]>([]);
 
     const fetchAnnotations = async (projectId: any) => {
         try {
@@ -104,6 +106,22 @@ const AnnotationView: FC<AnnotationViewProps> = ({ onAnnotationDelete }) => {
         }
     };
 
+    const getChildren = async (id: number) => {
+        console.log(id)
+        try {
+            const response = await fetch(`${process.env.API_URL}/annotations/children/${id}`);
+            if (response.ok) {
+                const data = await response.json();
+                // Fetch the children annotations
+                console.log(data)
+                setChildrenAnnotations(data);
+            }
+        } catch (error) {
+            console.error("Error fetching and deleting children annotations:", error);
+            alert("Error fetching and deleting children annotations");
+        }
+    }
+
     /**
      * Delete an annotation
      * This is done by sending a DELETE request to the API, removing the <annotation> tags from the xml and saving the
@@ -112,6 +130,10 @@ const AnnotationView: FC<AnnotationViewProps> = ({ onAnnotationDelete }) => {
      * @param id database id of the annotation
      */
     const handleDelete = async (id: number) => {
+        await getChildren(id);
+        console.log(childrenAnnotations)
+        console.log(childrenAnnotations.length)
+
         try {
             // Remove the annotation from the database
             const response = await fetch(
@@ -123,8 +145,16 @@ const AnnotationView: FC<AnnotationViewProps> = ({ onAnnotationDelete }) => {
 
             if (response.ok) {
                 // If everything went well, remove the annotation tags from the XML
-                onAnnotationDelete(id)
+                console.log(childrenAnnotations.length)
+                if (childrenAnnotations.length > 0) {
+                    console.log("Ik kom hierin")
+                    for (const child in childrenAnnotations) {
+                        console.log(child.id)
+                        await onAnnotationDelete(child.id)
+                    }
+                }
 
+                onAnnotationDelete(id)
                 // get the project id
                 const searchParams = new URLSearchParams(window.location.search);
                 const projectId = parseInt(searchParams.get("id") as string);

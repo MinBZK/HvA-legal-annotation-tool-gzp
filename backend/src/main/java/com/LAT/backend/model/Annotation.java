@@ -1,13 +1,12 @@
 package com.LAT.backend.model;
 
 import com.LAT.backend.views.Views;
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Annotation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,14 +16,10 @@ public class Annotation {
     private String selectedWord;
     @JsonView(Views.Basic.class)
     private String text;
-
     @ManyToOne
-    @JoinColumn(name = "parent_annotation_id")
+    @JoinColumn(name = "parent_annotation_id", nullable = true)
+    @JsonView(Views.Extended.class)
     private Annotation parentAnnotation;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "parentAnnotation", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Annotation> childAnnotations;
 
     public Annotation getParentAnnotation() {
         return parentAnnotation;
@@ -80,10 +75,6 @@ public class Annotation {
 
     public String getText() {
         return text;
-    }
-
-    public List<Annotation> getChildAnnotations() {
-        return childAnnotations;
     }
 
     public void setText(String text) {

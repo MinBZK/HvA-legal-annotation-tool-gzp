@@ -20,4 +20,7 @@ public interface AnnotationRepository extends CrudRepository<Annotation, Integer
 
     @Query("SELECT a FROM Annotation a WHERE a.parentAnnotation.id = :parentId")
     List<Annotation> getAnnotationsFromParentIdJPQL(Integer parentId);
+
+    List<Annotation> findByParentAnnotationId(Integer parentId);
+
 }

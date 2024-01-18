@@ -123,15 +123,48 @@ public class AnnotationController {
 
 
     @DeleteMapping("/deleteannotation/{id}")
-    public ResponseEntity<String> deleteAnnotation(@PathVariable Integer id) {
+    public ResponseEntity<String> deleteAnnotationAndChildren(@PathVariable Integer id) {
+        System.out.println(id);
         try {
-            annotationRepository.deleteById(id);
-            return new ResponseEntity<>("Annotation deleted successfully", HttpStatus.OK);
+            Optional<Annotation> annotationOptional = annotationRepository.findById(id);
+            System.out.println(annotationOptional);
+            if (annotationOptional.isPresent()) {
+                // Delete child annotations with the same parent ID
+                deleteChildAnnotations(id);
+
+                // Delete the parent annotation
+                annotationRepository.deleteById(id);
+
+                return new ResponseEntity<>("Annotation and its children deleted successfully", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Annotation not found", HttpStatus.NOT_FOUND);
+            }
         } catch (Exception e) {
-            System.out.println("Error deleting annotation: " + e.getMessage());
-            return new ResponseEntity<>("Error deleting annotation", HttpStatus.INTERNAL_SERVER_ERROR);
+            System.out.println("Error deleting annotation and its children: " + e.getMessage());
+            return new ResponseEntity<>("Error deleting annotation and its children", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    private void deleteChildAnnotations(Integer parentId) {
+        List<Annotation> childAnnotations = annotationRepository.findByParentAnnotationId(parentId);
+
+        if (childAnnotations != null && !childAnnotations.isEmpty()) {
+            for (Annotation child : childAnnotations) {
+                // Recursively delete child annotations
+                deleteChildAnnotations(child.getId());
+                annotationRepository.deleteById(child.getId());
+            }
+        }
+    }
+//    public ResponseEntity<String> deleteAnnotation(@PathVariable Integer id) {
+//        try {
+//            annotationRepository.deleteById(id);
+//            return new ResponseEntity<>("Annotation deleted successfully", HttpStatus.OK);
+//        } catch (Exception e) {
+//            System.out.println("Error deleting annotation: " + e.getMessage());
+//            return new ResponseEntity<>("Error deleting annotation", HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
     @PutMapping("/updateannotation/{id}")
     public Annotation updateAnnotation(@PathVariable Integer id, @RequestBody Annotation annotationDetails) {
