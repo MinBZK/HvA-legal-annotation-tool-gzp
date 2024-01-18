@@ -34,10 +34,10 @@ public class Annotation {
     @JoinColumn(name = "lawClass_id")
     private LawClass lawClass;
 
-    @ManyToOne
-    @JoinColumn(name = "project_id")
-    @JsonIgnoreProperties({"annotations", "xml_content"})
-    private Project project;
+//    @ManyToOne
+//    @JoinColumn(name = "project_id")
+//    @JsonIgnoreProperties({"annotations", "xml_content"})
+//    private Project project;
 
     @JsonIgnoreProperties({"annotations"})
     @ManyToOne
@@ -49,20 +49,28 @@ public class Annotation {
     @JoinColumn(name = "relation_id")
     private Relation relation;
 
+    @JsonIgnoreProperties({"annotations"})
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User created_by;
+
+    @JsonView(Views.Basic.class)
+    private Long created_at;
+
+    @JsonView(Views.Basic.class)
+    private Long updated_at;
+
+    @JsonIgnoreProperties({"annotations"})
+    @ManyToOne
+    @JoinColumn(name = "user_updated_by")
+    private User updated_by;
+
     public void setLawClass(LawClass lawClass) {
         this.lawClass = lawClass;
     }
 
     public LawClass getLawClass() {
         return lawClass;
-    }
-
-    public Project getProject() {
-        return project;
-    }
-
-    public void setProject(Project project) {
-        this.project = project;
     }
 
     public int getId() {
@@ -103,5 +111,51 @@ public class Annotation {
 
     public void setRelation(Relation relation) {
         this.relation = relation;
+    }
+
+    public long getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(long created_at) {
+        this.created_at = created_at;
+    }
+
+    @Override
+    public String toString() {
+        return "Annotation{" +
+                "id=" + id +
+                ", selectedWord='" + selectedWord + '\'' +
+                ", text='" + text + '\'' +
+                ", parentAnnotation=" + parentAnnotation +
+                ", lawClass=" + lawClass +
+                ", term=" + term +
+                ", created_by=" + created_by +
+                ", created_at=" + created_at +
+                '}';
+    }
+
+    public User getCreated_by() {
+        return created_by;
+    }
+
+    public void setCreated_by(User created_by) {
+        this.created_by = created_by;
+    }
+
+    public Long getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(Long updated_at) {
+        this.updated_at = updated_at;
+    }
+
+    public User getUpdated_by() {
+        return updated_by;
+    }
+
+    public void setUpdated_by(User updated_by) {
+        this.updated_by = updated_by;
     }
 }

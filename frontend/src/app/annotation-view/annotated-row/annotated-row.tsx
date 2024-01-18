@@ -6,9 +6,11 @@ import css from "./annotated-row.module.css";
 import { Button, Dropdown, Form, Modal } from "react-bootstrap";
 import { Annotation } from "@/app/models/annotation";
 import { Term } from "@/app/models/term";
+import { User } from "@/app/models/user";
 import { LawClass } from "@/app/models/lawclass";
 import { Relation } from "@/app/models/relation";
 
+import { subscribe, unsubscribe } from "@/app/services/user";
 
 interface AnnotationProps {
     annotation: Annotation;
@@ -44,12 +46,35 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
     } as Term);
 
     const [showModal, setShowModal] = useState(false);
+    const [currentUser, setCurrentUser] = useState<User>({
+        id: 0,
+        name: "",
+        role: ""
+    }
+    );
+
+    useEffect(() => {
+        // Subscribe to changes in the selected user
+        const handleUserChange = (user: User) => {
+            // Handle the change in the component
+            setCurrentUser(user);
+        };
+
+        subscribe(handleUserChange);
+
+        // Unsubscribe when the component unmounts
+        return () => {
+            unsubscribe(handleUserChange);
+        };
+    }, []);
 
     const checkValues = () => {
         if (editLabelText.length !== 0) {
             setIsConfirmModalOpen(!isConfirmModalOpen);
 
             updatedAnnotation.selectedWord = editLabelText;
+            updatedAnnotation.updated_at = Date.now();
+            updatedAnnotation.updated_by = currentUser
 
             // Check if editNoteText is not null before assigning
             if (editNoteText != null) {
@@ -240,6 +265,17 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
         fetchClasses();
     }, [annotation.selectedWord, annotation.text, annotation.term?.definition, annotation.lawClass]);
 
+    // Set user on first render with localstorage
+    useEffect(() => {
+
+        const localString = localStorage.getItem("user")
+
+        if (localString != null) {
+            const localUser = JSON.parse(localString)
+            setCurrentUser(localUser)
+        }
+    }, []);
+
     return (
         // Dropdown rechtsbetrekking
         <div>
@@ -389,6 +425,14 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
                             <h4 className={`${css.rightCol} ${css.annotationName} ${css.childAnnotation}`} style={{ background: annotation.parentAnnotation.lawClass?.color }}>{annotation.parentAnnotation.selectedWord}</h4>
                         </div>
                             : ""
+                    }
+
+                    {!isEditing &&
+                        <span>
+                            <p className={css.annotationDate}>
+                                {annotation.updated_at ? 'veranderd' : 'aangemaakt'} op {new Date(annotation.updated_at ? annotation.updated_at : annotation.created_at).toLocaleString()} door {annotation.updated_at ? annotation.updated_by.name : annotation.created_by.name}
+                            </p>
+                        </span>
                     }
 
                     {isEditing &&

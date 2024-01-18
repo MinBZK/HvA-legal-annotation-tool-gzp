@@ -1,16 +1,17 @@
 'use client';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, {FC, useEffect, useState} from 'react';
-import {Alert, Button, Dropdown, Form, Modal} from 'react-bootstrap';
-import {BsFillFloppy2Fill, BsX, BsCheck2Square} from "react-icons/bs";
-import {Annotation} from "../../models/annotation";
-import {LawClass} from "../../models/lawclass";
-import {getProjectById} from "../../services/project";
-import {Project} from "../../models/project";
+import React, { FC, useEffect, useState } from 'react';
+import { Alert, Button, Dropdown, Form, Modal } from 'react-bootstrap';
+import { BsFillFloppy2Fill, BsX, BsCheck2Square } from "react-icons/bs";
+import { Annotation } from "../../models/annotation";
+import { LawClass } from "../../models/lawclass";
+import { getProjectById } from "../../services/project";
+import { Project } from "../../models/project";
 import "./create-annotation.css"
 import css from "../../annotation-view/annotated-row/annotated-row.module.css"
-import {Term} from "@/app/models/term";
-import {Relation} from "@/app/models/relation";
+import { Term } from "@/app/models/term";
+import { Relation } from "@/app/models/relation";
+import { User } from "@/app/models/user";
 
 interface PopupProps {
     selectedText1 : any,
@@ -20,19 +21,22 @@ interface PopupProps {
     onSetActiveSelection: (selection:number) => void;
     onClose: () => void; // Callback to indicate closing
     onAnnotationSaved: () => void; // Callback to indicate closing
+    currentUser: User
 }
 
 const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
-                                              selectedText2,
-                                              startOffset1,
-                                              startOffset2,
-                                              onSetActiveSelection, onClose, onAnnotationSaved }) => {
+    selectedText2,
+    startOffset1,
+    startOffset2,
+    onSetActiveSelection, onClose, onAnnotationSaved, currentUser
+}) => {
 
     const [projectId, setProjectId] = useState<number>(0);
     const [classes, setClasses] = useState<LawClass[]>([]); // New state to store the laws
     const [terms, setTerms] = useState<Term[]>([]); // New state to store the laws
     const [relations, setRelations] = useState<Relation[]>([]); // State voor het opslaan van relaties
     const [showSubAnnotationForm, setShowSubAnnotationForm] = useState(false);
+    const [parentAnnotationTagsExists, setParentAnnotationTagsExists] = useState(false)
     const [subAnnotationDetails, setSubAnnotationDetails] = useState<Annotation>({
         id: 0,
         text: "",
@@ -176,12 +180,11 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
     };
 
     const fetchTerms = (reference: any) => {
-        console.log(reference)
         fetch(`${process.env.API_URL}/terms/${encodeURIComponent(reference)}`)
             .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to fetch terms');
-            }
+                if (!response.ok) {
+                    throw new Error('Failed to fetch terms');
+                }
                 return response.json();
             })
             .then(data => setTerms(data))
@@ -222,29 +225,28 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
         } as unknown as Annotation);
     };
 
-    const handleFinish = () => {
+    const handleFinish = (cancel: boolean) => {
         const mandatoryRelations = relations.filter(relation => relation.cardinality.split("_")[0] === "V");
 
         const areAllMandatoryRelationshipsMade = mandatoryRelations.every(relation => {
-            console.log(relation)
-            console.log(existingChildren)
-            console.log(existingChildren.includes(relation.id))
-            return existingChildren.includes(relation.id);
+            return existingChildren.includes(relation.subClass.id);
         });
 
-        if (!areAllMandatoryRelationshipsMade) {
+        if ((!areAllMandatoryRelationshipsMade || existingChildren.length < mandatoryRelations.length) && !cancel) {
             setShowWarningModal(true);
             return;
         }
 
+        setParentAnnotationTagsExists(false)
+
         setLawClassError(false);
         setExistingChildren([]);
         onClose();
-    }
+    };
 
     const saveAnnotationToBackend = async (backendAnnotation: any) => {
         try {
-            const response = await fetch(`${process.env.API_URL}/annotations/project`, {
+            const response = await fetch(`${process.env.API_URL}/annotations/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -252,13 +254,11 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                 body: JSON.stringify(backendAnnotation),
             });
 
-            console.log(JSON.stringify(backendAnnotation));
 
             if (!response.ok) {
                 throw new Error('Failed to save annotation');
             }
             const responseData = await response.json();
-            console.log('Annotation saved successfully');
 
             return responseData;
         } catch (error) {
@@ -321,7 +321,9 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                 project: {id: projectId},
                 term: {definition: annotation?.term?.definition || null, reference: annotation?.selectedWord},
                 parentAnnotation: null,
-                relation: null
+                relation: null,
+                created_at: Date.now(),
+                created_by: currentUser
             });
             if (mainAnnotation) {
                 // Set mainAnnotationSaved to avoid saving it again
@@ -331,17 +333,22 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                 return;
             }
         }
-        // console.log(annotation.selectedWord, annotation.startOffset, annotation.term?.definition)
-        if (annotation?.selectedWord && typeof annotation.startOffset === 'number') {
-            annotateSelectedText(annotation.selectedWord, mainAnnotation.id, annotation.startOffset);
-            await updateXMLInDatabase();
-            // Trigger the callback to re-render LoadXML
-            if (onAnnotationSaved) {
-                onAnnotationSaved();
-            }
 
-        } else {
-            console.error('Annotation properties are not properly defined');
+        if (!parentAnnotationTagsExists) {
+            // console.log(annotation.selectedWord, annotation.startOffset, annotation.term?.definition)
+            if (annotation?.selectedWord && typeof annotation.startOffset === 'number') {
+                annotateSelectedText(annotation.selectedWord, mainAnnotation.id, annotation.startOffset);
+                await updateXMLInDatabase();
+
+                setParentAnnotationTagsExists(true)
+                // Trigger the callback to re-render LoadXML
+                if (onAnnotationSaved) {
+                    onAnnotationSaved();
+                }
+
+            } else {
+                console.error('Annotation properties are not properly defined');
+            }
         }
 
         if (showSubAnnotationForm) {
@@ -357,7 +364,9 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                     reference: subAnnotationDetails?.selectedWord
                 },
                 parentAnnotation: mainAnnotation,
-                relation: subAnnotationDetails.relation
+                relation: subAnnotationDetails.relation,
+                created_at: Date.now(),
+                created_by: currentUser
             });
 
             if (!subAnnotation) {
@@ -365,7 +374,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
             }
 
             if (subAnnotationDetails?.selectedWord && typeof subAnnotationDetails.startOffset === 'number') {
-                annotateSelectedText(subAnnotationDetails.selectedWord, subAnnotation?.id, subAnnotationDetails.startOffset);
+                annotateSelectedText(subAnnotationDetails.selectedWord, subAnnotation.id, subAnnotationDetails.startOffset);
                 await updateXMLInDatabase();
 
                 // Trigger the callback to re-render LoadXML
@@ -463,7 +472,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
         }
     };
 
-    const handleSelectSubLaw = async(lawClassId: number) => {
+    const handleSelectSubLaw = async (lawClassId: number) => {
         console.log(lawClassId)
         try {
             const response = await fetch(`${process.env.API_URL}/lawclasses/${lawClassId}`);
@@ -544,12 +553,12 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                     <Form.Label><b>Wet vorm</b></Form.Label>
                     <Dropdown>
                         <Dropdown.Toggle className="dropdown" variant="secondary" id="dropdown-basic"
-                                         style={{
-                                             color: 'black',
-                                             backgroundColor: annotation?.lawClass
-                                                 ? (classes.find(law => law.name === annotation.lawClass?.toString()) || {}).color || ''
-                                                 : '',
-                                         }}>
+                            style={{
+                                color: 'black',
+                                backgroundColor: annotation?.lawClass
+                                    ? (classes.find(law => law.name === annotation.lawClass?.toString()) || {}).color || ''
+                                    : '',
+                            }}>
                             {annotation?.lawClass ? <>{annotation.lawClass}</> : <>Selecteer</>}
                         </Dropdown.Toggle>
 
@@ -570,8 +579,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                 <Form.Group controlId="exampleForm.ControlInput1">
                     <Form.Label className="padding"><b>Notitie</b></Form.Label>
                     <Form.Control className={"text-input"} as="textarea" type="text"
-                                  placeholder="Type hier uw notitie..." value={annotation?.text}
-                                  onChange={(e) => handleNote(e.target.value)} />
+                        placeholder="Type hier uw notitie..." value={annotation?.text}
+                        onChange={(e) => handleNote(e.target.value)} />
                 </Form.Group>
 
                 <Form.Group controlId="exampleForm.ControlInput2">
@@ -661,7 +670,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                                             }}>
                                         + {relation.description}
                                     </Button>
-                                )
+                                );
                             })}
                         </div>
 
@@ -669,12 +678,14 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                             <>
                                 {/* Close button for the Sub-Annotation Form */}
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <Form.Label style={{ textAlign: 'left',  fontSize: '20px',
+                                    <Form.Label style={{
+                                        textAlign: 'left', fontSize: '20px',
                                         display: 'block',
                                         marginBottom: '10px',
                                         fontWeight: 'bold',
-                                        color: '#154273'}}>Juridische subklasse: {subAnnotationDetails.lawClass?.name}</Form.Label>
-                                    <Button style={{marginBottom: '10px' }} variant="outline-secondary" onClick={() => {setShowSubAnnotationForm(false); onSetActiveSelection(1); handleSelectedText2("", 0); handleClose()}} >
+                                        color: '#154273'
+                                    }}>Juridische subklasse: {subAnnotationDetails.lawClass?.name}</Form.Label>
+                                    <Button style={{ marginBottom: '10px' }} variant="outline-secondary" onClick={() => { setShowSubAnnotationForm(false); onSetActiveSelection(1); handleSelectedText2("", 0); handleClose() }} >
                                         X
                                     </Button>
                                 </div>
@@ -747,12 +758,14 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                 <button className={`${css.save}`} onClick={handleSave}>
                     <BsFillFloppy2Fill size={20} /> Opslaan
                 </button>
-                <button className={`${css.cancel}`} onClick={handleFinish}>
+                <button className={`${css.cancel}`} onClick={() => handleFinish(true)}>
                     <BsX size={20} /> Annuleer
                 </button>
-                <button className={`${css.save}`} onClick={handleFinish}>
-                    <BsCheck2Square size={20} /> Afronden
-                </button>
+                {
+                    parentAnnotationTagsExists && <button className={`${css.save}`} onClick={() => handleFinish(false)}>
+                        <BsCheck2Square size={20} /> Afronden
+                    </button>
+                }
             </div>
 
             <Modal show={showWarningModal} onHide={() => setShowWarningModal(false)}>
@@ -763,10 +776,10 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                     Weet u zeker dat u de annotaties wil opslaan zonder alle verplichte relaties te leggen?
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowWarningModal(false)}>
+                    <Button variant="secondary" onClick={() => { setShowWarningModal(false); checkInputFields() }}>
                         Annuleer
                     </Button>
-                    <Button variant="primary" onClick={() => {setShowWarningModal(false); checkInputFields()}}>
+                    <Button variant="primary" onClick={() => { setShowWarningModal(false); checkInputFields() }}>
                         Ja
                     </Button>
                 </Modal.Footer>
@@ -783,7 +796,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                     <Button variant="secondary" onClick={() => setShowInputWarningModal(false)}>
                         Annuleer
                     </Button>
-                    <Button variant="primary" onClick={() => {setShowInputWarningModal(false); handleClose(); onClose();}}>
+                    <Button variant="primary" onClick={() => { setShowInputWarningModal(false); handleClose(); onClose(); }}>
                         Ja
                     </Button>
                 </Modal.Footer>

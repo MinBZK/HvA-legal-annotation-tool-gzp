@@ -14,8 +14,6 @@ import java.util.Optional;
 
 @Repository
 public interface AnnotationRepository extends CrudRepository<Annotation, Integer> {
-    List<Annotation> findByProjectId(Integer projectId);
-
     List<Annotation> findByParentAnnotation(Annotation parentAnnotation);
 
     @Query("SELECT a FROM Annotation a WHERE a.parentAnnotation.id = :parentId")

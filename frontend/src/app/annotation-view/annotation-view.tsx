@@ -4,43 +4,39 @@ import React, {FC, useEffect, useState} from "react";
 import AnnotatedRow from "@/app/annotation-view/annotated-row/annotated-row";
 import {Annotation} from "@/app/models/annotation";
 import css from "./annotation-view.module.css";
-import Image from "next/image"
-import {LawClass} from "../models/lawclass";
-import {FaChevronDown, FaChevronUp} from "react-icons/fa";
-import {createHrefFromUrl} from "next/dist/client/components/router-reducer/create-href-from-url";
+import { LawClass } from "../models/lawclass";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 interface AnnotationViewProps {
     onAnnotationDelete: (annotationId: number) => void;
+    retrieveAnnotations: () => Promise<Annotation[]>;
+    isLoading: boolean;
 }
 
 type GroupedAnnotations = { lawClass: LawClass; annotations: Annotation[]; open: boolean }[];
 
+const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAnnotations, isLoading}) => {
 
-const AnnotationView: FC<AnnotationViewProps> = ({ onAnnotationDelete }) => {
     const [annotations, setAnnotations] = useState<Annotation[]>([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const [groupedAnnotations, setGroupedAnnotations] = useState<GroupedAnnotations>([]);
     const [childrenAnnotations, setChildrenAnnotations] = useState<Annotation[]>([]);
 
-    const fetchAnnotations = async (projectId: any) => {
-        try {
-            const response = await fetch(
-                `${process.env.API_URL}/annotations/project/${projectId}`
-            );
+    /**
+     * Calls the retrieveAnnotations function to fetch the annotations from the database and sets the annotations state
+     */
+    const fetchAnnotations = async () => {
+        let annotations = await retrieveAnnotations();
 
-            if (response.ok) {
-                const data = await response.json();
-                setAnnotations(data);
-                setGroupedAnnotations(groupAnnotationsByLawClass(data));
-                                
-            } else {
-                console.error("Error fetching annotations");
-            }
-        } catch (error) {
-            console.error("Error fetching annotations:", error);
+        if (annotations) {
+            // Filter out null annotations
+            annotations = annotations.filter(annotation => annotation != null);
+
+            setAnnotations(annotations);
+            setGroupedAnnotations(groupAnnotationsByLawClass(annotations));
+        } else {
+            console.error("Geen annotaties opgehaald");
         }
     };
-
 
     const groupAnnotationsByLawClass = (annotations: Annotation[]): GroupedAnnotations => {
         const groupedAnnotations: GroupedAnnotations = [];
@@ -66,22 +62,16 @@ const AnnotationView: FC<AnnotationViewProps> = ({ onAnnotationDelete }) => {
     }
 
     useEffect(() => {
-        const fetchIdAndAnnotations = async () => {
-            try {
-                const searchParams = new URLSearchParams(window.location.search);
-                const projectId = parseInt(searchParams.get("id") as string) || 2;
-
-                await fetchAnnotations(projectId);
-            } catch (error) {
-                console.error("Error fetching annotations:", error);
+        (async () => {
+            if (!isLoading) {
+                await fetchAnnotations();
             }
-        };
-        fetchIdAndAnnotations();
-    }, []); // The empty dependency array ensures that this effect runs only once, similar to componentDidMount
+        })();
+        // The isLoading dependency is used to make sure the annotations are only fetched once the project data is loaded
+    }, [isLoading]);
 
     // Update the handleEdit function to include a term parameter
     const handleEdit = async (annotationDetails: Annotation, id: number) => {
-        console.log(annotationDetails)
         try {
             const response = await fetch(
                 `${process.env.API_URL}/annotations/updateannotation/${id}`,
@@ -96,7 +86,7 @@ const AnnotationView: FC<AnnotationViewProps> = ({ onAnnotationDelete }) => {
 
             if (response.ok) {
                 alert("Annotatie succesvol bijgewerkt");
-                fetchAnnotations(annotationDetails.project.id); // Refetch annotations
+                fetchAnnotations(); // Refetch annotations
             } else {
                 alert("Fout annotatie bijwerken");
             }
@@ -155,10 +145,8 @@ const AnnotationView: FC<AnnotationViewProps> = ({ onAnnotationDelete }) => {
                 }
 
                 onAnnotationDelete(id)
-                // get the project id
-                const searchParams = new URLSearchParams(window.location.search);
-                const projectId = parseInt(searchParams.get("id") as string);
-                fetchAnnotations(projectId); // Refetch annotations to update the list
+
+                await fetchAnnotations(); // Refetch annotations to update the list
             } else {
                 alert("Fout annotatie verwijderen");
             }
@@ -172,36 +160,7 @@ const AnnotationView: FC<AnnotationViewProps> = ({ onAnnotationDelete }) => {
         <div>
             <div className={css.topBar}>
                 <h2 className={css.title}>Annotaties</h2>
-
-                <Image
-                    height={100}
-                    className={css.image}
-                    width={200}
-                    src="/juridischanalyseschema.png"
-                    alt={"Juridisch Analyseschema"}
-                    onClick={() => {
-                        setIsModalOpen(!isModalOpen);
-                    }}
-                />
             </div>
-
-            {isModalOpen && (
-                <div
-                    className={css.modalContainer}
-                    onClick={() => {
-                        setIsModalOpen(!isModalOpen);
-                    }}
-                >
-                    <Image
-                        height={300}
-                        width={450}
-                        className={css.imageModal}
-                        src="/juridischanalyseschema.png"
-                        alt={"Juridisch Analyseschema"}
-                    />
-                </div>
-            )}
-
 
             <div className={"annolist p-3 mb-5 bg-white"}>
                 {annotations && 
