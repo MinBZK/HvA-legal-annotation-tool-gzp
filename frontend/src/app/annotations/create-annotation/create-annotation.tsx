@@ -610,7 +610,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                         </Modal.Header>
                         <Modal.Body>
                             <Form.Control
-                                type="text"
+                                as="textarea"
                                 placeholder="Vul begrip in"
                                 value={newTerm.definition}
                                 onChange={(e) => setNewTerm({ ...newTerm, definition: e.target.value, reference: annotation?.selectedWord })}
@@ -736,7 +736,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                         </Modal.Header>
                         <Modal.Body>
                             <Form.Control
-                                type="text"
+                                as="textarea"
                                 placeholder="Vul begrip in"
                                 value={subNewTerm.definition}
                                 onChange={(e) => setSubNewTerm({ ...subNewTerm, definition: e.target.value, reference: subAnnotationDetails?.selectedWord })}

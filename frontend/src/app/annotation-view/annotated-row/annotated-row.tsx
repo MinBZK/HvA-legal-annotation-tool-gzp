@@ -290,7 +290,7 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
 
                     {/*law class dropdown*/}
                     <div className={css.row}>
-                        <h4 className={`${css.leftCol} ${css.annotationName}`}>Wetvorm</h4>
+                        <h4 className={`${css.leftCol} ${css.annotationName}`}>Wet vorm</h4>
                         {isEditing ? (
                             <Dropdown>
                                 <Dropdown.Toggle
@@ -394,7 +394,7 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
                                     </Modal.Header>
                                     <Modal.Body>
                                         <Form.Control
-                                            type="text"
+                                            as="textarea"
                                             placeholder="Enter new term"
                                             value={newTerm.definition}
                                             onChange={(e) => setNewTerm({
@@ -450,6 +450,7 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
                     <Modal.Title>Wil je deze annotatie bijwerken?</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                    <p>Let op: Bij het wijzigen van de wet vorm kunnen de voormalige subannotaties verloren gaan!</p>
                     <Button variant="success" onClick={checkValues}>Ja</Button>
                 </Modal.Body>
             </Modal>
@@ -459,6 +460,7 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
                     <Modal.Title>Wil je deze annotatie verwijderen?</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                    <p>Let op: Indien u een hoofdannotatie verwijdert, gaan de subannotaties ook verloren!</p>
                     <Button variant="success" onClick={checkDelete}>Ja</Button>
                 </Modal.Body>
             </Modal>
