@@ -22,7 +22,8 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - database
+      database:
+        condition: service_completed_successfully
     environment:
       - DB_URL=jdbc:mysql://database:3306/lat
       - DB_USER=root
