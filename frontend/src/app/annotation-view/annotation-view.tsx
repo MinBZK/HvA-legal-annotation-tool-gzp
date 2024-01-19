@@ -19,7 +19,6 @@ const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAn
 
     const [annotations, setAnnotations] = useState<Annotation[]>([]);
     const [groupedAnnotations, setGroupedAnnotations] = useState<GroupedAnnotations>([]);
-    const [childrenAnnotations, setChildrenAnnotations] = useState<Annotation[]>([]);
 
     /**
      * Calls the retrieveAnnotations function to fetch the annotations from the database and sets the annotations state
@@ -96,22 +95,6 @@ const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAn
         }
     };
 
-    const getChildren = async (id: number) => {
-        console.log(id)
-        try {
-            const response = await fetch(`${process.env.API_URL}/annotations/children/${id}`);
-            if (response.ok) {
-                const data = await response.json();
-                // Fetch the children annotations
-                console.log(data)
-                setChildrenAnnotations(data);
-            }
-        } catch (error) {
-            console.error("Error fetching and deleting children annotations:", error);
-            alert("Error fetching and deleting children annotations");
-        }
-    }
-
     /**
      * Delete an annotation
      * This is done by sending a DELETE request to the API, removing the <annotation> tags from the xml and saving the
@@ -120,10 +103,6 @@ const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAn
      * @param id database id of the annotation
      */
     const handleDelete = async (id: number) => {
-        await getChildren(id);
-        console.log(childrenAnnotations)
-        console.log(childrenAnnotations.length)
-
         try {
             // Remove the annotation from the database
             const response = await fetch(
@@ -135,17 +114,7 @@ const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAn
 
             if (response.ok) {
                 // If everything went well, remove the annotation tags from the XML
-                console.log(childrenAnnotations.length)
-                if (childrenAnnotations.length > 0) {
-                    console.log("Ik kom hierin")
-                    for (const child in childrenAnnotations) {
-                        console.log(child.id)
-                        await onAnnotationDelete(child.id)
-                    }
-                }
-
-                onAnnotationDelete(id)
-
+                await onAnnotationDelete(id)
                 await fetchAnnotations(); // Refetch annotations to update the list
             } else {
                 alert("Fout annotatie verwijderen");

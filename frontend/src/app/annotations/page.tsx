@@ -137,6 +137,38 @@ const AnnotationPage = () => {
     }
 
     /**
+     * Update the XML in the database after removing an annotation
+     *
+     * @param annotationId The id of the annotation to remove
+     */
+    const updateXML = async (annotationId: number) => {
+        if (projectData == null) return;
+
+        try {
+            // Create a copy of Project to avoid mutating the original object
+            const updatedProject = {
+                ...projectData,
+            };
+
+            const response = await fetch(`${process.env.API_URL}/saveXml`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedProject)
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update XML');
+            }
+
+            console.log('XML updated successfully');
+        } catch (error) {
+            console.error('Error updating XML:', error);
+        }
+    }
+
+    /**
      * Extract all annotation tags from the XML, loop trough them and perform the api calls to fetch them all.
      */
     const retrieveAnnotations = async () => {

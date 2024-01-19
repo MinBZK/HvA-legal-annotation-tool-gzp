@@ -231,7 +231,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
         const mandatoryRelations = relations.filter(relation => relation.cardinality.split("_")[0] === "V");
 
         const areAllMandatoryRelationshipsMade = mandatoryRelations.every(relation => {
-            return existingChildren.includes(relation.subClass.id);
+            return existingChildren.includes(relation.id);
         });
 
         if ((!areAllMandatoryRelationshipsMade || existingChildren.length < mandatoryRelations.length) && !cancel) {
