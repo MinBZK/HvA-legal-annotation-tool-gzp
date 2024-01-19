@@ -12,6 +12,7 @@ import css from "../../annotation-view/annotated-row/annotated-row.module.css"
 import { Term } from "@/app/models/term";
 import { Relation } from "@/app/models/relation";
 import { User } from "@/app/models/user";
+import { getChildAnnotationsFromParentId } from '@/app/services/annotation';
 
 interface PopupProps {
     selectedText1: any,
@@ -23,6 +24,7 @@ interface PopupProps {
     onAnnotationSaved: () => void; // Callback to indicate closing
     currentUser: User,
     addRelation: any;
+    cancel: any;
 }
 
 const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
@@ -30,7 +32,8 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
     tempId1,
     tempId2,
     onSetActiveSelection, onClose, onAnnotationSaved, currentUser,
-    addRelation
+    addRelation,
+    cancel
 }) => {
 
     const [projectId, setProjectId] = useState<number>(0);
@@ -241,6 +244,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
 
         setParentAnnotationTagsExists(false)
 
+        addRelation();
         setLawClassError(false);
         setExistingChildren([]);
         onClose();
@@ -454,7 +458,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
 
     const fetchExistingChildren = async (mainAnnotation: any) => {
         try {
-            const response = await fetch(`http://localhost:8000/api/annotations/children/${mainAnnotation.id}`);
+            const response = await getChildAnnotationsFromParentId(mainAnnotation.id);
             if (response.ok) {
                 const children = await response.json();
                 // Check if any child has the same law class ID as the sub-law class ID
@@ -570,7 +574,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                             />
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button variant="secondary" onClick={() => setShowModal(false)}>
+                            <Button variant="secondary" onClick={() => { setShowModal(false); }}>
                                 Annuleer
                             </Button>
                             <Button variant="primary" onClick={handleAddTerm}>
@@ -716,7 +720,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                 <button className={`${css.save}`} onClick={handleSave}>
                     <BsFillFloppy2Fill size={20} /> Opslaan
                 </button>
-                <button className={`${css.cancel}`} onClick={() => handleFinish(true)}>
+                <button className={`${css.cancel}`} onClick={() => { handleFinish(true); cancel() }}>
                     <BsX size={20} /> Annuleer
                 </button>
                 {

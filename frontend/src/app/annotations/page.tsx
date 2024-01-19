@@ -131,9 +131,6 @@ const AnnotationPage = () => {
 
         // Reload the XML
         setReloadXML((prev) => !prev);
-
-        // Update the XML in the database
-        await updateXML(annotationId);
     }
 
     /**
@@ -200,6 +197,23 @@ const AnnotationPage = () => {
         return temporaryAnnotations;
     }
 
+    const handleCancel = () => {
+        const tempAnnotation = document.getElementsByTagName('temp-annotation');
+        for (let i = 0; i < tempAnnotation.length; i++) {
+            const element = tempAnnotation[i];
+            const content = element.innerHTML;
+            element.insertAdjacentHTML('afterend', content);
+            if (element) {
+                element.remove();
+            }
+        }
+        const temp = projectData;
+        if (temp) {
+            temp.xml_content = new XMLSerializer().serializeToString(document.getElementsByClassName('xml-content')[0]);
+            setProjectData(temp);
+        }
+    }
+
     return (
         <>
             <Navigation></Navigation>
@@ -219,6 +233,7 @@ const AnnotationPage = () => {
                             onClose={handleCloseCreate} onAnnotationSaved={handleAnnotationSaved} // Pass the callback
                             currentUser={currentUser}
                             addRelation={handleAllowSelect}
+                            cancel={handleCancel}
                         />
                     ) : (
                         // Render AnnotationView when text is not selected
