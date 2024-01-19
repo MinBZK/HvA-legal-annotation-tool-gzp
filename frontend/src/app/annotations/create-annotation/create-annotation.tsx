@@ -12,6 +12,7 @@ import css from "../../annotation-view/annotated-row/annotated-row.module.css"
 import { Term } from "@/app/models/term";
 import { Relation } from "@/app/models/relation";
 import { User } from "@/app/models/user";
+import { getChildAnnotationsFromParentId } from '@/app/services/annotation';
 
 interface PopupProps {
     selectedText1: any,
@@ -457,7 +458,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
 
     const fetchExistingChildren = async (mainAnnotation: any) => {
         try {
-            const response = await fetch(`http://localhost:8000/api/annotations/children/${mainAnnotation.id}`);
+            const response = await getChildAnnotationsFromParentId(mainAnnotation.id);
             if (response.ok) {
                 const children = await response.json();
                 // Check if any child has the same law class ID as the sub-law class ID

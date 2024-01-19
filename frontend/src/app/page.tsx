@@ -4,7 +4,7 @@ import './static/index.css';
 import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import React, { useEffect, useRef, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { getMaxXmlCount, getProjectCounts, getProjects, uploadXML } from './services/project'
+import { deleteProject, getMaxXmlCount, getProjectCounts, getProjects, uploadXML } from './services/project'
 import { Project } from "./models/project";
 import { BsDownload } from "react-icons/bs";
 import Link from 'next/link';
@@ -91,7 +91,7 @@ export default function Home() {
 
   const fetchMaxXmlCount = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/maxXmlCount');
+      const response = await getMaxXmlCount();
       if (response.ok) {
         const maxCount = await response.json();
         setMaxXmlCount(maxCount);
@@ -213,13 +213,7 @@ export default function Home() {
 
   const handleDelete = async (id: number) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/project/${id}/delete`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(id)
-      });
+      const response = await deleteProject(id);
 
       if (response.ok) {
         const result = await response.json();

@@ -1,14 +1,14 @@
 // POST METHODS
 
 export async function uploadXML(xmlContent: String, title: String, selectedArticles: any, id: number | undefined = undefined) {
-    let body =  JSON.stringify({
+    let body = JSON.stringify({
         xml_content: xmlContent,
         title: title,
         selectedArticles: selectedArticles
     });
 
     if (id) {
-        body =  JSON.stringify({
+        body = JSON.stringify({
             id: id,
             xml_content: xmlContent,
             title: title,
@@ -58,7 +58,7 @@ export async function getMaxXmlCount() {
         },
     });
 
-    return response.json();
+    return response;
 }
 
 export async function getProjectCounts() {
@@ -70,4 +70,16 @@ export async function getProjectCounts() {
     });
 
     return response.json();
+}
+
+export async function deleteProject(id: number) {
+    const response = await fetch(`${process.env.API_URL}/project/${id}/delete`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(id)
+    });
+
+    return response;
 }
