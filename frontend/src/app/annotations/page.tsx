@@ -7,9 +7,9 @@ import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from "react";
 import LoadXML from "./comment/render-xml";
 import CreateAnnotation from "./create-annotation/create-annotation";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 import Navigation from '../components/navigation/navigation';
-import {User} from "@/app/models/user";
+import { User } from "@/app/models/user";
 
 const AnnotationPage = () => {
 
@@ -17,16 +17,18 @@ const AnnotationPage = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [isTextSelected, setIsTextSelected] = useState(false);
     const [selectedText1, setSelectedText1] = useState("");
-    const [startOffset1, setStartOffset1] = useState(0);
+    const [tempId1, settempId1] = useState(0);
 
     const [selectedText2, setSelectedText2] = useState("");
-    const [startOffset2, setStartOffset2] = useState(0);
+    const [tempId2, settempId2] = useState(0);
+    const [xmlContent, setXmlContent] = useState("");
 
     const [activeSelection, setActiveSelection] = useState(1);
     const [reloadXML, setReloadXML] = useState(false);
     const [currentUser, setCurrentUser] = useState<User>(
-        {name: "", id: -1, role: ""}
+        { name: "", id: -1, role: "" }
     );
+    const [allowSelect, setAllowSelect] = useState(true);
 
     // Get id from url
     const searchParams = useSearchParams();
@@ -65,23 +67,28 @@ const AnnotationPage = () => {
     }, [id, reloadXML]);
 
     const handleTextSelection = (text: string, offset: number) => {
-        console.log(activeSelection)
         if (activeSelection === 1) {
+            setAllowSelect(false);
             setSelectedText1(text);
-            setStartOffset1(offset);
+            settempId1(offset);
         } else if (activeSelection === 2) {
+            setAllowSelect(false);
             setSelectedText2(text);
-            setStartOffset2(offset);
+            settempId2(offset);
         }
         setIsTextSelected(true);
     };
 
+    const handleAllowSelect = () => {
+        setAllowSelect(true);
+    }
+
     const handleCloseCreate = () => {
         setIsTextSelected(false);
         setSelectedText1("");
-        setStartOffset1(0);
+        settempId1(0);
         setSelectedText2("");
-        setStartOffset2(0);
+        settempId2(0);
         setActiveSelection(1); // Reset to the first selection
     }
 
@@ -130,38 +137,6 @@ const AnnotationPage = () => {
     }
 
     /**
-     * Update the XML in the database after removing an annotation
-     *
-     * @param annotationId The id of the annotation to remove
-     */
-    const updateXML = async (annotationId: number) => {
-        if (projectData == null) return;
-
-        try {
-            // Create a copy of Project to avoid mutating the original object
-            const updatedProject = {
-                ...projectData,
-            };
-
-            const response = await fetch(`${process.env.API_URL}/saveXml`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(updatedProject)
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to update XML');
-            }
-
-            console.log('XML updated successfully');
-        } catch (error) {
-            console.error('Error updating XML:', error);
-        }
-    }
-
-    /**
      * Extract all annotation tags from the XML, loop trough them and perform the api calls to fetch them all.
      */
     const retrieveAnnotations = async () => {
@@ -198,7 +173,7 @@ const AnnotationPage = () => {
             <Navigation></Navigation>
             <main className='d-flex'>
                 <section className="left-column">
-                    {projectData && <LoadXML project={projectData} onTextSelection={handleTextSelection}
+                    {projectData && <LoadXML project={projectData} onTextSelection={handleTextSelection} allowSelect={allowSelect}
                     />}
                 </section>
                 <section className="right-column">
@@ -206,17 +181,18 @@ const AnnotationPage = () => {
                         // Render Create annotation when text is selected
                         <CreateAnnotation selectedText1={selectedText1}
                             selectedText2={selectedText2}
-                            startOffset1={startOffset1}
-                            startOffset2={startOffset2}
+                            tempId1={tempId1}
+                            tempId2={tempId2}
                             onSetActiveSelection={handleSetActiveSelection}
                             onClose={handleCloseCreate} onAnnotationSaved={handleAnnotationSaved} // Pass the callback
                             currentUser={currentUser}
+                            addRelation={handleAllowSelect}
                         />
                     ) : (
                         // Render AnnotationView when text is not selected
                         <AnnotationView onAnnotationDelete={handleAnnotationDeleted}
-                                        retrieveAnnotations={retrieveAnnotations}
-                                        isLoading={isLoading}
+                            retrieveAnnotations={retrieveAnnotations}
+                            isLoading={isLoading}
                         />
                     )}
                 </section>

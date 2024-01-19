@@ -10,7 +10,7 @@ export interface Annotation {
     selectedWord: string,
     lawClass: LawClass | undefined,
     project: Project
-    startOffset?: number,
+    tempId?: number,
     term: Term | null,
     parentAnnotation: Annotation
     relation: Relation
