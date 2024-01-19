@@ -591,7 +591,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                                 <p>Verplicht</p>
                                 {relations.map(relation => {
                                     const isExisting = existingChildren.includes(relation.id);
-                                    const buttonStyle = { backgroundColor: isExisting ? 'primary' : 'secondary' };
+                                    const buttonStyle = { backgroundColor: isExisting ? 'custom-primary' : 'custom-secondary' };
 
                                     return relation.cardinality.split("_")[0] === "V" && (
                                         <Button key={relation.id}
@@ -614,7 +614,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                                 <p>Optioneel</p>
                                 {relations.map(relation => {
                                     const isExisting = existingChildren.includes(relation.id);
-                                    const buttonStyle = { backgroundColor: isExisting ? 'primary' : 'secondary' };
+                                    const buttonStyle = { backgroundColor: isExisting ? 'custom-primary' : 'custom-secondary' };
 
                                     return relation.cardinality.split("_")[0] === "NV" && (
                                         <Button key={relation.id}

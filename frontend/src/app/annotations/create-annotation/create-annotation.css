@@ -142,14 +142,14 @@ button#dropdown-basic.dropdown.dropdown-toggle.btn.btn-secondary {
     display: none;
 }
 
-.primary {
-    color: #000;
-    background-color: #4CA74A41; /* Change this to your desired green color */
-    border-color: #4CA74A41;
+.custom-primary {
+    color: #000 !important;
+    background-color: #4CA74A41 !important; /* Change this to your desired green color */
+    border-color: #4CA74A41 !important;
 }
 
-.secondary {
-    color: #000;
-    background-color: #e9ecef; /* Change this to your desired grey color */
-    border-color: #e9ecef;
+.custom-secondary {
+    color: #000 !important;
+    background-color: #e9ecef !important; /* Change this to your desired grey color */
+    border-color: #e9ecef !important;
 }
