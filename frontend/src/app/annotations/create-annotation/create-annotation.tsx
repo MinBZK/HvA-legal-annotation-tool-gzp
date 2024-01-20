@@ -473,7 +473,6 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
     };
 
     const checkInputFields = () => {
-        console.warn(subAnnotationDetails)
         if (subAnnotationDetails.lawClass || subAnnotationDetails.selectedWord != "" || subAnnotationDetails.text != "") {
             // Show an alert, warning, or handle the validation error accordingly
             setShowInputWarningModal(true);
@@ -758,7 +757,9 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                     <Button variant="secondary" onClick={() => setShowInputWarningModal(false)}>
                         Annuleer
                     </Button>
-                    <Button variant="primary" onClick={() => { setShowInputWarningModal(false); handleClose(); onClose(); }}>
+                    <Button variant="primary" onClick={() => {
+                        setShowInputWarningModal(false); handleClose(); onClose();
+                    }}>
                         Ja
                     </Button>
                 </Modal.Footer>

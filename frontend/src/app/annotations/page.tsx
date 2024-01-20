@@ -90,6 +90,7 @@ const AnnotationPage = () => {
         setSelectedText2("");
         settempId2(0);
         setActiveSelection(1); // Reset to the first selection
+        handleAllowSelect();
     }
 
     const handleAnnotationSaved = () => {
