@@ -458,14 +458,11 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
 
     const fetchExistingChildren = async (mainAnnotation: any) => {
         try {
-            const response = await getChildAnnotationsFromParentId(mainAnnotation.id);
-            if (response.ok) {
-                const children = await response.json();
+            const children = await getChildAnnotationsFromParentId(mainAnnotation.id);
+            if (children.length > 0) {
                 // Check if any child has the same law class ID as the sub-law class ID
                 const existingChildrenIds = children.map((child: any) => child.relation.id);
-                await setExistingChildren(existingChildrenIds);
-            } else {
-                console.error("Error fetching subs");
+                setExistingChildren(existingChildrenIds);
             }
         } catch (error) {
             console.error("Error fetching subs:", error);
