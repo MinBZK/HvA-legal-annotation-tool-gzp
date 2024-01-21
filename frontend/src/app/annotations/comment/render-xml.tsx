@@ -13,9 +13,10 @@ import { uploadXML } from '@/app/services/project';
 interface XMLProps {
   project: Project;
   onTextSelection: (text: string, offset: number) => void;
+  allowSelect: boolean;
 }
 
-const LoadXML: FC<XMLProps> = ({ project, onTextSelection }) => {
+const LoadXML: FC<XMLProps> = ({ project, onTextSelection, allowSelect }) => {
   const router = useRouter();
   const [renderXML, setRenderXML] = useState(false);
   const [annotationStyles, setAnnotationStyles] = useState({});
@@ -78,14 +79,35 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection }) => {
 
 
   const handleShow = () => {
-    const selection = window.getSelection();
-    if (selection && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-      const text = range.toString();
-      const startOffset = calculateOffset(range.startContainer, range.startOffset);
+    if (allowSelect) {
+      const selection = window.getSelection();
 
-      if (text) {
-        onTextSelection(text, startOffset);
+      if (!selection.isCollapsed) {
+        const range = selection.getRangeAt(0);
+
+        // Check if the selection spans multiple elements
+        const commonAncestor = range.commonAncestorContainer;
+        if (commonAncestor.nodeType !== Node.TEXT_NODE) {
+          return;
+        }
+
+        // Create a new span element
+        const spanElement = document.createElement('temp-annotation');
+        const randId = Math.floor(Math.random() * 100);
+        spanElement.setAttribute('id', `${randId}`);
+
+        // Surround the selected text with the span element
+        range.surroundContents(spanElement);
+        const text = range.toString();
+
+        project.xml_content = new XMLSerializer().serializeToString(document.getElementsByClassName('xml-content')[0]);
+        if (text) {
+          onTextSelection(text, randId);
+        }
+
+        // Clear the selection
+        selection.removeAllRanges();
+
       }
     }
   };
@@ -113,16 +135,6 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection }) => {
 
     return xml.documentElement.innerHTML;
   }
-
-  function calculateOffset(node: Node, offset: number): number {
-    let count = offset;
-    while (node.previousSibling) {
-      node = node.previousSibling;
-      count += node.textContent?.length || 0;
-    }
-    return count;
-  }
-
   const handleGoBack = () => {
     router.push('/');
   };
@@ -142,7 +154,7 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection }) => {
       const arrArticleBools: boolean[] = []
       for (let i = 0; i < listArticles.length; i++) {
         arrArticle.push(listArticles.item(i));
-        
+
         if (project.selectedArticles != "" && project.selectedArticles != null && project.selectedArticles.split(", ").includes(listArticles.item(i).id)) {
           arrArticleBools.push(true);
         } else {

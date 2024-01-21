@@ -32,7 +32,7 @@ describe('Visit annotation page', () => {
                     selectedWord: 'Lorem',
                     lawClass: null,
                     project: null,
-                    startOffset: 1
+                    tempId: 1
                 }],
             },
         }).as('getUpdatedProject');

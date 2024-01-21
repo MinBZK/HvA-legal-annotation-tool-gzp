@@ -58,7 +58,7 @@ describe('XML Annotation Test', () => {
             selectedWord: 'test',
             lawClass: null,
             project: null,
-            startOffset: 1
+            tempId: 1
         }).as('postAnnotation');
 
         // press dropdown toggle and select a law class

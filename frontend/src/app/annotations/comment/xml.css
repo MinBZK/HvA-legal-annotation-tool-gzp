@@ -101,3 +101,9 @@ bwb-wijzigingen.show-all artikel, bwb-wijzigingen.show-all hoofdstuk, bwb-wijzig
     background: #EBEBEB !important;
     border: 1px solid #B1B1B1 !important;
 }
+
+temp-annotation {
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    outline: #b5b3b3 solid 1px;
+}

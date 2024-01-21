@@ -103,11 +103,37 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
         }
     };
 
+    const getChildren = async (id: number) => {
+        try {
+            const response = await fetch(`${process.env.API_URL}/annotations/children/${id}`);
+            if (response.ok) {
+                const data = await response.json();
+                // Fetch the children annotations
+                console.log(data)
+                // setChildrenAnnotations(data);
+                return data
+            }
+        } catch (error) {
+            console.error("Error fetching and deleting children annotations:", error);
+            alert("Error fetching and deleting children annotations");
+            return null;
+        }
+    }
+
     // Delete annotation with id
-    const checkDelete = () => {
+    const checkDelete = async () => {
         setIsDeleteModalOpen(!isDeleteModalOpen)
         setIsEditing(false)
-        handleDelete(annotation.id)
+
+        // Fetch and delete children annotations
+        const childrenAnnotations = await getChildren(annotation.id);
+        if (childrenAnnotations) {
+            for (const child of childrenAnnotations) {
+                await handleDelete(child.id);
+            }
+        }
+        
+        await handleDelete(annotation.id)
     }
 
     const handleAddTerm = async () => {
