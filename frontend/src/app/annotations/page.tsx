@@ -241,6 +241,7 @@ const AnnotationPage = () => {
                         <AnnotationView onAnnotationDelete={handleAnnotationDeleted}
                             retrieveAnnotations={retrieveAnnotations}
                             isLoading={isLoading}
+                            handleAnnotationSaved={handleAnnotationSaved}
                         />
                     )}
                 </section>

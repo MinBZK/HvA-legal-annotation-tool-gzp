@@ -69,6 +69,7 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
     }, []);
 
     const checkValues = () => {
+        console.log(updatedAnnotation)
         if (editLabelText.length !== 0) {
             setIsConfirmModalOpen(!isConfirmModalOpen);
 

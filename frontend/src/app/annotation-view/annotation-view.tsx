@@ -11,11 +11,12 @@ interface AnnotationViewProps {
     onAnnotationDelete: (annotationId: number) => void;
     retrieveAnnotations: () => Promise<Annotation[]>;
     isLoading: boolean;
+    handleAnnotationSaved: () => void;
 }
 
 type GroupedAnnotations = { lawClass: LawClass; annotations: Annotation[]; open: boolean }[];
 
-const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAnnotations, isLoading}) => {
+const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAnnotations, isLoading, handleAnnotationSaved}) => {
 
     const [annotations, setAnnotations] = useState<Annotation[]>([]);
     const [groupedAnnotations, setGroupedAnnotations] = useState<GroupedAnnotations>([]);
@@ -32,10 +33,34 @@ const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAn
 
             setAnnotations(annotations);
             setGroupedAnnotations(groupAnnotationsByLawClass(annotations));
+            let styleString = "";
+
+            for (let annotation of annotations) {
+                let color = annotation.lawClass?.color;
+                if (color) {
+                    styleString += `annotation[id="${annotation.id}"] { background-color: ${color} !important; border-radius: 4px; outline: ${color} solid 1px }\n`;
+                }
+            }
+            updateStyles(styleString)
         } else {
             console.error("Geen annotaties opgehaald");
         }
     };
+
+    function updateStyles(newStyles: string) {
+        // Select the div with the class 'left-column'
+        const leftColumnDiv = document.querySelector('.left-column');
+
+        // Find the <style> tag within this div
+        const styleTag = leftColumnDiv?.querySelector('style');
+
+        // Replace the content of the <style> tag with new styles
+        if (styleTag) {
+            styleTag.innerHTML = newStyles;
+        } else {
+            console.error('Style tag not found');
+        }
+    }
 
     const groupAnnotationsByLawClass = (annotations: Annotation[]): GroupedAnnotations => {
         const groupedAnnotations: GroupedAnnotations = [];
@@ -86,6 +111,7 @@ const AnnotationView: FC<AnnotationViewProps> = ({onAnnotationDelete, retrieveAn
             if (response.ok) {
                 alert("Annotatie succesvol bijgewerkt");
                 fetchAnnotations(); // Refetch annotations
+                handleAnnotationSaved();
             } else {
                 alert("Fout annotatie bijwerken");
             }
