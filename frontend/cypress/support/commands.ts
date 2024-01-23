@@ -1,68 +1,55 @@
-/// <reference types="cypress" />
-// ***********************************************
-// This example commands.ts shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-//
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       login(email: string, password: string): Chainable<void>
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
-//   }
-// }
+declare namespace Cypress {
+    interface Chainable {
+        intercept_initial_user_create: () => Chainable<any>;
+        create_new_user: () => Chainable<any>;
+    }
+}
 
-// Cypress.Commands.add('upload_file', (fileName, fileType, selector) => {
-//     cy.get(selector).then(subject => {
-//         cy.fixture(fileName, 'hex').then((fileHex) => {
-//
-//             const fileBytes = hexStringToByte(fileHex);
-//             const testFile = new File([fileBytes], fileName, {
-//                 type: fileType
-//             });
-//             const dataTransfer = new DataTransfer()
-//             const el = subject[0]
-//
-//             dataTransfer.items.add(testFile)
-//             el.files = dataTransfer.files
-//         })
-//     })
-// })
+Cypress.Commands.add('intercept_initial_user_create', (users = [{
+    id: 1,
+    role: "Admin",
+    name: "Admin"
+}]) => {
+    cy.intercept('POST', '/api/users', {
+        statusCode: 201,
+    });
+    cy.intercept('GET', '/api/users', {
+        statusCode: 200,
+        body: users
+    }).as('getUsers');
+})
 
-// UTILS
-// function hexStringToByte(str) {
-//     if (!str) {
-//         return new Uint8Array();
-//     }
-//
-//     var a = [];
-//     for (var i = 0, len = str.length; i < len; i += 2) {
-//         a.push(parseInt(str.substr(i, 2), 16));
-//     }
-//
-//     return new Uint8Array(a);
-// }
+Cypress.Commands.add('create_new_user', () => {
+    cy.get('button.new-user').click();
+    cy.get('#userName').type("New user")
+    cy.get('#userRole').select('Jurist');
+    cy.get('button.create-user').click();
+
+    cy.intercept('POST', '/api/users', {
+        statusCode: 201,
+    });
+
+    cy.intercept('GET', '/api/users', {
+        statusCode: 200,
+        body: [
+            {
+                id: 1,
+                role: "Admin",
+                name: "Admin"
+            },
+            {
+                id: 2,
+                role: "Jurist",
+                name: "New user"
+            }
+        ]
+    });
+
+    cy.get('.modal.show').should('exist');
+
+    cy.get('.user-select').then((userList) => {
+
+        if (userList.length === 2) return true;
+        return false;
+    })
+})
