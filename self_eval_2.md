@@ -4,10 +4,10 @@
 |--------------|-----------|------------------------|
 | Dennis van Schie   | **3 & 4** | [Removing annotation tags from the XML](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/76) - [Export annotated XML](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/15) - [Import annotated XML](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/84) - [Fix bug where annotations with a label that spans over multiple XML tags are not properly placed](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/81) - [Change highlighted color after changing the lawclass of an existing annotation](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/114) |
 | Kevin van Hout     | **3 & 4** | [Vullen van de law class tabel in de database](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/18) - [Selecteren van artikelen bij importeren wet](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/54) - [Relaties in het datamodel van het juridisch analyseschema](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/59) - [[Nice to have] Dockerize your application](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/64) - [IssueProject titel weergeven](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/72), [Architectuur cleanup en efficienty](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/74) - [Alleen admins mogen project verwijderen](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/83) - [Mock user en rollen systeem](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/87) [Documentatie developer](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/90) - [Artikel selectie aanpassen](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/97) - [Documentatie user](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/98) - [Samenvoegen van annotaties met de zelfde lawclass in overzicht](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/111) - [Nieuwe manier van annoteren implementeren](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/115) |
-| Delbert Densu      | **2** | |
-| Hanna Toenbreker   | **2** | |
-| Taner Özgüner      | **2** | |
-| Chi Yu Yeung       | **2** | |
+| Delbert Densu      | **2**     | |
+| Hanna Toenbreker   | **2**     | |
+| Taner Özgüner      | **2**     | |
+| Chi Yu Yeung       | **3 & 4** | [Update lawclass with associated lawclass](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/86) - [Documentation for developers](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/90) - [Refresh for mainannotation with subannotation](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/114) - [Update annotation relations and term](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/44) - [Save term for annotation](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/58) - [Delete project](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/66) - [Architectuur cleanup en efficiency](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/74) - [Show dynamically number of XMLs](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/79) - [500 error bug when deleting annotation](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/109) |
 
 
 ### Individual Evaluation Feedback
@@ -31,6 +31,23 @@
 #### Tops:
 - The full export and import functionality, that had a high priority from Steven, has been fully implemented.
 - The application now has a decoupled annotation system, which means that annotations are no longer tied to a project and are properly displayed when an XML with existing annotations is imported.
+- Fixed multiple bugs and assisted other team members with their tasks.
 
 #### Tips:
 - I tried to fix the bug that caused annotations that spanned multiple XML tags to not be properly placed. While this took a lot of time, the new approach did not succeed. However, the developer documentation for the application has been updated with a description of another approach that will fix the problem. Steven is aware of this and said that this was fine.
+
+|  Name       | Focus 1     | Focus 2  | Focus 3 | Focus 4 |
+|---------|-------------|----------|---------|---------|
+| Chi Yu Yeung | Update annotation relations and term | Update lawclass with associated lawclass |  Save term for annotation | Wrote tests      |      
+
+#### Tops:
+- Created edit for law class with associated lawclass
+- Update annotation relations and term
+- Save term for annotation
+- Wrote tests
+- More individual tasks compared to last time
+
+#### Tips:
+
+- Debugging took a bit longer than expected
+- Help the other teammates more when I had the time for it
