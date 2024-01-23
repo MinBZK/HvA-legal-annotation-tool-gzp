@@ -14,7 +14,7 @@ export enum Cardinality {
 export interface Relation {
     id: number;
     mainLawClass: LawClass; // of alleen `mainLawClassId: number;` als u niet het hele object nodig heeft
-    subLawClass: LawClass; // of alleen `subLawClassId: number;`
+    subClass: LawClass; // of alleen `subLawClassId: number;`
     cardinality: Cardinality;
     description: string;
 }

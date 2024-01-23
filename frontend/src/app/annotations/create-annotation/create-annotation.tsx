@@ -599,7 +599,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                                             className={`me-1 text-dark ${buttonStyle.backgroundColor}`}
                                             onClick={() => {
                                                 handleShowSubAnnotationForm(); // Show the sub-annotation form
-                                                handleSelectSubLaw(relation.subLawClass.id);
+                                                handleSelectSubLaw(relation.subClass.id);
                                                 handleSubAnnotationDetailChange('relation', relation)
                                                 addRelation();
                                             }}>
@@ -621,7 +621,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                                             className={`me-1 text-dark ${buttonStyle.backgroundColor}`}
                                             onClick={() => {
                                                 handleShowSubAnnotationForm(); // Show the sub-annotation form
-                                                handleSelectSubLaw(relation.subLawClass.id)
+                                                handleSelectSubLaw(relation.subClass.id)
                                                 handleSubAnnotationDetailChange('relation', relation)
                                                 addRelation()
                                             }}>

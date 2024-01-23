@@ -114,10 +114,8 @@ public class AnnotationController {
 
     @DeleteMapping("/deleteannotation/{id}")
     public ResponseEntity<String> deleteAnnotationAndChildren(@PathVariable Integer id) {
-        System.out.println(id);
         try {
             Optional<Annotation> annotationOptional = annotationRepository.findById(id);
-            System.out.println(annotationOptional);
             if (annotationOptional.isPresent()) {
                 // Delete child annotations with the same parent ID
                 deleteChildAnnotations(id);
