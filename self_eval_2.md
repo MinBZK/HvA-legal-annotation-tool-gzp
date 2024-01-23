@@ -30,18 +30,27 @@ After the form is complete please upload this (as a '*.PDF' file ) to your sprin
 
  - Database schema is not in line with rest of team, needs refactor
  - login system still not secure, jwt tokens implemented but not used 
- 
+
+| Name | Sprint # | User stories worked on                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+|------|----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Name | **4**   | - [Update lawclass with associated lawclass](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/86) - [Documentation for developers](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/90) - [Refresh for mainannotation with subannotation](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/114) - [Update annotation relations and term](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/44) - [Save term for annotation](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/58) - [Delete project](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/66) - [Architectuur cleanup en efficiency](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/74) - [Show dynamically number of XMLs](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/79) - [500 error bug when deleting annotation](https://gitlab.fdmci.hva.nl/se-specialization-2023-1/projects-ik/galactische-zakenpartners/legal-annotation-tool/-/issues/109) |
+
+
+### Individual Evaluation Feedback
 
 |  Name       | Focus 1     | Focus 2  | Focus 3 | Focus 4 |
 |---------|-------------|----------|---------|---------|
-| Member 2 | CI/CD  | Architecture Setup | Back end rest calls  | N/A      |      
+| Chi Yu Yeung | Update annotation relations and term | Update lawclass with associated lawclass |  Save term for annotation | Wrote tests      |      
 
 #### Tops:
- - Completed CI/CD pipeline with the help of member 1
- - Tech stack does not use middleware any more
- - Back end calls are now more secure
+- Created edit for law class with associated lawclass
+- Update annotation relations and term
+- Save term for annotation
+- Wrote tests
+- More individual tasks compared to last time
 
 #### Tips:
 
- - Database schema is not in line with rest of team, needs refactor
- - tests written do not use testing principles , need to refactor 
+- Debugging took a bit longer than expected
+- Help the other teammates more when I had the time for it
+    
