@@ -1,16 +1,16 @@
 "use client"; // This is a client component 👈🏽
 
-import React, { FC, useEffect, useState } from "react";
-import { FaChevronDown, FaChevronUp, FaEdit } from "react-icons/fa";
+import React, {FC, useEffect, useState} from "react";
+import {FaEdit} from "react-icons/fa";
 import css from "./annotated-row.module.css";
-import { Button, Dropdown, Form, Modal } from "react-bootstrap";
-import { Annotation } from "@/app/models/annotation";
-import { Term } from "@/app/models/term";
-import { User } from "@/app/models/user";
-import { LawClass } from "@/app/models/lawclass";
-import { Relation } from "@/app/models/relation";
+import {Button, Dropdown, Form, Modal} from "react-bootstrap";
+import {Annotation} from "@/app/models/annotation";
+import {Term} from "@/app/models/term";
+import {User} from "@/app/models/user";
+import {LawClass} from "@/app/models/lawclass";
+import {Relation} from "@/app/models/relation";
 
-import { subscribe, unsubscribe } from "@/app/services/user";
+import {subscribe, unsubscribe} from "@/app/services/user";
 
 interface AnnotationProps {
     annotation: Annotation;
@@ -107,7 +107,7 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
         try {
             const response = await fetch(`${process.env.API_URL}/annotations/children/${id}`);
             if (response.ok) {
-                return data
+                return await response.json()
             }
         } catch (error) {
             console.error("Error fetching and deleting children annotations:", error);
