@@ -38,6 +38,7 @@ Verder gebruiken we Maven als bouwhulpmiddel (build tool). De combinatie van Mav
 
 ##### 1.2.3.1 Commando’s
 build: `mvn clean install`
+
 run: `mvn spring-boot:run`
 
 #### 1.2.4 Environment variables
