@@ -404,16 +404,17 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
      * @param definition
      */
     const annotateSelectedText = (selectedText: string, annotationId: number, tempId: number) => {
-
         const annotation = document.createElement('annotation');
         annotation.setAttribute('id', `${annotationId}`);
 
         const tempAnnotation = document.getElementById(`${tempId}`);
-        annotation.innerHTML = tempAnnotation?.innerHTML;
+        if (tempAnnotation) {
+            annotation.innerHTML = tempAnnotation.innerHTML;
 
-        tempAnnotation?.parentNode?.replaceChild(annotation, tempAnnotation);
+            tempAnnotation?.parentNode?.replaceChild(annotation, tempAnnotation);
 
-        project.xml_content = new XMLSerializer().serializeToString(document.getElementsByClassName('xml-content')[0]);
+            project.xml_content = new XMLSerializer().serializeToString(document.getElementsByClassName('xml-content')[0]);
+        }
     };
 
     const fetchRelationsForLawClass = async (lawClassId: number) => {
@@ -435,7 +436,6 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
             const response = await fetch(`${process.env.API_URL}/lawclasses/${lawClassId}`);
             if (response.ok) {
                 const fetchedLawclass = await response.json();
-                console.log(fetchedLawclass)
                 setSubAnnotationDetails((prevAnnotation) => ({
                     ...(prevAnnotation as Annotation),
                     lawClass: fetchedLawclass,
@@ -599,7 +599,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                                             className={`me-1 text-dark ${buttonStyle.backgroundColor}`}
                                             onClick={() => {
                                                 handleShowSubAnnotationForm(); // Show the sub-annotation form
-                                                handleSelectSubLaw(relation.subClass.id);
+                                                handleSelectSubLaw(relation.subLawClass.id);
                                                 handleSubAnnotationDetailChange('relation', relation)
                                                 addRelation();
                                             }}>
@@ -621,7 +621,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1,
                                             className={`me-1 text-dark ${buttonStyle.backgroundColor}`}
                                             onClick={() => {
                                                 handleShowSubAnnotationForm(); // Show the sub-annotation form
-                                                handleSelectSubLaw(relation.subClass.id)
+                                                handleSelectSubLaw(relation.subLawClass.id)
                                                 handleSubAnnotationDetailChange('relation', relation)
                                                 addRelation()
                                             }}>

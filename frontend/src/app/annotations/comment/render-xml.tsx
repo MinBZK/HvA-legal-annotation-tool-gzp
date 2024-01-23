@@ -82,7 +82,7 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection, allowSelect }) => {
     if (allowSelect) {
       const selection = window.getSelection();
 
-      if (!selection.isCollapsed) {
+      if (selection && !selection.isCollapsed) {
         const range = selection.getRangeAt(0);
 
         // Check if the selection spans multiple elements

@@ -98,9 +98,7 @@ const AnnotationPage = () => {
     };
 
     const handleSetActiveSelection = (selection: number) => {
-        console.log("Setting Active Selection:", selection);
         setActiveSelection(selection);
-        console.log(activeSelection)
     };
 
     /**
@@ -132,6 +130,9 @@ const AnnotationPage = () => {
 
         // Reload the XML
         setReloadXML((prev) => !prev);
+
+        // Update the XML in the database
+        await updateXML(annotationId);
     }
 
     /**

@@ -69,7 +69,6 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
     }, []);
 
     const checkValues = () => {
-        console.log(updatedAnnotation)
         if (editLabelText.length !== 0) {
             setIsConfirmModalOpen(!isConfirmModalOpen);
 
@@ -108,10 +107,6 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
         try {
             const response = await fetch(`${process.env.API_URL}/annotations/children/${id}`);
             if (response.ok) {
-                const data = await response.json();
-                // Fetch the children annotations
-                console.log(data)
-                // setChildrenAnnotations(data);
                 return data
             }
         } catch (error) {
@@ -193,7 +188,6 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
 
                 if (subAnnotationsResponse.ok) {
                     const childAnnotations = await subAnnotationsResponse.json();
-                    console.log("childAnnotations", childAnnotations);
                     setEditLawClass(lawClassName ?? null);
 
                     if (childAnnotations.length > 0) {
@@ -247,8 +241,6 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
 
                         // update the updated subannotations
                         setSubannotations(updatedSubAnnotations);
-
-                        console.log("Updated subannotations:", updatedSubAnnotations);
                     } else {
                         console.log("No child annotations found.");
                     }

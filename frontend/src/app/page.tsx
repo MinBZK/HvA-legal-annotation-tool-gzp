@@ -187,7 +187,6 @@ export default function Home() {
         if (list.length > 0) {
           selectedArticles = list.join(', ');
         }
-        console.warn(selectedArticles)
 
         const response = await uploadXML(eventTargetResult, title, selectedArticles);
 
