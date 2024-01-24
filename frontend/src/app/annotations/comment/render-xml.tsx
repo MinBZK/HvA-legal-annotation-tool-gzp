@@ -77,21 +77,24 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection, allowSelect }) => {
     return styleString;
   };
 
-
   const handleShow = () => {
+    // Check if text selection is allowed
     if (allowSelect) {
       const selection = window.getSelection();
 
+      // Check if there is a non-collapsed selection
       if (selection && !selection.isCollapsed) {
+        // Get the range of the selection
         const range = selection.getRangeAt(0);
 
         // Check if the selection spans multiple elements
         const commonAncestor = range.commonAncestorContainer;
         if (commonAncestor.nodeType !== Node.TEXT_NODE) {
+          // If the selection spans multiple elements, do nothing and return
           return;
         }
 
-        // Create a new span element
+        // Create a new span element for the annotation with a random id
         const spanElement = document.createElement('temp-annotation');
         const randId = Math.floor(Math.random() * 100);
         spanElement.setAttribute('id', `${randId}`);
@@ -100,41 +103,53 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection, allowSelect }) => {
         range.surroundContents(spanElement);
         const text = range.toString();
 
+        // Serialize the XML content after the annotation
         project.xml_content = new XMLSerializer().serializeToString(document.getElementsByClassName('xml-content')[0]);
+
+        // If there is selected text, call the onTextSelection function
         if (text) {
           onTextSelection(text, randId);
         }
 
         // Clear the selection
         selection.removeAllRanges();
-
       }
     }
   };
 
   const renderXMLContent = () => {
     const parser = new DOMParser();
+
+    // Parse the XML content string into a DOM document
     const xml = parser.parseFromString(project.xml_content, "application/xml");
 
+    // Check if there are selected articles
     if (project.selectedArticles != "" && project.selectedArticles != null) {
+      // Split the selectedArticles string into an array of article IDs
       const articles = project.selectedArticles.split(',');
+
       // Loop through all the selected articles and show them on the page
       for (let i = 0; i < articles.length; i++) {
+        // Get the DOM element with the corresponding article ID
         const element = xml.getElementById(articles[i].trim());
 
+        // Check if the element exists
         if (element !== null && element !== undefined) {
+          // Check if the element has a classList property
           if (element.classList) {
-            // Add the class show to the article
+            // Add the class 'show' to the article
             element.classList.add('show');
           }
         }
       }
     } else {
-      xml.getElementsByTagName('bwb-wijzigingen')[0].classList.add('show-all')
+      // If no specific articles are selected, show all articles
+      xml.getElementsByTagName('bwb-wijzigingen')[0].classList.add('show-all');
     }
 
     return xml.documentElement.innerHTML;
-  }
+  };
+
   const handleGoBack = () => {
     router.push('/');
   };
