@@ -14,6 +14,11 @@ public class ApplicationProperty {
     @Column(name = "property_value")
     private int propertyValue;
 
+    public ApplicationProperty(String propertyName, int propertyValue) {
+        this.propertyName = propertyName;
+        this.propertyValue = propertyValue;
+    }
+
     public Long getId() {
         return id;
     }
