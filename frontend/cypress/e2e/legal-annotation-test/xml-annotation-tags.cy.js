@@ -71,9 +71,9 @@ describe('XML Annotation Test', () => {
             cy.intercept('GET', '/api/annotations/1', content).as('getAnnotation');
         });
 
-        // Remove the intercept of the project
-        cy.intercept('GET', '/api/project/1', (req) => {
-            req.continue()
+        // Use the annotated project as the project content
+        cy.fixture('project-with-annotations.json').then((content) => {
+            cy.intercept('GET', '/api/project/1', content).as('getProject');
         });
 
         // Click the save button. The classname of that button starts with "annotated-row_save"
