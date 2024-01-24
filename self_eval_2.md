@@ -66,3 +66,20 @@
 
 #### Tips:
 - If I had more time, I would have liked to split up my code into more components, so the code would be more readable. 
+
+
+| Name         | Focus 1             | Focus 2                                       | Focus 3                             | Focus 4 |
+|--------------|---------------------|-----------------------------------------------|-------------------------------------|---------|
+|Taner Ozguner | XML List validation | Setting the base for creating sub annotations | Decoupled annotations from projects | Wrote tests|      
+
+#### Tops:
+- Integrated a validation to check total XMLs imported into the project when it exceeds 40 it will give a warning.
+- Set up the base of the sub annotations
+- Decoupled annotations from projects, so it's easier to fetch all annotations
+- Wrote tests
+- Wrote documentation (Technical and Developer Doc)
+- Helped a lot of team-members with code
+
+#### Tips:
+- Sometimes while writing code I seem to look too much into efficiency, because of this I lose more time but gain more knowledge at the same time. 
+This is a more short-term issue rather than a long term issue.
