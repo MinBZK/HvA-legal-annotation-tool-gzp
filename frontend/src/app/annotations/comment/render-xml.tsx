@@ -119,27 +119,37 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection, allowSelect }) => {
 
   const renderXMLContent = () => {
     const parser = new DOMParser();
+
+    // Parse the XML content string into a DOM document
     const xml = parser.parseFromString(project.xml_content, "application/xml");
 
+    // Check if there are selected articles
     if (project.selectedArticles != "" && project.selectedArticles != null) {
+      // Split the selectedArticles string into an array of article IDs
       const articles = project.selectedArticles.split(',');
+
       // Loop through all the selected articles and show them on the page
       for (let i = 0; i < articles.length; i++) {
+        // Get the DOM element with the corresponding article ID
         const element = xml.getElementById(articles[i].trim());
 
+        // Check if the element exists
         if (element !== null && element !== undefined) {
+          // Check if the element has a classList property
           if (element.classList) {
-            // Add the class show to the article
+            // Add the class 'show' to the article
             element.classList.add('show');
           }
         }
       }
     } else {
-      xml.getElementsByTagName('bwb-wijzigingen')[0].classList.add('show-all')
+      // If no specific articles are selected, show all articles
+      xml.getElementsByTagName('bwb-wijzigingen')[0].classList.add('show-all');
     }
 
     return xml.documentElement.innerHTML;
-  }
+  };
+
   const handleGoBack = () => {
     router.push('/');
   };
