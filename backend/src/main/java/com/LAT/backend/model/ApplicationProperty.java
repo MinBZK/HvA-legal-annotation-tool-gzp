@@ -19,6 +19,10 @@ public class ApplicationProperty {
         this.propertyValue = propertyValue;
     }
 
+    public ApplicationProperty() {
+
+    }
+
     public Long getId() {
         return id;
     }
