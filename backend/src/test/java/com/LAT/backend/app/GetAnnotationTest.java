@@ -1,74 +1,85 @@
 package com.LAT.backend.app;
 
 import com.LAT.backend.model.Annotation;
-import com.LAT.backend.repository.AnnotationRepository;
-import com.LAT.backend.repository.ProjectRepository;
-import com.LAT.backend.repository.LawClassRepository;  // Import LawClassRepository
+import com.LAT.backend.model.LawClass;
+import com.LAT.backend.model.Term;
+import com.LAT.backend.repository.*;
 import com.LAT.backend.rest.AnnotationController;
-import com.LAT.backend.rest.ProjectController;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
 import java.util.Optional;
 
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(AnnotationController.class)
 @AutoConfigureMockMvc
 public class GetAnnotationTest {
 
     @MockBean
-    private AnnotationController annotationController;
+    private AnnotationRepository annotationRepository;
+
+    // Mocking LawClassRepository
+    @MockBean
+    private LawClassRepository lawClassRepository;
 
     @MockBean
-    private AnnotationRepository annotationRepository;
+    private TermRepository termRepository;
+
+    // Mocking RelationRepository
+    @MockBean
+    private RelationRepository relationRepository;
+
+    @MockBean
+    private UserRepository userRepository;
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
-    private ProjectRepository projectRepository;
+    // Chi Yu
+    @Test
+    void testGetAnnotationById() throws Exception {
+        // Arrange: Mock the behavior of the repository
 
-    // Mock LawClassRepository
-    @MockBean
-    private LawClassRepository lawClassRepository;
+        Integer annotationId = 1;
 
-//    @Test
-//    void testGetAnnotationsByProjectId() throws Exception {
-//        // Arrange: Mock the behavior of the repository
-//        int projectIdAnnotation = 1;
-//
-//        // Using the same project ID in the path and for the mock setup
-//        List<Annotation> mockAnnotations = List.of(
-//                new Annotation()
-//        );
-//        // Mocking the behavior of the annotationController
-//        when(annotationRepository.findByProjectId(projectIdAnnotation)).thenReturn(mockAnnotations);
-//
-//        // Act and Assert
-//        mockMvc.perform(get("/api/annotations/project/{projectId}", projectIdAnnotation)
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$", hasSize(0))) // Expecting one element in the array
-//                .andDo(result -> {
-//                    String actualResponse = result.getResponse().getContentAsString();
-//                    System.out.println("Actual Response: " + actualResponse);
-//                })
-//                .andReturn();
-//    }
+        // Create an annotation
+        Annotation mock = new Annotation();
+        mock.setId(annotationId);
+        mock.setText("annotation");
+
+        mock.setCreated_at(123L);
+        mock.setUpdated_at(456L);
+
+        Optional<Annotation> mockAnnotation = Optional.of(mock);
+
+        // Mocking
+        when(annotationRepository.findById(annotationId)).thenReturn(mockAnnotation);
+
+        // Act and Assert
+        mockMvc.perform(get("/api/annotations/{id}", annotationId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id", is(annotationId))) // Expecting an object with ID matching the request
+                .andExpect(jsonPath("$.text", is("annotation")))
+                .andExpect(jsonPath("$.created_at", is(123)))
+                .andExpect(jsonPath("$.updated_at", is(456)))
+                .andDo(result -> {
+                    String actualResponse = result.getResponse().getContentAsString();
+                    System.out.println("Actual Response: " + actualResponse);
+                })
+                .andReturn();
+    }
 }
