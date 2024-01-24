@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="UTF-8"?><toestand xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bwb-ng-vast-deel="http://wetten.overheid.nl/id/BWBR0038456/2023-10-01/0" xsi:noNamespaceSchemaLocation="https://repository.officiele-overheidspublicaties.nl/Schema/BWB-toestand/2016-1/xsd/toestand_2016-1.xsd" bwb-id="BWBR0038456" inwerkingtreding="2023-10-01"><bwb-inputbestand/><bwb-wijzigingen/><redactionele-correcties/><wetgeving dtdversie="2.0" soort="AMvB" stam-id="13740223" versie-id="27203982" id="C38436191" label-id="13706464" inwerkingtredingsdatum="2020-11-04">
+  <intitule bwb-ng-variabel-deel="/Intitule" stam-id="13740253" versie-id="23550672" id="C33907821" label-id="13706334" inwerking="2016-09-01" bron="Stb.2016-303" effect="nieuwe-regeling" ondertekening_bron="2016-08-23" publicatie_bron="2016-08-31" publicatie_iwt="2016-08-31" status="goed">Besluit van 23 augustus 2016, houdende regels omtrent de mogelijkheid voor verhuurder en huurder een energieprestatievergoeding overeen te komen (Besluit energieprestatievergoeding huur)<meta-data><brondata><oorspronkelijk><publicatie effect="nieuwe-regeling" soort="Stb" urlidentifier="stb-2016-303"><publicatiejaar>2016</publicatiejaar><publicatienr>303</publicatienr><uitgiftedatum isodatum="2016-08-31">31-08-2016</uitgiftedatum><ondertekeningsdatum isodatum="2016-08-23">23-08-2016</ondertekeningsdatum></publicatie></oorspronkelijk><inwerkingtreding><publicatie effect="nieuwe-regeling" soort="Stb" urlidentifier="stb-2016-302"><publicatiejaar>2016</publicatiejaar><publicatienr>302</publicatienr><uitgiftedatum isodatum="2016-08-31">31-08-2016</uitgiftedatum><ondertekeningsdatum isodatum="2016-08-23">23-08-2016</ondertekeningsdatum></publicatie><inwerkingtreding.datum isodatum="2016-09-01">01-09-2016</inwerkingtreding.datum></inwerkingtreding><opmerkingen-inhoud><al>Treedt in werking op het tijdstip waarop de Wijzigingswet
+    Burgerlijk Wetboek Boek 7, enz. (mogelijkheid voor verhuurder en
+    huurder een energieprestatievergoeding overeen te komen) (Stb.
+    2016/199) in werking treedt.</al></opmerkingen-inhoud></brondata></meta-data></intitule>
+  <citeertitel bwb-ng-variabel-deel="/Citeertitel" status="officieel" stam-id="13740263" versie-id="23550682" id="C33907831" label-id="13706344" inwerking="2016-09-01" bron="Stb.2016-303" effect="nieuwe-regeling" ondertekening_bron="2016-08-23" publicatie_bron="2016-08-31" publicatie_iwt="2016-08-31">Besluit energieprestatievergoeding huur<meta-data><brondata><oorspronkelijk><publicatie effect="nieuwe-regeling" soort="Stb" urlidentifier="stb-2016-303"><publicatiejaar>2016</publicatiejaar><publicatienr>303</publicatienr><uitgiftedatum isodatum="2016-08-31">31-08-2016</uitgiftedatum><ondertekeningsdatum isodatum="2016-08-23">23-08-2016</ondertekeningsdatum></publicatie></oorspronkelijk><inwerkingtreding><publicatie effect="nieuwe-regeling" soort="Stb" urlidentifier="stb-2016-302"><publicatiejaar>2016</publicatiejaar><publicatienr>302</publicatienr><uitgiftedatum isodatum="2016-08-31">31-08-2016</uitgiftedatum><ondertekeningsdatum isodatum="2016-08-23">23-08-2016</ondertekeningsdatum></publicatie><inwerkingtreding.datum isodatum="2016-09-01">01-09-2016</inwerkingtreding.datum></inwerkingtreding><opmerkingen-inhoud><al>Treedt in werking op het tijdstip waarop de Wijzigingswet
+    Burgerlijk Wetboek Boek 7, enz. (mogelijkheid voor verhuurder en
+    huurder een energieprestatievergoeding overeen te komen) (Stb.
+    2016/199) in werking treedt.</al></opmerkingen-inhoud></brondata></meta-data></citeertitel>
+  <wet-besluit>
+    <aanhef bwb-ng-variabel-deel="/Aanhef" stam-id="13740273" versie-id="23550692" id="C33907841" label-id="13706354" inwerking="2016-09-01" bron="Stb.2016-303" effect="nieuwe-regeling" ondertekening_bron="2016-08-23" publicatie_bron="2016-08-31" publicatie_iwt="2016-08-31" status="goed">
+  <wij>Wij Willem-Alexander, bij de gratie Gods, Koning der Nederlanden, Prins van Oranje-Nassau, enz. enz. enz.</wij>
+  <considerans>
+    <considerans.al bevat="voordracht">Op de voordracht van Onze Minister voor Wonen en Rijksdienst van 25 mei 2016, nr. 2016-0000302175, Directie Constitutionele Zaken en Wetgeving;</considerans.al>
+    <considerans.al bevat="grondslag">Gelet op de <extref doc="jci1.3:c:BWBR0014315&amp;artikel=10" label-id="3234304" verwijzing-id="2781718" bwb-id="BWBR0014315">artikelen 10, eerste lid</extref>, en <extref doc="jci1.3:c:BWBR0014315&amp;artikel=19bis" label-id="13567274" verwijzing-id="2781719" bwb-id="BWBR0014315">19bis, tweede en derde lid, van de Uitvoeringswet huurprijzen woonruimte</extref>;</considerans.al>
+    <considerans.al bevat="gehoord">De Afdeling advisering van de Raad van State gehoord (advies van 20 juli 2016, nr. W04.16.0129/I);</considerans.al>
+    <considerans.al bevat="gezien">Gezien het nader rapport van Onze Minister voor Wonen en Rijksdienst van 20 augustus 2016, nr. 2016-0000483646, Directie Constitutionele Zaken en Wetgeving;</considerans.al>
+  </considerans>
+  <afkondiging>
+    <al>Hebben goedgevonden en verstaan:</al>
+  </afkondiging>
+<meta-data><brondata><oorspronkelijk><publicatie effect="nieuwe-regeling" soort="Stb" urlidentifier="stb-2016-303"><publicatiejaar>2016</publicatiejaar><publicatienr>303</publicatienr><uitgiftedatum isodatum="2016-08-31">31-08-2016</uitgiftedatum><ondertekeningsdatum isodatum="2016-08-23">23-08-2016</ondertekeningsdatum></publicatie></oorspronkelijk><inwerkingtreding><publicatie effect="nieuwe-regeling" soort="Stb" urlidentifier="stb-2016-302"><publicatiejaar>2016</publicatiejaar><publicatienr>302</publicatienr><uitgiftedatum isodatum="2016-08-31">31-08-2016</uitgiftedatum><ondertekeningsdatum isodatum="2016-08-23">23-08-2016</ondertekeningsdatum></publicatie><inwerkingtreding.datum isodatum="2016-09-01">01-09-2016</inwerkingtreding.datum></inwerkingtreding><opmerkingen-inhoud><al>Treedt in werking op het tijdstip waarop de Wijzigingswet
+    Burgerlijk Wetboek Boek 7, enz. (mogelijkheid voor verhuurder en
+    huurder een energieprestatievergoeding overeen te komen) (Stb.
+    2016/199) in werking treedt.</al></opmerkingen-inhoud></brondata></meta-data></aanhef>
+    <wettekst>
+      <artikel bwb-ng-variabel-deel="/Artikel1" stam-id="13740283" versie-id="29608632" id="C42355241" label-id="13706364" inwerking="2023-10-01" label="Artikel 1" bron="Stb.2023-287" effect="wijziging" ondertekening_bron="2023-08-30" publicatie_bron="2023-09-06" publicatie_iwt="2023-09-06" status="goed">
+  <kop>
+    <label>Artikel</label>
+    <nr status="officieel">1</nr>
+  </kop>
+  <lijst level="single" nr-sluiting="." start="1" type="ongemarkeerd">
+    <li bwb-ng-variabel-deel="/Artikel1/Onderdeel_1">
+      <al>
+        <nadruk type="cur">duurzame elektriciteit: </nadruk> duurzame elektriciteit als bedoeld in <extref doc="jci1.3:c:BWBR0009755&amp;artikel=1" label-id="2757954" verwijzing-id="3254117" bwb-id="BWBR0009755">artikel 1, eerste lid, onderdeel u, van de Elektriciteitswet 1998</extref>;</al>
+    </li>
+    <li bwb-ng-variabel-deel="/Artikel1/Onderdeel_2">
+      <al>
+        <nadruk type="cur">energieprestatie:</nadruk> combinatie van de warmtebehoefte van de woonruimte, de op de woning opgewekte duurzame elektriciteit en het elektriciteitsverbruik van de gebouwgebonden installaties;</al>
+    </li>
+    <li bwb-ng-variabel-deel="/Artikel1/Onderdeel_3">
+      <al>
+        <nadruk type="cur">gebouwgebonden installaties:</nadruk> installaties die worden gebruikt voor ruimteverwarming, koelen, ventileren, bevochtigen, ontvochtigen, verlichten, bereiden van warm-tapwater en regeling en aansturing;</al>
+    </li>
+    <li bwb-ng-variabel-deel="/Artikel1/Onderdeel_4">
+      <al>
+        <nadruk type="cur">op de woning:</nadruk> in, aan of op de woonruimte of het woongebouw waarvan de woonruimte onderdeel uitmaakt, en de onroerende aanhorigheden daarvan;</al>
+    </li>
+    <li bwb-ng-variabel-deel="/Artikel1/Onderdeel_5">
+      <al>
+        <nadruk type="cur">warmte:</nadruk> warmte als bedoeld in <extref doc="jci1.3:c:BWBR0033729&amp;artikel=1" label-id="12299884" verwijzing-id="3254118" bwb-id="BWBR0033729">artikel 1 van de Warmtewet</extref>;</al>
+    </li>
+    <li bwb-ng-variabel-deel="/Artikel1/Onderdeel_6">
+      <al>
+        <nadruk type="cur">warmtebehoefte:</nadruk> warmtebehoefte van de woning, inhoudende de jaarlijkse hoeveelheid warmte die nodig is om de woonruimte bij gemiddelde klimaatomstandigheden en een gemiddeld gebruik te voorzien van ruimteverwarming.</al>
+    </li>
+  </lijst>
+<meta-data><brondata><oorspronkelijk><publicatie effect="wijziging" soort="Stb" urlidentifier="stb-2023-287"><publicatiejaar>2023</publicatiejaar><publicatienr>287</publicatienr><uitgiftedatum isodatum="2023-09-06">06-09-2023</uitgiftedatum><ondertekeningsdatum isodatum="2023-08-30">30-08-2023</ondertekeningsdatum></publicatie></oorspronkelijk><inwerkingtreding><publicatie effect="wijziging" soort="Stb" urlidentifier="stb-2023-287"><publicatiejaar>2023</publicatiejaar><publicatienr>287</publicatienr><uitgiftedatum isodatum="2023-09-06">06-09-2023</uitgiftedatum><ondertekeningsdatum isodatum="2023-08-30">30-08-2023</ondertekeningsdatum></publicatie><inwerkingtreding.datum isodatum="2023-10-01">01-10-2023</inwerkingtreding.datum></inwerkingtreding></brondata><jcis><jci versie="1.0" verwijzing="1.0:c:BWBR0038456&amp;artikel=1&amp;g=2023-10-01" onderdeel="artikel=1" korte-verwijzing="1.0:c:BWBR0038456&amp;artikel=1"/><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=1&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="artikel=1" korte-verwijzing="jci1.3:c:BWBR0038456&amp;artikel=1"/></jcis></meta-data></artikel>
+      <artikel bwb-ng-variabel-deel="/Artikel2" stam-id="13740293" versie-id="29608642" id="C42355261" label-id="13706374" inwerking="2023-10-01" label="Artikel 2" bron="Stb.2023-287" effect="wijziging" ondertekening_bron="2023-08-30" publicatie_bron="2023-09-06" publicatie_iwt="2023-09-06" status="goed">
+  <kop>
+    <label>Artikel</label>
+    <nr status="officieel">2</nr>
+  </kop>
+  <lid bwb-ng-variabel-deel="/Artikel2/Lid1" label-id="13706374L1">
+    <lidnr status="officieel">1</lidnr>
+    <al>Een energieprestatievergoeding bedraagt ten hoogste het bedrag dat volgt uit de onderstaande tabel:</al>
+    <table colsep="0" frame="topbot" pgwide="2" rowsep="0" tabstyle="xml2">
+      <tgroup align="left" char="" charoff="50" cols="7" tgroupstyle="xml2">
+        <colspec colname="col1" colnum="1" colwidth="103*"/>
+        <colspec colname="col2" colnum="2" colwidth="66*"/>
+        <colspec colname="col3" colnum="3" colwidth="108*"/>
+        <colspec colname="col4" colnum="4" colwidth="74*"/>
+        <colspec colname="col5" colnum="5" colwidth="93*"/>
+        <colspec colname="col6" colnum="6" colwidth="64*"/>
+        <colspec colname="col7" colnum="7" colwidth="64*"/>
+        <thead valign="bottom">
+          <row rowsep="1" valign="top">
+            <entry align="left" colname="col1" colsep="0" morerows="0" rotate="0" valign="top">
+              <al>
+                <nadruk type="halfvet">I</nadruk>
+              </al>
+            </entry>
+            <entry align="left" colname="col2" colsep="0" morerows="0" rotate="0" valign="top">
+              <al>
+                <nadruk type="halfvet">II</nadruk>
+              </al>
+            </entry>
+            <entry align="left" colname="col3" colsep="0" morerows="0" rotate="0" valign="top">
+              <al>
+                <nadruk type="halfvet">III</nadruk>
+              </al>
+            </entry>
+            <entry align="left" colname="col4" colsep="0" morerows="0" rotate="0" valign="top">
+              <al>
+                <nadruk type="halfvet">IV</nadruk>
+              </al>
+            </entry>
+            <entry align="left" colname="col5" colsep="0" morerows="0" rotate="0" valign="top">
+              <al>
+                <nadruk type="halfvet">V</nadruk>
+              </al>
+            </entry>
+            <entry align="left" colname="col6" colsep="0" morerows="0" nameend="col7" namest="col6" rotate="0" valign="top">
+              <al>
+                <nadruk type="halfvet">VI</nadruk>
+              </al>
+            </entry>
+          </row>
+          <row rowsep="1" valign="top">
+            <entry align="left" colname="col1" colsep="0" morerows="0" rotate="0" rowsep="1" valign="top">
+              <al>
+                <nadruk type="halfvet">EPV klasse</nadruk>
+              </al>
+            </entry>
+            <entry align="left" colname="col2" colsep="0" morerows="0" rotate="0" rowsep="1" valign="top">
+              <al>
+                <nadruk type="halfvet">Compactheid (A<inf>ls</inf></nadruk>
+                <nadruk type="halfvet">/A<inf>g</inf>)</nadruk>
+              </al>
+            </entry>
+            <entry align="left" colname="col3" colsep="0" morerows="0" rotate="0" rowsep="1" valign="top">
+              <al>
+                <nadruk type="halfvet">Warmtebehoefte ruimteverwarming (E<inf>H;nd</inf><nadruk type="halfvet">) in kWh/m<sup>2</sup>/jr</nadruk></nadruk>
+              </al>
+            </entry>
+            <entry align="left" colname="col4" colsep="0" morerows="0" rotate="0" rowsep="1" valign="top">
+              <al>
+                <nadruk type="halfvet">Ontwerpeis: Primair energiegebruik (EWE<inf>Ptot</inf><nadruk type="halfvet">) in kWh/m<sup>2</sup></nadruk><nadruk type="halfvet">/jr</nadruk></nadruk>
+              </al>
+            </entry>
+            <entry align="left" colname="col5" colsep="0" morerows="0" rotate="0" rowsep="1" valign="top">
+              <al>
+                <nadruk type="halfvet">Opgewekte duurzame elektriciteit voor huishoudelijk gebruik kWh/jr</nadruk>
+              </al>
+            </entry>
+            <entry align="left" colname="col6" colsep="0" morerows="0" nameend="col7" namest="col6" rotate="0" rowsep="1" valign="top">
+              <al>
+                <nadruk type="halfvet">Maximale EPV in €/m<sup>2</sup></nadruk>
+                <nadruk type="halfvet">/maand</nadruk>
+              </al>
+            </entry>
+          </row>
+          <row rowsep="1" valign="top">
+            <entry align="left" colname="col1" colsep="0" morerows="0" rotate="0" rowsep="1" valign="top">
+              <al>
+                <nadruk type="halfvet">EPV Basis</nadruk>
+              </al>
+            </entry>
+            <entry align="left" colname="col2" colsep="0" morerows="0" rotate="0" rowsep="1" valign="top"/>
+            <entry align="left" colname="col3" colsep="0" morerows="0" rotate="0" rowsep="1" valign="top"/>
+            <entry align="left" colname="col4" colsep="0" morerows="0" rotate="0" rowsep="1" valign="top"/>
+            <entry align="left" colname="col5" colsep="0" morerows="0" rotate="0" rowsep="1" valign="top"/>
+            <entry align="left" colname="col6" colsep="0" morerows="0" rotate="0" rowsep="1" valign="top">
+              <al>Woningen vóór 2019</al>
+            </entry>
+            <entry align="left" colname="col7" colsep="0" morerows="0" rotate="0" rowsep="1" valign="top">
+              <al>Woningen vanaf 2019</al>
+            </entry>
+          </row>
+        </thead>
+        <tbody valign="top">
+          <row rowsep="0" valign="top">
+            <entry align="left" colname="col1" colsep="0" morerows="1" rotate="0" valign="top">
+              <al>Eengezinswoningen</al>
+            </entry>
+            <entry align="left" colname="col2" colsep="0" morerows="0" rotate="0" valign="top">
+              <al>&lt; 1</al>
+            </entry>
+            <entry align="left" colname="col3" colsep="0" morerows="0" rotate="0" valign="top">
+              <al>≤ 43</al>
+            </entry>
+            <entry align="left" colname="col4" colsep="0" morerows="1" rotate="0" valign="middle">
+              <al>≤ 0</al>
+            </entry>
+            <entry align="left" colname="col5" colsep="0" morerows="1" rotate="0" valign="middle">
+              <al>&gt; 0</al>
+            </entry>
+            <entry align="left" colname="col6" colsep="0" morerows="1" rotate="0" valign="middle">
+              <al>
+                <nadruk type="halfvet">€ 1,25</nadruk>
+              </al>
+            </entry>
+            <entry align="left" colname="col7" colsep="0" morerows="1" rotate="0" valign="middle">
+              <al>n.v.t.</al>
+            </entry>
+          </row>
+          <row rowsep="0" valign="top">
+            <entry align="left" colname="col2" colsep="0" morerows="0" rotate="0" valign="top">
+              <al>≥ 1</al>
+            </entry>
+            <entry align="left" colname="col3" colsep="0" morerows="0" rotate="0" valign="top">
+              <al>≤ 43 + 40 x (A<inf>ls</inf>/A<inf>g</inf> – 1)</al>
+            </entry>
+          </row>
+          <row rowsep="0" valign="top">
+            <entry align="left" colname="col1" colsep="0" morerows="1" rotate="0" valign="top">
+              <al>Meergezinswoningen</al>
+            </entry>
+            <entry align="left" colname="col2" colsep="0" morerows="0" rotate="0" valign="top">
+              <al>&lt; 1</al>
+            </entry>
+            <entry align="left" colname="col3" colsep="0" morerows="0" rotate="0" valign="top">
+              <al>≤ 45</al>
+            </entry>
+            <entry align="left" colname="col4" colsep="0" morerows="1" rotate="0" valign="middle">
+              <al>≤ 0</al>
+            </entry>
+            <entry align="left" colname="col5" colsep="0" morerows="1" rotate="0" valign="middle">
+              <al>&gt; 0</al>
+            </entry>
+            <entry align="left" colname="col6" colsep="0" morerows="1" rotate="0" valign="middle">
+              <al>
+                <nadruk type="halfvet">€ 1,25</nadruk>
+              </al>
+            </entry>
+            <entry align="left" colname="col7" colsep="0" morerows="1" rotate="0" valign="middle">
+              <al>n.v.t.</al>
+            </entry>
+          </row>
+          <row rowsep="0" valign="top">
+            <entry align="left" colname="col2" colsep="0" morerows="0" rotate="0" valign="top">
+              <al>≥ 1</al>
+            </entry>
+            <entry align="left" colname="col3" colsep="0" morerows="0" rotate="0" valign="top">
+              <al>≤ 45 + 45 x (A<inf>ls</inf>/A<inf>g</inf> – 1)</al>
+            </entry>
+          </row>
+          <row rowsep="0" valign="top">
+            <entry align="left" colname="col1" colsep="0" morerows="0" rotate="0" valign="top">
+              <al>
+                <nadruk type="halfvet">EPV Hoogwaardig</nadruk>
+              </al>
+            </entry>
+            <entry align="left" colname="col2" colsep="0" morerows="0" rotate="0" valign="top"/>
+            <entry align="left" colname="col3" colsep="0" morerows="0" rotate="0" valign="top"/>
+            <entry align="left" colname="col4" colsep="0" morerows="0" rotate="0" valign="top"/>
+            <entry align="left" colname="col5" colsep="0" morerows="0" rotate="0" valign="top"/>
+            <entry align="left" colname="col6" colsep="0" morerows="0" rotate="0" valign="top">
+              <al>Woningen vóór 2019</al>
+            </entry>
+            <entry align="left" colname="col7" colsep="0" morerows="0" rotate="0" valign="top">
+              <al>Woningen vanaf 2019</al>
+            </entry>
+          </row>
+          <row rowsep="0" valign="top">
+            <entry align="left" colname="col1" colsep="0" morerows="1" rotate="0" valign="top">
+              <al>Eengezinswoningen</al>
+            </entry>
+            <entry align="left" colname="col2" colsep="0" morerows="0" rotate="0" valign="top">
+              <al>&lt; 1</al>
+            </entry>
+            <entry align="left" colname="col3" colsep="0" morerows="0" rotate="0" valign="top">
+              <al>≤ 30</al>
+            </entry>
+            <entry align="left" colname="col4" colsep="0" morerows="1" rotate="0" valign="middle">
+              <al>≤ -30</al>
+            </entry>
+            <entry align="left" colname="col5" colsep="0" morerows="1" rotate="0" valign="middle">
+              <al>≥ 2100</al>
+            </entry>
+            <entry align="left" colname="col6" colsep="0" morerows="1" rotate="0" valign="middle">
+              <al>
+                <nadruk type="halfvet">€ 1,65</nadruk>
+              </al>
+            </entry>
+            <entry align="left" colname="col7" colsep="0" morerows="1" rotate="0" valign="middle">
+              <al>
+                <nadruk type="halfvet">€ 1,15</nadruk>
+              </al>
+            </entry>
+          </row>
+          <row rowsep="0" valign="top">
+            <entry align="left" colname="col2" colsep="0" morerows="0" rotate="0" valign="top">
+              <al>≥ 1</al>
+            </entry>
+            <entry align="left" colname="col3" colsep="0" morerows="0" rotate="0" valign="top">
+              <al>≤ 30 + 20 x (A<inf>ls</inf>/A<inf>g</inf> – 1)</al>
+            </entry>
+          </row>
+          <row rowsep="0" valign="top">
+            <entry align="left" colname="col1" colsep="0" morerows="1" rotate="0" valign="top">
+              <al>Meergezinswoningen</al>
+            </entry>
+            <entry align="left" colname="col2" colsep="0" morerows="0" rotate="0" valign="top">
+              <al>&lt; 1</al>
+            </entry>
+            <entry align="left" colname="col3" colsep="0" morerows="0" rotate="0" valign="top">
+              <al>≤ 30</al>
+            </entry>
+            <entry align="left" colname="col4" colsep="0" morerows="1" rotate="0" valign="middle">
+              <al>≤ -10</al>
+            </entry>
+            <entry align="left" colname="col5" colsep="0" morerows="1" rotate="0" valign="middle">
+              <al>≥ 530</al>
+            </entry>
+            <entry align="left" colname="col6" colsep="0" morerows="1" rotate="0" valign="middle">
+              <al>
+                <nadruk type="halfvet">€ 1,40</nadruk>
+              </al>
+            </entry>
+            <entry align="left" colname="col7" colsep="0" morerows="1" rotate="0" valign="middle">
+              <al>
+                <nadruk type="halfvet">€ 0,90</nadruk>
+              </al>
+            </entry>
+          </row>
+          <row rowsep="0">
+            <entry align="left" colname="col2" colsep="0" morerows="0" rotate="0" valign="bottom">
+              <al>≥ 1</al>
+            </entry>
+            <entry align="left" colname="col3" colsep="0" morerows="0" rotate="0" valign="bottom">
+              <al>≤ 30 + 20 x (A<inf>ls</inf>/A<inf>g</inf> – 1)</al>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  <meta-data><jcis><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=2&amp;lid=1&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="lid=1"/></jcis></meta-data></lid>
+  <lid bwb-ng-variabel-deel="/Artikel2/Lid2" label-id="13706374L2">
+    <lidnr status="officieel">2</lidnr>
+    <al>De warmtebehoefte en primair energiegebruik worden bepaald door een bedrijf met een geldig procescertificaat, volgens de voorschriften omtrent de opneming en registratie van de energieprestatie van gebouwen, bedoeld in <extref doc="jci1.3:c:BWBR0023734&amp;artikel=3.1" label-id="9448534" verwijzing-id="3254119" bwb-id="BWBR0023734">artikel 3.1 van het Besluit energieprestatie gebouwen</extref>.</al>
+  <meta-data><jcis><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=2&amp;lid=2&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="lid=2"/></jcis></meta-data></lid>
+  <lid bwb-ng-variabel-deel="/Artikel2/Lid3" label-id="13706374L3">
+    <lidnr status="officieel">3</lidnr>
+    <al>Met een procescertificaat of voorschrift als bedoeld in het derde lid wordt gelijkgesteld een voor het bepalen van de warmtebehoefte voorgeschreven certificaat, beoordelingsrichtlijn of andere norm, afgegeven, uitgevoerd of goedgekeurd door een daartoe bevoegde onafhankelijke instelling in een andere lidstaat van de Europese Unie of in een staat, niet zijnde een lidstaat van de Europese Unie, die partij is bij een daartoe strekkend of mede daartoe strekkend verdrag dat Nederland bindt, met een kwaliteitsniveau dat ten minste gelijkwaardig is aan het niveau dat met de in het derde lid bedoelde eisen wordt nagestreefd.</al>
+  <meta-data><jcis><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=2&amp;lid=3&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="lid=3"/></jcis></meta-data></lid>
+  <lid bwb-ng-variabel-deel="/Artikel2/Lid4" label-id="13706374L4">
+    <lidnr status="officieel">4</lidnr>
+    <al>De bedragen, genoemd in de in het eerste lid opgenomen tabel, worden per 1 juli van elk jaar bij ministeriële regeling gewijzigd aan de hand van de consumentenprijsindex geldend voor het voorafgaande kalenderjaar.</al>
+  <meta-data><jcis><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=2&amp;lid=4&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="lid=4"/></jcis></meta-data></lid>
+<meta-data><brondata><oorspronkelijk><publicatie effect="wijziging" soort="Stb" urlidentifier="stb-2023-287"><publicatiejaar>2023</publicatiejaar><publicatienr>287</publicatienr><uitgiftedatum isodatum="2023-09-06">06-09-2023</uitgiftedatum><ondertekeningsdatum isodatum="2023-08-30">30-08-2023</ondertekeningsdatum></publicatie></oorspronkelijk><inwerkingtreding><publicatie effect="wijziging" soort="Stb" urlidentifier="stb-2023-287"><publicatiejaar>2023</publicatiejaar><publicatienr>287</publicatienr><uitgiftedatum isodatum="2023-09-06">06-09-2023</uitgiftedatum><ondertekeningsdatum isodatum="2023-08-30">30-08-2023</ondertekeningsdatum></publicatie><inwerkingtreding.datum isodatum="2023-10-01">01-10-2023</inwerkingtreding.datum></inwerkingtreding></brondata><jcis><jci versie="1.0" verwijzing="1.0:c:BWBR0038456&amp;artikel=2&amp;g=2023-10-01" onderdeel="artikel=2" korte-verwijzing="1.0:c:BWBR0038456&amp;artikel=2"/><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=2&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="artikel=2" korte-verwijzing="jci1.3:c:BWBR0038456&amp;artikel=2"/></jcis></meta-data></artikel>
+      <artikel bwb-ng-variabel-deel="/Artikel2a" stam-id="15699283" versie-id="29608652" id="C42355271" label-id="15638034" inwerking="2023-10-01" label="Artikel 2a" bron="Stb.2023-287" effect="vervallen" ondertekening_bron="2023-08-30" publicatie_bron="2023-09-06" publicatie_iwt="2023-09-06" status="vervallen">
+  <kop>
+    <label>Artikel</label>
+    <nr status="officieel">2a</nr>
+  </kop>
+<al><redactie type="vervanging">Vervallen</redactie></al><meta-data><brondata><oorspronkelijk><publicatie effect="vervallen" soort="Stb" urlidentifier="stb-2023-287"><publicatiejaar>2023</publicatiejaar><publicatienr>287</publicatienr><uitgiftedatum isodatum="2023-09-06">06-09-2023</uitgiftedatum><ondertekeningsdatum isodatum="2023-08-30">30-08-2023</ondertekeningsdatum></publicatie></oorspronkelijk><inwerkingtreding><publicatie effect="vervallen" soort="Stb" urlidentifier="stb-2023-287"><publicatiejaar>2023</publicatiejaar><publicatienr>287</publicatienr><uitgiftedatum isodatum="2023-09-06">06-09-2023</uitgiftedatum><ondertekeningsdatum isodatum="2023-08-30">30-08-2023</ondertekeningsdatum></publicatie><inwerkingtreding.datum isodatum="2023-10-01">01-10-2023</inwerkingtreding.datum></inwerkingtreding></brondata><jcis><jci versie="1.0" verwijzing="1.0:c:BWBR0038456&amp;artikel=2a&amp;g=2023-10-01" onderdeel="artikel=2a" korte-verwijzing="1.0:c:BWBR0038456&amp;artikel=2a"/><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=2a&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="artikel=2a" korte-verwijzing="jci1.3:c:BWBR0038456&amp;artikel=2a"/></jcis></meta-data></artikel>
+      <artikel bwb-ng-variabel-deel="/Artikel3" stam-id="13740303" versie-id="29608662" id="C42355281" label-id="13706384" inwerking="2023-10-01" label="Artikel 3" bron="Stb.2023-287" effect="wijziging" ondertekening_bron="2023-08-30" publicatie_bron="2023-09-06" publicatie_iwt="2023-09-06" status="goed">
+  <kop>
+    <label>Artikel</label>
+    <nr status="officieel">3</nr>
+  </kop>
+  <lid bwb-ng-variabel-deel="/Artikel3/Lid1" label-id="13706384L1">
+    <lidnr status="officieel">1</lidnr>
+    <al>De verhuurder informeert de huurder bij het overeenkomen van de energieprestatievergoeding op welke wijze is voldaan aan de in de in <intref doc="jci1.3:c:BWBR0038456&amp;artikel=2&amp;z=2023-10-01&amp;g=2023-10-01" label-id="13706374" verwijzing-id="3254123" bwb-id="BWBR0038456" bwb-ng-variabel-deel="/Artikel2">artikel 2, eerste lid</intref>, opgenomen tabel bedoelde eisen, en in ieder geval over:</al>
+    <lijst level="single" nr-sluiting="." start="1" type="expliciet">
+      <li bwb-ng-variabel-deel="/Artikel3/Lid1/Onderdeela">
+        <li.nr>a.</li.nr>
+        <al>de overeenkomstig de voorschriften, bedoeld in <intref doc="jci1.3:c:BWBR0038456&amp;artikel=2&amp;z=2023-10-01&amp;g=2023-10-01" label-id="13706374" verwijzing-id="3254124" bwb-id="BWBR0038456" bwb-ng-variabel-deel="/Artikel2">artikel 2, tweede lid</intref>, berekende warmtebehoefte, bedoeld in kolom III van de in artikel 2, eerste lid, opgenomen tabel;</al>
+      <meta-data><jcis><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=3&amp;lid=1&amp;o=a&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="o=a"/></jcis></meta-data></li>
+      <li bwb-ng-variabel-deel="/Artikel3/Lid1/Onderdeelb">
+        <li.nr>b.</li.nr>
+        <al>de door de verhuurder gegarandeerde totale jaarlijkse op de woning op te wekken hoeveelheid duurzame elektriciteit waarmee wordt voldaan aan de ontwerpeis primair energiegebruik, bedoeld in kolom IV van de in <intref doc="jci1.3:c:BWBR0038456&amp;artikel=2&amp;z=2023-10-01&amp;g=2023-10-01" label-id="13706374" verwijzing-id="3254125" bwb-id="BWBR0038456" bwb-ng-variabel-deel="/Artikel2">artikel 2, eerste lid</intref> opgenomen tabel;</al>
+      <meta-data><jcis><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=3&amp;lid=1&amp;o=b&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="o=b"/></jcis></meta-data></li>
+      <li bwb-ng-variabel-deel="/Artikel3/Lid1/Onderdeelc">
+        <li.nr>c.</li.nr>
+        <al>de door de verhuurder gegarandeerde totale jaarlijkse op de woning op te wekken duurzame elektriciteit beschikbaar voor huishoudelijk gebruik, bedoeld in kolom V van de in <intref doc="jci1.3:c:BWBR0038456&amp;artikel=2&amp;z=2023-10-01&amp;g=2023-10-01" label-id="13706374" verwijzing-id="3254126" bwb-id="BWBR0038456" bwb-ng-variabel-deel="/Artikel2">artikel 2, eerste lid</intref>, opgenomen tabel;</al>
+      <meta-data><jcis><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=3&amp;lid=1&amp;o=c&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="o=c"/></jcis></meta-data></li>
+      <li bwb-ng-variabel-deel="/Artikel3/Lid1/Onderdeeld">
+        <li.nr>d.</li.nr>
+        <al>het gemiddelde gebruikersgedrag dat als uitgangspunt is gehanteerd in de voorschriften, bedoeld in <intref doc="jci1.3:c:BWBR0038456&amp;artikel=2&amp;z=2023-10-01&amp;g=2023-10-01" label-id="13706374" verwijzing-id="3254127" bwb-id="BWBR0038456" bwb-ng-variabel-deel="/Artikel2">artikel 2, tweede lid</intref>, en daarbij de gevolgen voor het elektriciteitsgebruik bij afwijking van het gemiddelde gebruikersgedrag, in ieder geval voor het gebruik van warm tapwater, ruimteverwarming en huishoudelijk gebruik.</al>
+      <meta-data><jcis><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=3&amp;lid=1&amp;o=d&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="o=d"/></jcis></meta-data></li>
+    </lijst>
+  <meta-data><jcis><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=3&amp;lid=1&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="lid=1"/></jcis></meta-data></lid>
+<meta-data><brondata><oorspronkelijk><publicatie effect="wijziging" soort="Stb" urlidentifier="stb-2023-287"><publicatiejaar>2023</publicatiejaar><publicatienr>287</publicatienr><uitgiftedatum isodatum="2023-09-06">06-09-2023</uitgiftedatum><ondertekeningsdatum isodatum="2023-08-30">30-08-2023</ondertekeningsdatum></publicatie></oorspronkelijk><inwerkingtreding><publicatie effect="wijziging" soort="Stb" urlidentifier="stb-2023-287"><publicatiejaar>2023</publicatiejaar><publicatienr>287</publicatienr><uitgiftedatum isodatum="2023-09-06">06-09-2023</uitgiftedatum><ondertekeningsdatum isodatum="2023-08-30">30-08-2023</ondertekeningsdatum></publicatie><inwerkingtreding.datum isodatum="2023-10-01">01-10-2023</inwerkingtreding.datum></inwerkingtreding></brondata><jcis><jci versie="1.0" verwijzing="1.0:c:BWBR0038456&amp;artikel=3&amp;g=2023-10-01" onderdeel="artikel=3" korte-verwijzing="1.0:c:BWBR0038456&amp;artikel=3"/><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=3&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="artikel=3" korte-verwijzing="jci1.3:c:BWBR0038456&amp;artikel=3"/></jcis></meta-data></artikel>
+      <artikel bwb-ng-variabel-deel="/Artikel4" stam-id="13740313" versie-id="29608672" id="C42355291" label-id="13706394" inwerking="2023-10-01" label="Artikel 4" bron="Stb.2023-287" effect="wijziging" ondertekening_bron="2023-08-30" publicatie_bron="2023-09-06" publicatie_iwt="2023-09-06" status="goed">
+  <kop>
+    <label>Artikel</label>
+    <nr status="officieel">4</nr>
+  </kop>
+  <lid bwb-ng-variabel-deel="/Artikel4/Lid1" label-id="13706394L1">
+    <lidnr status="officieel">1</lidnr>
+    <al>In de gevallen waarin een energieprestatievergoeding is overeengekomen, bevat het overzicht dat de verhuurder krachtens <extref doc="jci1.3:c:BWBR0005290&amp;artikel=261a" label-id="13567264" verwijzing-id="3254128" bwb-id="BWBR0005290">artikel 261a, tweede lid</extref>, in samenhang met <extref doc="jci1.3:c:BWBR0005290&amp;artikel=259" label-id="3229744" verwijzing-id="3254129" bwb-id="BWBR0005290">artikel 259, tweede lid, van Boek 7 van het Burgerlijk Wetboek</extref> jaarlijks aan de huurder verstrekt, gegevens over het gemeten elektriciteitsgebruik van de maatregelen waarmee is voldaan aan de in de in <intref doc="jci1.3:c:BWBR0038456&amp;artikel=2&amp;z=2023-10-01&amp;g=2023-10-01" label-id="13706374" verwijzing-id="3254130" bwb-id="BWBR0038456" bwb-ng-variabel-deel="/Artikel2">artikel 2, eerste lid</intref>, opgenomen tabel bedoelde eisen, en in ieder geval gegevens over:</al>
+    <lijst level="single" nr-sluiting="." start="1" type="expliciet">
+      <li bwb-ng-variabel-deel="/Artikel4/Lid1/Onderdeela">
+        <li.nr>a.</li.nr>
+        <al>de totale jaarlijkse op de woning opgewekte hoeveelheid duurzame elektriciteit;</al>
+      <meta-data><jcis><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=4&amp;lid=1&amp;o=a&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="o=a"/></jcis></meta-data></li>
+      <li bwb-ng-variabel-deel="/Artikel4/Lid1/Onderdeelb">
+        <li.nr>b.</li.nr>
+        <al>het totale jaarlijkse verbruik van elektriciteit voor ruimteverwarming, comfortkoeling en het bereiden van warm-tapwater;</al>
+      <meta-data><jcis><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=4&amp;lid=1&amp;o=b&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="o=b"/></jcis></meta-data></li>
+      <li bwb-ng-variabel-deel="/Artikel4/Lid1/Onderdeelc">
+        <li.nr>c.</li.nr>
+        <al>het totale elektriciteitsgebruik voor ventileren, monitoring en eventueel aanwezige elektrische of infraroodverwarming in een badkamer;</al>
+      <meta-data><jcis><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=4&amp;lid=1&amp;o=c&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="o=c"/></jcis></meta-data></li>
+      <li bwb-ng-variabel-deel="/Artikel4/Lid1/Onderdeeld">
+        <li.nr>d.</li.nr>
+        <al>In afwijking van het eerste lid, onderdeel c, kan in plaats van het gemeten elektriciteitsgebruik worden uitgegaan van een in de overeenkomst vastgelegde forfaitaire hoeveelheid elektriciteit van 700 kWh/jaar;</al>
+      <meta-data><jcis><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=4&amp;lid=1&amp;o=d&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="o=d"/></jcis></meta-data></li>
+      <li bwb-ng-variabel-deel="/Artikel4/Lid1/Onderdeele">
+        <li.nr>e.</li.nr>
+        <al>de gerealiseerde hoeveelheid duurzame elektriciteit beschikbaar voor huishoudelijk gebruik.</al>
+      <meta-data><jcis><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=4&amp;lid=1&amp;o=e&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="o=e"/></jcis></meta-data></li>
+    </lijst>
+  <meta-data><jcis><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=4&amp;lid=1&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="lid=1"/></jcis></meta-data></lid>
+  <lid bwb-ng-variabel-deel="/Artikel4/Lid2_1" label-id="13706394L2">
+    <lidnr status="officieel">2</lidnr>
+    <al>De hoeveelheid duurzame elektriciteit beschikbaar voor huishoudelijk gebruik wordt vastgesteld op basis van de gemeten waarden, bedoeld in het eerste lid, onderdelen a tot en met d, en is de uitkomst van: H = O – W – G, waarbij:</al>
+    <al>H = de hoeveelheid duurzame elektriciteit beschikbaar voor huishoudelijk gebruik;</al>
+    <al>O = de totale jaarlijkse op de woning opgewekte hoeveelheid duurzame elektriciteit, bedoeld in het eerste lid, onderdeel a;</al>
+    <al>W = het totale jaarlijkse verbruik van elektriciteit voor ruimteverwarming, comfortkoeling en het bereiden van warm-tapwater, bedoeld in het eerste lid, onderdeel b, en</al>
+    <al>G = de gemeten dan wel forfaitair op 700 kWh/jaar vastgestelde hoeveelheid elektriciteit gebruikt voor ventileren, monitoring en eventueel aanwezige elektrische of infraroodverwarming in een badkamer, bedoeld in het eerste lid, onderdelen c of d.</al>
+  <meta-data><jcis><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=4&amp;lid=2&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="lid=2"/></jcis></meta-data></lid>
+  <lid bwb-ng-variabel-deel="/Artikel4/Lid2_2" label-id="13706394L3">
+    <lidnr status="officieel">2</lidnr>
+    <al>Ten behoeve van het overzicht, bedoeld in het eerste lid, voorziet de verhuurder de woonruimte van ten minste twee individuele meters voor het vaststellen van:</al>
+    <lijst level="single" nr-sluiting="." start="1" type="expliciet">
+      <li bwb-ng-variabel-deel="/Artikel4/Lid2_2/Onderdeela">
+        <li.nr>a.</li.nr>
+        <al>de totale jaarlijkse op de woning opgewekte hoeveelheid duurzame elektriciteit;</al>
+      <meta-data><jcis><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=4&amp;lid=2&amp;o=a&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="o=a"/></jcis></meta-data></li>
+      <li bwb-ng-variabel-deel="/Artikel4/Lid2_2/Onderdeelb">
+        <li.nr>b.</li.nr>
+        <al>het totale jaarlijkse gebruik van elektriciteit voor ruimteverwarming, comfortkoeling en het bereiden van warm-tapwater.</al>
+      <meta-data><jcis><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=4&amp;lid=2&amp;o=b&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="o=b"/></jcis></meta-data></li>
+    </lijst>
+  </lid>
+  <lid bwb-ng-variabel-deel="/Artikel4/Lid3" label-id="13706394L4">
+    <lidnr status="officieel">3</lidnr>
+    <al>Het overzicht, bedoeld in het eerste lid, kan elektronisch worden verstrekt, indien de huurder daarmee instemt.</al>
+  <meta-data><jcis><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=4&amp;lid=3&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="lid=3"/></jcis></meta-data></lid>
+<meta-data><brondata><oorspronkelijk><publicatie effect="wijziging" soort="Stb" urlidentifier="stb-2023-287"><publicatiejaar>2023</publicatiejaar><publicatienr>287</publicatienr><uitgiftedatum isodatum="2023-09-06">06-09-2023</uitgiftedatum><ondertekeningsdatum isodatum="2023-08-30">30-08-2023</ondertekeningsdatum></publicatie></oorspronkelijk><inwerkingtreding><publicatie effect="wijziging" soort="Stb" urlidentifier="stb-2023-287"><publicatiejaar>2023</publicatiejaar><publicatienr>287</publicatienr><uitgiftedatum isodatum="2023-09-06">06-09-2023</uitgiftedatum><ondertekeningsdatum isodatum="2023-08-30">30-08-2023</ondertekeningsdatum></publicatie><inwerkingtreding.datum isodatum="2023-10-01">01-10-2023</inwerkingtreding.datum></inwerkingtreding><opmerkingen-inhoud><al>Abusievelijk voegt het Staatsblad een tweede lid 2 toe.</al></opmerkingen-inhoud></brondata><jcis><jci versie="1.0" verwijzing="1.0:c:BWBR0038456&amp;artikel=4&amp;g=2023-10-01" onderdeel="artikel=4" korte-verwijzing="1.0:c:BWBR0038456&amp;artikel=4"/><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=4&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="artikel=4" korte-verwijzing="jci1.3:c:BWBR0038456&amp;artikel=4"/></jcis></meta-data></artikel>
+      <artikel bwb-ng-variabel-deel="/Artikel5" stam-id="13740323" versie-id="29608682" id="C42355301" label-id="13706404" inwerking="2023-10-01" label="Artikel 5" bron="Stb.2023-287" effect="wijziging" ondertekening_bron="2023-08-30" publicatie_bron="2023-09-06" publicatie_iwt="2023-09-06" status="goed">
+  <kop>
+    <label>Artikel</label>
+    <nr status="officieel">5</nr>
+  </kop>
+  <lid bwb-ng-variabel-deel="/Artikel5/Lid1" label-id="13706404L1">
+    <lidnr status="officieel">1</lidnr>
+    <al>De verhuurder verbindt zich tot het geven aan de huurder van een korting op de overeengekomen energieprestatievergoeding indien in het voorafgaande kalenderjaar niet op de woning de bij het overeenkomen van de energieprestatievergoeding gegarandeerde hoeveelheid duurzame elektriciteit voor gebruik door de huurder is opgewekt.</al>
+  <meta-data><jcis><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=5&amp;lid=1&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="lid=1"/></jcis></meta-data></lid>
+  <lid bwb-ng-variabel-deel="/Artikel5/Lid2" label-id="13706404L2">
+    <lidnr status="officieel">2</lidnr>
+    <al>De verplichting, bedoeld in het eerste lid, geldt voor het eerst nadat na de ingangsdatum van de overeenkomst een volledig kalenderjaar is verstreken.</al>
+  <meta-data><jcis><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=5&amp;lid=2&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="lid=2"/></jcis></meta-data></lid>
+  <lid bwb-ng-variabel-deel="/Artikel5/Lid3" label-id="13706404L3">
+    <lidnr status="officieel">3</lidnr>
+    <al>De korting bedraagt het verschil tussen de gegarandeerde elektriciteitslevering voor huishoudelijk gebruik en de gerealiseerde elektriciteitslevering voor huishoudelijk gebruik vermenigvuldigd met de over het betreffende kalenderjaar door het Centraal Bureau voor de Statistiek bekendgemaakte transactieprijs «Elektriciteitsprijs verbruiksklassen huishoudens 2,5 tot 5 MWh».</al>
+  <meta-data><jcis><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=5&amp;lid=3&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="lid=3"/></jcis></meta-data></lid>
+<meta-data><brondata><oorspronkelijk><publicatie effect="wijziging" soort="Stb" urlidentifier="stb-2023-287"><publicatiejaar>2023</publicatiejaar><publicatienr>287</publicatienr><uitgiftedatum isodatum="2023-09-06">06-09-2023</uitgiftedatum><ondertekeningsdatum isodatum="2023-08-30">30-08-2023</ondertekeningsdatum></publicatie></oorspronkelijk><inwerkingtreding><publicatie effect="wijziging" soort="Stb" urlidentifier="stb-2023-287"><publicatiejaar>2023</publicatiejaar><publicatienr>287</publicatienr><uitgiftedatum isodatum="2023-09-06">06-09-2023</uitgiftedatum><ondertekeningsdatum isodatum="2023-08-30">30-08-2023</ondertekeningsdatum></publicatie><inwerkingtreding.datum isodatum="2023-10-01">01-10-2023</inwerkingtreding.datum></inwerkingtreding></brondata><jcis><jci versie="1.0" verwijzing="1.0:c:BWBR0038456&amp;artikel=5&amp;g=2023-10-01" onderdeel="artikel=5" korte-verwijzing="1.0:c:BWBR0038456&amp;artikel=5"/><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=5&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="artikel=5" korte-verwijzing="jci1.3:c:BWBR0038456&amp;artikel=5"/></jcis></meta-data></artikel>
+      <artikel bwb-ng-variabel-deel="/Artikel6" stam-id="13740333" versie-id="29608692" id="C42355311" label-id="13706414" inwerking="2023-10-01" label="Artikel 6" bron="Stb.2023-287" effect="wijziging" ondertekening_bron="2023-08-30" publicatie_bron="2023-09-06" publicatie_iwt="2023-09-06" status="goed">
+  <kop>
+    <label>Artikel</label>
+    <nr status="officieel">6</nr>
+  </kop>
+  <lid bwb-ng-variabel-deel="/Artikel6/Lid1" label-id="13706414L1">
+    <lidnr status="officieel">1</lidnr>
+    <al>Op energieprestatievergoedingen, overeengekomen voor 1 oktober 2023, zijn de tabellen 1 en 2 van <intref doc="jci1.3:c:BWBR0038456&amp;bijlage=I&amp;z=2023-10-01&amp;g=2023-10-01" label-id="13706454" verwijzing-id="3254131" bwb-id="BWBR0038456" bwb-ng-variabel-deel="/BijlageI">bijlage I</intref> van toepassing.</al>
+  <meta-data><jcis><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=6&amp;lid=1&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="lid=1"/></jcis></meta-data></lid>
+  <lid bwb-ng-variabel-deel="/Artikel6/Lid2" label-id="13706414L2">
+    <lidnr status="officieel">2</lidnr>
+    <al>De bedragen, genoemd in de tabellen 1 en 2 van <intref doc="jci1.3:c:BWBR0038456&amp;bijlage=I&amp;z=2023-10-01&amp;g=2023-10-01" label-id="13706454" verwijzing-id="3254132" bwb-id="BWBR0038456" bwb-ng-variabel-deel="/BijlageI">bijlage I</intref>, worden per 1 juli van elk jaar bij ministeriële regeling gewijzigd aan de hand van de consumentenprijsindex geldend voor het voorafgaande kalenderjaar.</al>
+  <meta-data><jcis><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=6&amp;lid=2&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="lid=2"/></jcis></meta-data></lid>
+  <lid bwb-ng-variabel-deel="/Artikel6/Lid3" label-id="13706414L3">
+    <lidnr status="officieel">3</lidnr>
+    <al>De verhuurder die de warmtebehoefte van de woning heeft bepaald voor 1 januari 2024 kan tabel 1 van <intref doc="jci1.3:c:BWBR0038456&amp;bijlage=I&amp;z=2023-10-01&amp;g=2023-10-01" label-id="13706454" verwijzing-id="3254133" bwb-id="BWBR0038456" bwb-ng-variabel-deel="/BijlageI">bijlage I</intref> toepassen bij het bepalen van de maximale energieprestatievergoeding.</al>
+  <meta-data><jcis><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=6&amp;lid=3&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="lid=3"/></jcis></meta-data></lid>
+<meta-data><brondata><oorspronkelijk><publicatie effect="wijziging" soort="Stb" urlidentifier="stb-2023-287"><publicatiejaar>2023</publicatiejaar><publicatienr>287</publicatienr><uitgiftedatum isodatum="2023-09-06">06-09-2023</uitgiftedatum><ondertekeningsdatum isodatum="2023-08-30">30-08-2023</ondertekeningsdatum></publicatie></oorspronkelijk><inwerkingtreding><publicatie effect="wijziging" soort="Stb" urlidentifier="stb-2023-287"><publicatiejaar>2023</publicatiejaar><publicatienr>287</publicatienr><uitgiftedatum isodatum="2023-09-06">06-09-2023</uitgiftedatum><ondertekeningsdatum isodatum="2023-08-30">30-08-2023</ondertekeningsdatum></publicatie><inwerkingtreding.datum isodatum="2023-10-01">01-10-2023</inwerkingtreding.datum></inwerkingtreding></brondata><jcis><jci versie="1.0" verwijzing="1.0:c:BWBR0038456&amp;artikel=6&amp;g=2023-10-01" onderdeel="artikel=6" korte-verwijzing="1.0:c:BWBR0038456&amp;artikel=6"/><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=6&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="artikel=6" korte-verwijzing="jci1.3:c:BWBR0038456&amp;artikel=6"/></jcis></meta-data></artikel>
+      <artikel bwb-ng-variabel-deel="/Artikel7" stam-id="13740343" versie-id="23550762" id="C33907911" label-id="13706424" inwerking="2016-09-01" label="Artikel 7" bron="Stb.2016-303" effect="nieuwe-regeling" ondertekening_bron="2016-08-23" publicatie_bron="2016-08-31" publicatie_iwt="2016-08-31" status="goed">
+  <kop>
+    <label>Artikel</label>
+    <nr status="officieel">7</nr>
+  </kop>
+  <al>Dit besluit treedt in werking op het tijdstip waarop de Wet van 18 mei 2016 tot wijziging van Boek 7 van het Burgerlijk Wetboek en de Uitvoeringswet huurprijzen woonruimte in verband met de mogelijkheid voor verhuurder en huurder een energieprestatievergoeding overeen te komen (Stb. 2016, 199) in werking treedt.</al>
+<meta-data><brondata><oorspronkelijk><publicatie effect="nieuwe-regeling" soort="Stb" urlidentifier="stb-2016-303"><publicatiejaar>2016</publicatiejaar><publicatienr>303</publicatienr><uitgiftedatum isodatum="2016-08-31">31-08-2016</uitgiftedatum><ondertekeningsdatum isodatum="2016-08-23">23-08-2016</ondertekeningsdatum></publicatie></oorspronkelijk><inwerkingtreding><publicatie effect="nieuwe-regeling" soort="Stb" urlidentifier="stb-2016-302"><publicatiejaar>2016</publicatiejaar><publicatienr>302</publicatienr><uitgiftedatum isodatum="2016-08-31">31-08-2016</uitgiftedatum><ondertekeningsdatum isodatum="2016-08-23">23-08-2016</ondertekeningsdatum></publicatie><inwerkingtreding.datum isodatum="2016-09-01">01-09-2016</inwerkingtreding.datum></inwerkingtreding><opmerkingen-inhoud><al>Treedt in werking op het tijdstip waarop de Wijzigingswet
+    Burgerlijk Wetboek Boek 7, enz. (mogelijkheid voor verhuurder en
+    huurder een energieprestatievergoeding overeen te komen) (Stb.
+    2016/199) in werking treedt.</al></opmerkingen-inhoud></brondata><jcis><jci versie="1.0" verwijzing="1.0:c:BWBR0038456&amp;artikel=7&amp;g=2023-10-01" onderdeel="artikel=7" korte-verwijzing="1.0:c:BWBR0038456&amp;artikel=7"/><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=7&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="artikel=7" korte-verwijzing="jci1.3:c:BWBR0038456&amp;artikel=7"/></jcis></meta-data></artikel>
+      <artikel bwb-ng-variabel-deel="/Artikel8" stam-id="13740353" versie-id="23550772" id="C33907921" label-id="13706434" inwerking="2016-09-01" label="Artikel 8" bron="Stb.2016-303" effect="nieuwe-regeling" ondertekening_bron="2016-08-23" publicatie_bron="2016-08-31" publicatie_iwt="2016-08-31" status="goed">
+  <kop>
+    <label>Artikel</label>
+    <nr status="officieel">8</nr>
+  </kop>
+  <al>Dit besluit wordt aangehaald als: Besluit energieprestatievergoeding huur.</al>
+<meta-data><brondata><oorspronkelijk><publicatie effect="nieuwe-regeling" soort="Stb" urlidentifier="stb-2016-303"><publicatiejaar>2016</publicatiejaar><publicatienr>303</publicatienr><uitgiftedatum isodatum="2016-08-31">31-08-2016</uitgiftedatum><ondertekeningsdatum isodatum="2016-08-23">23-08-2016</ondertekeningsdatum></publicatie></oorspronkelijk><inwerkingtreding><publicatie effect="nieuwe-regeling" soort="Stb" urlidentifier="stb-2016-302"><publicatiejaar>2016</publicatiejaar><publicatienr>302</publicatienr><uitgiftedatum isodatum="2016-08-31">31-08-2016</uitgiftedatum><ondertekeningsdatum isodatum="2016-08-23">23-08-2016</ondertekeningsdatum></publicatie><inwerkingtreding.datum isodatum="2016-09-01">01-09-2016</inwerkingtreding.datum></inwerkingtreding><opmerkingen-inhoud><al>Treedt in werking op het tijdstip waarop de Wijzigingswet
+    Burgerlijk Wetboek Boek 7, enz. (mogelijkheid voor verhuurder en
+    huurder een energieprestatievergoeding overeen te komen) (Stb.
+    2016/199) in werking treedt.</al></opmerkingen-inhoud></brondata><jcis><jci versie="1.0" verwijzing="1.0:c:BWBR0038456&amp;artikel=8&amp;g=2023-10-01" onderdeel="artikel=8" korte-verwijzing="1.0:c:BWBR0038456&amp;artikel=8"/><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;artikel=8&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="artikel=8" korte-verwijzing="jci1.3:c:BWBR0038456&amp;artikel=8"/></jcis></meta-data></artikel>
+    </wettekst>
+    <wetsluiting bwb-ng-variabel-deel="/SlotformulierEnOndertekening" stam-id="13740363" versie-id="23550782" id="C33907931" label-id="13706444" inwerking="2016-09-01" bron="Stb.2016-303" effect="nieuwe-regeling" ondertekening_bron="2016-08-23" publicatie_bron="2016-08-31" publicatie_iwt="2016-08-31" status="goed">
+  <slotformulering>
+    <al>Lasten en bevelen dat dit besluit met de daarbij behorende nota van toelichting in het Staatsblad zal worden geplaatst.</al>
+  </slotformulering>
+  <gegeven>
+    <dagtekening>
+      <plaats>Wassenaar</plaats>
+      <datum isodatum="2016-08-23">23 augustus 2016</datum>
+    </dagtekening>
+    <koning>Willem-Alexander</koning>
+  </gegeven>
+  <ondertekening>
+    <functie>De Minister voor Wonen en Rijksdienst, </functie>
+    <naam>
+      <voornaam>S.A.</voornaam>
+      <achternaam>Blok</achternaam>
+    </naam>
+  </ondertekening>
+  <uitgifte>
+    <datum isodatum="2016-08-31">de <nadruk type="cur">eenendertigste</nadruk> augustus 2016</datum>
+    <ondertekening>
+      <functie>De Minister van Veiligheid en Justitie, </functie>
+      <naam>
+        <voornaam>G.A. van der</voornaam>
+        <achternaam>Steur</achternaam>
+      </naam>
+    </ondertekening>
+  </uitgifte>
+<meta-data><brondata><oorspronkelijk><publicatie effect="nieuwe-regeling" soort="Stb" urlidentifier="stb-2016-303"><publicatiejaar>2016</publicatiejaar><publicatienr>303</publicatienr><uitgiftedatum isodatum="2016-08-31">31-08-2016</uitgiftedatum><ondertekeningsdatum isodatum="2016-08-23">23-08-2016</ondertekeningsdatum></publicatie></oorspronkelijk><inwerkingtreding><publicatie effect="nieuwe-regeling" soort="Stb" urlidentifier="stb-2016-302"><publicatiejaar>2016</publicatiejaar><publicatienr>302</publicatienr><uitgiftedatum isodatum="2016-08-31">31-08-2016</uitgiftedatum><ondertekeningsdatum isodatum="2016-08-23">23-08-2016</ondertekeningsdatum></publicatie><inwerkingtreding.datum isodatum="2016-09-01">01-09-2016</inwerkingtreding.datum></inwerkingtreding><opmerkingen-inhoud><al>Treedt in werking op het tijdstip waarop de Wijzigingswet
+    Burgerlijk Wetboek Boek 7, enz. (mogelijkheid voor verhuurder en
+    huurder een energieprestatievergoeding overeen te komen) (Stb.
+    2016/199) in werking treedt.</al></opmerkingen-inhoud></brondata></meta-data></wetsluiting>
+    <bijlage bwb-ng-variabel-deel="/BijlageI" stam-id="13740373" versie-id="29608712" id="C42355431" label-id="13706454" inwerking="2023-10-01" label="Bijlage I" bron="Stb.2023-287" effect="wijziging" ondertekening_bron="2023-08-30" publicatie_bron="2023-09-06" publicatie_iwt="2023-09-06" status="goed">
+  <kop>
+    <label>Bijlage</label>
+    <nr status="officieel">I</nr>
+    <titel status="officieel">bij het Besluit energieprestatievergoeding huur</titel>
+  </kop>
+  <table colsep="0" frame="topbot" pgwide="2" rowsep="0" tabstyle="xml2">
+    <title>Tabel 1. Maximale energieprestatievergoeding, overeengekomen voor 1 oktober 2023, bij een woonruimte verwarmd met duurzame energie, opgewekt op de woning.</title>
+    <tgroup align="left" char="" charoff="50" cols="4" tgroupstyle="xml2">
+      <colspec align="center" colname="col1" colnum="1" colwidth="157*"/>
+      <colspec align="center" colname="col2" colnum="2" colwidth="99*"/>
+      <colspec align="center" colname="col3" colnum="3" colwidth="106*"/>
+      <colspec align="center" colname="col4" colnum="4" colwidth="92*"/>
+      <thead valign="bottom">
+        <row rowsep="1">
+          <entry align="center" colname="col1" colsep="0" morerows="0" rotate="0" valign="middle">
+            <al>
+              <nadruk type="halfvet">Netto warmtevraag voor ruimteverwarming [kWh/m<sup>2</sup></nadruk>
+              <nadruk type="halfvet">] per jaar </nadruk>
+            </al>
+          </entry>
+          <entry align="center" colname="col2" colsep="0" morerows="0" rotate="0" valign="top">
+            <al>Minimale duurzaam opgewekte warmte voor ruimteverwarming en warm tapwater [kWh/m<sup>2</sup>] per jaar*</al>
+          </entry>
+          <entry align="center" colname="col3" colsep="0" morerows="0" rotate="0" valign="top">
+            <al>Minimale productie duurzaam opgewekte energie voor gebruik huurder [kWh/m<sup>2</sup>] per jaar, mits per woonruimte ≥ (Ehulp +1.800) doch hoeft niet &gt; (Ehulp + 2.600)**</al>
+          </entry>
+          <entry align="center" colname="col4" colsep="0" morerows="0" rotate="0" valign="top">
+            <al>Maximale vergoeding [€/m<sup>2</sup>/maand]***</al>
+          </entry>
+        </row>
+      </thead>
+      <tbody valign="top">
+        <row rowsep="0">
+          <entry align="center" colname="col1" colsep="0" morerows="0" rotate="0" valign="middle">
+            <al>0 &lt; Netto warmtevraag ≤ 30</al>
+          </entry>
+          <entry align="center" colname="col2" colsep="0" morerows="0" rotate="0" valign="top">
+            <al>Netto warmtevraag + 15</al>
+          </entry>
+          <entry align="center" colname="col3" colsep="0" morerows="0" rotate="0" valign="top">
+            <al>Ehulp + 26</al>
+          </entry>
+          <entry align="center" colname="col4" colsep="0" morerows="0" rotate="0" valign="top">
+            <al>1,71</al>
+          </entry>
+        </row>
+        <row rowsep="0">
+          <entry align="center" colname="col1" colsep="0" morerows="0" rotate="0" valign="middle">
+            <al>30 &lt; Netto warmtevraag ≤ 40</al>
+          </entry>
+          <entry align="center" colname="col2" colsep="0" morerows="0" rotate="0" valign="top">
+            <al>Netto warmtevraag + 15</al>
+          </entry>
+          <entry align="center" colname="col3" colsep="0" morerows="0" rotate="0" valign="top">
+            <al>Ehulp + 26</al>
+          </entry>
+          <entry align="center" colname="col4" colsep="0" morerows="0" rotate="0" valign="top">
+            <al>1,44</al>
+          </entry>
+        </row>
+        <row rowsep="0">
+          <entry align="center" colname="col1" colsep="0" morerows="0" rotate="0" valign="middle">
+            <al>40 &lt; Netto warmtevraag ≤ 50</al>
+          </entry>
+          <entry align="center" colname="col2" colsep="0" morerows="0" rotate="0" valign="top">
+            <al>Netto warmtevraag + 15</al>
+          </entry>
+          <entry align="center" colname="col3" colsep="0" morerows="0" rotate="0" valign="top">
+            <al>Ehulp + 26</al>
+          </entry>
+          <entry align="center" colname="col4" colsep="0" morerows="0" rotate="0" valign="top">
+            <al>1,22****</al>
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+<meta-data><brondata><oorspronkelijk><publicatie effect="wijziging" soort="Stb" urlidentifier="stb-2023-287"><publicatiejaar>2023</publicatiejaar><publicatienr>287</publicatienr><uitgiftedatum isodatum="2023-09-06">06-09-2023</uitgiftedatum><ondertekeningsdatum isodatum="2023-08-30">30-08-2023</ondertekeningsdatum></publicatie></oorspronkelijk><inwerkingtreding><publicatie effect="wijziging" soort="Stb" urlidentifier="stb-2023-287"><publicatiejaar>2023</publicatiejaar><publicatienr>287</publicatienr><uitgiftedatum isodatum="2023-09-06">06-09-2023</uitgiftedatum><ondertekeningsdatum isodatum="2023-08-30">30-08-2023</ondertekeningsdatum></publicatie><inwerkingtreding.datum isodatum="2023-10-01">01-10-2023</inwerkingtreding.datum></inwerkingtreding></brondata><jcis><jci versie="1.0" verwijzing="1.0:c:BWBR0038456&amp;bijlage=I&amp;g=2023-10-01" onderdeel="bijlage=I" korte-verwijzing="1.0:c:BWBR0038456&amp;bijlage=I"/><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;bijlage=I&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="bijlage=I" korte-verwijzing="jci1.3:c:BWBR0038456&amp;bijlage=I"/></jcis></meta-data></bijlage>
+    <bijlage bwb-ng-variabel-deel="/BijlageII" stam-id="15699293" versie-id="29608902" id="C42355641" label-id="15638044" inwerking="2023-10-01" label="Bijlage II" bron="Stb.2023-287" effect="vervallen" ondertekening_bron="2023-08-30" publicatie_bron="2023-09-06" publicatie_iwt="2023-09-06" status="vervallen">
+  <kop>
+    <label>Bijlage </label>
+    <nr status="officieel">II</nr>
+    <titel status="officieel">bij het Besluit energieprestatievergoeding huur</titel>
+  </kop>
+<al><redactie type="vervanging">Vervallen</redactie></al><meta-data><brondata><oorspronkelijk><publicatie effect="vervallen" soort="Stb" urlidentifier="stb-2023-287"><publicatiejaar>2023</publicatiejaar><publicatienr>287</publicatienr><uitgiftedatum isodatum="2023-09-06">06-09-2023</uitgiftedatum><ondertekeningsdatum isodatum="2023-08-30">30-08-2023</ondertekeningsdatum></publicatie></oorspronkelijk><inwerkingtreding><publicatie effect="vervallen" soort="Stb" urlidentifier="stb-2023-287"><publicatiejaar>2023</publicatiejaar><publicatienr>287</publicatienr><uitgiftedatum isodatum="2023-09-06">06-09-2023</uitgiftedatum><ondertekeningsdatum isodatum="2023-08-30">30-08-2023</ondertekeningsdatum></publicatie><inwerkingtreding.datum isodatum="2023-10-01">01-10-2023</inwerkingtreding.datum></inwerkingtreding></brondata><jcis><jci versie="1.0" verwijzing="1.0:c:BWBR0038456&amp;bijlage=II&amp;g=2023-10-01" onderdeel="bijlage=II" korte-verwijzing="1.0:c:BWBR0038456&amp;bijlage=II"/><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;bijlage=II&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="bijlage=II" korte-verwijzing="jci1.3:c:BWBR0038456&amp;bijlage=II"/></jcis></meta-data></bijlage>
+  </wet-besluit>
+<meta-data><brondata><oorspronkelijk><publicatie effect="structuurwijziging" soort="Stb" urlidentifier="stb-2020-454"><publicatiejaar>2020</publicatiejaar><publicatienr>454</publicatienr><uitgiftedatum isodatum="2020-11-17">17-11-2020</uitgiftedatum><ondertekeningsdatum isodatum="2020-11-04">04-11-2020</ondertekeningsdatum></publicatie></oorspronkelijk><inwerkingtreding><publicatie effect="structuurwijziging" soort="Stb" urlidentifier="stb-2020-454"><publicatiejaar>2020</publicatiejaar><publicatienr>454</publicatienr><uitgiftedatum isodatum="2020-11-17">17-11-2020</uitgiftedatum><ondertekeningsdatum isodatum="2020-11-04">04-11-2020</ondertekeningsdatum></publicatie><inwerkingtreding.datum isodatum="2020-11-04">04-11-2020</inwerkingtreding.datum></inwerkingtreding></brondata><jcis><jci versie="1.0" verwijzing="1.0:c:BWBR0038456&amp;g=2023-10-01" onderdeel="wetgeving" korte-verwijzing="1.0:c:BWBR0038456"/><jci versie="1.3" verwijzing="jci1.3:c:BWBR0038456&amp;z=2023-10-01&amp;g=2023-10-01" onderdeel="wetgeving" korte-verwijzing="jci1.3:c:BWBR0038456"/></jcis></meta-data></wetgeving></toestand>

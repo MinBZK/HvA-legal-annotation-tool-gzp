@@ -69,7 +69,7 @@ const ArticleSelectionModal: React.FC<articleSelectionModalProps> = ({ xmlArticl
                 ))}
             </Modal.Body>
             <Modal.Footer>
-                <Button className='save float-end mt-3' disabled={!disableCheck()} onClick={() => {
+                <Button id={"confirmSelectionButton"} className='save float-end mt-3' disabled={!disableCheck()} onClick={() => {
                     collectSelectedArticles()
                 }}>
                     Bevestig selectie

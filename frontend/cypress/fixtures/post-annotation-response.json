@@ -1,0 +1,21 @@
+{
+  "id": 1,
+  "selectedWord": "In deze wet en de daarop berustende bepalingen wordt verstaan onder:",
+  "text": "",
+  "parentAnnotation": null,
+  "lawClass": {
+    "id": 17,
+    "name": "Variabelewaarde",
+    "color": "#FFF380"
+  },
+  "term": null,
+  "relation": null,
+  "created_by": {
+    "id": 1,
+    "role": "Admin",
+    "name": "Admin"
+  },
+  "created_at": 1706088045514,
+  "updated_at": null,
+  "updated_by": null
+}
