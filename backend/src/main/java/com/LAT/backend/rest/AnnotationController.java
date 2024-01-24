@@ -55,11 +55,9 @@ public class AnnotationController {
     // Hanna
     @PostMapping("/")
     public ResponseEntity<Annotation> createAnnotation(@RequestBody Annotation annotation) {
-//        try {
-
         // Validate if the annotation class exists
         LawClass lawClass = lawClassRepository.findByName(annotation.getLawClass().getName())
-                .orElseThrow(() -> new LawClassNotFoundException("Annotation class not found"));
+                .orElseThrow(() -> new LawClassNotFoundException("Law class not found"));
 
         // Validate if the annotation user exists
         User user = userRepository.findById(annotation.getCreated_by().getId())

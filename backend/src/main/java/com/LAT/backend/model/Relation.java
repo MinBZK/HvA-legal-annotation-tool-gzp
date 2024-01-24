@@ -38,6 +38,18 @@ public class Relation {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setMainLawClass(LawClass mainLawClass) {
+        this.mainLawClass = mainLawClass;
+    }
+
+    public void setSubLawClass(LawClass subLawClass) {
+        this.subLawClass = subLawClass;
+    }
+
     public LawClass getMainClass() {
         return mainLawClass;
     }
