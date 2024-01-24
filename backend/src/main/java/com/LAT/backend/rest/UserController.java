@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/users")
@@ -19,35 +21,35 @@ public class UserController {
 
     @GetMapping("")
     @JsonView(Views.Basic.class)
-    public Iterable<User> getAllRoles() {
-        return userRepository.findAll();
+    public ResponseEntity<List<User>> getAllRoles() {
+        List<User> users = userRepository.findAll();
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{userId}")
     @JsonView(Views.Basic.class)
-    public ResponseEntity<User> getAllRoles(@PathVariable Long userId) {
-
+    public ResponseEntity<User> getUserById(@PathVariable Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ProjectNotFoundException("User not found"));
-
         return ResponseEntity.ok(user);
     }
 
     @GetMapping("/roles")
     @JsonView(Views.Basic.class)
-    public User.Role[] getRoles() {
-        return User.Role.values();
+    public ResponseEntity<User.Role[]> getRoles() {
+        User.Role[] roles = User.Role.values();
+        return ResponseEntity.ok(roles);
     }
 
     @PostMapping("")
     public ResponseEntity<String> addUser(@RequestBody User user) {
         userRepository.save(user);
-        return new ResponseEntity<>("User saved successfully", HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body("User saved successfully");
     }
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<String> deleteUser(@PathVariable Long userId) {
         userRepository.deleteById(userId);
-        return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
+        return ResponseEntity.ok("User deleted successfully");
     }
 }
