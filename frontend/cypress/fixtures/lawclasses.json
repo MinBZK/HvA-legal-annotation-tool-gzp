@@ -1,16 +1,422 @@
-{
-  "lawClasses": [
-    { "id": 1,
-      "name": "LawClass 1",
-      "color": "#FF0000"
-    },
-    { "id": 2,
-      "name": "LawClass 2",
-      "color": "#00FF00"
-    },
-    { "id": 3,
-      "name": "LawClass 3",
-      "color": "#0000FF"
-    }
-  ]
-}
+[
+  {
+    "id": 1,
+    "name": "Rechtsbetrekking",
+    "color": "#70a4ff",
+    "annotations": [
+      {
+        "id": 1,
+        "selectedWord": "In deze wet",
+        "text": "",
+        "parentAnnotation": null,
+        "lawClass": {
+          "id": 1,
+          "name": "Rechtsbetrekking",
+          "color": "#70a4ff"
+        },
+        "term": null,
+        "relation": null,
+        "created_by": {
+          "id": 1,
+          "role": "Admin",
+          "name": "Admin"
+        },
+        "created_at": 1705769191408,
+        "updated_at": null,
+        "updated_by": null
+      },
+      {
+        "id": 5,
+        "selectedWord": "college",
+        "text": "",
+        "parentAnnotation": null,
+        "lawClass": {
+          "id": 1,
+          "name": "Rechtsbetrekking",
+          "color": "#70a4ff"
+        },
+        "term": null,
+        "relation": null,
+        "created_by": {
+          "id": 1,
+          "role": "Admin",
+          "name": "Admin"
+        },
+        "created_at": 1705835626284,
+        "updated_at": null,
+        "updated_by": null
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Rechtssubject",
+    "color": "#c2e7ff",
+    "annotations": [
+      {
+        "id": 2,
+        "selectedWord": " daarop",
+        "text": "",
+        "parentAnnotation": {
+          "id": 1,
+          "selectedWord": "In deze wet",
+          "text": "",
+          "parentAnnotation": null,
+          "lawClass": {
+            "id": 1,
+            "name": "Rechtsbetrekking",
+            "color": "#70a4ff"
+          },
+          "term": null,
+          "relation": null,
+          "created_by": {
+            "id": 1,
+            "role": "Admin",
+            "name": "Admin"
+          },
+          "created_at": 1705769191408,
+          "updated_at": null,
+          "updated_by": null
+        },
+        "lawClass": {
+          "id": 2,
+          "name": "Rechtssubject",
+          "color": "#c2e7ff"
+        },
+        "term": null,
+        "relation": {
+          "id": 1,
+          "cardinality": "V_1",
+          "description": "Wie heeft het recht"
+        },
+        "created_by": {
+          "id": 1,
+          "role": "Admin",
+          "name": "Admin"
+        },
+        "created_at": 1705769197287,
+        "updated_at": null,
+        "updated_by": null
+      },
+      {
+        "id": 3,
+        "selectedWord": "berustende",
+        "text": "",
+        "parentAnnotation": {
+          "id": 1,
+          "selectedWord": "In deze wet",
+          "text": "",
+          "parentAnnotation": null,
+          "lawClass": {
+            "id": 1,
+            "name": "Rechtsbetrekking",
+            "color": "#70a4ff"
+          },
+          "term": null,
+          "relation": null,
+          "created_by": {
+            "id": 1,
+            "role": "Admin",
+            "name": "Admin"
+          },
+          "created_at": 1705769191408,
+          "updated_at": null,
+          "updated_by": null
+        },
+        "lawClass": {
+          "id": 2,
+          "name": "Rechtssubject",
+          "color": "#c2e7ff"
+        },
+        "term": null,
+        "relation": {
+          "id": 2,
+          "cardinality": "V_1",
+          "description": "Wie heeft de plicht"
+        },
+        "created_by": {
+          "id": 1,
+          "role": "Admin",
+          "name": "Admin"
+        },
+        "created_at": 1705769204306,
+        "updated_at": null,
+        "updated_by": null
+      },
+      {
+        "id": 6,
+        "selectedWord": "het",
+        "text": "",
+        "parentAnnotation": {
+          "id": 5,
+          "selectedWord": "college",
+          "text": "",
+          "parentAnnotation": null,
+          "lawClass": {
+            "id": 1,
+            "name": "Rechtsbetrekking",
+            "color": "#70a4ff"
+          },
+          "term": null,
+          "relation": null,
+          "created_by": {
+            "id": 1,
+            "role": "Admin",
+            "name": "Admin"
+          },
+          "created_at": 1705835626284,
+          "updated_at": null,
+          "updated_by": null
+        },
+        "lawClass": {
+          "id": 2,
+          "name": "Rechtssubject",
+          "color": "#c2e7ff"
+        },
+        "term": null,
+        "relation": {
+          "id": 1,
+          "cardinality": "V_1",
+          "description": "Wie heeft het recht"
+        },
+        "created_by": {
+          "id": 1,
+          "role": "Admin",
+          "name": "Admin"
+        },
+        "created_at": 1705835637597,
+        "updated_at": null,
+        "updated_by": null
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Voorwaarde",
+    "color": "#91E8D3",
+    "annotations": []
+  },
+  {
+    "id": 13,
+    "name": "Rechtsobject",
+    "color": "#98BEF1",
+    "annotations": [
+      {
+        "id": 4,
+        "selectedWord": " bepalingen",
+        "text": "",
+        "parentAnnotation": {
+          "id": 1,
+          "selectedWord": "In deze wet",
+          "text": "",
+          "parentAnnotation": null,
+          "lawClass": {
+            "id": 1,
+            "name": "Rechtsbetrekking",
+            "color": "#70a4ff"
+          },
+          "term": null,
+          "relation": null,
+          "created_by": {
+            "id": 1,
+            "role": "Admin",
+            "name": "Admin"
+          },
+          "created_at": 1705769191408,
+          "updated_at": null,
+          "updated_by": null
+        },
+        "lawClass": {
+          "id": 13,
+          "name": "Rechtsobject",
+          "color": "#98BEF1"
+        },
+        "term": null,
+        "relation": {
+          "id": 3,
+          "cardinality": "V_1",
+          "description": "Heeft als voorwerp"
+        },
+        "created_by": {
+          "id": 1,
+          "role": "Admin",
+          "name": "Admin"
+        },
+        "created_at": 1705769214988,
+        "updated_at": null,
+        "updated_by": null
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "name": "Rechtsfeit",
+    "color": "#97D6FE",
+    "annotations": []
+  },
+  {
+    "id": 15,
+    "name": "Afleidingsregel",
+    "color": "#FF7A7A",
+    "annotations": [
+      {
+        "id": 8,
+        "selectedWord": "In deze wet",
+        "text": "",
+        "parentAnnotation": null,
+        "lawClass": {
+          "id": 15,
+          "name": "Afleidingsregel",
+          "color": "#FF7A7A"
+        },
+        "term": null,
+        "relation": null,
+        "created_by": {
+          "id": 1,
+          "role": "Admin",
+          "name": "Admin"
+        },
+        "created_at": 1705850601965,
+        "updated_at": 1705850638934,
+        "updated_by": {
+          "id": 1,
+          "role": "Admin",
+          "name": "Admin"
+        }
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "name": "Variabele",
+    "color": "#FFD95D",
+    "annotations": [
+      {
+        "id": 7,
+        "selectedWord": "Uitvoeringsinstituut werknemersverzekeringen",
+        "text": "",
+        "parentAnnotation": null,
+        "lawClass": {
+          "id": 16,
+          "name": "Variabele",
+          "color": "#FFD95D"
+        },
+        "term": null,
+        "relation": null,
+        "created_by": {
+          "id": 1,
+          "role": "Admin",
+          "name": "Admin"
+        },
+        "created_at": 1705835669134,
+        "updated_at": null,
+        "updated_by": null
+      },
+      {
+        "id": 12,
+        "selectedWord": "Onze Minister",
+        "text": "",
+        "parentAnnotation": null,
+        "lawClass": {
+          "id": 16,
+          "name": "Variabele",
+          "color": "#FFD95D"
+        },
+        "term": null,
+        "relation": null,
+        "created_by": {
+          "id": 1,
+          "role": "Admin",
+          "name": "Admin"
+        },
+        "created_at": 1705850718604,
+        "updated_at": 1705850733582,
+        "updated_by": {
+          "id": 1,
+          "role": "Admin",
+          "name": "Admin"
+        }
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "name": "Variabelewaarde",
+    "color": "#FFF380",
+    "annotations": []
+  },
+  {
+    "id": 18,
+    "name": "Parameter",
+    "color": "#FFB4B4",
+    "annotations": [
+      {
+        "id": 10,
+        "selectedWord": "Onze Minister",
+        "text": "",
+        "parentAnnotation": null,
+        "lawClass": {
+          "id": 18,
+          "name": "Parameter",
+          "color": "#FFB4B4"
+        },
+        "term": null,
+        "relation": null,
+        "created_by": {
+          "id": 1,
+          "role": "Admin",
+          "name": "Admin"
+        },
+        "created_at": 1705850663636,
+        "updated_at": 1705850695649,
+        "updated_by": {
+          "id": 1,
+          "role": "Admin",
+          "name": "Admin"
+        }
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "name": "Parameterwaarde",
+    "color": "#FFD8EF",
+    "annotations": []
+  },
+  {
+    "id": 20,
+    "name": "Operator",
+    "color": "#C1EBE1",
+    "annotations": []
+  },
+  {
+    "id": 21,
+    "name": "Tijdsaanduiding",
+    "color": "#D8B0F9",
+    "annotations": []
+  },
+  {
+    "id": 22,
+    "name": "Plaatsaanduiding",
+    "color": "#EFCAF6",
+    "annotations": []
+  },
+  {
+    "id": 23,
+    "name": "Delegatiebevoegdheid",
+    "color": "#CECECE",
+    "annotations": []
+  },
+  {
+    "id": 24,
+    "name": "Delegatie-invulling",
+    "color": "#E2E2E2",
+    "annotations": []
+  },
+  {
+    "id": 25,
+    "name": "Brondefinitie",
+    "color": "#F6F6F6",
+    "annotations": []
+  }
+]

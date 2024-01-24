@@ -1,0 +1,128 @@
+[
+  {
+    "id": 1,
+    "cardinality": "V_1",
+    "description": "Wie heeft het recht",
+    "annotations": [],
+    "mainClass": {
+      "id": 1,
+      "name": "Rechtsbetrekking",
+      "color": "#70a4ff",
+      "annotations": []
+    },
+    "subClass": {
+      "id": 2,
+      "name": "Rechtssubject",
+      "color": "#c2e7ff",
+      "annotations": []
+    }
+  },
+  {
+    "id": 2,
+    "cardinality": "V_1",
+    "description": "Wie heeft de plicht",
+    "annotations": [],
+    "mainClass": {
+      "id": 1,
+      "name": "Rechtsbetrekking",
+      "color": "#70a4ff",
+      "annotations": []
+    },
+    "subClass": {
+      "id": 2,
+      "name": "Rechtssubject",
+      "color": "#c2e7ff",
+      "annotations": []
+    }
+  },
+  {
+    "id": 3,
+    "cardinality": "V_1",
+    "description": "Heeft als voorwerp",
+    "annotations": [],
+    "mainClass": {
+      "id": 1,
+      "name": "Rechtsbetrekking",
+      "color": "#70a4ff",
+      "annotations": []
+    },
+    "subClass": {
+      "id": 13,
+      "name": "Rechtsobject",
+      "color": "#98BEF1",
+      "annotations": []
+    }
+  },
+  {
+    "id": 4,
+    "cardinality": "NV_0_1_N",
+    "description": "Wordt gecreÃ«rd door",
+    "annotations": [],
+    "mainClass": {
+      "id": 1,
+      "name": "Rechtsbetrekking",
+      "color": "#70a4ff",
+      "annotations": []
+    },
+    "subClass": {
+      "id": 14,
+      "name": "Rechtsfeit",
+      "color": "#97D6FE",
+      "annotations": []
+    }
+  },
+  {
+    "id": 5,
+    "cardinality": "NV_0_1_N",
+    "description": "Wordt gewijzigd door",
+    "annotations": [],
+    "mainClass": {
+      "id": 1,
+      "name": "Rechtsbetrekking",
+      "color": "#70a4ff",
+      "annotations": []
+    },
+    "subClass": {
+      "id": 14,
+      "name": "Rechtsfeit",
+      "color": "#97D6FE",
+      "annotations": []
+    }
+  },
+  {
+    "id": 6,
+    "cardinality": "NV_0_1_N",
+    "description": "Wordt beÃ«indigd door",
+    "annotations": [],
+    "mainClass": {
+      "id": 1,
+      "name": "Rechtsbetrekking",
+      "color": "#70a4ff",
+      "annotations": []
+    },
+    "subClass": {
+      "id": 14,
+      "name": "Rechtsfeit",
+      "color": "#97D6FE",
+      "annotations": []
+    }
+  },
+  {
+    "id": 7,
+    "cardinality": "NV_0_1_N",
+    "description": "Is geldig indien voldaan aan",
+    "annotations": [],
+    "mainClass": {
+      "id": 1,
+      "name": "Rechtsbetrekking",
+      "color": "#70a4ff",
+      "annotations": []
+    },
+    "subClass": {
+      "id": 3,
+      "name": "Voorwaarde",
+      "color": "#91E8D3",
+      "annotations": []
+    }
+  }
+]
