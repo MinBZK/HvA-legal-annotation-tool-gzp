@@ -119,7 +119,8 @@ Om de Docker omgeving aan te kunnen zetten moeten de volgende terminal commands 
 `docker compose build`
 `docker compose up`
 
-Wanneer het project voor het eerst is opgestart heeft deze nog niet de nodige data. De benodigde inserts zijn beschikbaar in `insert-script.sql`. 
+### 9.1 Verplichte data
+Wanneer het project voor het eerst is opgestart, staan de relaties en juridische klassen nog niet in de database. We hebben een sql bestand genaamd `insert-script.sql` toegevoegd die gebruikt kan worden om de juiste tabellen te vullen met deze data. Om deze data in de database te krijgen kan een tool als MySQL Workbench gebruikt worden om het script uit te voeren.
 
 ## 10. Toekomstige ontwikkelingen
 ### 10.1 Oplossen annotatie bug
