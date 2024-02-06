@@ -50,7 +50,7 @@ export { setSelectedUser, getSelectedUser, subscribe, unsubscribe };
  */
 export async function getUsers(): Promise<User[]> {
   try {
-    const response = await fetch(`${process.env.API_URL}/users`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ export async function getUsers(): Promise<User[]> {
  */
 export async function getUser(id: Number): Promise<User> {
   try {
-    const response = await fetch(`${process.env.API_URL}/users/${id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -95,7 +95,7 @@ export async function getUser(id: Number): Promise<User> {
  */
 export async function getRoles(): Promise<string[]> {
   try {
-    const response = await fetch(`${process.env.API_URL}/users/roles`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/roles`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -116,7 +116,7 @@ export async function getRoles(): Promise<string[]> {
  */
 export async function createUser(user: User): Promise<Response> {
   try {
-    const response = await fetch(`${process.env.API_URL}/users`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -138,7 +138,7 @@ export async function createUser(user: User): Promise<Response> {
  */
 export async function deleteUser(id: Number): Promise<Response> {
   try {
-    const response = await fetch(`${process.env.API_URL}/users/${id}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

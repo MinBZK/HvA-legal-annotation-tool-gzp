@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   frontend:
     build:
@@ -6,7 +6,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - API_URL=http://localhost:8000/api
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api
   database:
     image: mysql:latest
     environment:

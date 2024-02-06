@@ -103,7 +103,7 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
 
   const getChildren = async (id: number) => {
     try {
-      const response = await fetch(`${process.env.API_URL}/annotations/children/${id}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/annotations/children/${id}`);
       if (response.ok) {
         return await response.json();
       }
@@ -162,7 +162,7 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
   };
 
   const fetchTerms = (reference: any) => {
-    fetch(`${process.env.API_URL}/terms/${encodeURIComponent(reference)}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/terms/${encodeURIComponent(reference)}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Failed to fetch terms');

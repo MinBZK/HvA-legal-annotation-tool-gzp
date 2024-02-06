@@ -15,7 +15,7 @@ export async function uploadXML(xmlContent: String, title: String, selectedArtic
       selectedArticles: selectedArticles,
     });
   }
-  const response = await fetch(`${process.env.API_URL}/saveXml`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/saveXml`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -29,7 +29,7 @@ export async function uploadXML(xmlContent: String, title: String, selectedArtic
 // GET METHODS
 
 export async function getProjects() {
-  const response = await fetch(`${process.env.API_URL}/projects`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/projects`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ export async function getProjects() {
 }
 
 export async function getProjectById(id: number) {
-  const response = await fetch(`${process.env.API_URL}/project/${id}`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/project/${id}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ export async function getProjectById(id: number) {
 }
 
 export async function getMaxXmlCount() {
-  const response = await fetch(`${process.env.API_URL}/maxXmlCount`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/maxXmlCount`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ export async function getMaxXmlCount() {
 }
 
 export async function getProjectCounts() {
-  const response = await fetch(`${process.env.API_URL}/projectCounts`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/projectCounts`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -73,7 +73,7 @@ export async function getProjectCounts() {
 }
 
 export async function deleteProject(id: number) {
-  const response = await fetch(`${process.env.API_URL}/project/${id}/delete`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/project/${id}/delete`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',

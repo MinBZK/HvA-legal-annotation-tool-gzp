@@ -47,7 +47,7 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection, allowSelect }) => {
     for (let annotation of annotations) {
       const id = annotation.getAttribute('id');
       if (id) {
-        const response = await fetch(`${process.env.API_URL}/annotations/${id}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/annotations/${id}`);
         if (response.ok) {
           const annotationData = await response.json();
 

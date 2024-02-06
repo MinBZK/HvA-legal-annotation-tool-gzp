@@ -96,7 +96,7 @@ const AnnotationView: FC<AnnotationViewProps> = ({ onAnnotationDelete, retrieveA
   // Update the handleEdit function to include a term parameter
   const handleEdit = async (annotationDetails: Annotation, id: number) => {
     try {
-      const response = await fetch(`${process.env.API_URL}/annotations/updateannotation/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/annotations/updateannotation/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -127,7 +127,7 @@ const AnnotationView: FC<AnnotationViewProps> = ({ onAnnotationDelete, retrieveA
   const handleDelete = async (id: number) => {
     try {
       // Remove the annotation from the database
-      const response = await fetch(`${process.env.API_URL}/annotations/deleteannotation/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/annotations/deleteannotation/${id}`, {
         method: 'DELETE',
       });
 

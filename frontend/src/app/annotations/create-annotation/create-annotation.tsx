@@ -164,7 +164,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1, selectedText2, tempId
   };
 
   const fetchClasses = () => {
-    fetch(`${process.env.API_URL}/classes`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/classes`)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Failed to fetch laws');
@@ -176,7 +176,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1, selectedText2, tempId
   };
 
   const fetchTerms = (reference: any) => {
-    fetch(`${process.env.API_URL}/terms/${encodeURIComponent(reference)}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/terms/${encodeURIComponent(reference)}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Failed to fetch terms');
@@ -243,7 +243,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1, selectedText2, tempId
 
   const saveAnnotationToBackend = async (backendAnnotation: any) => {
     try {
-      const response = await fetch(`${process.env.API_URL}/annotations/`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/annotations/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -274,7 +274,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1, selectedText2, tempId
         ...project,
       };
 
-      const response = await fetch(`${process.env.API_URL}/saveXml`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/saveXml`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -405,7 +405,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1, selectedText2, tempId
 
   const fetchRelationsForLawClass = async (lawClassId: number) => {
     try {
-      const response = await fetch(`${process.env.API_URL}/relations/${lawClassId}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/relations/${lawClassId}`);
       if (response.ok) {
         const fetchedRelations = await response.json();
         setRelations(fetchedRelations);
@@ -419,7 +419,7 @@ const CreateAnnotation: FC<PopupProps> = ({ selectedText1, selectedText2, tempId
 
   const handleSelectSubLaw = async (lawClassId: number) => {
     try {
-      const response = await fetch(`${process.env.API_URL}/lawclasses/${lawClassId}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/lawclasses/${lawClassId}`);
       if (response.ok) {
         const fetchedLawclass = await response.json();
         setSubAnnotationDetails((prevAnnotation) => ({
