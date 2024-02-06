@@ -124,11 +124,6 @@
   padding-right: 5px;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: currentColor;
-}
-
 button.success:hover {
   background-color: rgba(76, 167, 74, 0.62);
 }
