@@ -1,5 +1,5 @@
 export interface LawClass {
-    id: number,
-    name: string,
-    color: string
+  id: number;
+  name: string;
+  color: string;
 }

@@ -1,70 +1,72 @@
 button.select-user {
-    font-size: 24px;
-    color: #000;
-    cursor: pointer;
-    margin-left: 10px;
-    padding: 0 10px;
-    border-radius: 5px;
-    transition: .2s;
-    border: none;
-    background: #3d9acf;
-    gap: 20px;
+  font-size: 24px;
+  color: #000;
+  cursor: pointer;
+  margin-left: 10px;
+  padding: 0 10px;
+  border-radius: 5px;
+  transition: 0.2s;
+  border: none;
+  background: #3d9acf;
+  gap: 20px;
 }
 
 button.select-user:hover {
-    background-color: rgb(87, 163, 207);
+  background-color: rgb(87, 163, 207);
 }
 
 button.select-user svg {
-    width: 18px;
-    height: 18px;
+  width: 18px;
+  height: 18px;
 }
 
 .user-select {
-    width: 100%;
-    padding: 5px 10px;
-    border: 1px solid lightgray;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  width: 100%;
+  padding: 5px 10px;
+  border: 1px solid lightgray;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .user-select div span {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 .user-select div span:first-of-type {
-    background: rgb(88, 132, 182);
-    padding: 5px;
-    border-radius: 4px;
-    font-size: 14px;
-    color: #fff;
+  background: rgb(88, 132, 182);
+  padding: 5px;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #fff;
 }
 
-.user-select button, .new-user, .create-user {
-    padding: 5px 15px;
-    background-color: #EBEBEB;
-    color: #000;
-    border: 1px solid #B1B1B1;
-    border-radius: 5px;
-    text-decoration: none;
-    cursor: pointer;
-    font-size: 14px;
-    transition: .2s;
+.user-select button,
+.new-user,
+.create-user {
+  padding: 5px 15px;
+  background-color: #ebebeb;
+  color: #000;
+  border: 1px solid #b1b1b1;
+  border-radius: 5px;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
 }
 
 .user-select .delete-button {
-    color: #000;
-    cursor: pointer;
-    margin-left: 10px;
-    padding: 5px 10px;
-    background: #FACACA;
-    border: 1px solid #CA5858;
-    border-radius: 5px;
-    transition: .2s;
+  color: #000;
+  cursor: pointer;
+  margin-left: 10px;
+  padding: 5px 10px;
+  background: #facaca;
+  border: 1px solid #ca5858;
+  border-radius: 5px;
+  transition: 0.2s;
 }
 
 .user-select button:hover {
-    background-color: #ddd9d9;
+  background-color: #ddd9d9;
 }

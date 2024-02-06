@@ -1,109 +1,125 @@
-bwb-inputbestand:not(:has(bwb-wijzigingen)), intitule, meta-data, aanhef, toestand div:not(:has(bwb-wijzigingen)), wetsluiting {
-    display: none;
+bwb-inputbestand:not(:has(bwb-wijzigingen)),
+intitule,
+meta-data,
+aanhef,
+toestand div:not(:has(bwb-wijzigingen)),
+wetsluiting {
+  display: none;
 }
 
 citeertitel {
-    font-size: 20px;
-    display: block;
-    margin-bottom: 10px;
-    font-weight: bold;
-    color: #154273;
+  font-size: 20px;
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #154273;
 }
 
 kop {
-    display: block;
-    font-weight: bold;
-    color: #154273;
-    background-color: #e5f1f9;
-    padding: .5em 1em .5em .5em;
-    margin: .25em 0;
+  display: block;
+  font-weight: bold;
+  color: #154273;
+  background-color: #e5f1f9;
+  padding: 0.5em 1em 0.5em 0.5em;
+  margin: 0.25em 0;
 }
 
 paragraaf kop {
-    color: #000;
-    background-color: #f3f3f3;
+  color: #000;
+  background-color: #f3f3f3;
 }
 
-lijst li al, lid li al, artikel li:has(al) al {
-    margin: 0 0 1em 3.5em;
+lijst li al,
+lid li al,
+artikel li:has(al) al {
+  margin: 0 0 1em 3.5em;
 }
 
 li {
-    list-style-type: none;
+  list-style-type: none;
 }
 
-li> :first-child {
-    font-weight: bold;
+li > :first-child {
+  font-weight: bold;
 }
 
-lijst li, lid li, artikel li:has(al) {
-    display: flex;
-    flex-direction: row;
+lijst li,
+lid li,
+artikel li:has(al) {
+  display: flex;
+  flex-direction: row;
 }
 
 lidnr {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 nadruk {
-    font-style: italic;
+  font-style: italic;
 }
 
 lid {
-    display: block;
+  display: block;
 }
 
-lidnr+al {
-    margin: 0 0 1em 3.5em;
-    width: calc(100% - 3.5em);
-    display: inline;
+lidnr + al {
+  margin: 0 0 1em 3.5em;
+  width: calc(100% - 3.5em);
+  display: inline;
 }
 
 lidnr {
-    margin: 0 0 1em;
-    display: inline-block;
+  margin: 0 0 1em;
+  display: inline-block;
 }
 
-li> :first-child {
-    margin-left: 1em;
+li > :first-child {
+  margin-left: 1em;
 }
 
 artikel lid {
-    margin-top: 16px;
+  margin-top: 16px;
 }
 
-artikel, hoofdstuk, paragraaf {
-    display: none;
+artikel,
+hoofdstuk,
+paragraaf {
+  display: none;
 }
 
-artikel.show, hoofdstuk:has(artikel.show), paragraaf:has(artikel.show) {
-    display: block;
+artikel.show,
+hoofdstuk:has(artikel.show),
+paragraaf:has(artikel.show) {
+  display: block;
 }
 
-bwb-wijzigingen.show-all artikel, bwb-wijzigingen.show-all hoofdstuk, bwb-wijzigingen.show-all paragraaf {
-    display: block;
+bwb-wijzigingen.show-all artikel,
+bwb-wijzigingen.show-all hoofdstuk,
+bwb-wijzigingen.show-all paragraaf {
+  display: block;
 }
 
 .action-buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
-.back-button, .change-selection {
-    font-size: 16px !important;
-    cursor: pointer;
-    margin: 0 !important;
-    padding: 0 10px;
-    border-radius: 20px !important;
-    transition: .2s;
-    color: #000 !important;
-    background: #EBEBEB !important;
-    border: 1px solid #B1B1B1 !important;
+.back-button,
+.change-selection {
+  font-size: 16px !important;
+  cursor: pointer;
+  margin: 0 !important;
+  padding: 0 10px;
+  border-radius: 20px !important;
+  transition: 0.2s;
+  color: #000 !important;
+  background: #ebebeb !important;
+  border: 1px solid #b1b1b1 !important;
 }
 
 temp-annotation {
-    background-color: #f0f0f0;
-    border-radius: 4px;
-    outline: #b5b3b3 solid 1px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  outline: #b5b3b3 solid 1px;
 }

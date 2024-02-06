@@ -1,125 +1,129 @@
 .row {
-    display: flex;
-    justify-content: start;
-    margin: 0 1.5rem 1.5rem 1rem;
+  display: flex;
+  justify-content: start;
+  margin: 0 1.5rem 1.5rem 1rem;
 }
 
 .iconRow {
-    position: absolute;
-    right: 10px;
-    top: 7px;
-    margin-bottom: 4% !important;
-    cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 7px;
+  margin-bottom: 4% !important;
+  cursor: pointer;
 }
 
 .iconRow:hover svg {
-    color: rgb(0, 0, 0) !important;
+  color: rgb(0, 0, 0) !important;
 }
 
 .iconRow svg {
-    color: #404040 !important;
+  color: #404040 !important;
 }
 
 .annotationTitle {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
-    margin: .5rem 0;
-    cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin: 0.5rem 0;
+  cursor: pointer;
 }
 
 .align {
-    text-align: right;
+  text-align: right;
 }
 
 .annotationInfo {
-    background-color: #FBFBFB;
-    border-radius: 0.75rem;
-    padding: 20px 0 10px;
-    border: 1px solid #ebebeb;
-    position: relative;
-    margin-bottom: 5px;
+  background-color: #fbfbfb;
+  border-radius: 0.75rem;
+  padding: 20px 0 10px;
+  border: 1px solid #ebebeb;
+  position: relative;
+  margin-bottom: 5px;
 }
 
 .annotationInfo.editing {
-    background-color: #f4f4f4;
-    border: 1px dashed #b4b4b4;
+  background-color: #f4f4f4;
+  border: 1px dashed #b4b4b4;
 }
 
 .leftCol {
-    width: 30%;
+  width: 30%;
 }
 
 .rightCol {
-    width: 65%;
+  width: 65%;
 }
 
 .iconCol {
-    width: 5%;
-    min-width: 20px;
-    min-height: 20px;
+  width: 5%;
+  min-width: 20px;
+  min-height: 20px;
 }
 
 .buttonGroup {
-    display: flex;
-    justify-content: right;
+  display: flex;
+  justify-content: right;
 }
 
 .annotationName {
-    font-size: 14px;
-    margin: 0;
+  font-size: 14px;
+  margin: 0;
 }
 
 .annotationDate {
-    font-size: 9.5px;
-    margin: 0 0.75rem;
-    text-align: end;
+  font-size: 9.5px;
+  margin: 0 0.75rem;
+  text-align: end;
 }
 
-
-.left-column, .right-column {
-    flex: 1 1;
-    border: 1px solid #ccc;
-    padding: 10px;
-    box-shadow: 0 4px 1px 0 rgba(0, 0, 0, 0.2), 0 0px 12px 0 rgba(0, 0, 0, 0.19);
+.left-column,
+.right-column {
+  flex: 1 1;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow:
+    0 4px 1px 0 rgba(0, 0, 0, 0.2),
+    0 0px 12px 0 rgba(0, 0, 0, 0.19);
 }
 
-.save, .cancel, .delete {
-    font-size: 16px;
-    cursor: pointer;
-    margin-left: 10px;
-    padding: 0 10px;
-    border-radius: 20px;
-    transition: .2s;
+.save,
+.cancel,
+.delete {
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 10px;
+  padding: 0 10px;
+  border-radius: 20px;
+  transition: 0.2s;
 }
 
 .save {
-    color: #000;
-    background: #4CA74A41;
-    border: 1px solid #3A9B38;
+  color: #000;
+  background: #4ca74a41;
+  border: 1px solid #3a9b38;
 }
 
 .cancel {
-    color: #000;
-    background: #F2E78661;
-    border: 1px solid #C0B44F;
+  color: #000;
+  background: #f2e78661;
+  border: 1px solid #c0b44f;
 }
 
 .delete {
-    color: #000;
-    background: #FACACA;
-    border: 1px solid #CA5858;
+  color: #000;
+  background: #facaca;
+  border: 1px solid #ca5858;
 }
 
 .buttonsRight {
-    display: flex;
-    justify-content: end;
+  display: flex;
+  justify-content: end;
 }
 
 .childAnnotation {
-    width: max-content;
-    padding: 5px;
-    border-radius: 8px;
+  width: max-content;
+  padding: 5px;
+  border-radius: 8px;
 }

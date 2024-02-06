@@ -1,155 +1,158 @@
 .form-label {
-    margin-bottom: 0.5rem;
-    padding: 0.55rem 1rem;
+  margin-bottom: 0.5rem;
+  padding: 0.55rem 1rem;
 }
 
 .btn-secondary {
-    --bs-btn-color: #fff;
-    --bs-btn-bg: #e9ecef;
-    --bs-btn-border-color: #fff
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #e9ecef;
+  --bs-btn-border-color: #fff;
 }
 
 #annoteren {
-    font-size: 20px;
-    display: block;
-    margin-bottom: 10px;
-    font-weight: bold;
-    color: #154273;
-    margin-left: 15px;
+  font-size: 20px;
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #154273;
+  margin-left: 15px;
 }
 
 .form-control {
-    margin-left: 10px;
-    width: 95%;
-    background-color: #e9ecef;
-    padding: 0.5rem 0.75rem
+  margin-left: 10px;
+  width: 95%;
+  background-color: #e9ecef;
+  padding: 0.5rem 0.75rem;
 }
 
 button#dropdown-basic.dropdown.dropdown-toggle.btn.btn-secondary {
-    margin-left: 10px;
-    width: 95%;
-    color: #000;
+  margin-left: 10px;
+  width: 95%;
+  color: #000;
 }
 
 .buttonGroup {
-    display: flex;
-    justify-content: right;
+  display: flex;
+  justify-content: right;
 }
 
 .annotationName {
-    font-size: 14px;
-    margin: 0;
+  font-size: 14px;
+  margin: 0;
 }
 
-.left-column, .right-column {
-    height: calc(100lvh - 50px);
-    overflow: auto;
-    width: 100%;
+.left-column,
+.right-column {
+  height: calc(100lvh - 50px);
+  overflow: auto;
+  width: 100%;
 }
 
-
-.left-column, .right-column {
-    border-right: 1px solid lightgray;
-    padding: 40px 30px;
+.left-column,
+.right-column {
+  border-right: 1px solid lightgray;
+  padding: 40px 30px;
 }
 
 .row {
-    display: flex;
-    justify-content: start;
-    margin: 0 1.5rem 1.5rem 1rem;
+  display: flex;
+  justify-content: start;
+  margin: 0 1.5rem 1.5rem 1rem;
 }
 
 .iconRow {
-    position: absolute;
-    right: 10px;
-    top: 7px;
-    margin-bottom: 4% !important;
-    cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 7px;
+  margin-bottom: 4% !important;
+  cursor: pointer;
 }
 
 .iconRow:hover svg {
-    color: rgb(0, 0, 0) !important;
+  color: rgb(0, 0, 0) !important;
 }
 
 .iconRow svg {
-    color: #404040 !important;
+  color: #404040 !important;
 }
 
 .annotationTitle {
-    display: flex;
-    justify-content: space-between;
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
-    margin: .5rem 0;
-    cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin: 0.5rem 0;
+  cursor: pointer;
 }
 
 .align {
-    text-align: right;
+  text-align: right;
 }
 
 .annotationInfo {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .leftCol {
-    width: 30%;
+  width: 30%;
 }
 
 .rightCol {
-    width: 65%;
+  width: 65%;
 }
 
 .iconCol {
-    width: 5%;
-    min-width: 20px;
-    min-height: 20px;
+  width: 5%;
+  min-width: 20px;
+  min-height: 20px;
 }
 
 .buttonGroup {
-    display: flex;
-    justify-content: right;
+  display: flex;
+  justify-content: right;
 }
 
 .annotationName {
-    font-size: 14px;
-    margin: 0;
+  font-size: 14px;
+  margin: 0;
 }
 
-
-.left-column, .right-column {
-    flex: 1 1;
-    border: 1px solid #ccc;
-    padding: 10px;
-    box-shadow: 0 4px 1px 0 rgba(0, 0, 0, 0.2), 0 0px 12px 0 rgba(0, 0, 0, 0.19);
+.left-column,
+.right-column {
+  flex: 1 1;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow:
+    0 4px 1px 0 rgba(0, 0, 0, 0.2),
+    0 0px 12px 0 rgba(0, 0, 0, 0.19);
 }
 
 .buttonsRight {
-    display: flex;
-    justify-content: end;
+  display: flex;
+  justify-content: end;
 }
 
 .relation-buttons {
-    padding: 0 1rem 10px;
+  padding: 0 1rem 10px;
 }
 
 .relation-buttons p {
-    font-size: 14px;
-    margin-bottom: 5px;
+  font-size: 14px;
+  margin-bottom: 5px;
 }
 
 .relation-buttons:not(:has(button)) {
-    display: none;
+  display: none;
 }
 
 .custom-primary {
-    color: #000 !important;
-    background-color: #4CA74A41 !important; /* Change this to your desired green color */
-    border-color: #4CA74A41 !important;
+  color: #000 !important;
+  background-color: #4ca74a41 !important; /* Change this to your desired green color */
+  border-color: #4ca74a41 !important;
 }
 
 .custom-secondary {
-    color: #000 !important;
-    background-color: #e9ecef !important; /* Change this to your desired grey color */
-    border-color: #e9ecef !important;
+  color: #000 !important;
+  background-color: #e9ecef !important; /* Change this to your desired grey color */
+  border-color: #e9ecef !important;
 }

@@ -28,14 +28,15 @@ html:has(.left-column) {
   color: white !important;
 }
 
-.left-column, .right-column {
+.left-column,
+.right-column {
   height: calc(100lvh - 50px);
   overflow: auto;
   width: 100%;
 }
 
-
-.left-column, .right-column {
+.left-column,
+.right-column {
   border-right: 1px solid lightgray;
   padding: 40px 30px;
 }

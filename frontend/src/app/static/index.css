@@ -18,9 +18,9 @@
 }
 
 .import-button {
-  background-color: #EBEBEB !important;
+  background-color: #ebebeb !important;
   color: #000 !important;
-  border: 1px solid #B1B1B1 !important;
+  border: 1px solid #b1b1b1 !important;
   border-radius: 20px;
   cursor: pointer;
   padding: 5px 20px;
@@ -66,11 +66,11 @@
   justify-content: space-between;
   align-items: center;
   padding: 15px;
-  background-color: #FBFBFB;
+  background-color: #fbfbfb;
   margin: 10px;
   border-radius: 10px;
   border: 1px solid #ebebeb;
-  transition: .2s;
+  transition: 0.2s;
 }
 
 .document-item:hover {
@@ -85,14 +85,14 @@
 
 .open-button {
   padding: 8px 20px;
-  background-color: #EBEBEB !important;
+  background-color: #ebebeb !important;
   color: #000 !important;
-  border: 1px solid #B1B1B1 !important;
+  border: 1px solid #b1b1b1 !important;
   border-radius: 5px;
   text-decoration: none;
   cursor: pointer;
   font-size: 14px;
-  transition: .2s;
+  transition: 0.2s;
 }
 
 .open-button:hover {
@@ -105,10 +105,10 @@
   cursor: pointer;
   margin-left: 10px; /* Add margin to separate the delete icon */
   padding: 0 10px;
-  background: #FACACA;
-  border: 1px solid #CA5858;
+  background: #facaca;
+  border: 1px solid #ca5858;
   border-radius: 5px;
-  transition: .2s;
+  transition: 0.2s;
 }
 
 .delete-button svg {
@@ -120,7 +120,7 @@
   background: #e69d9d;
 }
 
-.download-icon{
+.download-icon {
   padding-right: 5px;
 }
 
@@ -140,28 +140,29 @@ button.success:hover {
   margin-bottom: 0;
 }
 
-.save, .cancel, .delete {
+.save,
+.cancel,
+.delete {
   font-size: 16px !important;
   cursor: pointer;
   margin-left: 10px;
   padding: 0 10px;
   border-radius: 20px !important;
-  transition: .2s;
+  transition: 0.2s;
   color: #000 !important;
 }
 
-
 button.save {
-  background: #4CA74A41 !important;
-  border: 1px solid #3A9B38 !important;
+  background: #4ca74a41 !important;
+  border: 1px solid #3a9b38 !important;
 }
 
 button.cancel {
-  background: #F2E78661 !important;
-  border: 1px solid #C0B44F !important;
+  background: #f2e78661 !important;
+  border: 1px solid #c0b44f !important;
 }
 
 button.delete {
-  background: #FACACA !important;
-  border: 1px solid #CA5858 !important;
+  background: #facaca !important;
+  border: 1px solid #ca5858 !important;
 }
