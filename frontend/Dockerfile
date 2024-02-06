@@ -13,6 +13,8 @@ COPY . .
 
 EXPOSE 3000
 
+ENV NEXT_BASE_PATH="/"
+
 CMD npm run dev
 
 # ---- Release ----
