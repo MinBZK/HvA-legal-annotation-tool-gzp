@@ -28,5 +28,12 @@ COPY --from=builder /usr/src/app/app.jar .
 # Expose the port that the Spring Boot app will run on
 EXPOSE 8000
 
+# Set the environment variables
+ENV DB_URL=
+ENV DB_USER=
+ENV DB_PASS=
+
+ENV CONTEXT_PATH=/
+
 # Command to run the Spring Boot application
 CMD ["java", "-jar", "app.jar"]
