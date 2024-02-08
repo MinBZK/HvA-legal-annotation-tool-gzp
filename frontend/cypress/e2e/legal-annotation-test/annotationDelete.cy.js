@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:8000/api/';
+const API_BASE = `${process.env.NEXT_PUBLIC_API_URL}/`;
 
 describe('Visit main page', () => {
   // arrange
@@ -13,7 +13,7 @@ describe('Visit main page', () => {
     cy.get('svg.annotated-row_iconCol__M1IPt').first().click();
 
     // Intercept the DELETE request
-    cy.intercept(`http://localhost:8000/api/annotations/deleteannotation/*`, {
+    cy.intercept(`${process.env.NEXT_PUBLIC_API_URL}/annotations/deleteannotation/*`, {
       statusCode: 200,
       body: {},
     }).as('deleteAnnotation');

@@ -1,13 +1,13 @@
 describe('Open XML upload modal', () => {
   beforeEach(() => {
     // Mock the response for the maximum XML count
-    cy.intercept('GET', 'http://localhost:8000/api/maxXmlCount', {
+    cy.intercept('GET', `${process.env.NEXT_PUBLIC_API_URL}/maxXmlCount`, {
       statusCode: 200,
       body: 40,
     }).as('getMaxXmlCount');
 
     // Mock the response for the current project count
-    cy.intercept('GET', 'http://localhost:8000/api/projectCounts', {
+    cy.intercept('GET', `${process.env.NEXT_PUBLIC_API_URL}/projectCounts`, {
       statusCode: 200,
       body: { currentCount: 40, maxCount: 40 }, // Mock the response to reflect 40 current projects
     }).as('getProjectCounts');

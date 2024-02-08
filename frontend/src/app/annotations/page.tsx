@@ -183,7 +183,7 @@ const AnnotationPage = () => {
     for (let annotation of annotations) {
       const id = annotation.getAttribute('id');
       if (id) {
-        const response = await fetch(`http://localhost:8000/api/annotations/${id}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/annotations/${id}`);
         if (response.ok) {
           const annotationData = await response.json();
           temporaryAnnotations.push(annotationData);

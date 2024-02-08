@@ -149,7 +149,7 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
 
   const fetchClasses = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/classes');
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/classes`);
       if (response.ok) {
         const fetchedClasses = await response.json();
         setClasses(fetchedClasses);
@@ -182,7 +182,7 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
         const lawClassId = selectedLawClass.id;
 
         // fetch subannotations
-        const subAnnotationsResponse = await fetch(`http://localhost:8000/api/annotations/children/${annotation.id}`);
+        const subAnnotationsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/annotations/children/${annotation.id}`);
 
         if (subAnnotationsResponse.ok) {
           const childAnnotations = await subAnnotationsResponse.json();
@@ -199,7 +199,7 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
             await Promise.all(
               annotationsToDelete.map(async (annotationId: any) => {
                 try {
-                  const deleteAnnotationResponse = await fetch(`http://localhost:8000/api/annotations/deleteannotation/${annotationId}`, {
+                  const deleteAnnotationResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/annotations/deleteannotation/${annotationId}`, {
                     method: 'DELETE',
                   });
 
@@ -244,7 +244,7 @@ const AnnotatedRow: FC<AnnotationProps> = ({ annotation, handleEdit, handleDelet
 
   const fetchSubclasses = async (lawClass: LawClass) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/relations/${lawClass.id}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/relations/${lawClass.id}`);
       if (response.ok) {
         const subclasses = await response.json();
         return subclasses.map((subclass: any) => subclass.name);

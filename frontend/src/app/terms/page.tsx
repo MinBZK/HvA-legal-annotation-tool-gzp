@@ -22,7 +22,7 @@ const TermsPage = () => {
   const fetchTerms = async () => {
     // fetching the terms
     try {
-      const response = await fetch('http://localhost:8000/api/terms');
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/terms`);
 
       if (response.ok) {
         setTerms(await response.json());

@@ -2,7 +2,7 @@
 
 describe('Visit main page', () => {
   beforeEach(() => {
-    cy.intercept('GET', 'http://localhost:8000/api/project/1', (req) => {
+    cy.intercept('GET', `${process.env.NEXT_PUBLIC_API_URL}/project/1`, (req) => {
       req.reply({
         statusCode: 200,
         body: {
@@ -15,7 +15,7 @@ describe('Visit main page', () => {
       .as('projectrequest')
       .then(() => console.warn('loadedproject'));
 
-    cy.intercept('GET', 'http://localhost:8000/api/annotations/project/1', (req) => {
+    cy.intercept('GET', `${process.env.NEXT_PUBLIC_API_URL}/annotations/project/1`, (req) => {
       req.reply({
         statusCode: 200,
         body: [
@@ -70,7 +70,7 @@ describe('Visit main page', () => {
       .as('annotationprojectrequest')
       .then(() => console.warn('loadedannotationproject'));
 
-    cy.intercept('GET', 'http://localhost:8000/api/classes', (req) => {
+    cy.intercept('GET', `${process.env.NEXT_PUBLIC_API_URL}/classes`, (req) => {
       req.reply({
         statusCode: 200,
         body: [
@@ -124,7 +124,7 @@ describe('Visit main page', () => {
     cy.wait('@classesrequest', { timeout: 10000 });
 
     // intercept PUT request and respond with mock data
-    cy.intercept('PUT', 'http://localhost:8000/api/annotations/updateannotation/15', (req) => {
+    cy.intercept('PUT', `${process.env.NEXT_PUBLIC_API_URL}/annotations/updateannotation/15`, (req) => {
       // respond with mock data
       req.reply({
         statusCode: 200,
@@ -152,7 +152,7 @@ describe('Visit main page', () => {
     // Trigger PUT request in application
     cy.request({
       method: 'PUT',
-      url: 'http://localhost:8000/api/annotations/updateannotation/15',
+      url: `${process.env.NEXT_PUBLIC_API_URL}/annotations/updateannotation/15`,
       body: {
         id: 15,
         selectedWord: 'Lorem ipsum',
