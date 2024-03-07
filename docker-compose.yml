@@ -1,12 +1,15 @@
-version: '3'
+version: "3"
 services:
   frontend:
     build:
       context: ./frontend
+      target: dev
     ports:
       - "3000:3000"
+    volumes:
+      - ./frontend/src:/app/src
     environment:
-      - API_URL=http://localhost:8000/api
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api
   database:
     image: mysql:latest
     environment:

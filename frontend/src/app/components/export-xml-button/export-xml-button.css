@@ -1,17 +1,17 @@
 /* src/app/components/export/ExportXMLButton.module.css */
 
 .exportButton {
-    font-size: 16px !important;
-    cursor: pointer;
-    margin-left: 10px;
-    padding: 0 10px;
-    border-radius: 20px !important;
-    transition: .2s;
-    color: #000 !important;
-    background: #F2E78661 !important;
-    border: 1px solid #C0B44F !important;
+  font-size: 16px !important;
+  cursor: pointer;
+  margin-left: 10px;
+  padding: 0 10px;
+  border-radius: 20px !important;
+  transition: 0.2s;
+  color: #000 !important;
+  background: #f2e78661 !important;
+  border: 1px solid #c0b44f !important;
 }
 
 BsDownload {
-    margin-right: 10px;
+  margin-right: 10px;
 }

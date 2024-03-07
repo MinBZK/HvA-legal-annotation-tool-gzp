@@ -1,12 +1,12 @@
-'use client'
+'use client';
 import { FiTrash2 } from 'react-icons/fi';
 import './static/index.css';
 import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import React, { useEffect, useRef, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { deleteProject, getMaxXmlCount, getProjectCounts, getProjects, uploadXML } from './services/project'
-import { Project } from "./models/project";
-import { BsDownload } from "react-icons/bs";
+import { deleteProject, getMaxXmlCount, getProjectCounts, getProjects, uploadXML } from './services/project';
+import { Project } from './models/project';
+import { BsDownload } from 'react-icons/bs';
 import Link from 'next/link';
 import Navigation from './components/navigation/navigation';
 import { getSelectedUser, getUser, subscribe, unsubscribe } from './services/user';
@@ -14,11 +14,10 @@ import { User } from './models/user';
 import ArticleSelectionModal from './components/article-selection-modal/article-selection-modal';
 
 export default function Home() {
-
   const [projects, setProjects] = useState<Project[]>([]);
   const [show, setShow] = useState(false); // State variable for controlling visibility of the upload modal
   const [showError, setShowError] = useState(false); // State variable for managing error visibility for the upload
-  const [errorMsg, setErrorMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState('');
   const [showProjectError, setShowProjectError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showMaxXmlWarning, setShowMaxXmlWarning] = useState(false);
@@ -88,7 +87,6 @@ export default function Home() {
     }
   }, [currentXmlCount, maxXmlCount]);
 
-
   const fetchMaxXmlCount = async () => {
     try {
       const response = await getMaxXmlCount();
@@ -134,18 +132,18 @@ export default function Home() {
   // Handle XML Upload
   const handleXmlUpload = async () => {
     // Check if file input reference is not null and has a non-empty value
-    if (fileInputRef.current != null && fileInputRef.current["value"] != "") {
+    if (fileInputRef.current != null && fileInputRef.current['value'] != '') {
       const reader = new FileReader();
 
       // Read the content of the first file in the file input
-      reader.readAsText(fileInputRef.current["files"][0]);
+      reader.readAsText(fileInputRef.current['files'][0]);
 
       // Handle the 'onload' event when the file reading is complete
       reader.onload = async (event) => {
         // Check if the event target is not null and the result is a string
-        if (event.target != null && typeof event.target.result === "string") {
+        if (event.target != null && typeof event.target.result === 'string') {
           const parser = new DOMParser();
-          setEventTargetResult(event.target.result)
+          setEventTargetResult(event.target.result);
           setXmlDoc(parser.parseFromString(event.target.result, 'application/xml'));
         }
       };
@@ -154,18 +152,18 @@ export default function Home() {
 
   useEffect(() => {
     if (xmlDoc != null) {
-      const listArticles = xmlDoc.querySelectorAll("artikel")
+      const listArticles = xmlDoc.querySelectorAll('artikel');
 
       // check if children exist
       if (listArticles == null || listArticles.length == 0) {
-        alert("no articles in xml")
+        alert('no articles in xml');
       }
 
-      const arrArticle: any[] = []
-      const arrArticleBools: boolean[] = []
+      const arrArticle: any[] = [];
+      const arrArticleBools: boolean[] = [];
       for (let i = 0; i < listArticles.length; i++) {
-        arrArticle.push(listArticles.item(i))
-        arrArticleBools.push(false)
+        arrArticle.push(listArticles.item(i));
+        arrArticleBools.push(false);
       }
 
       setArticlePieces(arrArticle);
@@ -181,8 +179,7 @@ export default function Home() {
 
       if (firstChildNode && firstChildNode.nodeValue !== null) {
         const title = firstChildNode.nodeValue.trim();
-        let selectedArticles: any = null
-
+        let selectedArticles: any = null;
 
         if (list.length > 0) {
           selectedArticles = list.join(', ');
@@ -193,22 +190,22 @@ export default function Home() {
         // Check the status of the response
         if (response.status == 201) {
           await fetchProjects();
-          await fetchProjectCounts()
+          await fetchProjectCounts();
           setShow(false);
         } else {
-          setErrorMsg("Er is iets fout gegaan bij het uploaden");
+          setErrorMsg('Er is iets fout gegaan bij het uploaden');
           setShowError(true);
         }
-        handleReload()
+        handleReload();
       } else {
-        setErrorMsg("De XML bevat geen citeertitel");
+        setErrorMsg('De XML bevat geen citeertitel');
         setShowError(true);
       }
     } else {
-      setErrorMsg("De XML bevat geen citeertitel");
+      setErrorMsg('De XML bevat geen citeertitel');
       setShowError(true);
     }
-  }
+  };
 
   const handleDelete = async (id: number) => {
     try {
@@ -238,7 +235,7 @@ export default function Home() {
     setOnArticlesShow(false);
     setArticlePieces([]);
     setArticlePiecesLoaded(false);
-  }
+  };
 
   return (
     <>
@@ -247,21 +244,20 @@ export default function Home() {
         <main className="main-content">
           <div className="d-flex justify-content-between align-items-center mb-3">
             <h2 className="doc-text">Documenten</h2>
-            <p className='xml-minmax'>{currentXmlCount}/{maxXmlCount} XML&apos;s beschikbaar</p>
+            <p className="xml-minmax">
+              {currentXmlCount}/{maxXmlCount} XML&apos;s beschikbaar
+            </p>
             <Alert show={showMaxXmlWarning} variant="warning">
               U heeft het maximale aantal van {maxXmlCount} XML&apos;s bereikt. Verwijder eerst een XML voordat u verder gaat.
             </Alert>
-              {
-                  activeUserRole == "Admin" || activeUserRole == "Jurist" ?
-                      <button
-                          className="import-button"
-                          onClick={handleShow}>
-                        <BsDownload className="download-icon" size={20}/>
-                        <span>Importeer XML</span>
-                      </button>
-                      : <></>
-              }
-
+            {activeUserRole == 'Admin' || activeUserRole == 'Jurist' ? (
+              <button className="import-button" onClick={handleShow}>
+                <BsDownload className="download-icon" size={20} />
+                <span>Importeer XML</span>
+              </button>
+            ) : (
+              <></>
+            )}
           </div>
 
           {loading && <p className="loading-message">Loading...</p>}
@@ -272,27 +268,27 @@ export default function Home() {
           </Alert>
 
           <ul className="document-list">
-            {projects && projects.map((project) => (
-              <li key={project.id} className="document-item">
-                <div className="document-info">
-                  <span className="document-title">{project.title}</span>
-                </div>
-                <div className="actions">
-                  <Link href={{ pathname: '/annotations', query: { id: project.id } }} passHref>
-                    <button className="open-button">Open project</button>
-                  </Link>
-                  {
-                    activeUserRole == "Admin" ? <button
-                      className='delete-button'
-                      onClick={() => handleShowDeleteModal(project.id)}>
-                      <FiTrash2 className="delete-icon" />
-                    </button> : ""
-                  }
-                </div>
-              </li>
-            ))}
+            {projects &&
+              projects.map((project) => (
+                <li key={project.id} className="document-item">
+                  <div className="document-info">
+                    <span className="document-title">{project.title}</span>
+                  </div>
+                  <div className="actions">
+                    <Link href={{ pathname: '/annotations', query: { id: project.id } }} passHref>
+                      <button className="open-button">Open project</button>
+                    </Link>
+                    {activeUserRole == 'Admin' ? (
+                      <button className="delete-button" onClick={() => handleShowDeleteModal(project.id)}>
+                        <FiTrash2 className="delete-icon" />
+                      </button>
+                    ) : (
+                      ''
+                    )}
+                  </div>
+                </li>
+              ))}
           </ul>
-
         </main>
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
@@ -307,31 +303,27 @@ export default function Home() {
               <>
                 <Alert show={showError} variant="danger" dismissible>
                   <Alert.Heading>Error</Alert.Heading>
-                  <p>
-                    {errorMsg}
-                  </p>
+                  <p>{errorMsg}</p>
                 </Alert>
                 <Form action={handleXmlUpload}>
-                  <input
-                    type="file"
-                    accept="text/xml"
-                    ref={fileInputRef}
-                    onChange={handleXmlUpload}
-                  />
-                  <Button type='submit' className='save float-end mt-3' disabled={!articlePiecesLoaded} onClick={() => {
-                    if (articlePieces.length != 0) {
-                      setOnArticlesShow(true);
-                    }
-                  }}>
+                  <input type="file" accept="text/xml" ref={fileInputRef} onChange={handleXmlUpload} />
+                  <Button
+                    type="submit"
+                    className="save float-end mt-3"
+                    disabled={!articlePiecesLoaded}
+                    onClick={() => {
+                      if (articlePieces.length != 0) {
+                        setOnArticlesShow(true);
+                      }
+                    }}
+                  >
                     Verder
                   </Button>
                 </Form>
               </>
-            )
-            }
+            )}
           </Modal.Body>
         </Modal>
-
 
         {/*modal for delete xml*/}
         <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
@@ -349,10 +341,7 @@ export default function Home() {
             <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
               Cancel
             </Button>
-            <Button
-              type='submit'
-              variant="danger"
-              onClick={() => projectIdToDelete && handleDelete(projectIdToDelete)}>
+            <Button type="submit" variant="danger" onClick={() => projectIdToDelete && handleDelete(projectIdToDelete)}>
               Delete
             </Button>
           </Modal.Footer>

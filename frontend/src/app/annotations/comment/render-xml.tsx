@@ -1,12 +1,12 @@
-"use client";
+'use client';
 import React, { FC, useEffect, useState } from 'react';
-import { Project } from "../../models/project";
-import '../../static/annotations.css'
-import './xml.css'
-import ExportXMLButton from "@/app/components/export-xml-button/export-xml-button";
+import { Project } from '../../models/project';
+import '../../static/annotations.css';
+import './xml.css';
+import ExportXMLButton from '@/app/components/export-xml-button/export-xml-button';
 import { BsArrowLeft } from 'react-icons/bs';
-import { useRouter } from "next/navigation";
-import { PiListChecksLight } from "react-icons/pi";
+import { useRouter } from 'next/navigation';
+import { PiListChecksLight } from 'react-icons/pi';
 import ArticleSelectionModal from '@/app/components/article-selection-modal/article-selection-modal';
 import { uploadXML } from '@/app/services/project';
 
@@ -27,10 +27,9 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection, allowSelect }) => {
   useEffect(() => {
     // Convert the XML string to a readable DOM object
     let parser = new DOMParser();
-    let xml = parser.parseFromString(project.xml_content, "application/xml");
+    let xml = parser.parseFromString(project.xml_content, 'application/xml');
     setRenderXML(true);
     fetchAnnotationsAndStyles(xml);
-
   }, [project.xml_content]);
 
   /**
@@ -48,7 +47,7 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection, allowSelect }) => {
     for (let annotation of annotations) {
       const id = annotation.getAttribute('id');
       if (id) {
-        const response = await fetch(`${process.env.API_URL}/annotations/${id}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/annotations/${id}`);
         if (response.ok) {
           const annotationData = await response.json();
 
@@ -62,7 +61,6 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection, allowSelect }) => {
     setAnnotationStyles(newAnnotationStyles);
   };
 
-
   /**
    * Generates CSS styles for annotations based on their id and the associated color.
    * It creates a string of CSS rules that is later added to the HTML.
@@ -70,7 +68,7 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection, allowSelect }) => {
    * @returns {string} A string of CSS rules for styling annotations.
    */
   const renderStyles = () => {
-    let styleString = "";
+    let styleString = '';
     for (const [selector, color] of Object.entries(annotationStyles)) {
       styleString += `annotation[id="${selector}"] { background-color: ${color}; border-radius: 4px; outline: ${color} solid 1px }\n`;
     }
@@ -121,10 +119,10 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection, allowSelect }) => {
     const parser = new DOMParser();
 
     // Parse the XML content string into a DOM document
-    const xml = parser.parseFromString(project.xml_content, "application/xml");
+    const xml = parser.parseFromString(project.xml_content, 'application/xml');
 
     // Check if there are selected articles
-    if (project.selectedArticles != "" && project.selectedArticles != null) {
+    if (project.selectedArticles != '' && project.selectedArticles != null) {
       // Split the selectedArticles string into an array of article IDs
       const articles = project.selectedArticles.split(',');
 
@@ -156,21 +154,21 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection, allowSelect }) => {
 
   const handleSelection = () => {
     const parser = new DOMParser();
-    const xml = parser.parseFromString(project.xml_content, "application/xml");
+    const xml = parser.parseFromString(project.xml_content, 'application/xml');
     if (xml != null) {
-      const listArticles = xml.querySelectorAll("artikel")
+      const listArticles = xml.querySelectorAll('artikel');
 
       // check if children exist
       if (listArticles == null || listArticles.length == 0) {
-        alert("no articles in xml")
+        alert('no articles in xml');
       }
 
-      const arrArticle: any[] = []
-      const arrArticleBools: boolean[] = []
+      const arrArticle: any[] = [];
+      const arrArticleBools: boolean[] = [];
       for (let i = 0; i < listArticles.length; i++) {
         arrArticle.push(listArticles.item(i));
 
-        if (project.selectedArticles != "" && project.selectedArticles != null && project.selectedArticles.split(", ").includes(listArticles.item(i).id)) {
+        if (project.selectedArticles != '' && project.selectedArticles != null && project.selectedArticles.split(', ').includes(listArticles.item(i).id)) {
           arrArticleBools.push(true);
         } else {
           arrArticleBools.push(false);
@@ -180,12 +178,12 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection, allowSelect }) => {
       setSelectedArticles(arrArticleBools);
       setShowSelectArticlesModal(true);
     }
-  }
+  };
 
   const handleArticleSelect = async (value: string[]) => {
-    let selectedArticles = "";
+    let selectedArticles = '';
     if (value.length > 0) {
-      selectedArticles = value.join(", ");
+      selectedArticles = value.join(', ');
     }
     project.selectedArticles = selectedArticles;
     await uploadXML(project.xml_content, project.title, selectedArticles, project.id);
@@ -194,28 +192,20 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection, allowSelect }) => {
 
   const cancelArticleSelect = (value: Boolean) => {
     setShowSelectArticlesModal(false);
-  }
+  };
 
   return (
     <>
-      <style>
-        {renderStyles()}
-      </style>
+      <style>{renderStyles()}</style>
       <>
-        {
-          showSelectArticlesModal ?
-            <ArticleSelectionModal xmlArticles={articles} handleArticleSelect={handleArticleSelect} cancelArticleSelect={cancelArticleSelect} prevSelectedArticles={selectedArticles} ></ArticleSelectionModal>
-            : ""
-        }
+        {showSelectArticlesModal ? <ArticleSelectionModal xmlArticles={articles} handleArticleSelect={handleArticleSelect} cancelArticleSelect={cancelArticleSelect} prevSelectedArticles={selectedArticles}></ArticleSelectionModal> : ''}
 
-        <div className='action-buttons'>
-          <button className="back-button"
-            onClick={handleGoBack}>
+        <div className="action-buttons">
+          <button className="back-button" onClick={handleGoBack}>
             <BsArrowLeft className="icon" /> Terug
           </button>
           <div>
-            <button className="change-selection"
-              onClick={handleSelection}>
+            <button className="change-selection" onClick={handleSelection}>
               <PiListChecksLight className="icon" /> Wijzig selectie
             </button>
             <ExportXMLButton xmlData={project.xml_content} projectTitle={project.title} />
@@ -226,6 +216,6 @@ const LoadXML: FC<XMLProps> = ({ project, onTextSelection, allowSelect }) => {
       </>
     </>
   );
-}
+};
 
 export default LoadXML;
